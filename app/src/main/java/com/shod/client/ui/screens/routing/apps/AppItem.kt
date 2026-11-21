@@ -2,6 +2,8 @@ package com.shod.client.ui.screens.routing.apps
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import com.shod.client.platform.android.apps.InstalledAppEntry
 
 /**
  * Presentation model for an installed application in the split-tunnel picker.
@@ -13,4 +15,11 @@ internal data class AppItem(
     val packageName: String,
     val icon: ImageBitmap?,
     val isSystem: Boolean,
+)
+
+internal fun InstalledAppEntry.toAppItem(): AppItem = AppItem(
+    name = label,
+    packageName = packageName,
+    icon = icon?.asImageBitmap(),
+    isSystem = isSystem,
 )
