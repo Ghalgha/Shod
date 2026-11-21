@@ -37,7 +37,7 @@ internal object ProfileProbeProcessCommand {
             add(binaryPath)
             addAll(listOf("-peer", peer))
             addAll(listOf("-n", ShodConstants.Tunnel.WORKERS_PER_GROUP.toString()))
-            addAll(listOf("-listen", "${ShodConstants.Network.LOCAL_LISTEN_HOST}:${ShodConstants.Network.DEFAULT_LOCAL_PORT}"))
+            addAll(listOf("-listen", "${ShodConstants.Network.LOCAL_LISTEN_HOST}:0"))
             addAll(listOf("-tun-uds", udsName))
             if (hash.isNotBlank()) addAll(listOf("-vk", hash))
             addAll(listOf("-vk-hash-mode", if (jsMode) ShodConstants.VkAutoHash.MODE_AUTO_JS else ShodConstants.VkAutoHash.MODE_MANUAL))
