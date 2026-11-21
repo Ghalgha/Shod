@@ -3,6 +3,7 @@ package com.shod.client.platform.android.deploy
 import android.content.Context
 import com.shod.client.deploy.execution.DeployActionMode
 import com.shod.client.deploy.inventory.ServerInventory
+import com.shod.client.platform.android.deploy.ssh.AndroidDeploySshSession
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.currentCoroutineContext
 import java.util.concurrent.atomic.AtomicReference
@@ -132,6 +133,7 @@ internal class AndroidDeployCoordinator(
         private val activeOperation = AtomicReference<Job?>(null)
 
         fun cancelActiveOperation() {
+            AndroidDeploySshSession.closeActiveSessions()
             activeOperation.get()?.cancel()
         }
     }
