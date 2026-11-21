@@ -33,12 +33,12 @@ internal class DeployConfigurationStager {
         val environmentFile = File(workingDirectory, "environment.env").apply {
             writeText(
                 buildString {
-                    appendLine("Shod_WEB_USER=${environmentValue(webLogin, installInDocker)}")
-                    appendLine("Shod_WEB_PASS=${environmentValue(webPassword, installInDocker)}")
-                    appendLine("Shod_PUBLIC_IP=${environmentValue(publicHost.trim(), installInDocker)}")
+                    appendLine("Shod_WEB_USER=\${environmentValue(webLogin, installInDocker)}")
+                    appendLine("Shod_WEB_PASS=\${environmentValue(webPassword, installInDocker)}")
+                    appendLine("Shod_PUBLIC_IP=\${environmentValue(publicHost.trim(), installInDocker)}")
                     if (secretPath.isNotBlank()) {
                         appendLine(
-                            "Shod_WEB_SECRET_PATH=${environmentValue(secretPath.trim(), installInDocker)}"
+                            "Shod_WEB_SECRET_PATH=\${environmentValue(secretPath.trim(), installInDocker)}"
                         )
                     }
                 }
@@ -52,15 +52,15 @@ internal class DeployConfigurationStager {
 
     private fun environmentValue(value: String, installInDocker: Boolean): String =
         if (installInDocker) {
-            value.replace('\\n', ' ').replace('\\r', ' ')
+            value.replace('\n', ' ').replace('\r', ' ')
         } else {
             buildString {
                 append('"')
                 value.forEach { character ->
                     when (character) {
-                        '\\\\' -> append("\\\\\\\\")
-                        '"' -> append("\\\\"")
-                        '\\n', '\\r' -> append(' ')
+                        '\\' -> append("\\\\")
+                        '"' -> append("\\\"")
+                        '\n', '\r' -> append(' ')
                         else -> append(character)
                     }
                 }
