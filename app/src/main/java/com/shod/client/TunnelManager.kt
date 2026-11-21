@@ -23,6 +23,9 @@ import java.util.concurrent.atomic.AtomicLong
 import org.json.JSONObject
 
 import com.shod.client.vpn.diagnostics.TunnelLogSanitizer
+import com.shod.client.vpn.diagnostics.NativeTunnelLogParser
+import com.shod.client.vpn.diagnostics.StreamDiagnosticParser
+import com.shod.client.vpn.diagnostics.TunnelLogPolicy
 import com.shod.client.vpn.diagnostics.TunnelLogStore
 
 typealias LogLevel = com.shod.client.vpn.diagnostics.LogLevel
