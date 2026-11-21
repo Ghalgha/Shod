@@ -34,6 +34,7 @@ import com.shod.client.settings.storage.ReadOnlyProfileDataStore
 import com.shod.client.settings.storage.settingsDataStore
 import com.shod.client.settings.subscription.ProfileSubscriptionStore
 import com.shod.client.settings.subscription.SubscriptionMetaCodec
+import com.shod.client.subscriptions.SubscriptionProfileWrite
 import com.shod.client.settings.theme.ThemePreferencesStore
 import com.shod.client.settings.update.UpdatePreferencesStore
 import com.shod.client.settings.deploy.DeployInspectionStore
