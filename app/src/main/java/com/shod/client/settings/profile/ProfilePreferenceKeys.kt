@@ -37,7 +37,8 @@ internal object ProfilePreferenceKeys {
         "direct_domains_black", "direct_domains_white", "direct_ips_black", "direct_ips_white",
         "connection_password", "connection_password_encrypted", "connection_password_local",
         "deploy_main_password", "deploy_main_password_encrypted", "deploy_web_login",
-        "deploy_web_password", "deploy_web_password_encrypted", "deploy_last_inspection_arch",\n        "deploy_last_inspection_service", "deploy_last_inspection_version", "deploy_last_inspection_message", "proxy_mode", "proxy_host",
+        "deploy_web_password", "deploy_web_password_encrypted", "deploy_last_inspection_arch",
+        "deploy_last_inspection_service", "deploy_last_inspection_version", "deploy_last_inspection_message", "proxy_mode", "proxy_host",
         "vk_auth_mode", "obfs_mode", "turn_transport", "srtp_mode", "captcha_mode",
         "captcha_solve_method", "captcha_wbv_solve_method", "shod_link",
         "selected_fingerprint", "active_client_ids", "vk_hash_mode", "vk_access_token",
@@ -56,7 +57,8 @@ internal object ProfilePreferenceKeys {
     private val booleanKeyNames = setOf(
         "app_routing_all", "manual_ports_enabled", "deploy_manual_ports", "no_dns",
         "is_whitelist", "shod_link_mode", "detailed_logs", "ssh_keys_mode", "docker_install",
-        "extra_workers", "split_tunnel_whitelist_migrated", "deploy_last_inspection_ok",\n        "deploy_last_inspection_panel", "domain_routing_enabled",
+        "extra_workers", "split_tunnel_whitelist_migrated", "deploy_last_inspection_ok",
+        "deploy_last_inspection_panel", "domain_routing_enabled",
         "domain_is_whitelist", "exclude_ru_zones_enabled", "template_domains_enabled",
         "ip_routing_enabled", "ip_is_whitelist", "deploy_server_configured", "profile_removed",
     )
