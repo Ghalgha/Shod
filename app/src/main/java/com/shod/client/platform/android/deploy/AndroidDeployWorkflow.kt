@@ -1,6 +1,7 @@
 package com.shod.client.platform.android.deploy
 
 import android.content.Context
+import com.shod.client.ShodConstants
 import com.shod.client.deploy.artifact.DeployArtifactStager
 import com.shod.client.deploy.artifact.DeployConfigurationStager
 import com.shod.client.deploy.execution.DeployActionMode
@@ -245,6 +246,6 @@ internal class AndroidDeployWorkflow(
     }
 
     private companion object {
-        const val DEPLOY_COMMAND_TIMEOUT_MS = 600_000L
+        const val DEPLOY_COMMAND_TIMEOUT_MS = ShodConstants.Timeouts.DEPLOY_CMD_TIMEOUT_MS
     }
 }

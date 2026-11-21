@@ -1,6 +1,7 @@
 package com.shod.client.deploy.artifact
 
 import com.shod.client.deploy.execution.DeployActionMode
+import com.shod.client.deploy.execution.deployEnvironmentValue
 import java.io.File
 import org.json.JSONObject
 
@@ -33,13 +34,13 @@ internal class DeployConfigurationStager {
         val environmentFile = File(workingDirectory, "environment.env").apply {
             writeText(
                 buildString {
-                    appendLine("Shod_WEB_USER=" + environmentValue(webLogin, installInDocker))
-                    appendLine("Shod_WEB_PASS=" + environmentValue(webPassword, installInDocker))
-                    appendLine("Shod_PUBLIC_IP=" + environmentValue(publicHost.trim(), installInDocker))
+                    appendLine("Shod_WEB_USER=" + deployEnvironmentValue(webLogin, installInDocker))
+                    appendLine("Shod_WEB_PASS=" + deployEnvironmentValue(webPassword, installInDocker))
+                    appendLine("Shod_PUBLIC_IP=" + deployEnvironmentValue(publicHost.trim(), installInDocker))
                     if (secretPath.isNotBlank()) {
                         appendLine(
                             "Shod_WEB_SECRET_PATH=" +
-                                environmentValue(secretPath.trim(), installInDocker)
+                                deployEnvironmentValue(secretPath.trim(), installInDocker)
                         )
                     }
                 }
@@ -51,21 +52,4 @@ internal class DeployConfigurationStager {
         return DeployConfigurationFiles(environmentFile, overridesFile)
     }
 
-    private fun environmentValue(value: String, installInDocker: Boolean): String =
-        if (installInDocker) {
-            value.replace('\n', ' ').replace('\r', ' ')
-        } else {
-            buildString {
-                append('"')
-                value.forEach { character ->
-                    when (character) {
-                        '\\' -> append("\\\\")
-                        '"' -> append("\\\"")
-                        '\n', '\r' -> append(' ')
-                        else -> append(character)
-                    }
-                }
-                append('"')
-            }
-        }
 }
