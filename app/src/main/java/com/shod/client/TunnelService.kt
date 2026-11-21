@@ -1,6 +1,12 @@
 package com.shod.client
 
 import com.shod.client.vpn.power.BatterySaver
+import com.shod.client.network.wifi.policy.WifiNetworkListMode
+import com.shod.client.network.wifi.policy.normalizeWifiSsid
+import com.shod.client.platform.android.network.wifi.WifiDiscovery
+import com.shod.client.platform.android.network.wifi.currentWifiSsid
+import com.shod.client.platform.android.network.wifi.hasWifiSsidAccess
+import com.shod.client.platform.android.network.wifi.hasWifiSsidPermission
 
 import android.annotation.SuppressLint
 import com.shod.client.vpn.lifecycle.TunnelServiceInputPolicy
