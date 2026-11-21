@@ -1,11 +1,7 @@
 package com.shod.client.settings.storage
 
 import android.content.Context
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory.create
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.datastore.core.DataStore
 
 /**
  * The single Preferences DataStore used by settings.
