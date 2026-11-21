@@ -56,7 +56,7 @@ internal fun parseServerInventory(output: String): ServerInventory? {
                 val peer = fields["peer"]?.toIntOrNull()
                 val web = fields["web"]?.toIntOrNull()
                 if (place == null || runtime.isNullOrBlank() || state.isNullOrBlank() || name.isNullOrBlank() ||
-                    peer !in 1..65535 || web !in 1..65535
+                    peer == null || peer !in 1..65535 || web == null || web !in 1..65535
                 ) {
                     invalid = true
                     break
@@ -78,7 +78,7 @@ internal fun parseServerInventory(output: String): ServerInventory? {
                 val port = fields["port"]?.toIntOrNull()
                 val proto = fields["proto"]
                 val holder = fields["by"]
-                if (port !in 1..65535 || proto.isNullOrBlank() || holder.isNullOrBlank()) {
+                if (port == null || port !in 1..65535 || proto.isNullOrBlank() || holder.isNullOrBlank()) {
                     invalid = true
                     break
                 }
