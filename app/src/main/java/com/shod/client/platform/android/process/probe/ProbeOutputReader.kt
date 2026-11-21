@@ -25,8 +25,8 @@ internal suspend fun readProbeOutput(
         val count = input.read(buffer, 0, minOf(available, buffer.size))
         if (count < 0) break
         for (i in 0 until count) {
-            if (buffer[i] == '\\n'.code.toByte()) {
-                onLine(pending.toString("UTF-8").trimEnd('\\r'))
+            if (buffer[i] == '\n'.code.toByte()) {
+                onLine(pending.toString("UTF-8").trimEnd('\r'))
                 pending.reset()
             } else {
                 check(pending.size() < 65536) { "Diagnostic line too long" }
