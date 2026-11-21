@@ -1,6 +1,7 @@
 package com.shod.client.platform.android.activity
 
 import com.shod.client.*
+import com.shod.client.platform.android.power.shouldRequestBatteryOptimizationExemption
 import com.shod.client.ui.navigation.MainScreen
 
 import android.annotation.SuppressLint
