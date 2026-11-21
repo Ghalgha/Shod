@@ -184,6 +184,7 @@ internal fun DeployController(
                 )
                 if (result.successful) {
                     settingsStore.saveDeployedServer(savedSettings.profile, host.trim(), action.peerPort, action.webPort)
+                    settingsStore.savePorts(action.peerPort, action.webPort, effective.ssh.toString())
                     settingsStore.saveConnectionPassword(mainPassword, settingsStore.linkedConnectionProfile(savedSettings.profile))
                     report(when (mode) {
                         DeployActionMode.Install -> "Сервер установлен"
