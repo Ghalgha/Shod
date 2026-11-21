@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.dp
 import com.shod.client.SettingsStore
 import com.shod.client.TunnelManager
 import com.shod.client.ui.screens.routing.apps.AppRoutingPickerDialog
-import com.shod.client.ui.screens.routing.apps.AppRoutingTransferDialog
-import com.shod.client.vpn.routing.importexport.AppRoutingLists
+import com.shod.client.ui.screens.routing.importexport.RoutingRulesBackup
+import com.shod.client.ui.screens.routing.importexport.RoutingRulesTransferDialog
 import com.shod.client.ui.screens.routing.rules.RoutingRuleKind
 import com.shod.client.ui.screens.routing.rules.RoutingRuleListDialog
 import com.shod.client.vpn.routing.DomainRoutingRules
@@ -174,9 +174,9 @@ fun RoutingScreen(
                 modifier = Modifier.fillMaxWidth().padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Text("Резервная копия правил приложений", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                Text("Резервная копия правил маршрутизации", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
                 Text(
-                    "Перенос списков через буфер обмена. Поддерживаются JSON и старый текстовый формат.",
+                    "Перенос списков через буфер обмена. Поддерживаются приложения, домены и IP-адреса в JSON-формате и текстовые списки.",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -203,20 +203,38 @@ fun RoutingScreen(
     }
 
     if (showAppTransfer && !serverActive) {
-        AppRoutingTransferDialog(
-            blacklist = appBlacklist,
-            whitelist = appWhitelist,
-            isWhitelist = isWhitelist,
-            onImport = { imported, importedMode ->
-                appBlacklist = imported.blacklist
-                appWhitelist = imported.whitelist
+        RoutingRulesTransferDialog(
+            current = RoutingRulesBackup(
+                appBlacklist = appBlacklist,
+                appWhitelist = appWhitelist,
+                appWhitelistMode = isWhitelist,
+                domainBlacklist = DomainRoutingRules.parse(domainBlack),
+                domainWhitelist = DomainRoutingRules.parse(domainWhite),
+                domainWhitelistMode = domainMode,
+                templateDomainsEnabled = templateEnabled,
+                ipBlacklist = IpRoutingRules.parse(ipBlack),
+                ipWhitelist = IpRoutingRules.parse(ipWhite),
+                ipWhitelistMode = ipMode,
+            ),
+            onImport = { imported ->
+                appBlacklist = imported.appBlacklist
+                appWhitelist = imported.appWhitelist
                 scope.launch {
                     settingsStore.saveAppRoutingLists(
-                        imported.blacklist.sorted().joinToString(","),
-                        imported.whitelist.sorted().joinToString(","),
-                        importedMode,
+                        imported.appBlacklist.sorted().joinToString(","),
+                        imported.appWhitelist.sorted().joinToString(","),
+                        imported.appWhitelistMode,
                     )
+                    settingsStore.saveDomainIsWhitelist(imported.domainWhitelistMode)
+                    settingsStore.saveTemplateDomainsEnabled(imported.templateDomainsEnabled)
+                    settingsStore.saveDirectDomainsBlack(imported.domainBlacklist.joinToString(","))
+                    settingsStore.saveDirectDomainsWhite(imported.domainWhitelist.joinToString(","))
+                    settingsStore.saveIpIsWhitelist(imported.ipWhitelistMode)
+                    settingsStore.saveIpRoutingEnabled(true)
+                    settingsStore.saveDirectIpsBlack(imported.ipBlacklist.joinToString(","))
+                    settingsStore.saveDirectIpsWhite(imported.ipWhitelist.joinToString(","))
                     TunnelManager.reloadVpn()
+                    TunnelManager.pushLocalRouting(context)
                 }
             },
             onDismiss = { showAppTransfer = false },
