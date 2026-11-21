@@ -1,6 +1,7 @@
 package com.shod.client
 
 import com.shod.client.platform.android.vpn.TunVpnService
+import com.shod.client.platform.android.deploy.AndroidDeployCoordinator
 import com.shod.client.vpn.telemetry.TunnelTrafficText
 import com.shod.client.platform.android.vpn.notification.withTunnelText
 import com.shod.client.vpn.workers.WorkerCountPolicy
@@ -365,6 +366,7 @@ class TunnelService : Service() {
                 }
             }
             "DEPLOY_CANCEL" -> {
+                AndroidDeployCoordinator.cancelActiveOperation()
                 com.shod.client.DeployManager.writeError("✗ Установка отменена пользователем")
                 com.shod.client.DeployManager.stopDeploy("error: Отменена пользователем")
                 if (TunnelManager.running.value) {
