@@ -87,7 +87,7 @@ import com.shod.client.ui.components.LocalHeaderActions
 import com.shod.client.ui.design.ShodMotion
 import com.shod.client.ui.design.ShodShapes
 import com.shod.client.integration.vk.auth.ui.VkAuthDialog
-import com.shod.client.ui.utils.parseShodLink
+import com.shod.client.links.parseShodLink
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.flow.first
