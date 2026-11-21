@@ -6,6 +6,7 @@ import com.shod.client.deploy.ssh.SshRemoteCommandResult
 import com.shod.client.deploy.transfer.SshDeployFileTransfer
 import java.io.File
 import java.io.IOException
+import java.util.concurrent.ConcurrentHashMap
 import net.schmizz.sshj.SSHClient
 
 /**
@@ -28,6 +29,10 @@ internal class AndroidDeploySshSession(
 ) : AutoCloseable {
     @Volatile
     private var ssh: SSHClient = connect()
+
+    init {
+        activeSessions.add(this)
+    }
 
     fun execute(command: String, timeoutMs: Long): SshRemoteCommandResult {
         ensureConnected()
@@ -77,6 +82,15 @@ internal class AndroidDeploySshSession(
     }
 
     override fun close() {
+        activeSessions.remove(this)
         runCatching { ssh.disconnect() }
+    }
+
+    companion object {
+        private val activeSessions = ConcurrentHashMap.newKeySet<AndroidDeploySshSession>()
+
+        fun closeActiveSessions() {
+            activeSessions.toList().forEach { it.close() }
+        }
     }
 }
