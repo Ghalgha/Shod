@@ -1,5 +1,7 @@
 package com.shod.client
 
+import com.shod.client.vpn.workers.WorkerCountPolicy
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
