@@ -3,6 +3,8 @@ package com.shod.client.platform.android.activity
 import com.shod.client.*
 import com.shod.client.integration.vk.captcha.android.ManlCaptchaWebViewManager
 import com.shod.client.platform.android.process.AppForegroundState
+import com.shod.client.platform.android.network.wifi.WifiDiscovery
+import com.shod.client.platform.android.network.wifi.WifiDiscoveryNotification
 import com.shod.client.platform.android.power.shouldRequestBatteryOptimizationExemption
 import com.shod.client.ui.navigation.MainScreen
 
