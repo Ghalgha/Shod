@@ -1,7 +1,6 @@
 package com.shod.client.ui
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -29,7 +27,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.shod.client.SettingsStore
 import com.shod.client.network.wifi.policy.WifiNetworkListMode
-import com.shod.client.network.wifi.policy.normalizeWifiSsid
 import com.shod.client.platform.android.network.wifi.WifiDiscovery
 import com.shod.client.platform.android.network.wifi.currentWifiSsid
 import com.shod.client.platform.android.network.wifi.hasWifiSsidAccess
