@@ -1,5 +1,6 @@
 package com.shod.client.integration.vk.hash.android
 
+import com.shod.client.integration.vk.hash.codec.VkHashValidationCodec
 import com.shod.client.integration.vk.hash.codec.VkHashValidationStatus
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -10,7 +11,7 @@ import org.junit.Test
 class VkHashValidatorTest {
     @Test
     fun processOutputAcceptsOnlyFinalValidOrInvalidStates() {
-        val valid = VkHashValidator.parseOutputLine(
+        val valid = VkHashValidationCodec.parseProcessOutputLine(
             "HASH_CHECK:{\"hash\":\"hash-123456789012\",\"status\":\"valid\"}",
         )
         val invalid = VkHashValidator.parseOutputLine(
@@ -27,7 +28,7 @@ class VkHashValidatorTest {
 
     @Test
     fun validatorModeDoesNotContainTunnelOrTurnArguments() {
-        val command = VkHashValidator.buildCommand(
+        val command = VkHashValidationCodec.buildProcessCommand(
             "/native/libclient.so",
             listOf("hash-123456789012"),
             "firefox",
