@@ -99,7 +99,7 @@
         </service>
 
         <service
-            android:name=".TunVpnService"
+            android:name=".platform.android.vpn.TunVpnService"
             android:exported="false"
             android:permission="android.permission.BIND_VPN_SERVICE"
             android:foregroundServiceType="specialUse"
