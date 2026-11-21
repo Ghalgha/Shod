@@ -43,6 +43,7 @@ import com.shod.client.vpn.lifecycle.TunnelLifecycleTicket
 import com.shod.client.integration.vk.captcha.android.CaptchaWebViewManager
 import com.shod.client.integration.vk.captcha.android.ManlCaptchaWebViewManager
 import com.shod.client.integration.vk.calls.VkAutoCallsManager
+import com.shod.client.integration.vk.transport.nativeclient.VkNativeTransportArguments
 
 import com.shod.client.integration.vk.policy.shouldReplaceUnavailableVkHash
 typealias LogLevel = com.shod.client.vpn.diagnostics.LogLevel
@@ -1023,42 +1024,7 @@ object TunnelManager {
             "-listen", "${ShodConstants.Network.LOCAL_LISTEN_HOST}:${params.port}",
             "-tun-uds", "shod_tun_uds",
         )
-        if (hashList.isNotEmpty()) {
-            cmd.add("-vk")
-            cmd.add(hashList.joinToString(","))
-        }
-        cmd.add("-vk-hash-mode")
-        cmd.add(params.vkHashMode)
-        if (params.fingerprint.isNotEmpty()) {
-            cmd.add("-fingerprint")
-            cmd.add(params.fingerprint)
-        }
-        if (params.clientIds.isNotEmpty()) {
-            cmd.add("-client-ids")
-            cmd.add(params.clientIds)
-        }
-        cmd.add("-obfs")
-        cmd.add(params.obfsMode)
-        cmd.add("-turn-transport")
-        cmd.add(params.turnTransport)
-        cmd.add("-srtp-mode")
-        cmd.add(params.srtpMode)
-        if (params.customTurnIps.isNotBlank()) {
-            cmd.add("-custom-turn-ips")
-            cmd.add(params.customTurnIps)
-        }
-        cmd.add("-vk-auth-mode")
-        cmd.add(effectiveAuthMode)
-        if (params.generationId > 0) {
-            cmd.add("-gen")
-            cmd.add(params.generationId.toString())
-        }
-        if (params.sessionSalt.isNotEmpty()) {
-            cmd.add("-salt")
-            cmd.add(params.sessionSalt)
-        }
-        cmd.add("-captcha-mode")
-        cmd.add(params.captchaMode)
+        cmd.addAll(VkNativeTransportArguments.build(params, hashList, effectiveAuthMode))
         val isDomainRoutingActive = params.domainRoutingEnabled || params.excludeRuZones || params.templateDomains || params.directDomains.isNotBlank()
         if (isDomainRoutingActive) {
             cmd.add("--domain-routing")
