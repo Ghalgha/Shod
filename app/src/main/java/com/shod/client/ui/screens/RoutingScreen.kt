@@ -66,6 +66,8 @@ fun RoutingScreen(
     var showAppPicker by remember { mutableStateOf(false) }
     var appBlacklist by remember(savedExcluded) { mutableStateOf(savedExcluded.split(',').filter(String::isNotBlank).toSet()) }
     var appWhitelist by remember(savedWhitelist) { mutableStateOf(savedWhitelist.split(',').filter(String::isNotBlank).toSet()) }
+    var appPickerInitialBlacklist by remember { mutableStateOf<Set<String>>(emptySet()) }
+    var appPickerInitialWhitelist by remember { mutableStateOf<Set<String>>(emptySet()) }
     var showDomainEditor by remember { mutableStateOf(false) }
     var showIpEditor by remember { mutableStateOf(false) }
 
@@ -117,7 +119,11 @@ fun RoutingScreen(
             enabled = (if (isWhitelist) appWhitelist else appBlacklist).isNotEmpty(),
             actionLabel = "Выбрать приложения",
             blocked = serverActive,
-            onClick = { showAppPicker = true },
+            onClick = {
+                appPickerInitialBlacklist = appBlacklist
+                appPickerInitialWhitelist = appWhitelist
+                showAppPicker = true
+            },
         )
     }
 
@@ -127,15 +133,19 @@ fun RoutingScreen(
             showSystemApps = showSystemApps,
             onSelectionChanged = { selected ->
                 if (isWhitelist) appWhitelist = selected else appBlacklist = selected
-                scope.launch {
-                    settingsStore.saveAppRoutingLists(
-                        appBlacklist.sorted().joinToString(","),
-                        appWhitelist.sorted().joinToString(","),
-                    )
-                    TunnelManager.reloadVpn()
+            },
+            onDismiss = {
+                showAppPicker = false
+                if (appBlacklist != appPickerInitialBlacklist || appWhitelist != appPickerInitialWhitelist) {
+                    scope.launch {
+                        settingsStore.saveAppRoutingLists(
+                            appBlacklist.sorted().joinToString(","),
+                            appWhitelist.sorted().joinToString(","),
+                        )
+                        TunnelManager.reloadVpn()
+                    }
                 }
             },
-            onDismiss = { showAppPicker = false },
         )
     }
 
