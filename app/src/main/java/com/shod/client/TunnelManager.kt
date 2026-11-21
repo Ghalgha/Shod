@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import org.json.JSONObject
 
+import com.shod.client.network.connectivity.NetworkPauseGate
 import com.shod.client.vpn.diagnostics.TunnelLogSanitizer
 import com.shod.client.vpn.diagnostics.NativeTunnelLogParser
 import com.shod.client.vpn.diagnostics.StreamDiagnosticParser
