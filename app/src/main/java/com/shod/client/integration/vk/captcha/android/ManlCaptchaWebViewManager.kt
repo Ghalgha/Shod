@@ -114,7 +114,7 @@ object ManlCaptchaWebViewManager {
             }
             pendingIntentToStart = intent
 
-            if (MainActivity.isForeground) {
+            if (AppForegroundState.isForeground) {
                 context.startActivity(intent)
             }
 
