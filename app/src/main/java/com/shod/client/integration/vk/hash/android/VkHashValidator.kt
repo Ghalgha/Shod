@@ -1,3 +1,14 @@
+package com.shod.client.integration.vk.hash.android
+
+import android.content.Context
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.io.File
+import java.util.concurrent.TimeUnit
+import com.shod.client.ShodConstants
+import com.shod.client.integration.vk.hash.codec.VkHashValidationStatus
+
 object VkHashValidator {
     private const val OUTPUT_PREFIX = "HASH_CHECK:"
 
