@@ -884,20 +884,6 @@ object TunnelManager {
             processGeneration == identity.generation &&
             lifecycleState.accepts(identity.ticket)
 
-    private fun insertSorted(entry: LogEntry) {
-        val comparator = compareBy<LogEntry>({ it.priority }, { if (it.isError) 1 else 0 }, { it.key })
-        var inserted = false
-        for (i in logs.indices) {
-            if (comparator.compare(entry, logs[i]) < 0) {
-                logs.add(i, entry)
-                inserted = true
-                break
-            }
-        }
-        if (!inserted) {
-            logs.add(entry)
-        }
-    }
 
     fun start(context: Context, params: TunnelParams, isSwitching: Boolean = false) {
         userFacingError.value = null
