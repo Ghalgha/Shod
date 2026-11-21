@@ -28,6 +28,7 @@ import org.json.JSONObject
 import com.shod.client.network.connectivity.NetworkPauseGate
 import com.shod.client.vpn.diagnostics.DtlsLogParser
 import com.shod.client.vpn.diagnostics.TrafficDiagnosticParser
+import com.shod.client.vpn.telemetry.TunnelTrafficTracker
 import com.shod.client.vpn.diagnostics.TunnelLogSanitizer
 import com.shod.client.vpn.diagnostics.NativeTunnelLogParser
 import com.shod.client.vpn.diagnostics.StreamDiagnosticParser
