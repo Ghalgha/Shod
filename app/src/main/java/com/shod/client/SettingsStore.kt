@@ -33,6 +33,7 @@ import com.shod.client.settings.storage.settingsDataStore
 import com.shod.client.settings.subscription.ProfileSubscriptionStore
 import com.shod.client.settings.subscription.SubscriptionMetaCodec
 import com.shod.client.settings.theme.ThemePreferencesStore
+import com.shod.client.settings.update.UpdatePreferencesStore
 import com.shod.client.network.wifi.policy.WifiNetworkListMode
 import com.shod.client.network.wifi.preferences.WifiPreferences
 import com.shod.client.network.wifi.preferences.WifiPreferenceStore
@@ -187,17 +188,6 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         private val SELECTED_FINGERPRINT = stringPreferencesKey("selected_fingerprint")
         private val ACTIVE_CLIENT_IDS = stringPreferencesKey("active_client_ids")
 
-        private val UPDATE_LAST_CHECK_AT = longPreferencesKey("update_last_check_at")
-        private val UPDATE_LATEST_VERSION = stringPreferencesKey("update_latest_version")
-        private val UPDATE_LAST_ERROR = stringPreferencesKey("update_last_error")
-        private val UPDATE_CHECK_INTERVAL_HOURS = intPreferencesKey("update_check_interval_hours")
-        private val UPDATE_POSTPONE_UNTIL = longPreferencesKey("update_postpone_until")
-        private val UPDATE_POSTPONE_VERSION = stringPreferencesKey("update_postpone_version")
-        private val UPDATE_DIALOG_LAST_SHOWN_VERSION = stringPreferencesKey("update_dialog_last_shown_version")
-        private val UPDATE_DIALOG_LAST_SHOWN_AT = longPreferencesKey("update_dialog_last_shown_at")
-        private val UPDATE_DIALOG_LAST_ACTION_VERSION = stringPreferencesKey("update_dialog_last_action_version")
-        private val UPDATE_DIALOG_LAST_ACTION = stringPreferencesKey("update_dialog_last_action")
-        private val UPDATE_DIALOG_LAST_ACTION_AT = longPreferencesKey("update_dialog_last_action_at")
 
         private val CLIENT_ID_CHECK_RESULTS = stringPreferencesKey("client_id_check_results")
         private val VK_HASH_CHECK_RESULTS = stringPreferencesKey("vk_hash_check_results")
@@ -298,6 +288,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         deployScope -> DeployScopedDataStore(appContext.settingsDataStore)
         else -> appContext.settingsDataStore
     }
+    private val updatePreferencesStore = UpdatePreferencesStore(dataStore)
     val uiOwnerMode: Flow<Boolean> = appContext.settingsDataStore.data.map { it[UI_OWNER_MODE] ?: false }
     val uiDesign: Flow<String> = appContext.settingsDataStore.data.map { UiDesignPresets.normalize(it[UI_DESIGN]) }
     val uiScalePercent: Flow<Int> = appContext.settingsDataStore.data.map { UiScale.normalize(it[UI_SCALE]) }.distinctUntilChanged()
@@ -1221,12 +1212,12 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     }
 
     val tunnelWasRunning: Flow<Boolean> = dataStore.data.map { it[TUNNEL_WAS_RUNNING] ?: false }
-    val updateLastCheckAt: Flow<Long> = dataStore.data.map { it[UPDATE_LAST_CHECK_AT] ?: 0L }
-    val updateLatestVersion: Flow<String> = dataStore.data.map { it[UPDATE_LATEST_VERSION] ?: "" }
-    val updateLastError: Flow<String> = dataStore.data.map { it[UPDATE_LAST_ERROR] ?: "" }
-    val updateCheckIntervalHours: Flow<Int> = dataStore.data.map { it[UPDATE_CHECK_INTERVAL_HOURS] ?: 24 }
-    val updatePostponeUntil: Flow<Long> = dataStore.data.map { it[UPDATE_POSTPONE_UNTIL] ?: 0L }
-    val updatePostponeVersion: Flow<String> = dataStore.data.map { it[UPDATE_POSTPONE_VERSION] ?: "" }
+    val updateLastCheckAt: Flow<Long> = updatePreferencesStore.lastCheckAt
+    val updateLatestVersion: Flow<String> = updatePreferencesStore.latestVersion
+    val updateLastError: Flow<String> = updatePreferencesStore.lastError
+    val updateCheckIntervalHours: Flow<Int> = updatePreferencesStore.checkIntervalHours
+    val updatePostponeUntil: Flow<Long> = updatePreferencesStore.postponeUntil
+    val updatePostponeVersion: Flow<String> = updatePreferencesStore.postponeVersion
 
     // Last in the class, after every property: Kotlin assigns them top to bottom, and the collectors below start on
     // other threads at once. Above the flows they read, a collector could run before its flow was assigned and call
@@ -1374,39 +1365,23 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     }
 
     suspend fun saveUpdateState(lastCheckAt: Long, latestVersion: String, error: String) {
-        dataStore.edit { prefs ->
-            prefs[UPDATE_LAST_CHECK_AT] = lastCheckAt
-            prefs[UPDATE_LATEST_VERSION] = latestVersion
-            prefs[UPDATE_LAST_ERROR] = error
-        }
+        updatePreferencesStore.saveState(lastCheckAt, latestVersion, error)
     }
 
     suspend fun saveUpdateCheckIntervalHours(hours: Int) {
-        dataStore.edit { prefs ->
-            prefs[UPDATE_CHECK_INTERVAL_HOURS] = hours
-        }
+        updatePreferencesStore.saveCheckIntervalHours(hours)
     }
 
     suspend fun saveUpdatePostpone(version: String, until: Long) {
-        dataStore.edit { prefs ->
-            prefs[UPDATE_POSTPONE_VERSION] = version
-            prefs[UPDATE_POSTPONE_UNTIL] = until
-        }
+        updatePreferencesStore.savePostpone(version, until)
     }
 
     suspend fun saveUpdateDialogShown(version: String, shownAt: Long) {
-        dataStore.edit { prefs ->
-            prefs[UPDATE_DIALOG_LAST_SHOWN_VERSION] = version
-            prefs[UPDATE_DIALOG_LAST_SHOWN_AT] = shownAt
-        }
+        updatePreferencesStore.saveDialogShown(version, shownAt)
     }
 
     suspend fun saveUpdateDialogAction(version: String, action: String, actedAt: Long) {
-        dataStore.edit { prefs ->
-            prefs[UPDATE_DIALOG_LAST_ACTION_VERSION] = version
-            prefs[UPDATE_DIALOG_LAST_ACTION] = action
-            prefs[UPDATE_DIALOG_LAST_ACTION_AT] = actedAt
-        }
+        updatePreferencesStore.saveDialogAction(version, action, actedAt)
     }
 
     suspend fun saveActiveProfile(profile: Int) {
