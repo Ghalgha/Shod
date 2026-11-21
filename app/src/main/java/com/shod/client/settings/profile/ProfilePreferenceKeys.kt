@@ -12,12 +12,11 @@ import androidx.datastore.preferences.core.stringPreferencesKey
  * Profile zero intentionally uses the original, unsuffixed key. Other profiles
  * use the historical "<key>_<index>" naming convention.
  *
- * Keep the type groups aligned with the legacy SettingsStore implementation:
- * changing a key's Preferences type would make existing values unreadable.
+ * The key groups mirror SettingsStore.getProfileKey exactly. Unknown keys retain
+ * the legacy String fallback; do not infer a type from the generic parameter.
  */
 internal object ProfilePreferenceKeys {
     fun <T> forProfile(baseKey: Preferences.Key<T>, profile: Int): Preferences.Key<T> {
-        require(profile >= 0) { "Profile index must not be negative" }
         if (profile == 0) return baseKey
 
         val name = "${baseKey.name}_$profile"
