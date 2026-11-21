@@ -32,6 +32,7 @@ import com.shod.client.settings.storage.ReadOnlyProfileDataStore
 import com.shod.client.settings.storage.settingsDataStore
 import com.shod.client.settings.subscription.ProfileSubscriptionStore
 import com.shod.client.settings.subscription.SubscriptionMetaCodec
+import com.shod.client.settings.theme.ThemePreferencesStore
 import com.shod.client.network.wifi.policy.WifiNetworkListMode
 import com.shod.client.network.wifi.preferences.WifiPreferences
 import com.shod.client.network.wifi.preferences.WifiPreferenceStore
@@ -182,9 +183,6 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         private val DIRECT_IPS_BLACK = stringPreferencesKey("direct_ips_black")
         private val DIRECT_IPS_WHITE = stringPreferencesKey("direct_ips_white")
 
-        private val THEME_MODE = stringPreferencesKey("theme_mode") 
-        private val IS_DYNAMIC_COLOR = booleanPreferencesKey("is_dynamic_color")
-        private val THEME_PALETTE = stringPreferencesKey("theme_palette")
 
         private val SELECTED_FINGERPRINT = stringPreferencesKey("selected_fingerprint")
         private val ACTIVE_CLIENT_IDS = stringPreferencesKey("active_client_ids")
@@ -314,6 +312,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     suspend fun saveBatterySaverPercent(percent: Int) { appContext.settingsDataStore.edit { it[BATTERY_SAVER_PERCENT] = percent.coerceIn(5, 95) } }
     suspend fun saveUiOwnerMode(owner: Boolean) { appContext.settingsDataStore.edit { it[UI_OWNER_MODE] = owner } }
     private val secureStore = SecureStringStore(appContext)
+    private val themePreferencesStore = ThemePreferencesStore(dataStore)
     private val savedVkAccounts = SavedVkAccounts(secureStore::encrypt, secureStore::decrypt)
 
     // All profile repositories share this instance (and therefore the same persisted file).
@@ -1198,9 +1197,9 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     suspend fun isBatteryOptimizationPromptHandled(): Boolean =
         dataStore.data.first()[BATTERY_OPTIMIZATION_PROMPT_HANDLED] ?: false
 
-    val themeMode: Flow<String> = dataStore.data.map { it[THEME_MODE] ?: "dark" }
-    val isDynamicColor: Flow<Boolean> = dataStore.data.map { it[IS_DYNAMIC_COLOR] ?: false }
-    val themePalette: Flow<String> = dataStore.data.map { it[THEME_PALETTE] ?: "indigo" }
+    val themeMode: Flow<String> = themePreferencesStore.themeMode
+    val isDynamicColor: Flow<Boolean> = themePreferencesStore.isDynamicColor
+    val themePalette: Flow<String> = themePreferencesStore.themePalette
 
     val selectedFingerprint: Flow<String> = dataStore.data.map { prefs ->
         val profile = prefs[ACTIVE_PROFILE] ?: 0
@@ -1282,22 +1281,16 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     }
 
     suspend fun saveThemeMode(mode: String) {
-        dataStore.edit { prefs ->
-            prefs[THEME_MODE] = mode
-        }
+        themePreferencesStore.saveThemeMode(mode)
     }
 
 
     suspend fun saveDynamicColor(enabled: Boolean) {
-        dataStore.edit { prefs ->
-            prefs[IS_DYNAMIC_COLOR] = enabled
-        }
+        themePreferencesStore.saveDynamicColor(enabled)
     }
 
     suspend fun saveThemePalette(palette: String) {
-        dataStore.edit { prefs ->
-            prefs[THEME_PALETTE] = palette
-        }
+        themePreferencesStore.saveThemePalette(palette)
     }
 
     suspend fun saveFingerprint(fingerprint: String, forProfile: Int? = null) {
@@ -2695,13 +2688,13 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
 
         if (includeSettings) {
             val settings = JSONObject()
-            settings.put("theme_mode", prefs[THEME_MODE] ?: "dark")
+            settings.put("theme_mode", prefs[ThemePreferencesStore.themeModeKey] ?: "dark")
             settings.put("ui_design", UiDesignPresets.normalize(prefs[UI_DESIGN]))
             settings.put("ui_scale_percent", UiScale.normalize(prefs[UI_SCALE]))
             settings.put("battery_saver_mode", prefs[BATTERY_SAVER_MODE] ?: BatterySaver.DEFAULT_MODE)
             settings.put("battery_saver_percent", prefs[BATTERY_SAVER_PERCENT] ?: BatterySaver.DEFAULT_PERCENT)
-            settings.put("is_dynamic_color", prefs[IS_DYNAMIC_COLOR] ?: false)
-            settings.put("theme_palette", prefs[THEME_PALETTE] ?: "pure_black")
+            settings.put("is_dynamic_color", prefs[ThemePreferencesStore.dynamicColorKey] ?: false)
+            settings.put("theme_palette", prefs[ThemePreferencesStore.themePaletteKey] ?: "pure_black")
             settings.put("auto_pause_on_wifi", WifiPreferenceStore.read(prefs).enabled)
             settings.put("wifi_network_list_mode", WifiPreferenceStore.read(prefs).mode.storedValue)
             settings.put("wifi_network_list_ssids", prefs[WifiPreferenceStore.selectedKey] ?: "")
@@ -2797,13 +2790,13 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
                 }
                 if (includeSettings && root.has("settings")) {
                     val s = root.getJSONObject("settings")
-                    if (s.has("theme_mode")) mutable[THEME_MODE] = s.getString("theme_mode")
+                    if (s.has("theme_mode")) mutable[ThemePreferencesStore.themeModeKey] = s.getString("theme_mode")
                     s.optString("ui_design").takeIf { value -> UiDesignPresets.options.any { it.first == value } }?.let { mutable[UI_DESIGN] = it }
                     if (s.has("ui_scale_percent")) mutable[UI_SCALE] = UiScale.normalize(s.optInt("ui_scale_percent", 100))
                     s.optString("battery_saver_mode").takeIf { mode -> BatterySaver.MODES.any { it.first == mode } }?.let { mutable[BATTERY_SAVER_MODE] = it }
                     if (s.has("battery_saver_percent")) mutable[BATTERY_SAVER_PERCENT] = s.getInt("battery_saver_percent").coerceIn(5, 95)
-                    if (s.has("is_dynamic_color")) mutable[IS_DYNAMIC_COLOR] = s.getBoolean("is_dynamic_color")
-                    if (s.has("theme_palette")) mutable[THEME_PALETTE] = s.getString("theme_palette")
+                    if (s.has("is_dynamic_color")) mutable[ThemePreferencesStore.dynamicColorKey] = s.getBoolean("is_dynamic_color")
+                    if (s.has("theme_palette")) mutable[ThemePreferencesStore.themePaletteKey] = s.getString("theme_palette")
                     if (s.has("auto_pause_on_wifi")) mutable[WifiPreferenceStore.enabledKey] = s.getBoolean("auto_pause_on_wifi")
                     if (s.has("wifi_saved_ssids")) mutable[WifiPreferenceStore.savedKey] = com.shod.client.network.wifi.policy.encodeWifiSsids(decodeWifiSsids(s.getString("wifi_saved_ssids")))
                     if (s.has("wifi_network_list_mode")) mutable[WifiPreferenceStore.modeKey] = WifiNetworkListMode.fromStored(s.getString("wifi_network_list_mode")).storedValue
