@@ -17,7 +17,7 @@ internal object VkNativeTransportArguments {
             payload.toByteArray(Charsets.UTF_8),
             Base64.NO_WRAP,
         )
-        return "VK_JS_BOOTSTRAP:$encoded\\n"
+        return "VK_JS_BOOTSTRAP:$encoded\n"
     }
 
     fun build(
