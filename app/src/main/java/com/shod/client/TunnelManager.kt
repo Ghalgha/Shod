@@ -40,8 +40,6 @@ import com.shod.client.vpn.recovery.WorkerRecoveryPolicy
 import com.shod.client.vpn.recovery.VpnRecoveryPolicy
 import com.shod.client.vpn.lifecycle.TunnelLifecycleState
 import com.shod.client.vpn.lifecycle.TunnelLifecycleTicket
-import com.shod.client.vpn.lifecycle.TunnelStartupProgress
-import com.shod.client.vpn.lifecycle.newTunnelSessionId
 import com.shod.client.integration.vk.captcha.android.CaptchaWebViewManager
 import com.shod.client.integration.vk.captcha.android.ManlCaptchaWebViewManager
 import com.shod.client.integration.vk.calls.VkAutoCallsManager
