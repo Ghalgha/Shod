@@ -199,7 +199,9 @@ internal object ProfileTunnelProbe {
                     if (!config.isCompleted) {
                         config.completeExceptionally(ProbeFailure("Ядро завершило проверку"))
                     }
-                } catch (error: Exception) {
+                } catch (error: CancellationException) {
+                    throw error
+                } catch (_: Exception) {
                     if (!config.isCompleted) {
                         config.completeExceptionally(ProbeFailure("Ядро завершило проверку"))
                     }
