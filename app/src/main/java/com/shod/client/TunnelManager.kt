@@ -32,6 +32,7 @@ import com.shod.client.vpn.diagnostics.TunnelLogPolicy
 import com.shod.client.vpn.diagnostics.TunnelLogStore
 import com.shod.client.vpn.events.TunnelEventParser
 import com.shod.client.vpn.recovery.VpnFailureKind
+import com.shod.client.vpn.recovery.WorkerRecoveryPolicy
 import com.shod.client.vpn.recovery.VpnRecoveryPolicy
 import com.shod.client.vpn.lifecycle.TunnelLifecycleState
 import com.shod.client.vpn.lifecycle.TunnelLifecycleTicket
