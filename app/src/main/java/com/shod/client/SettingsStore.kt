@@ -37,6 +37,13 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import com.shod.client.settings.profile.ProfileConnectionStore
+import com.shod.client.settings.profile.ProfileCursorStore
+import com.shod.client.settings.profile.ProfileLifecycleStore
+import com.shod.client.settings.profile.ProfileMetadataStore
+import com.shod.client.settings.profile.ProfilePreferenceKeys
+import com.shod.client.settings.subscription.ProfileSubscriptionStore
+
 
 private fun <T> Flow<T>.onIo(): Flow<T> = flowOn(Dispatchers.IO)
 
@@ -316,12 +323,50 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     private val secureStore = SecureStringStore(appContext)
     private val savedVkAccounts = SavedVkAccounts(secureStore::encrypt, secureStore::decrypt)
 
-    val activeProfile: Flow<Int> = dataStore.data.map {
-        (it[ACTIVE_PROFILE] ?: ShodConstants.Profiles.MIN_INDEX).coerceIn(
-            ShodConstants.Profiles.MIN_INDEX,
-            ShodConstants.Profiles.MAX_INDEX,
-        )
-    }
+    // All profile repositories share this instance (and therefore the same persisted file).
+    private val profileCursorStore = ProfileCursorStore(
+        dataStore,
+        ShodConstants.Profiles.MIN_INDEX,
+        ShodConstants.Profiles.MAX_INDEX,
+    )
+    private val profileMetadataStore = ProfileMetadataStore(
+        dataStore,
+        ShodConstants.Profiles.MIN_INDEX,
+        ShodConstants.Profiles.MAX_INDEX,
+    )
+    private val profileLifecycleStore = ProfileLifecycleStore(
+        dataStore,
+        ShodConstants.Profiles.MIN_INDEX,
+        ShodConstants.Profiles.MAX_INDEX,
+    ) { profile -> PingResultsCache.removeProfile(profile) }
+    private val profileSubscriptionStore = ProfileSubscriptionStore(
+        dataStore,
+        profileLifecycleStore,
+        ShodConstants.Profiles.MIN_INDEX,
+        ShodConstants.Profiles.MAX_INDEX,
+    )
+    private val profileConnectionStore = ProfileConnectionStore(
+        dataStore = dataStore,
+        secureStringStore = secureStore,
+        normalizeWorkers = { workers ->
+            WorkerCountPolicy.normalize(workers, maximum = ShodConstants.Tunnel.MAX_WORKERS)
+        },
+        invalidateProfileCache = { profile -> PingResultsCache.removeProfile(profile) },
+        rewriteParticipantLink = { currentLink, peer, port, password ->
+            com.shod.client.ui.utils.parseShodLink(currentLink)?.let { link ->
+                com.shod.client.ui.utils.formatShodLink(
+                    host = peer,
+                    peer = port,
+                    password = password,
+                    hashes = link.hashes,
+                    token = link.vkAccessToken,
+                    power = link.power,
+                )
+            }
+        },
+    )
+
+    val activeProfile: Flow<Int> = profileCursorStore.activeProfile
     val tunnelLastDiagnostic: Flow<String> = dataStore.data.map {
         it[TUNNEL_LAST_DIAGNOSTIC] ?: ""
     }
@@ -682,12 +727,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         prefs[getProfileKey(DIRECT_IPS_WHITE, profile)] ?: ""
     }
 
-    val profileNames: Flow<Map<Int, String>> = dataStore.data.map { prefs ->
-        (ShodConstants.Profiles.MIN_INDEX..ShodConstants.Profiles.MAX_INDEX).associateWith { p ->
-            val name = prefs[getProfileKey(PROFILE_NAME, p)]
-            if (name.isNullOrBlank()) defaultProfileName(p) else name
-        }
-    }
+    val profileNames: Flow<Map<Int, String>> = profileMetadataStore.profileNames
 
     /** Every profile slot that has a server configured on the deploy screen. */
     internal val deployServers: Flow<List<DeployServerInfo>> = dataStore.data.map { prefs ->
@@ -725,29 +765,11 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     }
 
     /** Profile slots that hold a peer or a participant link. */
-    val occupiedProfiles: Flow<Set<Int>> = dataStore.data.map { prefs ->
-        (ShodConstants.Profiles.MIN_INDEX..ShodConstants.Profiles.MAX_INDEX)
-            .filter { p ->
-                !prefs[getProfileKey(PEER, p)].isNullOrBlank() ||
-                    !prefs[getProfileKey(Shod_LINK, p)].isNullOrBlank()
-            }
-            .toSet()
-    }
+    val occupiedProfiles: Flow<Set<Int>> = profileMetadataStore.occupiedProfiles
 
     /** Subscription metadata of every slot imported from a subscription. */
-    internal val profileSubscriptions: Flow<Map<Int, ProfileSubscriptionInfo>> = dataStore.data.map { prefs ->
-        (ShodConstants.Profiles.MIN_INDEX..ShodConstants.Profiles.MAX_INDEX).mapNotNull { p ->
-            val url = prefs[getProfileKey(SUBSCRIPTION_URL, p)]?.trim().orEmpty()
-            if (url.isEmpty()) return@mapNotNull null
-            p to ProfileSubscriptionInfo(
-                url = url,
-                title = prefs[getProfileKey(SUBSCRIPTION_TITLE, p)]?.trim().orEmpty(),
-                subUuid = prefs[getProfileKey(SUBSCRIPTION_UUID, p)].orEmpty(),
-                nodeName = prefs[getProfileKey(SUBSCRIPTION_NODE, p)]?.trim().orEmpty(),
-                powerLimit = prefs[getProfileKey(SUBSCRIPTION_POWER, p)] ?: 0,
-            )
-        }.toMap()
-    }
+    internal val profileSubscriptions: Flow<Map<Int, ProfileSubscriptionInfo>> =
+        profileSubscriptionStore.profileSubscriptions
 
     /** Subscription-level metadata keyed by subscription URL. */
     internal val subscriptionMeta: Flow<Map<String, SubscriptionMeta>> = dataStore.data.map { prefs ->
@@ -755,18 +777,11 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     }
 
     suspend fun saveProfileName(profile: Int, name: String) {
-        dataStore.edit { prefs ->
-            val trimmed = name.trim()
-            if (trimmed.isEmpty() || trimmed == defaultProfileName(profile)) {
-                prefs.remove(getProfileKey(PROFILE_NAME, profile))
-            } else {
-                prefs[getProfileKey(PROFILE_NAME, profile)] = trimmed
-            }
-        }
+        profileMetadataStore.saveProfileName(profile, name)
     }
 
     internal suspend fun readProfileConnectionSettings(profile: Int): ProfileConnectionSnapshot =
-        profileConnectionSettings(dataStore.data.first(), profile)
+        profileConnectionStore.read(profile)
 
     private fun profileConnectionSettings(prefs: Preferences, profile: Int): ProfileConnectionSnapshot {
             val secret = readConnectionPasswordState(prefs, profile)
@@ -833,50 +848,14 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         workersPerHash: Int,
         expectedRevision: Long? = null,
     ) {
-        dataStore.edit { prefs ->
-            val revision = prefs[getProfileKey(PROFILE_REVISION, profile)] ?: 0L
-            if (expectedRevision != null && expectedRevision != revision) return@edit
-            if (expectedRevision != null && prefs[getProfileKey(PROFILE_REMOVED, profile)] == true) {
-                if (peer.isBlank()) return@edit
-                prefs[getProfileKey(PROFILE_REMOVED, profile)] = false
-            }
-            if (expectedRevision == null) {
-                prefs[getProfileKey(PROFILE_REMOVED, profile)] = false
-                prefs[getProfileKey(PROFILE_REVISION, profile)] = revision + 1L
-            }
-            if (prefs[getProfileKey(PEER, profile)].orEmpty() != peer.trim() ||
-                (prefs[getProfileKey(SERVER_PEER_PORT, profile)] ?: ShodConstants.Network.DEFAULT_SERVER_PEER_PORT) != serverPeerPort ||
-                readConnectionPasswordState(prefs, profile).value != connectionPassword) {
-                PingResultsCache.removeProfile(profile)
-            }
-            prefs[getProfileKey(PEER, profile)] = peer.trim()
-            prefs[getProfileKey(SERVER_PEER_PORT, profile)] = serverPeerPort.coerceIn(1, 65535)
-            if (prefs[getProfileKey(Shod_LINK_MODE, profile)] == true) {
-                val link = com.shod.client.ui.utils.parseShodLink(
-                    prefs[getProfileKey(Shod_LINK, profile)].orEmpty(),
-                )
-                if (link != null) {
-                    prefs[getProfileKey(Shod_LINK, profile)] = com.shod.client.ui.utils.formatShodLink(
-                        host = peer.trim(), peer = serverPeerPort.coerceIn(1, 65535),
-                        password = connectionPassword, hashes = link.hashes,
-                        token = link.vkAccessToken, power = link.power,
-                    )
-                }
-            }
-            if (serverPeerPort != ShodConstants.Network.DEFAULT_SERVER_PEER_PORT) prefs[getProfileKey(MANUAL_PORTS_ENABLED, profile)] = true
-            prefs[getProfileKey(WORKERS_PER_HASH, profile)] =
-                WorkerCountPolicy.normalize(workersPerHash)
-            val localKey = getProfileKey(CONNECTION_PASSWORD_LOCAL, profile)
-            val legacyKey = getProfileKey(CONNECTION_PASSWORD, profile)
-            val encryptedKey = getProfileKey(CONNECTION_PASSWORD_ENCRYPTED, profile)
-            if (connectionPassword.isBlank()) {
-                prefs.remove(localKey)
-            } else {
-                prefs[localKey] = connectionPassword
-            }
-            prefs.remove(legacyKey)
-            prefs.remove(encryptedKey)
-        }
+        profileConnectionStore.save(
+            profile = profile,
+            peer = peer,
+            serverPeerPort = serverPeerPort,
+            connectionPassword = connectionPassword,
+            workersPerHash = workersPerHash,
+            expectedRevision = expectedRevision,
+        )
     }
 
     suspend fun saveProfileParticipantLink(profile: Int, link: String) {
@@ -958,10 +937,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     }
 
     suspend fun saveProfileWorkersPerHash(profile: Int, workersPerHash: Int) {
-        dataStore.edit { prefs ->
-            prefs[getProfileKey(WORKERS_PER_HASH, profile)] =
-                WorkerCountPolicy.normalize(workersPerHash, maximum = ShodConstants.Tunnel.MAX_WORKERS)
-        }
+        profileConnectionStore.saveWorkersPerHash(profile, workersPerHash)
     }
 
     /**
@@ -1041,22 +1017,12 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     }
 
     /** A profile slot is considered free when it has neither a peer nor a participant link. */
-    internal suspend fun findFirstFreeProfile(): Int? = dataStore.data.map { prefs ->
-        (ShodConstants.Profiles.MIN_INDEX..ShodConstants.Profiles.MAX_INDEX).firstOrNull { p ->
-            val peer = prefs[getProfileKey(PEER, p)]
-            val link = prefs[getProfileKey(Shod_LINK, p)]
-            peer.isNullOrBlank() && link.isNullOrBlank() && prefs[getProfileKey(DEPLOY_IP, p)].isNullOrBlank()
-        }
-    }.first()
+    internal suspend fun findFirstFreeProfile(): Int? =
+        profileMetadataStore.findFirstFreeProfile()
 
     /** A slot is free for a new server only when it has no connection and no deploy IP. */
-    internal suspend fun findFirstFreeDeployProfile(): Int? = dataStore.data.map { prefs ->
-        (ShodConstants.Profiles.MIN_INDEX..ShodConstants.Profiles.MAX_INDEX).firstOrNull { p ->
-            prefs[getProfileKey(PEER, p)].isNullOrBlank() &&
-                prefs[getProfileKey(Shod_LINK, p)].isNullOrBlank() &&
-                prefs[getProfileKey(DEPLOY_IP, p)].isNullOrBlank()
-        }
-    }.first()
+    internal suspend fun findFirstFreeDeployProfile(): Int? =
+        profileMetadataStore.findFirstFreeDeployProfile()
 
     /** Wipes every connection-related key of a profile slot, making it free again. */
     suspend fun clearProfile(profile: Int) {
@@ -1487,12 +1453,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     }
 
     suspend fun saveActiveProfile(profile: Int) {
-        dataStore.edit { prefs ->
-            prefs[ACTIVE_PROFILE] = profile.coerceIn(
-                ShodConstants.Profiles.MIN_INDEX,
-                ShodConstants.Profiles.MAX_INDEX,
-            )
-        }
+        profileCursorStore.saveActiveProfile(profile)
     }
 
     suspend fun saveShowSystemApps(enabled: Boolean) {
