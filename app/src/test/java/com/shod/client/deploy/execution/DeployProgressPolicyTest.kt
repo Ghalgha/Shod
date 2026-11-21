@@ -38,4 +38,11 @@ class DeployProgressPolicyTest {
         assertTrue(isDeployProgressProtocolLine("  Shod_PROGRESS|0.2|Шаг"))
         assertFalse(isDeployProgressProtocolLine("обычная строка"))
     }
+
+    @Test
+    fun outputParserDelegatesProgressProtocolRecognition() {
+        assertNull(parseDeployOutputLine("Shod_PROGRESS|0.2|Шаг"))
+        assertNull(parseDeployOutputLine("Shod_PROGRESS|malformed"))
+        assertEquals("Обычный вывод", parseDeployOutputLine("Обычный вывод")?.message)
+    }
 }

@@ -15,7 +15,7 @@ internal fun parseDeployOutputLine(rawLine: String): DeployOutputLine? {
     val raw = rawLine.replace(ANSI_ESCAPE, "").trim()
     if (
         raw.isEmpty() ||
-            raw.startsWith("Shod_PROGRESS|") ||
+            isDeployProgressProtocolLine(raw) ||
             raw.startsWith("Shod_DEPLOY_ERROR|") ||
             raw.startsWith("Shod_INV|") ||
             raw == "Shod_DEPLOY_OK" ||
