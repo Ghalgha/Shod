@@ -64,7 +64,7 @@ import com.shod.client.platform.android.services.TunnelStartOptions
 import com.shod.client.newTunnelSessionId
 import com.shod.client.resolveConnectionSource
 import com.shod.client.showRaisedToast
-import com.shod.client.ui.utils.parseShodLink
+import com.shod.client.links.parseShodLink
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.Locale
