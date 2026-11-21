@@ -1192,7 +1192,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         WifiPreferenceStore.read(prefs).mode.storedValue
     }
     val wifiNetworkListSsids: Flow<String> = dataStore.data.map { prefs ->
-        WifiPreferenceStore.read(prefs).selected.let { com.shod.client.network.wifi.policy.encodeWifiSsids(it) }
+        prefs[WifiPreferenceStore.selectedKey] ?: ""
     }
     suspend fun isBatteryOptimizationPromptHandled(): Boolean =
         dataStore.data.first()[BATTERY_OPTIMIZATION_PROMPT_HANDLED] ?: false
@@ -2701,9 +2701,9 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
             settings.put("battery_saver_percent", prefs[BATTERY_SAVER_PERCENT] ?: BatterySaver.DEFAULT_PERCENT)
             settings.put("is_dynamic_color", prefs[IS_DYNAMIC_COLOR] ?: false)
             settings.put("theme_palette", prefs[THEME_PALETTE] ?: "pure_black")
-            settings.put("auto_pause_on_wifi", prefs[AUTO_PAUSE_ON_WIFI] ?: false)
+            settings.put("auto_pause_on_wifi", WifiPreferenceStore.read(prefs).enabled)
             settings.put("wifi_network_list_mode", WifiPreferenceStore.read(prefs).mode.storedValue)
-            settings.put("wifi_network_list_ssids", prefs[WIFI_NETWORK_LIST_SSIDS] ?: "")
+            settings.put("wifi_network_list_ssids", prefs[WifiPreferenceStore.selectedKey] ?: "")
             settings.put("wifi_saved_ssids", encodeWifiSsids(WifiPreferenceStore.read(prefs).saved))
             settings.put("selected_fingerprint", prefs[getProfileKey(SELECTED_FINGERPRINT, p)] ?: "chrome")
             settings.put("selected_turn_subnet", prefs[getProfileKey(SELECTED_TURN_SUBNET, p)] ?: "")
@@ -2803,7 +2803,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
                     if (s.has("battery_saver_percent")) mutable[BATTERY_SAVER_PERCENT] = s.getInt("battery_saver_percent").coerceIn(5, 95)
                     if (s.has("is_dynamic_color")) mutable[IS_DYNAMIC_COLOR] = s.getBoolean("is_dynamic_color")
                     if (s.has("theme_palette")) mutable[THEME_PALETTE] = s.getString("theme_palette")
-                    if (s.has("auto_pause_on_wifi")) mutable[AUTO_PAUSE_ON_WIFI] = s.getBoolean("auto_pause_on_wifi")
+                    if (s.has("auto_pause_on_wifi")) mutable[WifiPreferenceStore.enabledKey] = s.getBoolean("auto_pause_on_wifi")
                     if (s.has("wifi_saved_ssids")) mutable[WifiPreferenceStore.savedKey] = com.shod.client.network.wifi.policy.encodeWifiSsids(decodeWifiSsids(s.getString("wifi_saved_ssids")))
                     if (s.has("wifi_network_list_mode")) mutable[WifiPreferenceStore.modeKey] = WifiNetworkListMode.fromStored(s.getString("wifi_network_list_mode")).storedValue
                     if (s.has("wifi_network_list_ssids")) mutable[WifiPreferenceStore.selectedKey] = encodeWifiSsids(decodeWifiSsids(s.getString("wifi_network_list_ssids")))
