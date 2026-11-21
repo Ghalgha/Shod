@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import com.shod.client.BuildConfig
-import com.shod.client.DeploySettingsSnapshot
+import com.shod.client.settings.model.DeploySettingsSnapshot
 import com.shod.client.SettingsStore
 import com.shod.client.ShodConstants
 import com.shod.client.deploy.execution.DeployActionMode
