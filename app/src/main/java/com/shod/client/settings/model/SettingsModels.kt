@@ -1,7 +1,7 @@
 package com.shod.client.settings.model
 
 import com.shod.client.ShodConstants
-import com.shod.client.StoredSecretState
+import com.shod.client.settings.secret.StoredSecretState
 
 internal data class DeploySettingsSnapshot(
     val profile: Int = -1,
