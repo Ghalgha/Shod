@@ -350,14 +350,10 @@ class TunnelService : Service() {
                     prepareForDeploy()
                     acquireWakeLock()
                 } catch (e: Exception) {
-                    DeployManager.writeError(
-                        "Deploy foreground service error (${e.javaClass.simpleName}): ${e.message}\n" +
-                            e.stackTraceToString().take(1200)
-                    )
+                    TunnelManager.addDeployErrorLog("Deploy foreground service failed: ${e.message}")
                     TunnelManager.addDeployErrorLog(
                         "Не удалось запустить сервис установки: ${e.message?.take(120) ?: e.javaClass.simpleName}"
                     )
-                    DeployManager.stopDeploy("Не удалось запустить сервис установки: ${e.message?.take(120)}")
                     runCatching { releaseTunnelResources() }
                     runCatching { stopForeground(STOP_FOREGROUND_REMOVE) }
                     foregroundStarted = false
@@ -367,8 +363,7 @@ class TunnelService : Service() {
             }
             "DEPLOY_CANCEL" -> {
                 AndroidDeployCoordinator.cancelActiveOperation()
-                com.shod.client.DeployManager.writeError("✗ Установка отменена пользователем")
-                com.shod.client.DeployManager.stopDeploy("error: Отменена пользователем")
+                TunnelManager.addDeployErrorLog("Операция установки или удаления отменена пользователем")
                 if (TunnelManager.running.value) {
                     lastNotificationText = null
                     lastNotificationPostElapsedMs = 0L
@@ -1304,8 +1299,8 @@ class TunnelService : Service() {
     private val batteryMonitor by lazy {
         TunnelBatteryMonitor(applicationContext, serviceScope) { save, changed ->
             if (save) {
-                if (!DeployManager.isDeploying.value) releaseWakeLock()
-            } else if ((TunnelManager.running.value && !autoPausedForWifi) || DeployManager.isDeploying.value) {
+                if (!AndroidDeployCoordinator.hasActiveOperation()) releaseWakeLock()
+            } else if ((TunnelManager.running.value && !autoPausedForWifi) || AndroidDeployCoordinator.hasActiveOperation()) {
                 acquireWakeLock()
             }
             TunVpnService.instance?.onBatterySaverChanged(save)
@@ -1320,7 +1315,7 @@ class TunnelService : Service() {
     @Synchronized
     private fun acquireWakeLock() {
         // «Экономия батареи» in force: the CPU may sleep, the tunnel with it — except for a deploy, which needs it awake
-        if (BatterySaver.active.value && !DeployManager.isDeploying.value) {
+        if (BatterySaver.active.value && !AndroidDeployCoordinator.hasActiveOperation()) {
             releaseWakeLock() // one a deploy or a server check took meanwhile
             return
         }
