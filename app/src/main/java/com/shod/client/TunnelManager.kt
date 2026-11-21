@@ -32,6 +32,8 @@ import com.shod.client.vpn.recovery.VpnFailureKind
 import com.shod.client.vpn.recovery.VpnRecoveryPolicy
 import com.shod.client.vpn.lifecycle.TunnelLifecycleState
 import com.shod.client.vpn.lifecycle.TunnelLifecycleTicket
+import com.shod.client.integration.vk.captcha.android.CaptchaWebViewManager
+import com.shod.client.integration.vk.captcha.android.ManlCaptchaWebViewManager
 
 typealias LogLevel = com.shod.client.vpn.diagnostics.LogLevel
 typealias LogEntry = com.shod.client.vpn.diagnostics.LogEntry
