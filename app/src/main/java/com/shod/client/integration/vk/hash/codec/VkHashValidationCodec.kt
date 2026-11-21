@@ -14,6 +14,34 @@ enum class VkHashValidationStatus(val wireValue: String) {
 }
 
 object VkHashValidationCodec {
+    private const val PROCESS_OUTPUT_PREFIX = "HASH_CHECK:"
+
+    fun buildProcessCommand(
+        binary: String,
+        hashes: List<String>,
+        fingerprint: String,
+        clientIds: String,
+    ): List<String> = buildList {
+        add(binary)
+        add("--validate-vk-hashes")
+        add("--vk")
+        add(hashes.joinToString(","))
+        add("--fingerprint")
+        add(fingerprint)
+        add("--client-ids")
+        add(clientIds)
+    }
+
+    fun parseProcessOutputLine(line: String): Pair<String, VkHashValidationStatus>? {
+        if (!line.startsWith(PROCESS_OUTPUT_PREFIX)) return null
+        return runCatching {
+            val json = JSONObject(line.removePrefix(PROCESS_OUTPUT_PREFIX))
+            val hash = json.getString("hash")
+            val status = VkHashValidationStatus.fromWire(json.getString("status")) ?: return null
+            hash to status
+        }.getOrNull()
+    }
+
     fun decode(value: String): Map<String, VkHashValidationStatus> = runCatching {
         val json = JSONObject(value)
         buildMap {
