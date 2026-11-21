@@ -26,39 +26,71 @@ internal fun parseServerInventory(output: String): ServerInventory? {
     val servers = mutableListOf<FoundServer>()
     val busy = mutableListOf<BusyPort>()
     var finished = false
+    var invalid = false
     for (raw in output.lineSequence()) {
         val line = raw.trim()
         if (!line.startsWith("Shod_INV|")) continue
+        if (finished) {
+            invalid = true
+            break
+        }
         val parts = line.split('|')
-        val fields = parts.drop(2).mapNotNull { part ->
-            part.indexOf('=').takeIf { it > 0 }?.let { part.substring(0, it) to part.substring(it + 1) }
-        }.toMap()
         when (parts.getOrNull(1)) {
-            "end" -> finished = true
+            "end" -> {
+                if (parts.size != 2) invalid = true
+                finished = true
+            }
             "server" -> {
+                val fields = parts.drop(2).mapNotNull { part ->
+                    part.indexOf('=').takeIf { it > 0 }?.let { part.substring(0, it) to part.substring(it + 1) }
+                }.toMap()
                 val place = when (fields["place"]) {
                     "standard" -> ServerPlace.STANDARD
                     "other" -> ServerPlace.OTHER
                     "leftover" -> ServerPlace.LEFTOVER
                     else -> null
-                } ?: continue
+                }
+                val runtime = fields["runtime"]
+                val state = fields["state"]
+                val name = fields["name"]
+                val peer = fields["peer"]?.toIntOrNull()
+                val web = fields["web"]?.toIntOrNull()
+                if (place == null || runtime.isNullOrBlank() || state.isNullOrBlank() || name.isNullOrBlank() ||
+                    peer !in 1..65535 || web !in 1..65535
+                ) {
+                    invalid = true
+                    break
+                }
                 servers += FoundServer(
                     place = place,
-                    runtime = fields["runtime"].orEmpty(),
-                    state = fields["state"].orEmpty(),
+                    runtime = runtime,
+                    state = state,
                     version = fields["version"]?.takeIf { it.isNotBlank() && it != "?" },
-                    peerPort = fields["peer"]?.toIntOrNull(),
-                    webPort = fields["web"]?.toIntOrNull(),
-                    name = fields["name"].orEmpty(),
+                    peerPort = peer,
+                    webPort = web,
+                    name = name,
                 )
             }
             "busy" -> {
-                val port = fields["port"]?.toIntOrNull() ?: continue
-                busy += BusyPort(fields["proto"].orEmpty(), port, fields["by"].orEmpty())
+                val fields = parts.drop(2).mapNotNull { part ->
+                    part.indexOf('=').takeIf { it > 0 }?.let { part.substring(0, it) to part.substring(it + 1) }
+                }.toMap()
+                val port = fields["port"]?.toIntOrNull()
+                val proto = fields["proto"]
+                val holder = fields["by"]
+                if (port !in 1..65535 || proto.isNullOrBlank() || holder.isNullOrBlank()) {
+                    invalid = true
+                    break
+                }
+                busy += BusyPort(proto, port, holder)
+            }
+            else -> {
+                invalid = true
+                break
             }
         }
     }
-    return if (finished) ServerInventory(servers, busy) else null
+    return if (finished && !invalid) ServerInventory(servers, busy) else null
 }
 
 /** 2.5 and later speak the 2.5 protocol; 2.1 and older, or a binary without a version label, do not. */
@@ -67,35 +99,6 @@ internal fun isLine25(version: String?): Boolean {
     val major = parts.getOrNull(0)?.toIntOrNull() ?: return false
     val minor = parts.getOrNull(1)?.toIntOrNull() ?: 0
     return major > 2 || (major == 2 && minor >= 5)
-}
-
-private fun runtimeLabel(runtime: String): String = when (runtime) {
-    "systemd" -> "служба systemd"
-    "docker" -> "Docker"
-    "process" -> "процесс"
-    else -> ""
-}
-
-/** One line for the "На сервере" list: what it is, then how it runs. */
-internal fun describeServer(server: FoundServer, profilePeerPort: Int?): Pair<String, String> {
-    if (server.place == ServerPlace.LEFTOVER || !server.installed) {
-        val what = if (server.place == ServerPlace.LEFTOVER) "Остановленная служба shod" else "Остатки прежней установки shod"
-        return what to server.name
-    }
-    val title = "shod " + (server.version ?: "(версия неизвестна)")
-    val detail = listOfNotNull(
-        if (server.place == ServerPlace.OTHER) "установлен не этим приложением: ${server.name}" else null,
-        runtimeLabel(server.runtime).ifBlank { null },
-        server.peerPort?.let { "порт $it" },
-        when (server.state) {
-            "running" -> "работает"
-            "stopped" -> "остановлен"
-            else -> null
-        },
-        if (profilePeerPort != null && server.peerPort == profilePeerPort &&
-            server.place == ServerPlace.STANDARD) "подключение профиля" else null,
-    ).joinToString(", ")
-    return title to detail
 }
 
 /**
