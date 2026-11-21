@@ -37,21 +37,6 @@ suspend fun fetchLatestReleaseInfo(localVersion: String? = null): AppReleaseInfo
     }
 }
 
-fun isNewerVersion(local: String, remote: String): Boolean {
-    val localParts = versionParts(local)
-    val remoteParts = versionParts(remote)
-    if (remoteParts.isEmpty()) return false
-
-    val maxLen = maxOf(localParts.size, remoteParts.size)
-    for (i in 0 until maxLen) {
-        val localPart = localParts.getOrElse(i) { 0 }
-        val remotePart = remoteParts.getOrElse(i) { 0 }
-        if (remotePart > localPart) return true
-        if (remotePart < localPart) return false
-    }
-    return false
-}
-
 private fun fetchLatestStableReleaseFromList(): AppReleaseInfo? {
     val response = fetchGitHubApi(GITHUB_RELEASES_URL) ?: return null
     val releases = try {
@@ -231,4 +216,16 @@ private fun JSONObject.toAppReleaseInfo(): AppReleaseInfo? {
     val releaseUrl = optString("html_url").trim()
     if (versionTag.isBlank() || releaseUrl.isBlank()) return null
     return AppReleaseInfo(versionTag, releaseUrl, RemoteVersionSource.Release)
+}
+
+private fun extractTagFromReleaseUrl(releaseUrl: String): String? {
+    val marker = "/releases/tag/"
+    val index = releaseUrl.indexOf(marker)
+    if (index < 0) return null
+    return releaseUrl.substring(index + marker.length)
+        .substringBefore("?")
+        .substringBefore("#")
+        .substringBefore("/")
+        .takeIf { it.isNotBlank() }
+        ?.let(::normalizeVersionTag)
 }
