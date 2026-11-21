@@ -27,47 +27,17 @@ import androidx.compose.runtime.mutableStateListOf
 typealias LogLevel = com.shod.client.vpn.diagnostics.LogLevel
 typealias LogEntry = com.shod.client.vpn.diagnostics.LogEntry
 
-private val LOG_STICKERS = Regex("[\\p{So}\\p{Sk}\\uFE0F\\u200D]")
-private val EMPTY_LOG_TAG = Regex("\\[\\s*]")
 private val LOG_TIMESTAMP_PREFIX = Regex("^\\d{4}/\\d{2}/\\d{2}\\s\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?\\s")
 
-/**
- * A participant's log never shows the server owner's VK hashes, not even the prefix displayVkHash or the client prints:
- * every piece of one (its first 8 characters and on, with a trailing … or ...) becomes «от владельца».
- */
+// Compatibility entry points; diagnostic formatting is implemented in the diagnostics layer.
 internal fun maskOwnerHashes(text: String, ownerHashes: List<String>): String =
-    ownerHashes.map(String::trim).filter { it.length >= 16 }.fold(text) { out, hash ->
-        out.replace(Regex(Regex.escape(hash.take(8)) + "[A-Za-z0-9_-]*(?:…|\\.\\.\\.)?"), "от владельца")
-    }
+    TunnelLogSanitizer.maskOwnerHashes(text, ownerHashes)
 
-internal fun displayVkHash(hash: String): String = hash.trim().let { value ->
-    if (value.length <= 10) value else value.take(10) + "…"
-}
+internal fun displayVkHash(hash: String): String = TunnelLogSanitizer.displayVkHash(hash)
 
-internal fun dnsProfileName(dns: String): String = when (dns.trim()) {
-    "77.88.8.8,77.88.8.1" -> "Yandex DNS"
-    "1.1.1.1,1.0.0.1" -> "Cloudflare DNS"
-    "8.8.8.8,8.8.4.4" -> "Google DNS"
-    "94.140.14.14,94.140.15.14" -> "AdGuard DNS"
-    "111.88.96.54,111.88.96.55", "111.88.96.50,111.88.96.51" -> "Xbox DNS"
-    "83.220.169.155,212.109.195.93" -> "Comms DNS"
-    "193.233.112.67,193.233.112.88", "95.182.120.241,37.230.192.51" -> "Geohide DNS"
-    "9.9.9.9,149.112.112.112" -> "Quad9 DNS"
-    "208.67.222.222,208.67.220.220" -> "OpenDNS"
-    "95.189.32.74,195.208.5.1" -> "Rostelecom DNS"
-    "45.90.28.181,45.90.30.181" -> "NextDNS"
-    "195.208.6.1,195.208.7.1" -> "BI.ZONE DNS"
-    "195.208.4.1,195.208.5.1" -> "НСДИ DNS"
-    else -> "Пользовательский DNS"
-}
+internal fun dnsProfileName(dns: String): String = TunnelLogSanitizer.dnsProfileName(dns)
 
-internal fun withoutLogStickers(message: String): String = message
-    .replace(LOG_STICKERS) { symbol ->
-        symbol.value.takeIf { it == "✓" || it == "✗" }.orEmpty()
-    }
-    .replace(EMPTY_LOG_TAG, "")
-    .replace(Regex("[^\\S\r\n]+"), " ")
-    .trim()
+internal fun withoutLogStickers(message: String): String = TunnelLogSanitizer.withoutLogStickers(message)
 
 object TunnelManager {
     // the server owner's VK hashes of the participant link in use, masked in every log line (resolveConnectionSource)
@@ -911,7 +881,7 @@ object TunnelManager {
     ) {
         if (identity != null && !isCurrent(identity)) return
         if (!isLoggingEnabled && !TunnelLogPolicy.isAllowedWhenInactiveLogging(key, isError, level)) return
-        val cleanMessage = NativeTunnelLogParser.redact(maskOwnerHashes(withoutLogStickers(message), ownerHashes)).take(MAX_LOG_MESSAGE_LENGTH)
+        val cleanMessage = NativeTunnelLogParser.redact(TunnelLogSanitizer.sanitize(message, ownerHashes)).take(MAX_LOG_MESSAGE_LENGTH)
         if (cleanMessage.isEmpty()) return
         val pendingKey = "${identity?.generation ?: 0L}:$key:$priority:$isError:${level?.name.orEmpty()}"
         synchronized(pendingLogLock) {
