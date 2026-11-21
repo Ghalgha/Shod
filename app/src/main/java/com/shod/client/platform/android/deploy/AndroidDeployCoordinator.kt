@@ -132,6 +132,8 @@ internal class AndroidDeployCoordinator(
     companion object {
         private val activeOperation = AtomicReference<Job?>(null)
 
+        fun hasActiveOperation(): Boolean = activeOperation.get()?.isActive == true
+
         fun cancelActiveOperation() {
             AndroidDeploySshSession.closeActiveSessions()
             activeOperation.get()?.cancel()
