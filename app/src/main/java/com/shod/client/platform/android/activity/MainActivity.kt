@@ -84,7 +84,7 @@ import com.shod.client.ui.deploy.DeployCheckState
 import com.shod.client.ui.components.LocalHeaderActions
 import com.shod.client.ui.design.ShodMotion
 import com.shod.client.ui.design.ShodShapes
-import com.shod.client.ui.dialogs.VkAuthDialog
+import com.shod.client.integration.vk.auth.ui.VkAuthDialog
 import com.shod.client.ui.utils.parseShodLink
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
