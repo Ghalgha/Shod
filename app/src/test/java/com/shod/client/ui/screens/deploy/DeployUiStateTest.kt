@@ -1,12 +1,5 @@
 package com.shod.client.ui.screens.deploy
 
-import com.shod.client.ui.screens.deploy.DeployUiState
-import com.shod.client.ui.deploy.hasWebPanelCredentials
-import com.shod.client.ui.deploy.hostHasPort
-import com.shod.client.ui.deploy.isDeployMainPasswordValid
-import com.shod.client.ui.deploy.passwordToSynchronizeAfterDeploy
-import com.shod.client.ui.deploy.resolveServerPorts
-import com.shod.client.ui.deploy.splitPastedHostPort
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
