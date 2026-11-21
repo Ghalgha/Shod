@@ -1,0 +1,169 @@
+package com.shod.client.deploy.execution
+
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Test
+
+class DeployResultPolicyTest {
+    @Test
+    fun exactMarkerAndZeroExitAreRequired() {
+        assertTrue(isSuccessfulDeployResult(0, "done\nShod_DEPLOY_OK\n"))
+        assertFalse(isSuccessfulDeployResult(1, "Shod_DEPLOY_OK"))
+        assertFalse(isSuccessfulDeployResult(0, "service is active"))
+        assertFalse(isSuccessfulDeployResult(0, "prefix Shod_DEPLOY_OK suffix"))
+    }
+
+    @Test
+    fun deployRollbackExitIsExplainedWithoutPretendingSuccess() {
+        assertEquals(
+            "Новый релиз не прошёл проверку; предыдущая установка восстановлена",
+            deployFailureMessage(30, "Shod_DEPLOY_ROLLED_BACK\n"),
+        )
+        assertEquals(
+            "Новый релиз не запустился, а автоматический rollback завершился с ошибкой — требуется проверка VPS",
+            deployFailureMessage(31, "Shod_DEPLOY_ROLLBACK_FAILED\n"),
+        )
+    }
+
+    @Test
+    fun rollbackKeepsConcreteServerReason() {
+        assertEquals(
+            "Новый релиз не прошёл проверку; предыдущая установка восстановлена " +
+                "Причина: Проверенный candidate-бинарник исчез после остановки старого runtime",
+            deployFailureMessage(
+                30,
+                "Shod_DEPLOY_ERROR|cutover|Проверенный candidate-бинарник исчез после остановки старого runtime\n" +
+                    "Shod_DEPLOY_ROLLED_BACK\n",
+            ),
+        )
+    }
+
+    @Test
+    fun preflightFailureExplainsThatLiveServiceWasNotStopped() {
+        assertEquals(
+            "Кандидат не прошёл предзапусковую проверку; работающий сервер не останавливался",
+            deployFailureMessage(20, "probe failed"),
+        )
+    }
+
+    @Test
+    fun authFailureHasActionableMessage() {
+        assertEquals(
+            "SSH-аутентификация отклонена: проверьте логин, пароль и разрешение PasswordAuthentication на VPS",
+            friendlyDeployError("Auth fail for methods 'publickey,password'"),
+        )
+    }
+
+    @Test
+    fun publicKeyFailureHasKeySpecificMessage() {
+        assertTrue(
+            friendlyDeployError("Auth fail (public key): rejected")
+                .contains("authorized_keys"),
+        )
+    }
+
+    @Test
+    fun refusedNamesThePortAndWhatToCheck() {
+        val message = friendlyDeployError(
+            "failed to connect to /1.2.3.4 (port 2222) from /10.0.0.2 (port 40512) after 30000ms: " +
+                "isConnected failed: ECONNREFUSED (Connection refused)"
+        )
+        assertTrue(message.startsWith("Порт SSH 2222 не принимает соединения"))
+        assertTrue(message.contains("Проверьте порт SSH"))
+        assertTrue(friendlyDeployError("Connection refused").startsWith("Порт SSH не принимает соединения"))
+    }
+
+    @Test
+    fun timeoutHasShortMessage() {
+        assertEquals("Истекло время ожидания SSH/SFTP", friendlyDeployError("connect timeout"))
+    }
+
+    @Test
+    fun exhaustedUploadHasNetworkSpecificMessage() {
+        assertTrue(
+            friendlyDeployError("SFTP/SCP upload failed for shod: SFTP: channel closed")
+                .contains("автоматического переподключения"),
+        )
+    }
+
+    @Test
+    fun serverSuccessLineBecomesCleanOkLog() {
+        assertEquals(
+            DeployOutputLine("shod установлен", DeployOutputLevel.OK),
+            parseDeployOutputLine("✓ shod установлен"),
+        )
+    }
+
+    @Test
+    fun serverStepHasNoEmojiOrStatusSticker() {
+        assertEquals(
+            DeployOutputLine("Установка shod...", DeployOutputLevel.LOG),
+            parseDeployOutputLine("📦 Установка shod..."),
+        )
+        assertEquals(
+            DeployOutputLine("Проверка зависимостей", DeployOutputLevel.LOG),
+            parseDeployOutputLine("[►] Проверка зависимостей"),
+        )
+    }
+
+    @Test
+    fun serverFailureBecomesErrorLog() {
+        assertEquals(
+            DeployOutputLine("Сервис shod не запустился", DeployOutputLevel.ERR),
+            parseDeployOutputLine("[✗] Сервис shod не запустился"),
+        )
+    }
+
+    @Test
+    fun protocolAndDecorationLinesAreHidden() {
+        assertNull(parseDeployOutputLine("Shod_PROGRESS|0.6|Бинарник..."))
+        assertNull(parseDeployOutputLine("Shod_DEPLOY_ERROR|cutover|candidate disappeared"))
+        assertNull(parseDeployOutputLine("════════════════════════════"))
+        assertNull(parseDeployOutputLine("Shod_DEPLOY_OK"))
+        assertNull(parseDeployOutputLine("Shod_DEPLOY_ROLLED_BACK"))
+        assertNull(parseDeployOutputLine("Shod_DEPLOY_ROLLBACK_FAILED"))
+    }
+
+    @Test
+    fun dockerModeUsesRawEnvironmentValues() {
+        assertEquals("docker", deployMode(true))
+        assertEquals("systemd", deployMode(false))
+        assertEquals("a b#$\"\\c  d", deployEnvironmentValue("a b#$\"\\c\r\nd", true))
+        assertEquals("\"a b#$\\\"\\\\c  d\"", deployEnvironmentValue("a b#$\"\\c\r\nd", false))
+    }
+
+    @Test
+    fun serverAssetMatchesTheRemoteVpsArchitecture() {
+        assertEquals(ServerArchitecture.AMD64, serverArchitectureForMachine("x86_64\n"))
+        assertEquals(ServerArchitecture.AMD64, serverArchitectureForMachine("amd64\n"))
+        assertEquals(ServerArchitecture.ARM64, serverArchitectureForMachine("aarch64\n"))
+        assertEquals(ServerArchitecture.ARM64, serverArchitectureForMachine("arm64\n"))
+        assertEquals(ServerArchitecture.ARMV7, serverArchitectureForMachine("armv7l\n"))
+        assertEquals(ServerArchitecture.ARMV7, serverArchitectureForMachine("armhf\n"))
+    }
+
+    @Test
+    fun uninstallSucceedsOnlyWithExitZeroAndItsMarker() {
+        assertTrue(isSuccessfulUninstallResult(0, "...\nShod_UNINSTALL_OK\n"))
+        assertFalse(isSuccessfulUninstallResult(1, "Shod_UNINSTALL_OK"))
+        assertFalse(isSuccessfulUninstallResult(0, "Shod удалён"))
+        assertTrue(uninstallFailureMessage("Shod_DEPLOY_ERROR|validation|порт занят").contains("порт занят"))
+        assertTrue(parseDeployOutputLine("Shod_UNINSTALL_OK") == null)   // a marker for the app, not a line for the user
+    }
+
+    @Test(expected = java.io.IOException::class)
+    fun unsupportedRemoteVpsArchitectureStopsBeforeUpload() {
+        serverArchitectureForMachine("riscv64\n")
+    }
+
+    @Test
+    fun sshPasswordKeepsSpacesAndSpecialCharactersExactly() {
+        assertEquals(
+            "a !@#$%^&*()[]{};:,.?/\\|~+= b",
+            sanitizeSshPassword("a !@#$%^&*()[]{};:,.?/\\|~+= b"),
+        )
+        assertEquals("pa ssword", sanitizeSshPassword("pa\n ss\rword"))
+    }
+}
