@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import org.json.JSONObject
 
+import com.shod.client.vpn.diagnostics.TunnelLogSanitizer
 import androidx.compose.runtime.mutableStateListOf
 
 typealias LogLevel = com.shod.client.vpn.diagnostics.LogLevel
