@@ -25,6 +25,21 @@ enum class RemoteVersionSource {
     Tag
 }
 
+fun isNewerVersion(local: String, remote: String): Boolean {
+    val localParts = versionParts(local)
+    val remoteParts = versionParts(remote)
+    if (remoteParts.isEmpty()) return false
+
+    val maxLen = maxOf(localParts.size, remoteParts.size)
+    for (i in 0 until maxLen) {
+        val localPart = localParts.getOrElse(i) { 0 }
+        val remotePart = remoteParts.getOrElse(i) { 0 }
+        if (remotePart > localPart) return true
+        if (remotePart < localPart) return false
+    }
+    return false
+}
+
 private fun versionParts(version: String): List<Int> {
     val normalized = VERSION_NUMBER_REGEX.find(version.trim())?.value ?: return emptyList()
     return normalized.split(".").mapNotNull { it.toIntOrNull() }
@@ -34,16 +49,4 @@ internal fun normalizeVersionTag(version: String): String {
     val trimmed = version.trim()
     if (trimmed.isBlank()) return ""
     return if (trimmed.startsWith("v", ignoreCase = true)) trimmed else "v$trimmed"
-}
-
-private fun extractTagFromReleaseUrl(releaseUrl: String): String? {
-    val marker = "/releases/tag/"
-    val index = releaseUrl.indexOf(marker)
-    if (index < 0) return null
-    return releaseUrl.substring(index + marker.length)
-        .substringBefore("?")
-        .substringBefore("#")
-        .substringBefore("/")
-        .takeIf { it.isNotBlank() }
-        ?.let(::normalizeVersionTag)
 }
