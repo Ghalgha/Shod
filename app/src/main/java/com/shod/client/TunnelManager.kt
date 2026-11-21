@@ -23,7 +23,6 @@ import java.io.File
 import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
-import org.json.JSONObject
 
 import com.shod.client.network.connectivity.NetworkPauseGate
 import com.shod.client.vpn.diagnostics.DtlsLogParser
@@ -1097,16 +1096,10 @@ object TunnelManager {
             return
         }
         if (jsHashMode) {
-            val bootstrap = JSONObject()
-                .put("token", params.vkAccessToken)
-                .toString()
-            val encoded = Base64.encodeToString(
-                bootstrap.toByteArray(Charsets.UTF_8),
-                Base64.NO_WRAP,
-            )
             try {
                 startedProcess.outputStream.write(
-                    "VK_JS_BOOTSTRAP:$encoded\n".toByteArray(Charsets.UTF_8),
+                    VkNativeTransportArguments.buildJsBootstrapLine(params.vkAccessToken)
+                        .toByteArray(Charsets.UTF_8),
                 )
                 startedProcess.outputStream.flush()
             } catch (e: Exception) {
