@@ -34,6 +34,7 @@ import com.shod.client.settings.subscription.ProfileSubscriptionStore
 import com.shod.client.settings.subscription.SubscriptionMetaCodec
 import com.shod.client.settings.theme.ThemePreferencesStore
 import com.shod.client.settings.update.UpdatePreferencesStore
+import com.shod.client.settings.system.BatteryOptimizationPromptStore
 import com.shod.client.vpn.lifecycle.TunnelRuntimePreferencesStore
 import com.shod.client.network.wifi.policy.WifiNetworkListMode
 import com.shod.client.network.wifi.preferences.WifiPreferences
@@ -170,8 +171,6 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         private val EXTRA_WORKERS = booleanPreferencesKey("extra_workers")
         private val AUTO_JS_RISK_ACKNOWLEDGED = booleanPreferencesKey("auto_js_risk_acknowledged")
         private val TCP_TRANSPORT_RISK_ACKNOWLEDGED = booleanPreferencesKey("tcp_transport_risk_acknowledged")
-        private val BATTERY_OPTIMIZATION_PROMPT_HANDLED =
-            booleanPreferencesKey("battery_optimization_prompt_handled")
         private val DOMAIN_ROUTING_ENABLED = booleanPreferencesKey("domain_routing_enabled")
         private val DOMAIN_IS_WHITELIST = booleanPreferencesKey("domain_is_whitelist")
         private val EXCLUDE_RU_ZONES_ENABLED = booleanPreferencesKey("exclude_ru_zones_enabled")
@@ -286,6 +285,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         deployScope -> DeployScopedDataStore(appContext.settingsDataStore)
         else -> appContext.settingsDataStore
     }
+    private val batteryOptimizationPromptStore = BatteryOptimizationPromptStore(dataStore)
     private val tunnelRuntimePreferencesStore = TunnelRuntimePreferencesStore(dataStore)
     private val updatePreferencesStore = UpdatePreferencesStore(dataStore)
     val uiOwnerMode: Flow<Boolean> = appContext.settingsDataStore.data.map { it[UI_OWNER_MODE] ?: false }
@@ -1183,7 +1183,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         prefs[WifiPreferenceStore.selectedKey] ?: ""
     }
     suspend fun isBatteryOptimizationPromptHandled(): Boolean =
-        dataStore.data.first()[BATTERY_OPTIMIZATION_PROMPT_HANDLED] ?: false
+        batteryOptimizationPromptStore.isHandled()
 
     val themeMode: Flow<String> = themePreferencesStore.themeMode
     val isDynamicColor: Flow<Boolean> = themePreferencesStore.isDynamicColor
@@ -2062,9 +2062,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
 
 
     suspend fun markBatteryOptimizationPromptHandled() {
-        dataStore.edit { prefs ->
-            prefs[BATTERY_OPTIMIZATION_PROMPT_HANDLED] = true
-        }
+        batteryOptimizationPromptStore.markHandled()
     }
 
     /** Keep the selected captcha mode and its solver consistent in a single profile write. */
