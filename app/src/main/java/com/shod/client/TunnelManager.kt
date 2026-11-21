@@ -97,24 +97,6 @@ object TunnelManager {
         val unavailableManualHashes = mutableSetOf<String>()
     }
 
-    private data class PendingLog(
-        val identity: ProcessIdentity?,
-        val key: String,
-        var message: String,
-        val priority: Int,
-        val isError: Boolean,
-        val level: LogLevel?,
-        var count: Int,
-    )
-
-    private const val LOG_UI_FLUSH_MS = 120L
-    private const val MAX_LOG_ENTRIES = 100
-    private const val MAX_PENDING_LOGS = 512
-    private const val MAX_LOG_MESSAGE_LENGTH = 4_096
-    private val pendingLogLock = Any()
-    private val pendingLogs = LinkedHashMap<String, PendingLog>()
-    private val pendingLogFlushScheduled = AtomicBoolean(false)
-
     @Volatile
     private var wrapAuthTimeoutCount = 0
     private var lastVpnStartAttemptMs = 0L
@@ -146,8 +128,11 @@ object TunnelManager {
     val running = MutableStateFlow(false)
     val starting = MutableStateFlow(false)
     val stopping = MutableStateFlow(false)
-    val logs = mutableStateListOf<LogEntry>()
-    val unreadErrorCount = MutableStateFlow(0)
+    private val logStore = TunnelLogStore(scope) { entries, limit ->
+        StreamDiagnosticParser.evictionIndex(entries, limit)
+    }
+    val logs get() = logStore.logs
+    val unreadErrorCount get() = logStore.unreadErrorCount
     val config = MutableStateFlow<String?>(null)
     val stats = MutableStateFlow("Активных: 0 | Трафик: 0.00 МБ")
     val userFacingError = MutableStateFlow<String?>(null)
@@ -343,9 +328,7 @@ object TunnelManager {
         }
     }
 
-    fun clearUnreadErrors() {
-        unreadErrorCount.value = 0
-    }
+    fun clearUnreadErrors() = logStore.clearUnreadErrors()
 
     fun dismissUserFacingError() {
         userFacingError.value = null
@@ -882,89 +865,17 @@ object TunnelManager {
     ) {
         if (identity != null && !isCurrent(identity)) return
         if (!isLoggingEnabled && !TunnelLogPolicy.isAllowedWhenInactiveLogging(key, isError, level)) return
-        val cleanMessage = NativeTunnelLogParser.redact(TunnelLogSanitizer.sanitize(message, ownerHashes)).take(MAX_LOG_MESSAGE_LENGTH)
+        val cleanMessage = NativeTunnelLogParser.redact(TunnelLogSanitizer.sanitize(message, ownerHashes))
         if (cleanMessage.isEmpty()) return
-        val pendingKey = "${identity?.generation ?: 0L}:$key:$priority:$isError:${level?.name.orEmpty()}"
-        synchronized(pendingLogLock) {
-            val pending = pendingLogs[pendingKey]
-            if (pending == null) {
-                if (pendingLogs.size >= MAX_PENDING_LOGS) {
-                    pendingLogs.remove(pendingLogs.entries.first().key)
-                }
-                pendingLogs[pendingKey] = PendingLog(identity, key, cleanMessage, priority, isError, level, 1)
-            } else {
-                pending.message = cleanMessage
-                pending.count += 1
-            }
-            scheduleLogFlushLocked()
-        }
-    }
-
-    private fun scheduleLogFlushLocked() {
-        if (!pendingLogFlushScheduled.compareAndSet(false, true)) return
-        scope.launch(Dispatchers.Main) {
-            delay(LOG_UI_FLUSH_MS)
-            flushPendingLogs()
-        }
-    }
-
-    private fun flushPendingLogs() {
-        val batch = synchronized(pendingLogLock) {
-            val values = pendingLogs.values.toList()
-            pendingLogs.clear()
-            pendingLogFlushScheduled.set(false)
-            values
-        }
-        batch.forEach(::applyPendingLog)
-    }
-
-    private fun applyPendingLog(pending: PendingLog) {
-        val identity = pending.identity
-        if (identity != null && !isCurrent(identity)) return
-        val index = logs.indexOfFirst { it.key == pending.key }
-        if (pending.isError && index == -1) {
-            unreadErrorCount.value++
-        }
-        if (index != -1) {
-            val entry = logs[index]
-            if (entry.priority == pending.priority) {
-                logs[index] = entry.copy(
-                    count = entry.count + pending.count,
-                    message = pending.message,
-                    isError = pending.isError,
-                    level = pending.level,
-                )
-            } else {
-                logs.removeAt(index)
-                insertSorted(
-                    LogEntry(
-                        pending.key,
-                        pending.message,
-                        entry.count + pending.count,
-                        pending.priority,
-                        pending.isError,
-                        pending.level,
-                    )
-                )
-            }
-        } else {
-            insertSorted(
-                LogEntry(
-                    pending.key,
-                    pending.message,
-                    pending.count,
-                    pending.priority,
-                    pending.isError,
-                    pending.level,
-                )
-            )
-        }
-
-        while (true) {
-            val eviction = StreamDiagnosticParser.evictionIndex(logs, MAX_LOG_ENTRIES)
-            if (eviction < 0) break
-            logs.removeAt(eviction)
-        }
+        logStore.append(
+            generation = identity?.generation ?: 0L,
+            isCurrent = identity?.let { activeIdentity -> { isCurrent(activeIdentity) } },
+            key = key,
+            message = cleanMessage,
+            priority = priority,
+            isError = isError,
+            level = level,
+        )
     }
 
     private fun isCurrent(identity: ProcessIdentity): Boolean =
@@ -2109,13 +2020,7 @@ object TunnelManager {
     }
 
     fun clearLogs() {
-        synchronized(pendingLogLock) {
-            pendingLogs.clear()
-        }
-        unreadErrorCount.value = 0
-        scope.launch(Dispatchers.Main) {
-            logs.clear()
-        }
+        logStore.clear()
         if (!running.value) {
             activeWorkers.value = 0
         }
