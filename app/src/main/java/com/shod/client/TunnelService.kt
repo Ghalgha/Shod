@@ -48,6 +48,8 @@ import kotlinx.coroutines.sync.withLock
 import java.net.HttpURLConnection
 import java.net.URL
 
+import com.shod.client.integration.vk.network.isVkProbeHttpResponse
+import com.shod.client.integration.vk.network.vkProbeRetryDelayMs
 private const val TUNNEL_NOTIFICATION_CHANNEL_ID = ShodConstants.Notifications.TUNNEL_CHANNEL_ID
 private const val TUNNEL_NOTIFICATION_ID = ShodConstants.Notifications.TUNNEL_NOTIFICATION_ID
 private const val NOTIFICATION_MIN_REBUILD_INTERVAL_MS = 5_000L
