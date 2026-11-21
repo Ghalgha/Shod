@@ -28,6 +28,8 @@ import com.shod.client.vpn.diagnostics.StreamDiagnosticParser
 import com.shod.client.vpn.diagnostics.TunnelLogPolicy
 import com.shod.client.vpn.diagnostics.TunnelLogStore
 import com.shod.client.vpn.events.TunnelEventParser
+import com.shod.client.vpn.recovery.VpnFailureKind
+import com.shod.client.vpn.recovery.VpnRecoveryPolicy
 
 typealias LogLevel = com.shod.client.vpn.diagnostics.LogLevel
 typealias LogEntry = com.shod.client.vpn.diagnostics.LogEntry
