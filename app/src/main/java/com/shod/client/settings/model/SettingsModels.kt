@@ -108,4 +108,4 @@ internal data class SubscriptionMeta(
     }
 }
 
-internal fun defaultProfileName(index: Int): String = "Профиль ${index + 1}"
+internal fun defaultProfileName(index: Int): String = com.shod.client.settings.profile.defaultProfileName(index)
