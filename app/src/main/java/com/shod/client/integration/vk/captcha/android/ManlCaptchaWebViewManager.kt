@@ -1,6 +1,6 @@
 package com.shod.client.integration.vk.captcha.android
 
-import com.shod.client.MainActivity
+import com.shod.client.platform.android.activity.MainActivity
 import com.shod.client.ShodConstants
 import com.shod.client.integration.vk.captcha.android.CaptchaCancelReceiver
 
