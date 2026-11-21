@@ -1,0 +1,20 @@
+{
+  "shod-linux-amd64": {
+    "artifactVersion": "2.5.3",
+    "url": "https://github.com/Ghalgha/Shod/releases/download/server-core-2.5.3-20261107/shod-linux-amd64",
+    "size": 11448920,
+    "sha256": "d693305948209ef3631a96395728d35efbceaf6cda1e8eb1bf2ead9dce652aaf"
+  },
+  "shod-linux-arm64": {
+    "artifactVersion": "2.5.3",
+    "url": "https://github.com/Ghalgha/Shod/releases/download/server-core-2.5.3-20261107/shod-linux-arm64",
+    "size": 9737976,
+    "sha256": "da8ddab2b2d830cb8411c55910b30affab6696a47b4971cae7400cb4d0f790e5"
+  },
+  "shod-linux-armv7": {
+    "artifactVersion": "2.5.3",
+    "url": "https://github.com/Ghalgha/Shod/releases/download/server-core-2.5.3-20261107/shod-linux-armv7",
+    "size": 9156968,
+    "sha256": "39f7f2ae71190f3a73e9732eda34f0f00552fb374d9417d9e139da7f64a0f3d7"
+  }
+}
