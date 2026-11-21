@@ -18,7 +18,7 @@ object IpRoutingRules {
         val item = raw.trim()
         if (item.contains('-')) {
             val parts = item.split('-')
-            if (parts.size == 2) return "${parts[0].trim()}-${parts[1].trim()}"
+            if (parts.size == 2) return "\${parts[0].trim()}-\${parts[1].trim()}"
         }
         return item
     }
@@ -41,7 +41,7 @@ object IpRoutingRules {
     }
 
     fun parse(text: String): List<String> = text
-        .split(Regex("[,;\\\\s\\n\\r]+"))
+        .split(Regex("[,;\\s\\n\\r]+"))
         .map(::clean)
         .filter(::isValid)
         .distinct()
