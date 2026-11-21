@@ -34,6 +34,7 @@ import com.shod.client.settings.subscription.ProfileSubscriptionStore
 import com.shod.client.settings.subscription.SubscriptionMetaCodec
 import com.shod.client.settings.theme.ThemePreferencesStore
 import com.shod.client.settings.update.UpdatePreferencesStore
+import com.shod.client.settings.deploy.DeployInspectionStore
 import com.shod.client.settings.system.BatteryOptimizationPromptStore
 import com.shod.client.vpn.lifecycle.TunnelRuntimePreferencesStore
 import com.shod.client.network.wifi.policy.WifiNetworkListMode
@@ -108,14 +109,6 @@ class SettingsStore(context: Context, deployScope: Boolean = false, readOnlyProf
         private val DOCKER_INSTALL = booleanPreferencesKey("docker_install")
 private val DEPLOY_SECRET_PATH_ENABLED = booleanPreferencesKey("deploy_secret_path_enabled")
 private val DEPLOY_SECRET_PATH_UUID = stringPreferencesKey("deploy_secret_path_uuid")
-private val DEPLOY_SERVER_CONFIGURED = booleanPreferencesKey("deploy_server_configured")
-private val DEPLOY_LAST_INSPECTION_AT = longPreferencesKey("deploy_last_inspection_at")
-private val DEPLOY_LAST_INSPECTION_OK = booleanPreferencesKey("deploy_last_inspection_ok")
-private val DEPLOY_LAST_INSPECTION_ARCH = stringPreferencesKey("deploy_last_inspection_arch")
-private val DEPLOY_LAST_INSPECTION_SERVICE = stringPreferencesKey("deploy_last_inspection_service")
-private val DEPLOY_LAST_INSPECTION_VERSION = stringPreferencesKey("deploy_last_inspection_version")
-private val DEPLOY_LAST_INSPECTION_MESSAGE = stringPreferencesKey("deploy_last_inspection_message")
-private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_inspection_panel")
         private val SSH_PRIVATE_KEY = stringPreferencesKey("ssh_private_key")
         private val SSH_PRIVATE_KEY_ENCRYPTED = stringPreferencesKey("ssh_private_key_encrypted")
         private val SSH_KEY_PASSPHRASE = stringPreferencesKey("ssh_key_passphrase")
@@ -288,6 +281,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     private val batteryOptimizationPromptStore = BatteryOptimizationPromptStore(dataStore)
     private val tunnelRuntimePreferencesStore = TunnelRuntimePreferencesStore(dataStore)
     private val updatePreferencesStore = UpdatePreferencesStore(dataStore)
+    private val deployInspectionStore = DeployInspectionStore()
     val uiOwnerMode: Flow<Boolean> = appContext.settingsDataStore.data.map { it[UI_OWNER_MODE] ?: false }
     val uiDesign: Flow<String> = appContext.settingsDataStore.data.map { UiDesignPresets.normalize(it[UI_DESIGN]) }
     val uiScalePercent: Flow<Int> = appContext.settingsDataStore.data.map { UiScale.normalize(it[UI_SCALE]) }.distinctUntilChanged()
@@ -485,14 +479,14 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
             dockerInstall = prefs[getProfileKey(DOCKER_INSTALL, profile)] ?: false,
             secretPathEnabled = true,
             secretPathUuid = prefs[getProfileKey(DEPLOY_SECRET_PATH_UUID, profile)] ?: "",
-            serverConfigured = prefs[getProfileKey(DEPLOY_SERVER_CONFIGURED, profile)] ?: false,
-            lastInspectionAtMs = prefs[getProfileKey(DEPLOY_LAST_INSPECTION_AT, profile)] ?: 0L,
-            lastInspectionOk = prefs[getProfileKey(DEPLOY_LAST_INSPECTION_OK, profile)] ?: false,
-            lastInspectionArch = prefs[getProfileKey(DEPLOY_LAST_INSPECTION_ARCH, profile)] ?: "",
-            lastInspectionServiceStatus = prefs[getProfileKey(DEPLOY_LAST_INSPECTION_SERVICE, profile)] ?: "",
-            lastInspectionVersion = prefs[getProfileKey(DEPLOY_LAST_INSPECTION_VERSION, profile)] ?: "",
-            lastInspectionMessage = prefs[getProfileKey(DEPLOY_LAST_INSPECTION_MESSAGE, profile)] ?: "",
-            lastPanelAvailable = prefs[getProfileKey(DEPLOY_LAST_INSPECTION_PANEL, profile)] ?: false,
+            serverConfigured = deployInspectionStore.read(prefs, profile).serverConfigured,
+            lastInspectionAtMs = deployInspectionStore.read(prefs, profile).checkedAtMs,
+            lastInspectionOk = deployInspectionStore.read(prefs, profile).inspectionOk,
+            lastInspectionArch = deployInspectionStore.read(prefs, profile).arch,
+            lastInspectionServiceStatus = deployInspectionStore.read(prefs, profile).serviceStatus,
+            lastInspectionVersion = deployInspectionStore.read(prefs, profile).installedVersion,
+            lastInspectionMessage = deployInspectionStore.read(prefs, profile).message,
+            lastPanelAvailable = deployInspectionStore.read(prefs, profile).panelAvailable,
             sshPrivateKey = readSecret(prefs, SSH_PRIVATE_KEY_ENCRYPTED, SSH_PRIVATE_KEY, profile),
             sshKeyPassphrase = readSecret(prefs, SSH_KEY_PASSPHRASE_ENCRYPTED, SSH_KEY_PASSPHRASE, profile),
             sshCertificate = readSecret(prefs, SSH_CERTIFICATE_ENCRYPTED, SSH_CERTIFICATE, profile),
@@ -714,11 +708,12 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         (ShodConstants.Profiles.MIN_INDEX..ShodConstants.Profiles.MAX_INDEX).mapNotNull { p ->
             val ip = prefs[getProfileKey(DEPLOY_IP, p)]?.trim().orEmpty()
             if (ip.isEmpty()) return@mapNotNull null
-            val configured = prefs[getProfileKey(DEPLOY_SERVER_CONFIGURED, p)] ?: false
-            val inspectionOk = prefs[getProfileKey(DEPLOY_LAST_INSPECTION_OK, p)] ?: false
-            val serviceStatus = prefs[getProfileKey(DEPLOY_LAST_INSPECTION_SERVICE, p)] ?: ""
-            val installedVersion = prefs[getProfileKey(DEPLOY_LAST_INSPECTION_VERSION, p)] ?: ""
-            val panelAvailable = prefs[getProfileKey(DEPLOY_LAST_INSPECTION_PANEL, p)] ?: false
+            val inspection = deployInspectionStore.read(prefs, p)
+            val configured = inspection.serverConfigured
+            val inspectionOk = inspection.inspectionOk
+            val serviceStatus = inspection.serviceStatus
+            val installedVersion = inspection.installedVersion
+            val panelAvailable = inspection.panelAvailable
             val deployed = configured || (
                 inspectionOk && (
                     serviceStatus in listOf("systemd_active", "docker_active", "process_running") ||
@@ -1607,14 +1602,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
             prefs.remove(getProfileKey(DOCKER_INSTALL, profile))
             prefs.remove(getProfileKey(DEPLOY_SECRET_PATH_ENABLED, profile))
             prefs.remove(getProfileKey(DEPLOY_SECRET_PATH_UUID, profile))
-            prefs.remove(getProfileKey(DEPLOY_SERVER_CONFIGURED, profile))
-            prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_AT, profile))
-            prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_OK, profile))
-            prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_ARCH, profile))
-            prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_SERVICE, profile))
-            prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_VERSION, profile))
-            prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_MESSAGE, profile))
-            prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_PANEL, profile))
+            deployInspectionStore.clearServerConfigured(prefs, profile)
             prefs.remove(getProfileKey(SSH_PRIVATE_KEY, profile))
             prefs.remove(getProfileKey(SSH_PRIVATE_KEY_ENCRYPTED, profile))
             prefs.remove(getProfileKey(SSH_KEY_PASSPHRASE, profile))
@@ -1640,7 +1628,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
 
     internal suspend fun ensureDeployProfileDefaults(profile: Int) {
         dataStore.edit { prefs ->
-            if (prefs[getProfileKey(DEPLOY_SERVER_CONFIGURED, profile)] == true) return@edit
+            if (deployInspectionStore.read(prefs, profile).serverConfigured) return@edit
             if (readSecret(prefs, DEPLOY_MAIN_PASSWORD_ENCRYPTED, DEPLOY_MAIN_PASSWORD, profile).isBlank())
                 prefs.putSecret(DEPLOY_MAIN_PASSWORD_ENCRYPTED, DEPLOY_MAIN_PASSWORD, com.shod.client.ui.utils.generate16CharPassword(), profile)
             if (prefs[getProfileKey(DEPLOY_WEB_LOGIN, profile)].isNullOrBlank()) prefs[getProfileKey(DEPLOY_WEB_LOGIN, profile)] = "admin"
@@ -1695,7 +1683,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
                 val isNew = peer.isBlank()
                 val oldPassword = readConnectionPasswordState(prefs, target).value
                 val updatePassword = isNew || oldPassword.isBlank() ||
-                    (target == profile && prefs[getProfileKey(DEPLOY_SERVER_CONFIGURED, profile)] != true)
+                    (target == profile && !deployInspectionStore.read(prefs, profile).serverConfigured)
                 if (peer != draft.ip.trim() ||
                     (prefs[getProfileKey(SERVER_PEER_PORT, target)] ?: ShodConstants.Network.DEFAULT_SERVER_PEER_PORT) != draft.serverPeerPort ||
                     (updatePassword && oldPassword != mainPassword)) {
@@ -1718,14 +1706,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
                 }
             }
             if (prefs[getProfileKey(DEPLOY_IP, profile)] != draft.ip.trim()) {
-                prefs[getProfileKey(DEPLOY_SERVER_CONFIGURED, profile)] = false
-                prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_AT, profile))
-                prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_OK, profile))
-                prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_ARCH, profile))
-                prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_SERVICE, profile))
-                prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_VERSION, profile))
-                prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_MESSAGE, profile))
-                prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_PANEL, profile))
+                deployInspectionStore.setServerConfigured(prefs, profile, false)
             }
             prefs[getProfileKey(DEPLOY_IP, profile)] = draft.ip.trim()
             prefs[getProfileKey(DEPLOY_SERVER_NAME, profile)] = draft.serverName.trim()
@@ -1782,13 +1763,6 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
             prefs[getProfileKey(DEPLOY_IP, profile)] = ip
             if (previous != ip) {
                 prefs[getProfileKey(DEPLOY_SERVER_CONFIGURED, profile)] = false
-                prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_AT, profile))
-                prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_OK, profile))
-                prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_ARCH, profile))
-                prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_SERVICE, profile))
-                prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_VERSION, profile))
-                prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_MESSAGE, profile))
-                prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_PANEL, profile))
             }
         }
     }
@@ -1796,7 +1770,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     suspend fun saveServerConfigured(configured: Boolean) {
         val profile = activeProfile.first()
         dataStore.edit { prefs ->
-            prefs[getProfileKey(DEPLOY_SERVER_CONFIGURED, profile)] = configured
+            deployInspectionStore.setServerConfigured(prefs, profile, configured)
         }
     }
 
@@ -1811,26 +1785,13 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     ) {
         dataStore.edit { prefs ->
             val profile = prefs[ACTIVE_PROFILE] ?: 0
-            prefs[getProfileKey(DEPLOY_LAST_INSPECTION_AT, profile)] = checkedAtMs
-            prefs[getProfileKey(DEPLOY_LAST_INSPECTION_OK, profile)] = true
-            prefs[getProfileKey(DEPLOY_LAST_INSPECTION_ARCH, profile)] = arch
-            prefs[getProfileKey(DEPLOY_LAST_INSPECTION_SERVICE, profile)] = serviceStatus
-            prefs[getProfileKey(DEPLOY_LAST_INSPECTION_VERSION, profile)] = installedVersion
-            prefs[getProfileKey(DEPLOY_LAST_INSPECTION_MESSAGE, profile)] = message
-            prefs[getProfileKey(DEPLOY_LAST_INSPECTION_PANEL, profile)] = panelAvailable
+            deployInspectionStore.saveInspection(prefs, profile, checkedAtMs, arch, serviceStatus, installedVersion, message, panelAvailable)
         }
     }
 
     suspend fun clearDeployInspection() {
         dataStore.edit { prefs ->
             val profile = prefs[ACTIVE_PROFILE] ?: 0
-            prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_AT, profile))
-            prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_OK, profile))
-            prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_ARCH, profile))
-            prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_SERVICE, profile))
-            prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_VERSION, profile))
-            prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_MESSAGE, profile))
-            prefs.remove(getProfileKey(DEPLOY_LAST_INSPECTION_PANEL, profile))
         }
     }
 
