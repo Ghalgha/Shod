@@ -2,7 +2,6 @@ package com.shod.client
 
 import com.shod.client.network.connectivity.PhysicalNetworkTracker
 import com.shod.client.network.connectivity.PhysicalNetworkTransition
-import com.shod.client.network.connectivity.PhysicalNetworkPauseReason
 import com.shod.client.network.connectivity.physicalNetworkPauseReason
 import com.shod.client.network.connectivity.isEligiblePhysicalNetwork
 import com.shod.client.vpn.power.BatterySaver
@@ -10,14 +9,11 @@ import com.shod.client.network.wifi.policy.WifiNetworkListMode
 import com.shod.client.network.wifi.policy.normalizeWifiSsid
 import com.shod.client.network.wifi.policy.runWifiAutoPauseTransition
 import com.shod.client.network.wifi.policy.completeWifiAutoPause
-import com.shod.client.network.wifi.policy.tunnelPowerIsOn
 import com.shod.client.network.wifi.policy.wifiAutoPauseAction
 import com.shod.client.network.wifi.policy.effectiveWifiAutoPauseConnection
-import com.shod.client.network.wifi.policy.dispatchTunnelStop
 import com.shod.client.platform.android.network.wifi.WifiDiscovery
 import com.shod.client.platform.android.network.wifi.currentWifiSsid
 import com.shod.client.platform.android.network.wifi.hasWifiSsidAccess
-import com.shod.client.platform.android.network.wifi.hasWifiSsidPermission
 
 import android.annotation.SuppressLint
 import com.shod.client.vpn.lifecycle.TunnelServiceInputPolicy
