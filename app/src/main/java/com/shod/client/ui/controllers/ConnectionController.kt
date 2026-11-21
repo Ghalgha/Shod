@@ -70,6 +70,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.Locale
 
+import com.shod.client.integration.vk.hash.VkHashValidationCodec
 @Composable
 internal fun ConnectionController(
     settingsStore: SettingsStore,
