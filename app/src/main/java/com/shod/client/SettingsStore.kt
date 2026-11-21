@@ -1603,6 +1603,7 @@ private val DEPLOY_SECRET_PATH_UUID = stringPreferencesKey("deploy_secret_path_u
             prefs.remove(getProfileKey(DEPLOY_SECRET_PATH_ENABLED, profile))
             prefs.remove(getProfileKey(DEPLOY_SECRET_PATH_UUID, profile))
             deployInspectionStore.clearServerConfigured(prefs, profile)
+            deployInspectionStore.clearInspection(prefs, profile)
             prefs.remove(getProfileKey(SSH_PRIVATE_KEY, profile))
             prefs.remove(getProfileKey(SSH_PRIVATE_KEY_ENCRYPTED, profile))
             prefs.remove(getProfileKey(SSH_KEY_PASSPHRASE, profile))
@@ -1762,7 +1763,8 @@ private val DEPLOY_SECRET_PATH_UUID = stringPreferencesKey("deploy_secret_path_u
             val previous = prefs[getProfileKey(DEPLOY_IP, profile)]
             prefs[getProfileKey(DEPLOY_IP, profile)] = ip
             if (previous != ip) {
-                prefs[getProfileKey(DEPLOY_SERVER_CONFIGURED, profile)] = false
+                deployInspectionStore.setServerConfigured(prefs, profile, false)
+                deployInspectionStore.clearInspection(prefs, profile)
             }
         }
     }
@@ -1792,6 +1794,7 @@ private val DEPLOY_SECRET_PATH_UUID = stringPreferencesKey("deploy_secret_path_u
     suspend fun clearDeployInspection() {
         dataStore.edit { prefs ->
             val profile = prefs[ACTIVE_PROFILE] ?: 0
+            deployInspectionStore.clearInspection(prefs, profile)
         }
     }
 
