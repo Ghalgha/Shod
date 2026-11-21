@@ -17,7 +17,6 @@ import com.shod.client.settings.model.ProfileConnectionSnapshot
 import com.shod.client.settings.model.ProfileSubscriptionInfo
 import com.shod.client.settings.model.SubscriptionMeta
 import com.shod.client.settings.model.TunnelAuthSnapshot
-import com.shod.client.settings.model.TunnelScreenSnapshot
 import com.shod.client.settings.profile.ProfileConnectionStore
 import com.shod.client.settings.profile.ProfileCursorStore
 import com.shod.client.settings.profile.ProfileLifecycleStore
