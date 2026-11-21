@@ -1,5 +1,7 @@
 package com.shod.client.vpn.diagnostics.probe
 
+import com.shod.client.vpn.session.newTunnelSessionId
+
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -137,7 +139,7 @@ internal object ProfileTunnelProbe {
                 return@coroutineScope ProfilePingResult.Failure("Нет VK-хешей")
             }
 
-            val sessionSalt = com.shod.client.newTunnelSessionId()
+            val sessionSalt = newTunnelSessionId()
             val udsName = "shod_probe_$sessionSalt"
             val command = ProfileProbeProcessCommand.build(
                 binaryPath = binary.absolutePath,
