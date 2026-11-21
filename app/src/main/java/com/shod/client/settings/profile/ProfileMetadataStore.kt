@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 /**
@@ -27,6 +28,7 @@ internal class ProfileMetadataStore(
     private val profileNameKey = stringPreferencesKey("profile_name")
     private val peerKey = stringPreferencesKey("peer")
     private val participantLinkKey = stringPreferencesKey("shod_link")
+    private val deployIpKey = stringPreferencesKey("deploy_ip")
 
     val profileNames: Flow<Map<Int, String>> = dataStore.data.map { preferences ->
         (minimumProfile..maximumProfile).associateWith { profile ->
@@ -43,6 +45,24 @@ internal class ProfileMetadataStore(
                 !preferences[ProfilePreferenceKeys.forProfile(participantLinkKey, profile)].isNullOrBlank()
         }
     }
+
+    /** Matches the legacy free-slot search, including deploy IP occupancy. */
+    suspend fun findFirstFreeProfile(): Int? = dataStore.data.map { preferences ->
+        (minimumProfile..maximumProfile).firstOrNull { profile ->
+            preferences[ProfilePreferenceKeys.forProfile(peerKey, profile)].isNullOrBlank() &&
+                preferences[ProfilePreferenceKeys.forProfile(participantLinkKey, profile)].isNullOrBlank() &&
+                preferences[ProfilePreferenceKeys.forProfile(deployIpKey, profile)].isNullOrBlank()
+        }
+    }.first()
+
+    /** VPS allocation uses the same slot-occupancy rule as connection allocation. */
+    suspend fun findFirstFreeDeployProfile(): Int? = dataStore.data.map { preferences ->
+        (minimumProfile..maximumProfile).firstOrNull { profile ->
+            preferences[ProfilePreferenceKeys.forProfile(peerKey, profile)].isNullOrBlank() &&
+                preferences[ProfilePreferenceKeys.forProfile(participantLinkKey, profile)].isNullOrBlank() &&
+                preferences[ProfilePreferenceKeys.forProfile(deployIpKey, profile)].isNullOrBlank()
+        }
+    }.first()
 
     suspend fun saveProfileName(profile: Int, name: String) {
         ProfileSelectionPolicy.requireValid(profile, minimumProfile, maximumProfile)
