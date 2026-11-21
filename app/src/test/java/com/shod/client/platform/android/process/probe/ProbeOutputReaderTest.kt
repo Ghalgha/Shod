@@ -29,7 +29,7 @@ class ProbeOutputReaderTest {
     fun parsesCompleteAndFinalUtf8Lines() = runTest {
         val lines = mutableListOf<String>()
         readProbeOutput(
-            ByteArrayInputStream("TUNCONF:1\\r\\nготово".toByteArray()),
+            ByteArrayInputStream("TUNCONF:1\r\nготово".toByteArray()),
             { false },
             lines::add
         )
