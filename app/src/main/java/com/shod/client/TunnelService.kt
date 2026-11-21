@@ -567,7 +567,7 @@ class TunnelService : Service() {
         return when (val mode = forcedMode ?: store.vkHashMode.first()) {
             ShodConstants.VkAutoHash.MODE_AUTO_API -> {
                 val token = accessTokenOverride ?: store.vkAccessToken.first()
-                val result = VkAutoCallsManager.startAutoCalls(
+                val result = TunnelManager.vkAutoCallsManager.startAutoCalls(
                     applicationContext,
                     token,
                     workersPerHash,
@@ -712,7 +712,7 @@ class TunnelService : Service() {
             TunnelManager.suspendForNoNetwork(physicalNetworkPauseReason(isAirplaneModeOn()))
         }
         TunnelManager.scope.launch(Dispatchers.Main) {
-            VkAutoCallsManager.replayPendingLogs()
+            TunnelManager.vkAutoCallsManager.replayPendingLogs()
         }
         startStatsUpdater()
     }
@@ -1049,7 +1049,7 @@ class TunnelService : Service() {
         resourcesReleased = true
         stopWifiAutoPauseWatch()
         CaptchaWebViewManager.onTunnelStop()
-        if (finishVkCalls) VkAutoCallsManager.finishActiveCalls()
+        if (finishVkCalls) TunnelManager.vkAutoCallsManager.finishActiveCalls()
         TunnelManager.stop(finishVkCalls, notifyController = false)
         releaseWakeLock()
         releaseWifiLock()

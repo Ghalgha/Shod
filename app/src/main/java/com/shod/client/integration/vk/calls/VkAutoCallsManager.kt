@@ -1,6 +1,7 @@
 package com.shod.client.integration.vk.calls
 import android.content.Context
 import android.os.SystemClock
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
@@ -13,15 +14,18 @@ import kotlinx.coroutines.withTimeoutOrNull
 import java.security.MessageDigest
 import java.util.concurrent.CopyOnWriteArrayList
 
-import com.shod.client.SettingsStore
 import com.shod.client.ShodConstants
-import com.shod.client.TunnelManager
 import com.shod.client.WorkerCountPolicy
 import com.shod.client.integration.vk.calls.api.VkApi
 import com.shod.client.integration.vk.calls.api.VkApiResult
 import com.shod.client.integration.vk.calls.policy.VkRequestPacer
 import com.shod.client.integration.vk.calls.policy.runVkCallAttempts
-object VkAutoCallsManager {
+internal class VkAutoCallsManager(
+    private val scope: CoroutineScope,
+    private val isLoggingEnabled: () -> Boolean,
+    private val updateLog: (String, String, Int, Boolean) -> Unit,
+    private val clearStoredToken: suspend (Context) -> Unit,
+) {
     data class StartResult(
         val hashes: String,
         val requestedCalls: Int,
@@ -106,7 +110,7 @@ object VkAutoCallsManager {
                     )
                     if (VkApi.isTokenInvalid(result)) {
                         if (clearStoredTokenOnInvalid) {
-                            runCatching { SettingsStore(context).clearVkAccessToken() }
+                            runCatching { clearStoredToken(context) }
                         }
                         log(
                             "vk_token_invalidated",
@@ -162,7 +166,7 @@ object VkAutoCallsManager {
             snapshot
         }
         copy.forEach { entry ->
-            TunnelManager.updateLog(entry.key, entry.message, entry.priority, entry.isError)
+            updateLog(entry.key, entry.message, entry.priority, entry.isError)
         }
     }
 
@@ -174,7 +178,7 @@ object VkAutoCallsManager {
         activeToken = null
         if (token.isNullOrBlank()) return
 
-        TunnelManager.scope.launch(Dispatchers.IO + NonCancellable) {
+        scope.launch(Dispatchers.IO + NonCancellable) {
             withTimeoutOrNull(ShodConstants.VkAutoHash.FINISH_CALLS_TIMEOUT_MS) {
                 finishCalls(calls, token, logResults = true)
             }
@@ -194,7 +198,7 @@ object VkAutoCallsManager {
         if (logResults) {
             for ((_, result) in results) {
                 when (result) {
-                    is VkApiResult.Ok<*> -> TunnelManager.updateLog(
+                    is VkApiResult.Ok<*> -> updateLog(
                         "vk_auto_call_finished",
                         "[OK] Звонок VK завершён",
                         40,
@@ -220,7 +224,7 @@ object VkAutoCallsManager {
     }
 
     private fun log(key: String, message: String, priority: Int, isError: Boolean) {
-        if (!TunnelManager.isLoggingEnabled) return
+        if (!isLoggingEnabled()) return
         TunnelManager.updateLog(key, message, priority, isError)
         synchronized(pendingLogsLock) {
             pendingLogs.add(PendingLog(key, message, priority, isError))

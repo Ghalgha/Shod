@@ -35,7 +35,6 @@ import com.shod.client.vpn.lifecycle.TunnelLifecycleTicket
 import com.shod.client.integration.vk.captcha.android.CaptchaWebViewManager
 import com.shod.client.integration.vk.captcha.android.ManlCaptchaWebViewManager
 
-import com.shod.client.integration.vk.calls.VkAutoCallsManager
 import com.shod.client.integration.vk.policy.shouldReplaceUnavailableVkHash
 typealias LogLevel = com.shod.client.vpn.diagnostics.LogLevel
 typealias LogEntry = com.shod.client.vpn.diagnostics.LogEntry
@@ -58,6 +57,15 @@ object TunnelManager {
     internal var ownerHashes: List<String> = emptyList()
 
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    internal val vkAutoCallsManager by lazy {
+        VkAutoCallsManager(
+            scope = scope,
+            isLoggingEnabled = { isLoggingEnabled },
+            updateLog = { key, message, priority, isError -> updateLog(key, message, priority, isError) },
+            clearStoredToken = { context -> SettingsStore(context).clearVkAccessToken() },
+        )
+    }
 
     @Volatile
     var activeScope: CoroutineScope = scope
@@ -1514,7 +1522,7 @@ object TunnelManager {
                             ?: runCatching { targetProcess.exitValue() }.getOrNull()
                         val shouldRestart = lifecycleWantsRestart
                         if (lifecycleWantsRestart) {
-                            VkAutoCallsManager.finishActiveCalls()
+                            vkAutoCallsManager.finishActiveCalls()
                         }
                         val restartContext = activeContext()
                         val restartParams = if (restartContext == null) {
