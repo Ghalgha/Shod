@@ -1,5 +1,10 @@
 package com.shod.client
 
+import com.shod.client.network.connectivity.PhysicalNetworkTracker
+import com.shod.client.network.connectivity.PhysicalNetworkTransition
+import com.shod.client.network.connectivity.PhysicalNetworkPauseReason
+import com.shod.client.network.connectivity.physicalNetworkPauseReason
+import com.shod.client.network.connectivity.isEligiblePhysicalNetwork
 import com.shod.client.vpn.power.BatterySaver
 import com.shod.client.network.wifi.policy.WifiNetworkListMode
 import com.shod.client.network.wifi.policy.normalizeWifiSsid
