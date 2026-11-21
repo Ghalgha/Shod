@@ -458,6 +458,7 @@ private val DEPLOY_SECRET_PATH_UUID = stringPreferencesKey("deploy_secret_path_u
     }
     internal val deploySettingsSnapshot: Flow<DeploySettingsSnapshot> = dataStore.data.map { prefs ->
         val profile = prefs[ACTIVE_PROFILE] ?: 0
+        val inspection = deployInspectionStore.read(prefs, profile)
         DeploySettingsSnapshot(
             profile = profile,
             ip = prefs[getProfileKey(DEPLOY_IP, profile)] ?: "",
@@ -479,14 +480,14 @@ private val DEPLOY_SECRET_PATH_UUID = stringPreferencesKey("deploy_secret_path_u
             dockerInstall = prefs[getProfileKey(DOCKER_INSTALL, profile)] ?: false,
             secretPathEnabled = true,
             secretPathUuid = prefs[getProfileKey(DEPLOY_SECRET_PATH_UUID, profile)] ?: "",
-            serverConfigured = deployInspectionStore.read(prefs, profile).serverConfigured,
-            lastInspectionAtMs = deployInspectionStore.read(prefs, profile).checkedAtMs,
-            lastInspectionOk = deployInspectionStore.read(prefs, profile).inspectionOk,
-            lastInspectionArch = deployInspectionStore.read(prefs, profile).arch,
-            lastInspectionServiceStatus = deployInspectionStore.read(prefs, profile).serviceStatus,
-            lastInspectionVersion = deployInspectionStore.read(prefs, profile).installedVersion,
-            lastInspectionMessage = deployInspectionStore.read(prefs, profile).message,
-            lastPanelAvailable = deployInspectionStore.read(prefs, profile).panelAvailable,
+            serverConfigured = inspection.serverConfigured,
+            lastInspectionAtMs = inspection.checkedAtMs,
+            lastInspectionOk = inspection.inspectionOk,
+            lastInspectionArch = inspection.arch,
+            lastInspectionServiceStatus = inspection.serviceStatus,
+            lastInspectionVersion = inspection.installedVersion,
+            lastInspectionMessage = inspection.message,
+            lastPanelAvailable = inspection.panelAvailable,
             sshPrivateKey = readSecret(prefs, SSH_PRIVATE_KEY_ENCRYPTED, SSH_PRIVATE_KEY, profile),
             sshKeyPassphrase = readSecret(prefs, SSH_KEY_PASSPHRASE_ENCRYPTED, SSH_KEY_PASSPHRASE, profile),
             sshCertificate = readSecret(prefs, SSH_CERTIFICATE_ENCRYPTED, SSH_CERTIFICATE, profile),
@@ -1708,6 +1709,7 @@ private val DEPLOY_SECRET_PATH_UUID = stringPreferencesKey("deploy_secret_path_u
             }
             if (prefs[getProfileKey(DEPLOY_IP, profile)] != draft.ip.trim()) {
                 deployInspectionStore.setServerConfigured(prefs, profile, false)
+                deployInspectionStore.clearInspection(prefs, profile)
             }
             prefs[getProfileKey(DEPLOY_IP, profile)] = draft.ip.trim()
             prefs[getProfileKey(DEPLOY_SERVER_NAME, profile)] = draft.serverName.trim()
