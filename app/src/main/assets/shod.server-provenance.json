@@ -1,0 +1,40 @@
+{
+  "schema": "shod.server-asset-provenance.v3",
+  "marker": "Shod_RUST_SERVER_PRODUCTION_V1",
+  "producer": "rust-server/build_linux.bat",
+  "runtime": "rust",
+  "package": "shod",
+  "repositoryPackageVersion": "0.1.0",
+  "artifactVersion": "2.5.3",
+  "wireProtocolRevision": "Shod-WIRE-3",
+  "buildInputSha256": "94F01E770EAB8BAF8DA5C6E10578635EF9154D160A5B5F3643835F4C4494B979",
+  "cargoTomlSha256": "3E9936FAE6E7ECA46CFA0F1594363617EAA8D918545C93BE8A9DF38B2D20BBB4",
+  "cargoLockSha256": "EDF2296DB27C3C9B50B38A892165E16127E32E581C978E0BF4FAE33488686697",
+  "artifacts": [
+    {
+      "assetName": "shod-linux-amd64",
+      "target": "x86_64-unknown-linux-musl",
+      "elfClass": 2,
+      "elfMachine": 62,
+      "binarySize": 11448920,
+      "binarySha256": "D693305948209EF3631A96395728D35EFBCEAF6CDA1E8EB1BF2EAD9DCE652AAF"
+    },
+    {
+      "assetName": "shod-linux-arm64",
+      "target": "aarch64-unknown-linux-musl",
+      "elfClass": 2,
+      "elfMachine": 183,
+      "binarySize": 9737976,
+      "binarySha256": "DA8DDAB2B2D830CB8411C55910B30AFFAB6696A47B4971CAE7400CB4D0F790E5"
+    },
+    {
+      "assetName": "shod-linux-armv7",
+      "target": "armv7-unknown-linux-musleabihf",
+      "elfClass": 1,
+      "elfMachine": 40,
+      "binarySize": 9156968,
+      "binarySha256": "39F7F2AE71190F3A73E9732EDA34F0F00552FB374D9417D9E139DA7F64A0F3D7"
+    }
+  ],
+  "generatedAtUtc": "2026-11-07T16:37:32.8990550Z"
+}
