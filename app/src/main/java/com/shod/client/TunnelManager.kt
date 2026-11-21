@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicLong
 import org.json.JSONObject
 
 import com.shod.client.vpn.diagnostics.TunnelLogSanitizer
-import androidx.compose.runtime.mutableStateListOf
+import com.shod.client.vpn.diagnostics.TunnelLogStore
 
 typealias LogLevel = com.shod.client.vpn.diagnostics.LogLevel
 typealias LogEntry = com.shod.client.vpn.diagnostics.LogEntry
