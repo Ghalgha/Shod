@@ -179,7 +179,6 @@ internal fun DeployController(
                 if (result.successful) {
                     settingsStore.saveDeployedServer(savedSettings.profile, host.trim(), action.peerPort, action.webPort)
                     settingsStore.saveConnectionPassword(mainPassword, settingsStore.linkedConnectionProfile(savedSettings.profile))
-                    settingsStore.savePorts(action.peerPort, action.webPort, effective.ssh.toString())
                     report(when (mode) {
                         DeployActionMode.Install -> "Сервер установлен"
                         DeployActionMode.Update -> "Сервер обновлён"
