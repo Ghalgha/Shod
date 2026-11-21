@@ -36,6 +36,7 @@ class ProfileProbeProcessCommandTest {
         )
         assertEquals("shod_probe_session-1", command[command.indexOf("-tun-uds") + 1])
         assertFalse(command.contains("shod_tun_uds"))
+        assertEquals("${ShodConstants.Network.LOCAL_LISTEN_HOST}:0", command[command.indexOf("-listen") + 1])
         assertEquals("hash-a", command[command.indexOf("-vk") + 1])
     }
 
