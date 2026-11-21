@@ -116,14 +116,14 @@
         </service>
 
         <activity
-            android:name=".ManlCaptchaActivity"
+            android:name=".integration.vk.captcha.android.ManlCaptchaActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
 
         <receiver
-            android:name=".CaptchaCancelReceiver"
+            android:name=".integration.vk.captcha.android.CaptchaCancelReceiver"
             android:exported="false" />
 
         <receiver
