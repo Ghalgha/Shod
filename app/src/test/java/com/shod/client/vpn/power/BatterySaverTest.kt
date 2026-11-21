@@ -1,6 +1,5 @@
 package com.shod.client.vpn.power
 
-import com.shod.client.vpn.power.BatterySaver
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
