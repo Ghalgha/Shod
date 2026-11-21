@@ -3,6 +3,8 @@ package com.shod.client.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -112,6 +114,56 @@ fun RoutingScreen(
             blocked = serverActive,
             onClick = { showIpEditor = true },
         )
+
+        Card {
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Text("Режим маршрутизации приложений", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                Text(
+                    if (isWhitelist) "Через VPN проходят только выбранные приложения."
+                    else "Выбранные приложения обходят VPN.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (isWhitelist) {
+                        OutlinedButton(
+                            onClick = {
+                                scope.launch {
+                                    settingsStore.saveAppRoutingLists(
+                                        appBlacklist.sorted().joinToString(","),
+                                        appWhitelist.sorted().joinToString(","),
+                                        false,
+                                    )
+                                    TunnelManager.reloadVpn()
+                                }
+                            },
+                            enabled = !serverActive,
+                            modifier = Modifier.weight(1f),
+                        ) { Text("Исключения") }
+                        Button(onClick = {}, enabled = false, modifier = Modifier.weight(1f)) { Text("Только выбранные") }
+                    } else {
+                        Button(onClick = {}, enabled = false, modifier = Modifier.weight(1f)) { Text("Исключения") }
+                        OutlinedButton(
+                            onClick = {
+                                scope.launch {
+                                    settingsStore.saveAppRoutingLists(
+                                        appBlacklist.sorted().joinToString(","),
+                                        appWhitelist.sorted().joinToString(","),
+                                        true,
+                                    )
+                                    TunnelManager.reloadVpn()
+                                }
+                            },
+                            enabled = !serverActive,
+                            modifier = Modifier.weight(1f),
+                        ) { Text("Только выбранные") }
+                    }
+                }
+            }
+        }
 
         RoutingSummaryCard(
             title = "Маршрутизация приложений",
