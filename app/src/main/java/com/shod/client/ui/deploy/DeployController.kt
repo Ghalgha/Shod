@@ -16,6 +16,7 @@ import androidx.core.net.toUri
 import com.shod.client.BuildConfig
 import com.shod.client.settings.model.DeploySettingsSnapshot
 import com.shod.client.SettingsStore
+import com.shod.client.TunnelService
 import com.shod.client.ShodConstants
 import com.shod.client.deploy.execution.DeployActionMode
 import com.shod.client.deploy.plan.PlanAction
@@ -160,6 +161,7 @@ internal fun DeployController(
         val effective = ports()
         scope.launch {
             try {
+                context.startForegroundService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_START" })
                 val mode = when (action.kind) {
                     PlanKind.INSTALL -> DeployActionMode.Install
                     PlanKind.UPDATE -> DeployActionMode.Update
@@ -199,6 +201,9 @@ internal fun DeployController(
             } catch (error: Exception) {
                 report(error.message ?: "Ошибка операции")
             } finally {
+                runCatching {
+                    context.startService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_STOP" })
+                }
                 busy = false
             }
         }
@@ -356,6 +361,7 @@ internal fun DeployController(
                             return@runInspection
                         }
                         try {
+                            context.startForegroundService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_START" })
                             val result = coordinator().uninstall(
                                 host = host.trim(),
                                 user = login.trim(),
@@ -371,6 +377,10 @@ internal fun DeployController(
                             throw cancelled
                         } catch (error: Exception) {
                             report(error.message ?: "Ошибка удаления")
+                        } finally {
+                            runCatching {
+                                context.startService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_STOP" })
+                            }
                         }
                     }
                 }) { Text("Удалить") }
