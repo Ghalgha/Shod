@@ -9,21 +9,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import java.util.UUID
-import org.json.JSONObject
-
-private fun <T> Flow<T>.onIo(): Flow<T> = flowOn(Dispatchers.IO)
-
-
 import com.shod.client.integration.vk.storage.SavedVkAccounts
 import com.shod.client.settings.model.DeployServerInfo
 import com.shod.client.settings.model.DeploySettingsSnapshot
@@ -41,6 +26,17 @@ import com.shod.client.settings.storage.DeployScopedDataStore
 import com.shod.client.settings.storage.ReadOnlyProfileDataStore
 import com.shod.client.settings.storage.settingsDataStore
 import com.shod.client.settings.subscription.SubscriptionMetaCodec
+import java.util.UUID
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 private fun <T> Flow<T>.onIo(): Flow<T> = flowOn(Dispatchers.IO)
 
