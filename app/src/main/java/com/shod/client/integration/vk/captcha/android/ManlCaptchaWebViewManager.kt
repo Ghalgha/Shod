@@ -1,6 +1,6 @@
 package com.shod.client.integration.vk.captcha.android
 
-import com.shod.client.platform.android.activity.MainActivity
+import com.shod.client.platform.android.process.AppForegroundState
 import com.shod.client.ShodConstants
 import com.shod.client.integration.vk.captcha.android.CaptchaCancelReceiver
 
@@ -55,7 +55,7 @@ object ManlCaptchaWebViewManager {
     private const val CHANNEL_ID = ShodConstants.Notifications.CAPTCHA_CHANNEL_ID
 
     private fun showCaptchaNotification(context: Context, redirectUri: String) {
-        if (MainActivity.isForeground) return
+        if (AppForegroundState.isForeground) return
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
