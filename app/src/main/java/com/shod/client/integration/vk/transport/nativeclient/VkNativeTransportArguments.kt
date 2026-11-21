@@ -1,12 +1,25 @@
 package com.shod.client.integration.vk.transport.nativeclient
 
+import android.util.Base64
 import com.shod.client.vpn.model.TunnelParams
+import org.json.JSONObject
 
 /**
  * Builds the VK call/ TURN transport arguments consumed by the native tunnel client.
  * Process lifecycle and generic TUN/routing arguments remain in TunnelManager.
  */
 internal object VkNativeTransportArguments {
+    fun buildJsBootstrapLine(accessToken: String): String {
+        val payload = JSONObject()
+            .put("token", accessToken)
+            .toString()
+        val encoded = Base64.encodeToString(
+            payload.toByteArray(Charsets.UTF_8),
+            Base64.NO_WRAP,
+        )
+        return "VK_JS_BOOTSTRAP:$encoded\\n"
+    }
+
     fun build(
         params: TunnelParams,
         hashes: List<String>,
