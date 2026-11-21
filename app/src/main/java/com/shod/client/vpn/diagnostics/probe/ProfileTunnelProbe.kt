@@ -36,8 +36,6 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import org.json.JSONObject
 import java.io.File
-import java.net.Inet4Address
-import java.net.InetAddress
 import java.security.SecureRandom
 import java.util.concurrent.TimeUnit
 
@@ -217,12 +215,12 @@ internal object ProfileTunnelProbe {
             }
 
             val parts = config.await().removePrefix("TUNCONF:").split(':')
-            val sourceIp = InetAddress.getByName(parts.getOrNull(0).orEmpty()) as? Inet4Address
+            val sourceIp = parseIpv4Literal(parts.getOrNull(0).orEmpty())
                 ?: return@coroutineScope ProfilePingResult.Failure("Неподдерживаемый адрес туннеля")
             val dnsIp = parts.getOrNull(1)
                 ?.split(',')
                 ?.firstOrNull()
-                ?.let { address -> InetAddress.getByName(address) } as? Inet4Address
+                ?.let(::parseIpv4Literal)
                 ?: return@coroutineScope ProfilePingResult.Failure("Сервер не передал IPv4 DNS")
 
             val tun = ProbeTunTransport()
