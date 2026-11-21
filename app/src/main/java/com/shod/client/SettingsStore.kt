@@ -32,6 +32,10 @@ import com.shod.client.settings.storage.ReadOnlyProfileDataStore
 import com.shod.client.settings.storage.settingsDataStore
 import com.shod.client.settings.subscription.ProfileSubscriptionStore
 import com.shod.client.settings.subscription.SubscriptionMetaCodec
+import com.shod.client.network.wifi.policy.WifiNetworkListMode
+import com.shod.client.network.wifi.preferences.WifiPreferences
+import com.shod.client.network.wifi.preferences.WifiPreferenceStore
+import com.shod.client.network.wifi.policy.decodeWifiSsids
 import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -164,9 +168,6 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         private val TCP_TRANSPORT_RISK_ACKNOWLEDGED = booleanPreferencesKey("tcp_transport_risk_acknowledged")
         private val BATTERY_OPTIMIZATION_PROMPT_HANDLED =
             booleanPreferencesKey("battery_optimization_prompt_handled")
-        private val AUTO_PAUSE_ON_WIFI = booleanPreferencesKey("auto_pause_on_wifi")
-        private val WIFI_NETWORK_LIST_MODE = stringPreferencesKey("wifi_network_list_mode")
-        private val WIFI_NETWORK_LIST_SSIDS = stringPreferencesKey("wifi_network_list_ssids")
         private val DOMAIN_ROUTING_ENABLED = booleanPreferencesKey("domain_routing_enabled")
         private val DOMAIN_IS_WHITELIST = booleanPreferencesKey("domain_is_whitelist")
         private val EXCLUDE_RU_ZONES_ENABLED = booleanPreferencesKey("exclude_ru_zones_enabled")
@@ -1176,7 +1177,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         prefs[TCP_TRANSPORT_RISK_ACKNOWLEDGED] ?: false
     }
     val autoPauseOnWifi: Flow<Boolean> = dataStore.data.map { prefs ->
-        prefs[AUTO_PAUSE_ON_WIFI] ?: false
+        WifiPreferenceStore.read(prefs).enabled
     }
     internal val wifiPreferences: Flow<WifiPreferences> = dataStore.data.map(WifiPreferenceStore::read).distinctUntilChanged()
     internal suspend fun rememberWifiNetwork(ssid: String, expectedMode: WifiNetworkListMode? = null,
@@ -1191,7 +1192,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         WifiPreferenceStore.read(prefs).mode.storedValue
     }
     val wifiNetworkListSsids: Flow<String> = dataStore.data.map { prefs ->
-        prefs[WIFI_NETWORK_LIST_SSIDS] ?: ""
+        WifiPreferenceStore.read(prefs).selected.let { com.shod.client.network.wifi.policy.encodeWifiSsids(it) }
     }
     suspend fun isBatteryOptimizationPromptHandled(): Boolean =
         dataStore.data.first()[BATTERY_OPTIMIZATION_PROMPT_HANDLED] ?: false
@@ -2082,19 +2083,19 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
 
     suspend fun saveAutoPauseOnWifi(enabled: Boolean) {
         dataStore.edit { prefs ->
-            prefs[AUTO_PAUSE_ON_WIFI] = enabled
+            prefs[WifiPreferenceStore.enabledKey] = enabled
         }
     }
 
     suspend fun saveWifiNetworkListMode(mode: String) {
         dataStore.edit { prefs ->
-            prefs[WIFI_NETWORK_LIST_MODE] = WifiNetworkListMode.fromStored(mode).storedValue
+            prefs[WifiPreferenceStore.modeKey] = WifiNetworkListMode.fromStored(mode).storedValue
         }
     }
 
     suspend fun saveWifiNetworkListSsids(ssids: Collection<String>) {
         dataStore.edit { prefs ->
-            prefs[WIFI_NETWORK_LIST_SSIDS] = encodeWifiSsids(ssids)
+            prefs[WifiPreferenceStore.selectedKey] = com.shod.client.network.wifi.policy.encodeWifiSsids(ssids)
         }
     }
 
@@ -2803,9 +2804,9 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
                     if (s.has("is_dynamic_color")) mutable[IS_DYNAMIC_COLOR] = s.getBoolean("is_dynamic_color")
                     if (s.has("theme_palette")) mutable[THEME_PALETTE] = s.getString("theme_palette")
                     if (s.has("auto_pause_on_wifi")) mutable[AUTO_PAUSE_ON_WIFI] = s.getBoolean("auto_pause_on_wifi")
-                    if (s.has("wifi_saved_ssids")) mutable[WifiPreferenceStore.savedKey] = encodeWifiSsids(decodeWifiSsids(s.getString("wifi_saved_ssids")))
-                    if (s.has("wifi_network_list_mode")) mutable[WIFI_NETWORK_LIST_MODE] = WifiNetworkListMode.fromStored(s.getString("wifi_network_list_mode")).storedValue
-                    if (s.has("wifi_network_list_ssids")) mutable[WIFI_NETWORK_LIST_SSIDS] = encodeWifiSsids(decodeWifiSsids(s.getString("wifi_network_list_ssids")))
+                    if (s.has("wifi_saved_ssids")) mutable[WifiPreferenceStore.savedKey] = com.shod.client.network.wifi.policy.encodeWifiSsids(decodeWifiSsids(s.getString("wifi_saved_ssids")))
+                    if (s.has("wifi_network_list_mode")) mutable[WifiPreferenceStore.modeKey] = WifiNetworkListMode.fromStored(s.getString("wifi_network_list_mode")).storedValue
+                    if (s.has("wifi_network_list_ssids")) mutable[WifiPreferenceStore.selectedKey] = encodeWifiSsids(decodeWifiSsids(s.getString("wifi_network_list_ssids")))
                     if (s.has("selected_fingerprint")) mutable[getProfileKey(SELECTED_FINGERPRINT, p)] = s.getString("selected_fingerprint")
                     if (s.has("selected_turn_subnet")) mutable[getProfileKey(SELECTED_TURN_SUBNET, p)] = s.getString("selected_turn_subnet")
                     if (s.has("turn_subnet_ip_limit")) mutable[getProfileKey(TURN_SUBNET_IP_LIMIT, p)] = s.getString("turn_subnet_ip_limit")
