@@ -22,29 +22,10 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import org.json.JSONObject
 
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.mutableStateListOf
 
-@Immutable
-enum class LogLevel {
-    OK,
-    DBG,
-    NET,
-    PING,
-    TURN,
-    LOG,
-    ERR,
-}
-
-@Immutable
-data class LogEntry(
-    val key: String,
-    val message: String,
-    val count: Int = 1,
-    val priority: Int = 99, 
-    val isError: Boolean = false,
-    val level: LogLevel? = null,
-)
+typealias LogLevel = com.shod.client.vpn.diagnostics.LogLevel
+typealias LogEntry = com.shod.client.vpn.diagnostics.LogEntry
 
 private val LOG_STICKERS = Regex("[\\p{So}\\p{Sk}\\uFE0F\\u200D]")
 private val EMPTY_LOG_TAG = Regex("\\[\\s*]")
@@ -2184,4 +2165,35 @@ object TunnelManager {
     }
 }
 
-typealias TunnelParams = com.shod.client.vpn.model.TunnelParams
+data class TunnelParams(
+    val peer: String,
+    val vkHashes: String,
+    val secondaryVkHash: String = "",
+    val workersPerHash: Int,
+    val port: Int,
+    val sni: String = "",
+    val connectionPassword: String = "",
+    val protocol: String = "udp",
+    val vkAuthMode: String = "vkcalls",
+    val captchaMode: String = "auto",
+    val captchaSolveMethod: String = "auto",
+    val fingerprint: String = "firefox",
+    val clientIds: String = ShodConstants.Tunnel.DEFAULT_CLIENT_IDS,
+    val obfsMode: String = ShodConstants.Tunnel.DEFAULT_OBFS_MODE,
+    val turnTransport: String = ShodConstants.Tunnel.DEFAULT_TURN_TRANSPORT,
+    val srtpMode: String = ShodConstants.SrtpMode.DEFAULT,
+    val generationId: Long = 0,
+    val sessionSalt: String = "",
+    val allowHashRedistribution: Boolean = false,
+    val vkHashMode: String = ShodConstants.VkAutoHash.MODE_MANUAL,
+    val vkAccessToken: String = "",
+    val customTurnIps: String = "",
+    val domainRoutingEnabled: Boolean = false,
+    val domainIsWhitelist: Boolean = false,
+    val excludeRuZones: Boolean = false,
+    val templateDomains: Boolean = false,
+    val directDomains: String = "",
+    val ipRoutingEnabled: Boolean = false,
+    val ipIsWhitelist: Boolean = false,
+    val directIps: String = "",
+)
