@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,7 +15,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.shod.client.ui.components.SettingRow
 import com.shod.client.ui.design.ShodShapes
 import com.shod.client.ui.design.ShodSizes
 import com.shod.client.vpn.routing.DomainRoutingRules
@@ -181,7 +183,7 @@ internal fun RoutingRuleListDialog(
 }
 
 @Composable
-private fun ModeButton(label: String, selected: Boolean, onClick: () -> Unit) {
+private fun RowScope.ModeButton(label: String, selected: Boolean, onClick: () -> Unit) {
     if (selected) {
         Button(
             onClick = onClick,
