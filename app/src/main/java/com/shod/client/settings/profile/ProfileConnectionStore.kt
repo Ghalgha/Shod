@@ -142,6 +142,14 @@ internal class ProfileConnectionStore(
         }
     }
 
+    /** Persists a normalized worker count for the selected profile. */
+    suspend fun saveWorkersPerHash(profile: Int, workersPerHash: Int) {
+        dataStore.edit { preferences ->
+            preferences[ProfilePreferenceKeys.forProfile(workersPerHashKey, profile)] =
+                normalizeWorkers(workersPerHash)
+        }
+    }
+
     private fun readConnectionPassword(
         preferences: Preferences,
         profile: Int,
