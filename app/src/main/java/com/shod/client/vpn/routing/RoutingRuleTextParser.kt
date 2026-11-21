@@ -16,7 +16,7 @@ object DomainRoutingRules {
         .substringBefore(':')
         .substringBefore('?')
         .substringBefore('#')
-        .trim(',', ';', ' ', '\\t', '\\n', '\\r', '.', '(', ')', '[', ']', '"', '\\'')
+        .trim(',', ';', ' ', '\t', '\n', '\r', '.', '(', ')', '[', ']', '"', '\'')
 
     fun isValid(domain: String): Boolean {
         if (domain.length < 3 || domain.length > 253) return false
