@@ -2,6 +2,7 @@ package com.shod.client
 
 import com.shod.client.platform.android.vpn.TunVpnService
 import com.shod.client.vpn.telemetry.TunnelTrafficText
+import com.shod.client.platform.android.vpn.notification.withTunnelText
 import com.shod.client.vpn.workers.WorkerCountPolicy
 
 import com.shod.client.network.connectivity.PhysicalNetworkTracker
