@@ -296,7 +296,7 @@ private fun SettingsDropdown(label: String, selected: String, options: List<Stri
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
-                shape = ShodShapes.Card,
+                shape = MaterialTheme.shapes.large,
                 containerColor = appSectionCardColor(),
                 tonalElevation = 0.dp,
                 shadowElevation = 6.dp,
