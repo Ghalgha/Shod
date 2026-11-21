@@ -34,6 +34,7 @@ import com.shod.client.vpn.lifecycle.TunnelLifecycleState
 import com.shod.client.vpn.lifecycle.TunnelLifecycleTicket
 import com.shod.client.integration.vk.captcha.android.CaptchaWebViewManager
 import com.shod.client.integration.vk.captcha.android.ManlCaptchaWebViewManager
+import com.shod.client.integration.vk.calls.VkAutoCallsManager
 
 import com.shod.client.integration.vk.policy.shouldReplaceUnavailableVkHash
 typealias LogLevel = com.shod.client.vpn.diagnostics.LogLevel

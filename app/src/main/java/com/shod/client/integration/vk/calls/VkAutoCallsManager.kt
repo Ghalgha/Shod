@@ -205,14 +205,14 @@ internal class VkAutoCallsManager(
                         false,
                     )
 
-                    is VkApiResult.ApiError -> TunnelManager.updateLog(
+                    is VkApiResult.ApiError -> updateLog(
                         "vk_auto_call_finish_error",
                         "[ERR] Звонок VK не завершён · код=${result.code}",
                         60,
                         false,
                     )
 
-                    is VkApiResult.Failed -> TunnelManager.updateLog(
+                    is VkApiResult.Failed -> updateLog(
                         "vk_auto_call_finish_error",
                         "[ERR] Звонок VK не завершён · ${result.reason}",
                         60,
@@ -225,7 +225,7 @@ internal class VkAutoCallsManager(
 
     private fun log(key: String, message: String, priority: Int, isError: Boolean) {
         if (!isLoggingEnabled()) return
-        TunnelManager.updateLog(key, message, priority, isError)
+        updateLog(key, message, priority, isError)
         synchronized(pendingLogsLock) {
             pendingLogs.add(PendingLog(key, message, priority, isError))
         }
