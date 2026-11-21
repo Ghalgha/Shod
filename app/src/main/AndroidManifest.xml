@@ -79,7 +79,7 @@
         </service>
 
         <service
-            android:name=".QuickToggleTileService"
+            android:name=".platform.android.quicksettings.QuickToggleTileService"
             android:exported="true"
             android:icon="@drawable/ic_c_logo"
             android:label="@string/app_name"
@@ -127,7 +127,7 @@
             android:exported="false" />
 
         <receiver
-            android:name=".VpnWidgetProvider"
+            android:name=".platform.android.widget.VpnWidgetProvider"
             android:label="Shod ВПН Виджет"
             android:exported="true">
             <intent-filter>
@@ -139,7 +139,7 @@
         </receiver>
 
         <receiver
-            android:name=".VpnWidgetToggleReceiver"
+            android:name=".platform.android.widget.VpnWidgetToggleReceiver"
             android:exported="false" />
             
     </application>
