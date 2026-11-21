@@ -1,5 +1,7 @@
 package com.shod.client
 
+import com.shod.client.vpn.workers.WorkerCountPolicy
+
 import com.shod.client.network.connectivity.PhysicalNetworkTracker
 import com.shod.client.network.connectivity.PhysicalNetworkTransition
 import com.shod.client.network.connectivity.physicalNetworkPauseReason
