@@ -36,6 +36,7 @@ import com.shod.client.network.wifi.policy.WifiNetworkListMode
 import com.shod.client.network.wifi.preferences.WifiPreferences
 import com.shod.client.network.wifi.preferences.WifiPreferenceStore
 import com.shod.client.network.wifi.policy.decodeWifiSsids
+import com.shod.client.network.wifi.policy.encodeWifiSsids
 import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -2806,7 +2807,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
                     if (s.has("auto_pause_on_wifi")) mutable[WifiPreferenceStore.enabledKey] = s.getBoolean("auto_pause_on_wifi")
                     if (s.has("wifi_saved_ssids")) mutable[WifiPreferenceStore.savedKey] = com.shod.client.network.wifi.policy.encodeWifiSsids(decodeWifiSsids(s.getString("wifi_saved_ssids")))
                     if (s.has("wifi_network_list_mode")) mutable[WifiPreferenceStore.modeKey] = WifiNetworkListMode.fromStored(s.getString("wifi_network_list_mode")).storedValue
-                    if (s.has("wifi_network_list_ssids")) mutable[WifiPreferenceStore.selectedKey] = encodeWifiSsids(decodeWifiSsids(s.getString("wifi_network_list_ssids")))
+                    if (s.has("wifi_network_list_ssids")) mutable[WifiPreferenceStore.selectedKey] = encodeWifiSsids(decodeWifiSsids(s.getString("wifi_network_list_ssids")) )
                     if (s.has("selected_fingerprint")) mutable[getProfileKey(SELECTED_FINGERPRINT, p)] = s.getString("selected_fingerprint")
                     if (s.has("selected_turn_subnet")) mutable[getProfileKey(SELECTED_TURN_SUBNET, p)] = s.getString("selected_turn_subnet")
                     if (s.has("turn_subnet_ip_limit")) mutable[getProfileKey(TURN_SUBNET_IP_LIMIT, p)] = s.getString("turn_subnet_ip_limit")
