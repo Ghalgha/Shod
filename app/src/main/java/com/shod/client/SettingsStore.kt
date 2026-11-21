@@ -17,6 +17,10 @@ import com.shod.client.settings.model.ProfileConnectionSnapshot
 import com.shod.client.settings.model.ProfileSubscriptionInfo
 import com.shod.client.settings.model.SubscriptionMeta
 import com.shod.client.settings.model.TunnelAuthSnapshot
+import com.shod.client.settings.profile.ProfileConnectionStore
+import com.shod.client.settings.profile.ProfileCursorStore
+import com.shod.client.settings.profile.ProfileLifecycleStore
+import com.shod.client.settings.profile.ProfileMetadataStore
 import com.shod.client.settings.profile.defaultProfileName
 import com.shod.client.settings.secret.SecureStringStore
 import com.shod.client.settings.secret.StoredSecret
@@ -25,6 +29,7 @@ import com.shod.client.settings.secret.resolveStoredSecret
 import com.shod.client.settings.storage.DeployScopedDataStore
 import com.shod.client.settings.storage.ReadOnlyProfileDataStore
 import com.shod.client.settings.storage.settingsDataStore
+import com.shod.client.settings.subscription.ProfileSubscriptionStore
 import com.shod.client.settings.subscription.SubscriptionMetaCodec
 import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
@@ -37,13 +42,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import com.shod.client.settings.profile.ProfileConnectionStore
-import com.shod.client.settings.profile.ProfileCursorStore
-import com.shod.client.settings.profile.ProfileLifecycleStore
-import com.shod.client.settings.profile.ProfileMetadataStore
-import com.shod.client.settings.profile.ProfilePreferenceKeys
-import com.shod.client.settings.subscription.ProfileSubscriptionStore
-
 
 private fun <T> Flow<T>.onIo(): Flow<T> = flowOn(Dispatchers.IO)
 
