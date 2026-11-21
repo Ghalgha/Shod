@@ -24,6 +24,7 @@ import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -219,7 +220,7 @@ internal object ProfileTunnelProbe {
             val dnsIp = parts.getOrNull(1)
                 ?.split(',')
                 ?.firstOrNull()
-                ?.let(InetAddress::getByName) as? Inet4Address
+                ?.let { address -> InetAddress.getByName(address) } as? Inet4Address
                 ?: return@coroutineScope ProfilePingResult.Failure("Сервер не передал IPv4 DNS")
 
             val tun = ProbeTunTransport()
