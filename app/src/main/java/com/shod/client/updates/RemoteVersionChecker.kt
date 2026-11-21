@@ -18,7 +18,6 @@ private const val GITHUB_RELEASE_TAG_URL_PREFIX = ShodConstants.Update.GITHUB_RE
 private const val GITHUB_TAGS_URL = ShodConstants.Update.GITHUB_TAGS_URL
 private const val GITHUB_TAG_TREE_URL_PREFIX = ShodConstants.Update.GITHUB_TAG_TREE_URL_PREFIX
 private const val GITHUB_API_RATE_LIMIT_FALLBACK_MS = ShodConstants.Timeouts.UPDATE_RATE_LIMIT_COOLDOWN_MS
-private val VERSION_NUMBER_REGEX = ShodConstants.Patterns.VERSION_NUMBER
 
 @Volatile
 private var githubApiCooldownUntilMs = 0L
