@@ -14,13 +14,13 @@ class VkHashValidatorTest {
         val valid = VkHashValidationCodec.parseProcessOutputLine(
             "HASH_CHECK:{\"hash\":\"hash-123456789012\",\"status\":\"valid\"}",
         )
-        val invalid = VkHashValidator.parseOutputLine(
+        val invalid = VkHashValidationCodec.parseProcessOutputLine(
             "HASH_CHECK:{\"hash\":\"hash-210987654321\",\"status\":\"invalid\",\"code\":9008}",
         )
         assertEquals(VkHashValidationStatus.Valid, valid?.second)
         assertEquals(VkHashValidationStatus.Invalid, invalid?.second)
         assertNull(
-            VkHashValidator.parseOutputLine(
+            VkHashValidationCodec.parseProcessOutputLine(
                 "HASH_CHECK:{\"hash\":\"hash-123456789012\",\"status\":\"unavailable\"}",
             ),
         )
