@@ -1,5 +1,7 @@
 package com.shod.client
 
+import com.shod.client.vpn.power.BatterySaver
+
 import android.annotation.SuppressLint
 import com.shod.client.vpn.lifecycle.TunnelServiceInputPolicy
 import android.app.Notification
