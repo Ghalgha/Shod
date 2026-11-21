@@ -1,4 +1,6 @@
 package com.shod.client.integration.vk.calls
+
+import com.shod.client.vpn.workers.WorkerCountPolicy
 import android.content.Context
 import android.os.SystemClock
 import kotlinx.coroutines.CoroutineScope
