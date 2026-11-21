@@ -41,6 +41,7 @@ object IpRoutingRules {
     }
 
     fun parse(text: String): List<String> = text
+        .replace(Regex("\\s*-\\s*"), "-")
         .split(Regex("[,;\\s\\n\\r]+"))
         .map(::clean)
         .filter(::isValid)
