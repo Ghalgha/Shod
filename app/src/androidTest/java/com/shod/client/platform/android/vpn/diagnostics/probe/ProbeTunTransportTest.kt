@@ -5,7 +5,6 @@ import android.system.Os
 import android.system.OsConstants
 import android.system.StructPollfd
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.shod.client.platform.android.vpn.diagnostics.probe.ProbeTunTransport
 import com.shod.client.vpn.diagnostics.probe.TunnelProbePacket
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -13,6 +12,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import org.junit.Assert.assertArrayEquals
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
