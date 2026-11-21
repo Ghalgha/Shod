@@ -102,10 +102,10 @@ internal class AndroidDeployWorkflow(
                 )
             }
             val architecture = serverArchitectureForMachine(architectureResult.output)
-            onInfo("Архитектура VPS: \${architecture.displayName}")
+            onInfo("Архитектура VPS: ${architecture.displayName}")
 
             onProgress(0.05f, "Подготовка файлов…")
-            val directory = File(appContext.cacheDir, "deploy-\${System.nanoTime()}")
+            val directory = File(appContext.cacheDir, "deploy-${System.nanoTime()}")
             workingDirectory = directory
             if (!directory.mkdirs() && !directory.isDirectory) {
                 throw IOException("Не удалось создать временный каталог установки")
@@ -154,7 +154,7 @@ internal class AndroidDeployWorkflow(
                 )
                 if (purge.exitStatus != 0) {
                     throw IOException(
-                        "Очистка сервера завершилась ошибкой (код \${purge.exitStatus}): " +
+                        "Очистка сервера завершилась ошибкой (код ${purge.exitStatus}): " +
                             purge.output.takeLast(240)
                     )
                 }
@@ -168,9 +168,9 @@ internal class AndroidDeployWorkflow(
                 ""
             }
             val deployEnvironment =
-                "env \${secretEnvironment}Shod_PEER_PORT=$peerPort Shod_SSH_PORT=$sshPort " +
-                    "Shod_WEB_PORT=$webPort Shod_PUBLIC_IP=\${host.trim()} " +
-                    "Shod_DEPLOY_MODE=\${deployMode(installInDocker)}"
+                "env ${secretEnvironment}Shod_PEER_PORT=$peerPort Shod_SSH_PORT=$sshPort " +
+                    "Shod_WEB_PORT=$webPort Shod_PUBLIC_IP=${host.trim()} " +
+                    "Shod_DEPLOY_MODE=${deployMode(installInDocker)}"
 
             onProgress(0.10f, "Загрузка нового сервера…")
             session.upload(serverFile, "/tmp/.shod-upload-server")
@@ -193,7 +193,7 @@ internal class AndroidDeployWorkflow(
                 }
             )
             val result = session.execute(
-                rootCommand("$deployEnvironment bash /tmp/deploy.sh \${mode.scriptAction}", password),
+                rootCommand("$deployEnvironment bash /tmp/deploy.sh ${mode.scriptAction}", password),
                 DEPLOY_COMMAND_TIMEOUT_MS,
             )
             if (isSuccessfulDeployResult(result.exitStatus, result.output)) {
@@ -214,7 +214,7 @@ internal class AndroidDeployWorkflow(
             } else {
                 val failure = deployFailureMessage(result.exitStatus, result.output)
                 onError(
-                    "Deploy failed: exit=\${result.exitStatus}\n" +
+                    "Deploy failed: exit=${result.exitStatus}\n" +
                         result.output.takeLast(1200)
                 )
                 onError(failure)
@@ -231,7 +231,7 @@ internal class AndroidDeployWorkflow(
         } catch (error: Exception) {
             val failure = friendlyDeployError(error.message)
             onError(
-                "Deploy error (\${error.javaClass.simpleName}): \${error.message}\n" +
+                "Deploy error (${error.javaClass.simpleName}): ${error.message}\n" +
                     error.stackTraceToString().take(1200)
             )
             onError(failure)
