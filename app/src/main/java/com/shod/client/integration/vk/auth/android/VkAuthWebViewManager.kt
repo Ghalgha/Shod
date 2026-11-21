@@ -20,17 +20,11 @@ import java.util.concurrent.atomic.AtomicInteger
 
 import com.shod.client.ShodConstants
 import com.shod.client.TvDevicePolicy
+import com.shod.client.integration.vk.auth.model.VkAuthPayload
+import com.shod.client.integration.vk.auth.model.VkAuthPhase
 import com.shod.client.integration.vk.auth.network.VkTokenScraper
 import com.shod.client.integration.vk.auth.policy.VK_AUTH_COOKIE_ORIGINS
 import com.shod.client.integration.vk.auth.policy.vkCookieDeletionHeaders
-internal data class VkAuthPayload(
-    val token: String,
-    val userId: String,
-    val expiresIn: Long,
-)
-
-internal enum class VkAuthPhase { LOGIN, TOKEN }
-
 internal object VkAuthWebViewManager {
     private val mainHandler = Handler(Looper.getMainLooper())
 

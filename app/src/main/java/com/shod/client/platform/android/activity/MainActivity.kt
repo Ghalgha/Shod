@@ -91,7 +91,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.flow.first
 import kotlin.math.abs
 
-import com.shod.client.integration.vk.auth.android.VkAuthPayload
+import com.shod.client.integration.vk.auth.model.VkAuthPayload
 class MainActivity : ComponentActivity() {
     private val appSettingsStore by lazy { SettingsStore(applicationContext) }
     private var renderUi by mutableStateOf(false)

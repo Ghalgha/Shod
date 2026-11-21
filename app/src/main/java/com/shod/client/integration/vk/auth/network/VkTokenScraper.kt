@@ -6,7 +6,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 import com.shod.client.ShodConstants
-import com.shod.client.integration.vk.auth.android.VkAuthPayload
+import com.shod.client.integration.vk.auth.model.VkAuthPayload
 internal object VkTokenScraper {
     suspend fun scrape(cookies: String, userAgent: String): Result<VkAuthPayload> = withContext(Dispatchers.IO) {
         var endpoint = "https://oauth.vk.com/authorize?client_id=7793118&display=mobile&redirect_uri=https%3A%2F%2Foauth.vk.ru%2Fblank.html&response_type=token&scope=1073737727&v=5.199&revoke=1"

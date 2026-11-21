@@ -61,7 +61,6 @@ import com.shod.client.TunnelManager
 import com.shod.client.TunnelService
 import com.shod.client.platform.android.services.TunnelServiceIntentFactory
 import com.shod.client.platform.android.services.TunnelStartOptions
-import com.shod.client.VkHashValidationCodec
 import com.shod.client.newTunnelSessionId
 import com.shod.client.resolveConnectionSource
 import com.shod.client.showRaisedToast
