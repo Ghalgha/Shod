@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import com.shod.client.SettingsStore
 import com.shod.client.TunnelManager
 import com.shod.client.ui.screens.routing.apps.AppRoutingPickerDialog
+import com.shod.client.ui.screens.routing.apps.AppRoutingTransferDialog
+import com.shod.client.vpn.routing.importexport.AppRoutingLists
 import com.shod.client.ui.screens.routing.rules.RoutingRuleKind
 import com.shod.client.ui.screens.routing.rules.RoutingRuleListDialog
 import com.shod.client.vpn.routing.DomainRoutingRules
@@ -66,6 +68,7 @@ fun RoutingScreen(
         }.getOrDefault(emptyList())
     }
     var showAppPicker by remember { mutableStateOf(false) }
+    var showAppTransfer by remember { mutableStateOf(false) }
     var appBlacklist by remember(savedExcluded) { mutableStateOf(savedExcluded.split(',').filter(String::isNotBlank).toSet()) }
     var appWhitelist by remember(savedWhitelist) { mutableStateOf(savedWhitelist.split(',').filter(String::isNotBlank).toSet()) }
     var appPickerInitialBlacklist by remember { mutableStateOf<Set<String>>(emptySet()) }
@@ -76,6 +79,7 @@ fun RoutingScreen(
     LaunchedEffect(serverActive) {
         if (serverActive) {
             showAppPicker = false
+            showAppTransfer = false
             showDomainEditor = false
             showIpEditor = false
         }
@@ -165,6 +169,25 @@ fun RoutingScreen(
             }
         }
 
+        Card {
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Text("Резервная копия правил приложений", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                Text(
+                    "Перенос списков через буфер обмена. Поддерживаются JSON и старый текстовый формат.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                OutlinedButton(
+                    onClick = { showAppTransfer = true },
+                    enabled = !serverActive,
+                    modifier = Modifier.fillMaxWidth(),
+                ) { Text("Импорт и экспорт") }
+            }
+        }
+
         RoutingSummaryCard(
             title = "Маршрутизация приложений",
             summary = if (isWhitelist) "В туннеле: ${appWhitelist.size} приложений" else "Исключено из туннеля: ${appBlacklist.size} приложений",
@@ -176,6 +199,27 @@ fun RoutingScreen(
                 appPickerInitialWhitelist = appWhitelist
                 showAppPicker = true
             },
+        )
+    }
+
+    if (showAppTransfer && !serverActive) {
+        AppRoutingTransferDialog(
+            blacklist = appBlacklist,
+            whitelist = appWhitelist,
+            isWhitelist = isWhitelist,
+            onImport = { imported, importedMode ->
+                appBlacklist = imported.blacklist
+                appWhitelist = imported.whitelist
+                scope.launch {
+                    settingsStore.saveAppRoutingLists(
+                        imported.blacklist.sorted().joinToString(","),
+                        imported.whitelist.sorted().joinToString(","),
+                        importedMode,
+                    )
+                    TunnelManager.reloadVpn()
+                }
+            },
+            onDismiss = { showAppTransfer = false },
         )
     }
 
