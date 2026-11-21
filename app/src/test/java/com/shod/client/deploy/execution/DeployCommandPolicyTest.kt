@@ -20,7 +20,7 @@ internal class DeployCommandPolicyTest {
     @Test
     fun rootCommandQuotesShellInputAndSupportsRootAndSudo() {
         val command = rootCommand("echo 'safe'", "p'ass")
-        assertTrue(command.contains("echo '\\'\"'\\'\"'safe'"))
+        assertTrue(command.contains("echo '\"'\"'safe'"))
         assertTrue(command.contains("printf '%s\\n'"))
         assertTrue(command.contains("sudo -S -p '' bash -c"))
         assertTrue(command.contains("id -u"))
