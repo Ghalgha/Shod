@@ -83,6 +83,7 @@ internal class ProfileConnectionStore(
         workersPerHash: Int,
         expectedRevision: Long? = null,
     ) {
+        var shouldInvalidateProfileCache = false
         dataStore.edit { preferences ->
             val revisionKey = ProfilePreferenceKeys.forProfile(profileRevisionKey, profile)
             val removedKey = ProfilePreferenceKeys.forProfile(profileRemovedKey, profile)
@@ -102,10 +103,10 @@ internal class ProfileConnectionStore(
             val normalizedPeer = peer.trim()
             val normalizedPort = serverPeerPort.coerceIn(1, 65535)
             if (preferences[peerKeyForProfile].orEmpty() != normalizedPeer ||
-                (preferences[portKeyForProfile] ?: ShodConstants.Network.DEFAULT_SERVER_PEER_PORT) != serverPeerPort ||
+                (preferences[portKeyForProfile] ?: ShodConstants.Network.DEFAULT_SERVER_PEER_PORT) != normalizedPort ||
                 readConnectionPassword(preferences, profile).value != connectionPassword
             ) {
-                invalidateProfileCache(profile)
+                shouldInvalidateProfileCache = true
             }
 
             preferences[peerKeyForProfile] = normalizedPeer
@@ -135,6 +136,9 @@ internal class ProfileConnectionStore(
             }
             preferences.remove(legacyKey)
             preferences.remove(encryptedKey)
+        }
+        if (shouldInvalidateProfileCache) {
+            invalidateProfileCache(profile)
         }
     }
 
