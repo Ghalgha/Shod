@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,7 +35,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.shod.client.ui.components.SettingRow
 import com.shod.client.ui.design.ShodShapes
 import com.shod.client.ui.design.ShodSizes
 import com.shod.client.vpn.routing.DomainRoutingRules
@@ -124,19 +124,26 @@ internal fun RoutingRuleListDialog(
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)),
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        SettingRow(
-                            title = "Готовый список RU доменов",
-                            description = "Включает набор доменов для исключения",
-                            checked = templateEnabled,
-                            onCheckedChange = { enabled ->
-                                val current = DomainRoutingRules.parse(blacklistText)
-                                val updated = if (enabled) (current + templateDomains).distinct()
-                                    else current.filterNot(templateDomains.toSet()::contains)
-                                blacklistText = updated.joinToString("\n")
-                                templateEnabled = enabled
-                            },
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Готовый список RU доменов", style = MaterialTheme.typography.bodyMedium)
+                                Text("Исключить домены из готового набора", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                            Switch(
+                                checked = templateEnabled,
+                                onCheckedChange = { enabled ->
+                                    val current = DomainRoutingRules.parse(blacklistText)
+                                    val templateSet = templateDomains.toSet()
+                                    val updated = if (enabled) (current + templateDomains).distinct()
+                                        else current.filterNot(templateSet::contains)
+                                    blacklistText = updated.joinToString("\n")
+                                    templateEnabled = enabled
+                                },
+                            )
+                        }
                     }
                 }
 
