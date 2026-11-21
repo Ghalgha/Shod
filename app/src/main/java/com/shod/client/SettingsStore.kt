@@ -34,6 +34,7 @@ import com.shod.client.settings.subscription.ProfileSubscriptionStore
 import com.shod.client.settings.subscription.SubscriptionMetaCodec
 import com.shod.client.settings.theme.ThemePreferencesStore
 import com.shod.client.settings.update.UpdatePreferencesStore
+import com.shod.client.vpn.lifecycle.TunnelRuntimePreferencesStore
 import com.shod.client.network.wifi.policy.WifiNetworkListMode
 import com.shod.client.network.wifi.preferences.WifiPreferences
 import com.shod.client.network.wifi.preferences.WifiPreferenceStore
@@ -192,9 +193,6 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         private val CLIENT_ID_CHECK_RESULTS = stringPreferencesKey("client_id_check_results")
         private val VK_HASH_CHECK_RESULTS = stringPreferencesKey("vk_hash_check_results")
         private val CONNECTION_GENERATION = longPreferencesKey("connection_generation")
-        private val TUNNEL_LAST_DIAGNOSTIC = stringPreferencesKey("tunnel_last_diagnostic")
-        private val TUNNEL_LAST_DIAGNOSTIC_AT = longPreferencesKey("tunnel_last_diagnostic_at")
-        private val TUNNEL_WAS_RUNNING = booleanPreferencesKey("tunnel_was_running")
 
         @Volatile
         internal var cachedVkHashMode: String? = null
@@ -288,6 +286,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         deployScope -> DeployScopedDataStore(appContext.settingsDataStore)
         else -> appContext.settingsDataStore
     }
+    private val tunnelRuntimePreferencesStore = TunnelRuntimePreferencesStore(dataStore)
     private val updatePreferencesStore = UpdatePreferencesStore(dataStore)
     val uiOwnerMode: Flow<Boolean> = appContext.settingsDataStore.data.map { it[UI_OWNER_MODE] ?: false }
     val uiDesign: Flow<String> = appContext.settingsDataStore.data.map { UiDesignPresets.normalize(it[UI_DESIGN]) }
@@ -350,9 +349,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     )
 
     val activeProfile: Flow<Int> = profileCursorStore.activeProfile
-    val tunnelLastDiagnostic: Flow<String> = dataStore.data.map {
-        it[TUNNEL_LAST_DIAGNOSTIC] ?: ""
-    }
+    val tunnelLastDiagnostic: Flow<String> = tunnelRuntimePreferencesStore.lastDiagnostic
     val showSystemApps: Flow<Boolean> = dataStore.data.map { it[SHOW_SYSTEM_APPS] ?: false }
     // Recording is always enabled; the UI preference only controls tab visibility.
     // Ignore historical false values, including those imported from older backups.
@@ -1211,7 +1208,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         prefs[CONNECTION_GENERATION] ?: 0L
     }
 
-    val tunnelWasRunning: Flow<Boolean> = dataStore.data.map { it[TUNNEL_WAS_RUNNING] ?: false }
+    val tunnelWasRunning: Flow<Boolean> = tunnelRuntimePreferencesStore.wasRunning
     val updateLastCheckAt: Flow<Long> = updatePreferencesStore.lastCheckAt
     val updateLatestVersion: Flow<String> = updatePreferencesStore.latestVersion
     val updateLastError: Flow<String> = updatePreferencesStore.lastError
@@ -1266,9 +1263,7 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     }
 
     suspend fun saveTunnelWasRunning(running: Boolean) {
-        dataStore.edit { prefs ->
-            prefs[TUNNEL_WAS_RUNNING] = running
-        }
+        tunnelRuntimePreferencesStore.saveWasRunning(running)
     }
 
     suspend fun saveThemeMode(mode: String) {
@@ -1349,19 +1344,11 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
     }
 
     suspend fun saveTunnelDiagnostic(code: String, message: String) {
-        val normalizedCode = code.trim().take(80)
-        val normalizedMessage = message.trim().replace(Regex("\\s+"), " ").take(400)
-        dataStore.edit { prefs ->
-            prefs[TUNNEL_LAST_DIAGNOSTIC] = "$normalizedCode|$normalizedMessage"
-            prefs[TUNNEL_LAST_DIAGNOSTIC_AT] = System.currentTimeMillis()
-        }
+        tunnelRuntimePreferencesStore.saveDiagnostic(code, message)
     }
 
     suspend fun clearTunnelDiagnostic() {
-        dataStore.edit { prefs ->
-            prefs.remove(TUNNEL_LAST_DIAGNOSTIC)
-            prefs.remove(TUNNEL_LAST_DIAGNOSTIC_AT)
-        }
+        tunnelRuntimePreferencesStore.clearDiagnostic()
     }
 
     suspend fun saveUpdateState(lastCheckAt: Long, latestVersion: String, error: String) {
