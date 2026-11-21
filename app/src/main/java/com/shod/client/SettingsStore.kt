@@ -1026,41 +1026,12 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
 
     /** Wipes every connection-related key of a profile slot, making it free again. */
     suspend fun clearProfile(profile: Int) {
-        dataStore.edit { prefs ->
-            prefs[getProfileKey(PROFILE_REMOVED, profile)] = true
-            prefs[getProfileKey(PROFILE_REVISION, profile)] = (prefs[getProfileKey(PROFILE_REVISION, profile)] ?: 0L) + 1L
-            PingResultsCache.removeProfile(profile)
-            listOf(
-                PROFILE_NAME, PEER, SERVER_PEER_PORT, WORKERS_PER_HASH,
-                CONNECTION_PASSWORD, CONNECTION_PASSWORD_ENCRYPTED, CONNECTION_PASSWORD_LOCAL,
-                Shod_LINK, Shod_LINK_MODE, LINK_HASHES_REMOVED, SUBSCRIPTION_URL, SUBSCRIPTION_TITLE,
-                SUBSCRIPTION_UUID, SUBSCRIPTION_NODE, SUBSCRIPTION_POWER,
-            ).forEach { key -> prefs.remove(getProfileKey(key, profile)) }
-            val active = prefs[ACTIVE_PROFILE] ?: ShodConstants.Profiles.MIN_INDEX
-            if (active == profile) {
-                val fallback = (ShodConstants.Profiles.MIN_INDEX..ShodConstants.Profiles.MAX_INDEX)
-                    .firstOrNull { p ->
-                        p != profile && (
-                            !prefs[getProfileKey(PEER, p)].isNullOrBlank() ||
-                                !prefs[getProfileKey(Shod_LINK, p)].isNullOrBlank()
-                            )
-                    }
-                prefs[ACTIVE_PROFILE] = fallback ?: ShodConstants.Profiles.MIN_INDEX
-            }
-        }
+        profileLifecycleStore.clearProfile(profile)
     }
 
     /** Wipes all profile slots associated with the given subscription URL. */
     suspend fun clearSubscription(url: String) {
-        if (url.isBlank()) return
-        val currentPrefs = dataStore.data.first()
-        val targetSlots = (ShodConstants.Profiles.MIN_INDEX..ShodConstants.Profiles.MAX_INDEX).filter { profile ->
-            currentPrefs[getProfileKey(SUBSCRIPTION_URL, profile)].orEmpty() == url
-        }
-        for (slot in targetSlots) {
-            clearProfile(slot)
-        }
-        deleteSubscriptionMeta(url)
+        profileSubscriptionStore.clearSubscription(url)
     }
 
     internal suspend fun recordSubscriptionImport(
