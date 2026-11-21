@@ -157,11 +157,14 @@ private fun domains(obj: JSONObject, key: String, flatKey: String, isWhite: Bool
     val listed = obj.optJSONArray(key)
     val bothListsEmpty = (obj.optJSONArray("blacklist")?.length() ?: 0) == 0 &&
         (obj.optJSONArray("whitelist")?.length() ?: 0) == 0
-    val source = listed?.takeIf { it.length() > 0 } ?: if (forceFlat || bothListsEmpty) obj.optJSONArray(flatKey) else null
+    val source = listed?.takeIf { it.length() > 0 } ?: if (bothListsEmpty) obj.optJSONArray(flatKey) else null
     return source?.let { array -> (0 until array.length()).map { DomainRoutingRules.clean(array.optString(it)) }.filter(DomainRoutingRules::isValid).distinct().take(1024) }.orEmpty()
 }
 
 private fun ips(obj: JSONObject, key: String, flatKey: String, isWhite: Boolean, forceFlat: Boolean = false): List<String> {
-    val source = obj.optJSONArray(key) ?: if (forceFlat || (obj.optJSONArray("blacklist") == null && obj.optJSONArray("whitelist") == null)) obj.optJSONArray(flatKey) else null
+    val listed = obj.optJSONArray(key)
+    val bothListsEmpty = (obj.optJSONArray("blacklist")?.length() ?: 0) == 0 &&
+        (obj.optJSONArray("whitelist")?.length() ?: 0) == 0
+    val source = listed?.takeIf { it.length() > 0 } ?: if (bothListsEmpty) obj.optJSONArray(flatKey) else null
     return source?.let { array -> (0 until array.length()).map(IpRoutingRules::clean).filter(IpRoutingRules::isValid).distinct().take(1024) }.orEmpty()
 }
