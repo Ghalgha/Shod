@@ -21,6 +21,7 @@ import com.shod.client.settings.profile.ProfileConnectionStore
 import com.shod.client.settings.profile.ProfileCursorStore
 import com.shod.client.settings.profile.ProfileLifecycleStore
 import com.shod.client.settings.profile.ProfileMetadataStore
+import com.shod.client.settings.profile.ProfilePreferenceKeys
 import com.shod.client.settings.profile.defaultProfileName
 import com.shod.client.settings.secret.SecureStringStore
 import com.shod.client.settings.secret.StoredSecret
@@ -286,18 +287,10 @@ private val DEPLOY_LAST_INSPECTION_PANEL = booleanPreferencesKey("deploy_last_in
         private val uiCacheStarted = java.util.concurrent.atomic.AtomicBoolean(false)
         private val migrationsStarted = java.util.concurrent.atomic.AtomicBoolean(false)
 
-        private fun <T> getProfileKey(baseKey: Preferences.Key<T>, profile: Int): Preferences.Key<T> {
-            if (profile == 0) return baseKey
-            val newName = "${baseKey.name}_$profile"
-            @Suppress("UNCHECKED_CAST")
-            return when (baseKey) {
-                PEER, VK_HASHES, SECONDARY_VK_HASH, PROTOCOL, SNI, USER_AGENT, DEPLOY_IP, DEPLOY_LOGIN, DEPLOY_PASSWORD, DEPLOY_PASSWORD_ENCRYPTED, DEPLOY_SSH_PORT, EXCLUDED_APPS, WHITELIST_APPS, DIRECT_DOMAINS, DIRECT_DOMAINS_BLACK, DIRECT_DOMAINS_WHITE, DIRECT_IPS_BLACK, DIRECT_IPS_WHITE, CONNECTION_PASSWORD, CONNECTION_PASSWORD_ENCRYPTED, CONNECTION_PASSWORD_LOCAL, DEPLOY_MAIN_PASSWORD, DEPLOY_MAIN_PASSWORD_ENCRYPTED, DEPLOY_WEB_LOGIN, DEPLOY_WEB_PASSWORD, DEPLOY_WEB_PASSWORD_ENCRYPTED, PROXY_MODE, PROXY_HOST, VK_AUTH_MODE, OBFS_MODE, TURN_TRANSPORT, SRTP_MODE, CAPTCHA_MODE, CAPTCHA_SOLVE_METHOD, CAPTCHA_WBV_SOLVE_METHOD, Shod_LINK, SELECTED_FINGERPRINT, ACTIVE_CLIENT_IDS, VK_HASH_MODE, VK_ACCESS_TOKEN, VK_ACCESS_TOKEN_ENCRYPTED, VK_ACCESS_TOKEN_USER_ID, SSH_PRIVATE_KEY, SSH_PRIVATE_KEY_ENCRYPTED, SSH_KEY_PASSPHRASE, SSH_KEY_PASSPHRASE_ENCRYPTED, SSH_CERTIFICATE, SSH_CERTIFICATE_ENCRYPTED, VK_HASH_CHECK_RESULTS, CLIENT_ID_CHECK_RESULTS, CUSTOM_TURN_IPS, SELECTED_TURN_SUBNET, SUBSCRIPTION_URL, SUBSCRIPTION_TITLE, SUBSCRIPTION_UUID, SUBSCRIPTION_NODE -> stringPreferencesKey(newName) as Preferences.Key<T>
-                WORKERS_PER_HASH, LISTEN_PORT, SERVER_PEER_PORT, PROXY_PORT, SERVER_WEB_PORT, SUBSCRIPTION_POWER, DEPLOY_CONNECTION_PROFILE -> intPreferencesKey(newName) as Preferences.Key<T>
-                APP_ROUTING_ALL, MANUAL_PORTS_ENABLED, DEPLOY_MANUAL_PORTS, NO_DNS, IS_WHITELIST, Shod_LINK_MODE, DETAILED_LOGS, SSH_KEYS_MODE, DOCKER_INSTALL, EXTRA_WORKERS, SPLIT_TUNNEL_WHITELIST_MIGRATED, DOMAIN_ROUTING_ENABLED, DOMAIN_IS_WHITELIST, EXCLUDE_RU_ZONES_ENABLED, TEMPLATE_DOMAINS_ENABLED, IP_ROUTING_ENABLED, IP_IS_WHITELIST, DEPLOY_SERVER_CONFIGURED, PROFILE_REMOVED -> booleanPreferencesKey(newName) as Preferences.Key<T>
-                CONNECTION_GENERATION, PROFILE_REVISION -> longPreferencesKey(newName) as Preferences.Key<T>
-                else -> stringPreferencesKey(newName) as Preferences.Key<T>
-            }
-        }
+        private fun <T> getProfileKey(
+            baseKey: Preferences.Key<T>,
+            profile: Int,
+        ): Preferences.Key<T> = ProfilePreferenceKeys.forProfile(baseKey, profile)
     }
 
     private val dataStore = when {
