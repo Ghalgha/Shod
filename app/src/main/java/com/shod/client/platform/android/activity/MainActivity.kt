@@ -2,6 +2,7 @@ package com.shod.client.platform.android.activity
 
 import com.shod.client.*
 import com.shod.client.integration.vk.captcha.android.ManlCaptchaWebViewManager
+import com.shod.client.platform.android.process.AppForegroundState
 import com.shod.client.platform.android.power.shouldRequestBatteryOptimizationExemption
 import com.shod.client.ui.navigation.MainScreen
 
@@ -110,15 +111,15 @@ class MainActivity : ComponentActivity() {
     }
 
     companion object {
-        @Volatile
-        var activeActivities = 0
+        val activeActivities: Int
+            get() = AppForegroundState.activeActivities
         val isForeground: Boolean
-            get() = activeActivities > 0
+            get() = AppForegroundState.isForeground
     }
 
     override fun onStart() {
         super.onStart()
-        activeActivities++
+        AppForegroundState.onActivityStarted()
         WifiDiscovery.setForeground(true)
         WifiDiscovery.acquire(this, this)
         renderUi = true
@@ -127,7 +128,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onStop() {
         renderUi = false
-        activeActivities = (activeActivities - 1).coerceAtLeast(0)
+        AppForegroundState.onActivityStopped()
         WifiDiscovery.release(this)
         WifiDiscovery.setForeground(isForeground)
         super.onStop()
