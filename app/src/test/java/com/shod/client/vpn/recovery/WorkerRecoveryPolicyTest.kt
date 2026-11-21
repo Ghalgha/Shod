@@ -1,7 +1,5 @@
 package com.shod.client.vpn.recovery
 
-import com.shod.client.vpn.recovery.WorkerRecoveryPolicy
-
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
