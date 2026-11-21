@@ -1,6 +1,6 @@
 package com.shod.client.subscriptions
 
-import com.shod.client.ProfileConnectionSnapshot
+import com.shod.client.settings.model.ProfileConnectionSnapshot
 import com.shod.client.SettingsStore
 import com.shod.client.ShodConstants
 import com.shod.client.ui.utils.normalizeShodPower
