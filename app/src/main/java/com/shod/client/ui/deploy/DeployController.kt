@@ -24,6 +24,7 @@ import com.shod.client.deploy.plan.ServerPorts
 import com.shod.client.deploy.plan.planDeploy
 import com.shod.client.deploy.inventory.ServerPlace
 import com.shod.client.platform.android.deploy.AndroidDeployCoordinator
+import com.shod.client.platform.android.deploy.ssh.SshHostKeyStore
 import com.shod.client.ui.screens.deploy.DeployAction
 import com.shod.client.ui.screens.deploy.DeployCheckState
 import com.shod.client.ui.screens.deploy.DeployScreen
@@ -74,6 +75,8 @@ internal fun DeployController(
     var certificate by remember(savedSettings.profile) { mutableStateOf(savedSettings.sshCertificate) }
     var pendingAction by remember { mutableStateOf<PlanAction?>(null) }
     var pendingUninstall by remember { mutableStateOf(false) }
+    var pendingHostKeyChange by remember { mutableStateOf<SshHostKeyStore.KeyChange?>(null) }
+    var retryInspection by remember { mutableStateOf<((suspend (com.shod.client.deploy.inventory.ServerInventory) -> Unit))?>(null) }
 
     LaunchedEffect(savedSettings.profile, savedSettings.ip) {
         if (host != savedSettings.ip && host.isBlank()) host = savedSettings.ip
@@ -121,8 +124,9 @@ internal fun DeployController(
         return true
     }
 
-    fun runInspection(onInventory: (com.shod.client.deploy.inventory.ServerInventory) -> Unit) {
+    fun runInspection(onInventory: suspend (com.shod.client.deploy.inventory.ServerInventory) -> Unit) {
         if (busy || !credentialsReady()) return
+        retryInspection = onInventory
         busy = true
         progress = 0f
         scope.launch {
@@ -140,7 +144,9 @@ internal fun DeployController(
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (error: Exception) {
-                report(error.message ?: "Не удалось проверить VPS")
+                val changedKey = SshHostKeyStore.takeKeyChange(host.trim(), ports().ssh)
+                if (changedKey != null) pendingHostKeyChange = changedKey
+                else report(error.message ?: "Не удалось проверить VPS")
             } finally {
                 busy = false
             }
@@ -348,30 +354,51 @@ internal fun DeployController(
                             report("На стандартном месте работающий сервер Shod не найден")
                             return@runInspection
                         }
-                        busy = true
-                        scope.launch {
-                            try {
-                                val result = coordinator().uninstall(
-                                    host = host.trim(),
-                                    user = login.trim(),
-                                    password = if (keysMode) "" else sshPassword,
-                                    sshPort = ports().ssh,
-                                    peerPort = server.peerPort ?: ports().peer,
-                                    privateKey = if (keysMode) privateKey else "",
-                                    keyPassphrase = if (keysMode) keyPassphrase else "",
-                                    certificate = if (keysMode) certificate else "",
-                                )
-                                report(result.failureMessage ?: if (result.successful) "Shod удалён" else "Не удалось удалить Shod")
-                            } catch (error: Exception) {
-                                report(error.message ?: "Ошибка удаления")
-                            } finally {
-                                busy = false
-                            }
+                        try {
+                            val result = coordinator().uninstall(
+                                host = host.trim(),
+                                user = login.trim(),
+                                password = if (keysMode) "" else sshPassword,
+                                sshPort = ports().ssh,
+                                peerPort = server.peerPort ?: ports().peer,
+                                privateKey = if (keysMode) privateKey else "",
+                                keyPassphrase = if (keysMode) keyPassphrase else "",
+                                certificate = if (keysMode) certificate else "",
+                            )
+                            report(result.failureMessage ?: if (result.successful) "Shod удалён" else "Не удалось удалить Shod")
+                        } catch (cancelled: CancellationException) {
+                            throw cancelled
+                        } catch (error: Exception) {
+                            report(error.message ?: "Ошибка удаления")
                         }
                     }
                 }) { Text("Удалить") }
             },
             dismissButton = { TextButton(onClick = { pendingUninstall = false }) { Text("Отмена") } },
+        )
+    }
+
+
+    pendingHostKeyChange?.let { change ->
+        AlertDialog(
+            onDismissRequest = { pendingHostKeyChange = null },
+            title = { Text("Изменился SSH-ключ сервера") },
+            text = {
+                Text(
+                    "Адрес: ${change.host}:${change.port}\n\n" +
+                        "Сохранённый отпечаток:\n${change.pinned}\n\n" +
+                        "Новый отпечаток:\n${change.presented}\n\n" +
+                        "Продолжайте только если вы проверили новый ключ у администратора VPS."
+                )
+            },
+            confirmButton = {
+                Button(onClick = {
+                    SshHostKeyStore.trust(context, change)
+                    pendingHostKeyChange = null
+                    retryInspection?.let { retry -> runInspection(retry) }
+                }) { Text("Доверять новому ключу") }
+            },
+            dismissButton = { TextButton(onClick = { pendingHostKeyChange = null }) { Text("Отмена") } },
         )
     }
 
