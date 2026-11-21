@@ -77,21 +77,21 @@ class ServerInventoryParserTest {
             "Shod_INV|server|place=standard|runtime=systemd|state=running|peer=0|web=46002|name=shod.service",
             "Shod_INV|server|place=standard|runtime=systemd|state=running|peer=46000|web=70000|name=shod.service",
         )
-        malformed.forEach { assertNull(parseServerInventory("$it\\nShod_INV|end")) }
+        malformed.forEach { assertNull(parseServerInventory("$it\nShod_INV|end")) }
     }
 
     @Test
     fun rejectsRecordsAfterCompletionMarker() {
         assertNull(
             parseServerInventory(
-                "Shod_INV|end\\nShod_INV|busy|proto=tcp|port=2222|by=sshd"
+                "Shod_INV|end\nShod_INV|busy|proto=tcp|port=2222|by=sshd"
             )
         )
     }
 
     @Test
     fun rejectsMalformedBusyPortRecords() {
-        assertNull(parseServerInventory("Shod_INV|busy|proto=tcp|port=0|by=sshd\\nShod_INV|end"))
-        assertNull(parseServerInventory("Shod_INV|busy|proto=|port=2222|by=sshd\\nShod_INV|end"))
+        assertNull(parseServerInventory("Shod_INV|busy|proto=tcp|port=0|by=sshd\nShod_INV|end"))
+        assertNull(parseServerInventory("Shod_INV|busy|proto=|port=2222|by=sshd\nShod_INV|end"))
     }
 }
