@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shod.client.SettingsStore
 import com.shod.client.TunnelManager
+import com.shod.client.ui.screens.routing.apps.AppRoutingPickerDialog
 import com.shod.client.ui.screens.routing.rules.RoutingRuleKind
 import com.shod.client.ui.screens.routing.rules.RoutingRuleListDialog
 import com.shod.client.vpn.routing.DomainRoutingRules
@@ -62,11 +63,15 @@ fun RoutingScreen(
             context.assets.open("domains.txt").bufferedReader().use { DomainRoutingRules.parse(it.readText()) }
         }.getOrDefault(emptyList())
     }
+    var showAppPicker by remember { mutableStateOf(false) }
+    var appBlacklist by remember(savedExcluded) { mutableStateOf(savedExcluded.split(',').filter(String::isNotBlank).toSet()) }
+    var appWhitelist by remember(savedWhitelist) { mutableStateOf(savedWhitelist.split(',').filter(String::isNotBlank).toSet()) }
     var showDomainEditor by remember { mutableStateOf(false) }
     var showIpEditor by remember { mutableStateOf(false) }
 
     LaunchedEffect(serverActive) {
         if (serverActive) {
+            showAppPicker = false
             showDomainEditor = false
             showIpEditor = false
         }
@@ -106,16 +111,32 @@ fun RoutingScreen(
             onClick = { showIpEditor = true },
         )
 
-        Card {
-            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("Маршрутизация приложений", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
-                Text(
-                    "Редактор приложений переносится следующим этапом. Сохранённые правила не изменяются.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
+        RoutingSummaryCard(
+            title = "Маршрутизация приложений",
+            summary = if (isWhitelist) "В туннеле: ${appWhitelist.size} приложений" else "Исключено из туннеля: ${appBlacklist.size} приложений",
+            enabled = (if (isWhitelist) appWhitelist else appBlacklist).isNotEmpty(),
+            actionLabel = "Выбрать приложения",
+            blocked = serverActive,
+            onClick = { showAppPicker = true },
+        )
+    }
+
+    if (showAppPicker && !serverActive) {
+        AppRoutingPickerDialog(
+            selectedPackages = if (isWhitelist) appWhitelist else appBlacklist,
+            showSystemApps = showSystemApps,
+            onSelectionChanged = { selected ->
+                if (isWhitelist) appWhitelist = selected else appBlacklist = selected
+                scope.launch {
+                    settingsStore.saveAppRoutingLists(
+                        appBlacklist.sorted().joinToString(","),
+                        appWhitelist.sorted().joinToString(","),
+                    )
+                    TunnelManager.reloadVpn()
+                }
+            },
+            onDismiss = { showAppPicker = false },
+        )
     }
 
     if (showDomainEditor && !serverActive) {
