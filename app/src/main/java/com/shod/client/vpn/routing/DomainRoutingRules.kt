@@ -2,8 +2,7 @@ package com.shod.client.vpn.routing
 
 /**
  * Domain normalization and validation for direct-routing rules.
- *
- * Pure domain logic: deliberately independent of Compose, Android and SettingsStore.
+ * Pure domain logic: independent of Compose, Android and SettingsStore.
  */
 object DomainRoutingRules {
     private val labelPattern =
@@ -18,7 +17,7 @@ object DomainRoutingRules {
         .substringBefore(':')
         .substringBefore('?')
         .substringBefore('#')
-        .trim(',', ';', ' ', '\\t', '\\n', '\\r', '.', '(', ')', '[', ']', '"', '\\'')
+        .trim(',', ';', ' ', '\t', '\n', '\r', '.', '(', ')', '[', ']', '"', '\'')
 
     fun isValid(domain: String): Boolean {
         if (domain.length < 3 || domain.length > 253) return false
@@ -30,7 +29,7 @@ object DomainRoutingRules {
     }
 
     fun parse(text: String): List<String> = text
-        .split(Regex("[,;\\\\s\\n\\r]+"))
+        .split(Regex("[,;\\s\\n\\r]+"))
         .map(::clean)
         .filter(::isValid)
         .distinct()
