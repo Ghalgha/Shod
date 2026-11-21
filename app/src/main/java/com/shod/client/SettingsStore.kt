@@ -26,6 +26,8 @@ import com.shod.client.settings.profile.defaultProfileName
 import com.shod.client.settings.secret.SecureStringStore
 import com.shod.client.settings.secret.StoredSecret
 import com.shod.client.settings.secret.StoredSecretState
+import com.shod.client.settings.secret.resolveTunnelPasswordStorage
+import com.shod.client.settings.secret.shouldResetUnreadableTunnelPassword
 import com.shod.client.settings.secret.resolveStoredSecret
 import com.shod.client.settings.storage.DeployScopedDataStore
 import com.shod.client.settings.storage.ReadOnlyProfileDataStore
