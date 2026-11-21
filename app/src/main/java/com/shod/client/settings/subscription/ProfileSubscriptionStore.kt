@@ -34,7 +34,7 @@ internal class ProfileSubscriptionStore(
     private val subscriptionUuidKey = stringPreferencesKey("subscription_uuid")
     private val subscriptionNodeKey = stringPreferencesKey("subscription_node")
     private val subscriptionPowerKey = androidx.datastore.preferences.core.intPreferencesKey("subscription_power")
-    private val subscriptionMetaKey = stringPreferencesKey("subscription_meta")
+    private val subscriptionMetaKey = stringPreferencesKey("subscription_meta_v1")
 
     val profileSubscriptions: Flow<Map<Int, ProfileSubscriptionInfo>> =
         dataStore.data.map { preferences ->
