@@ -8,13 +8,13 @@ import android.os.BatteryManager
 import android.os.PowerManager
 import androidx.core.content.ContextCompat
 import com.shod.client.BatterySaver
-import com.shod.client.DeployManager
 import com.shod.client.SettingsStore
 import com.shod.client.TunnelManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -23,6 +23,7 @@ import kotlinx.coroutines.withContext
 internal class TunnelBatteryMonitor(
     context: Context,
     private val scope: CoroutineScope,
+    private val isDeploying: StateFlow<Boolean>,
     private val onPolicyChanged: (save: Boolean, changed: Boolean) -> Unit,
 ) {
     private val appContext = context.applicationContext
@@ -66,7 +67,7 @@ internal class TunnelBatteryMonitor(
         settingsJob = scope.launch {
             val store = SettingsStore(appContext)
             // Deploy and tunnel state changes also require policy reconciliation.
-            combine(store.batterySaverMode, store.batterySaverPercent, DeployManager.isDeploying, TunnelManager.running) {
+            combine(store.batterySaverMode, store.batterySaverPercent, isDeploying, TunnelManager.running) {
                     configuredMode, percent, _, _ -> configuredMode to percent
             }.collect { (configuredMode, percent) ->
                 withContext(Dispatchers.Main) {
