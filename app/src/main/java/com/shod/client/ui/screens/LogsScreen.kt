@@ -3,7 +3,6 @@ package com.shod.client.ui.screens
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,11 +33,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shod.client.SettingsStore
 import com.shod.client.TunnelManager
+import com.shod.client.R
+import com.shod.client.platform.android.deploy.AndroidDeployCoordinator
+import com.shod.client.platform.android.ui.showRaisedToast
+import com.shod.client.ui.design.ShodTheme
 import kotlinx.coroutines.launch
 
 @Composable
@@ -45,14 +50,16 @@ fun LogsScreen(settingsStore: SettingsStore, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val logs = TunnelManager.logs
     val listState = rememberLazyListState()
+    val isDeploying by AndroidDeployCoordinator.isDeploying.collectAsStateWithLifecycle()
+    val copiedMessage = stringResource(R.string.logs_copied)
     val loggingEnabled by settingsStore.loggingEnabled.collectAsStateWithLifecycle(initialValue = true)
     val scope = rememberCoroutineScope()
 
-    // The log journal is the source of truth. Auto-follow deploy entries without
-    // coupling this screen to the deploy workflow's process-wide manager.
-    LaunchedEffect(logs.size) {
-        val latestDeployIndex = logs.indexOfLast { it.key.startsWith("deploy_") }
-        if (latestDeployIndex >= 0) listState.animateScrollToItem(latestDeployIndex)
+    LaunchedEffect(logs.size, isDeploying) {
+        if (isDeploying) {
+            val latestDeployIndex = logs.indexOfLast { it.key.startsWith("deploy_") }
+            if (latestDeployIndex >= 0) listState.animateScrollToItem(latestDeployIndex)
+        }
     }
 
     Column(
@@ -84,15 +91,15 @@ fun LogsScreen(settingsStore: SettingsStore, modifier: Modifier = Modifier) {
         Surface(
             modifier = Modifier.weight(1f).fillMaxWidth(),
             shape = RoundedCornerShape(18.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = MaterialTheme.colorScheme.onSurface,
+            color = ShodTheme.extendedColors.terminalBackground,
+            contentColor = ShodTheme.extendedColors.terminalText,
         ) {
             Box(Modifier.fillMaxSize()) {
                 if (logs.isEmpty()) {
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Icon(Icons.Outlined.Terminal, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Text("Журнал пока пуст", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Icon(Icons.Outlined.Terminal, contentDescription = null, tint = ShodTheme.extendedColors.terminalMuted)
+                            Text(stringResource(R.string.logs_empty_title), color = ShodTheme.extendedColors.terminalMuted)
                         }
                     }
                 } else {
@@ -108,10 +115,10 @@ fun LogsScreen(settingsStore: SettingsStore, modifier: Modifier = Modifier) {
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 verticalAlignment = Alignment.Top,
                             ) {
-                                Text("›", color = MaterialTheme.colorScheme.primary, fontFamily = FontFamily.Monospace)
+                                Text("›", color = ShodTheme.extendedColors.terminalSuccess, fontFamily = FontFamily.Monospace)
                                 Text(
                                     text = entry.message + if (entry.count > 1) "  ×${entry.count}" else "",
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = ShodTheme.extendedColors.terminalText,
                                     fontFamily = FontFamily.Monospace,
                                     style = MaterialTheme.typography.bodySmall,
                                 )
@@ -129,7 +136,7 @@ fun LogsScreen(settingsStore: SettingsStore, modifier: Modifier = Modifier) {
                             val text = logs.joinToString("\n") { "${it.message} (x${it.count})" }
                             val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                             clipboard.setPrimaryClip(ClipData.newPlainText("Shod Logs", text))
-                            Toast.makeText(context, "Логи скопированы", Toast.LENGTH_SHORT).show()
+                            context.showRaisedToast(copiedMessage, Toast.LENGTH_SHORT)
                         },
                     ) {
                         Icon(Icons.Outlined.ContentCopy, contentDescription = "Копировать логи")
