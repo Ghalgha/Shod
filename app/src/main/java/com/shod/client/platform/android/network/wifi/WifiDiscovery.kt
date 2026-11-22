@@ -5,7 +5,7 @@ import com.shod.client.R
 import com.shod.client.platform.android.activity.MainActivity
 import com.shod.client.network.wifi.policy.WifiNetworkListMode
 import com.shod.client.network.wifi.policy.normalizeWifiSsid
-import com.shod.client.network.wifi.policy.wifiDiscoveryCandidate
+import com.shod.client.network.wifi.preferences.wifiDiscoveryCandidate
 import com.shod.client.network.wifi.preferences.WifiPreferences
 import com.shod.client.network.wifi.preferences.WifiPreferenceStore
 import com.shod.client.network.wifi.preferences.WifiCopy
