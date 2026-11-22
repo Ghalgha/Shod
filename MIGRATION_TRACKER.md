@@ -1,4 +1,4 @@
-# Shodarchive → Shod: реестр переноса
+| 280 | `rust-client/events.rs` | `2d3b38817740fff22fdbdfe8de9d7be756d42e6d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/diagnostics/events.rs` побайтово совпадает с исходником (SHA совпадает). |
 
 Источник: `Ghalgha/Shodarchive`, `main`, commit `b7f02d26ff3cf37708d1b607ad7cca67ef71f709`.
 Цель: `Ghalgha/Shod`, `migration/phase-1-foundation`, исходный HEAD реестра `a0a4687583af475c86f3c6444cdf958891d96144`.
@@ -546,3 +546,6 @@
 
 
 | 2026-11-22 | Проверка строк 271–275 | №271 `captcha_slider.rs` и №272 `captcha.rs`: target `rust-client/src/captcha/` содержит побайтовые копии исходников. №273: отсутствовавший `Cargo.lock` восстановлен без изменения исходного содержимого. №274: `Cargo.toml` сохранён; единственное архитектурное отличие — `[[bin]].path` указывает на `src/main.rs`, соответствующий новому расположению entry point; зависимости и настройки manifest совпадают. №275: восстановлен `check_no_runtime_panics.ps1` с исходными clippy deny-правилами. Изменения: `Cargo.lock` и PowerShell-скрипт. CI, Cargo, сборка и тесты не запускались. |
+
+
+| 2026-11-22 | Повторная проверка строк 276–280 | Все пять Rust-файлов повторно сравнены с архитектурно размещёнными файлами в `rust-client/src/`; Git blob SHA и размеры совпадают. Дополнительный перенос кода не потребовался. |
