@@ -1,5 +1,8 @@
 package com.shod.client.vpn.diagnostics
 
+import com.shod.client.LogEntry
+import com.shod.client.LogLevel
+
 import androidx.compose.runtime.mutableStateListOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -102,17 +105,20 @@ internal class TunnelLogStore(
 
         if (index >= 0) {
             val previous = logs[index]
-            logs.removeAt(index)
-            insertSorted(
-                LogEntry(
-                    key = item.key,
-                    message = item.message,
-                    count = previous.count + item.count,
-                    priority = item.priority,
-                    isError = item.isError,
-                    level = item.level,
-                )
+            val updated = LogEntry(
+                key = item.key,
+                message = item.message,
+                count = previous.count + item.count,
+                priority = item.priority,
+                isError = item.isError,
+                level = item.level,
             )
+            if (previous.priority == item.priority) {
+                logs[index] = updated
+            } else {
+                logs.removeAt(index)
+                insertSorted(updated)
+            }
         } else {
             insertSorted(LogEntry(item.key, item.message, item.count, item.priority, item.isError, item.level))
         }
