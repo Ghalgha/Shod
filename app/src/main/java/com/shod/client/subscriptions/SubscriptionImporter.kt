@@ -3,8 +3,8 @@ package com.shod.client.subscriptions
 import com.shod.client.settings.model.ProfileConnectionSnapshot
 import com.shod.client.SettingsStore
 import com.shod.client.ShodConstants
-import com.shod.client.ui.utils.normalizeShodPower
-import com.shod.client.ui.utils.parseShodLink
+import com.shod.client.links.normalizeShodPower
+import com.shod.client.links.parseShodLink
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
