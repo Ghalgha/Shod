@@ -1,6 +1,7 @@
 package com.shod.client
 
 import com.shod.client.platform.android.vpn.TunVpnService
+import com.shod.client.platform.android.activity.MainActivity
 import com.shod.client.platform.android.deploy.AndroidDeployCoordinator
 import com.shod.client.platform.android.deploy.DeployDiagnostics
 import com.shod.client.vpn.telemetry.TunnelTrafficText
@@ -18,7 +19,9 @@ import com.shod.client.settings.secret.StoredSecretState
 import com.shod.client.integration.vk.captcha.android.CaptchaWebViewManager
 import com.shod.client.network.wifi.policy.WifiAutoPauseAction
 import com.shod.client.network.wifi.policy.WifiNetworkListMode
+import com.shod.client.network.wifi.preferences.WifiCopy
 import com.shod.client.network.wifi.policy.normalizeWifiSsid
+import com.shod.client.network.wifi.policy.shouldPauseForWifiNetwork
 import com.shod.client.network.wifi.policy.runWifiAutoPauseTransition
 import com.shod.client.network.wifi.policy.completeWifiAutoPause
 import com.shod.client.network.wifi.policy.wifiAutoPauseAction
