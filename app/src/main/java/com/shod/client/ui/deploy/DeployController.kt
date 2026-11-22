@@ -20,6 +20,10 @@ import com.shod.client.deploy.plan.PlanKind
 import com.shod.client.deploy.plan.ServerPorts
 import com.shod.client.deploy.plan.planDeploy
 import com.shod.client.deploy.inventory.ServerPlace
+import com.shod.client.deploy.inventory.FoundServer
+import com.shod.client.deploy.inventory.removableServers
+import com.shod.client.deploy.inventory.removalNotes
+import com.shod.client.deploy.inventory.peerPortOrDefault
 import com.shod.client.platform.android.deploy.AndroidDeployCoordinator
 import com.shod.client.platform.android.deploy.DeployDiagnostics
 import com.shod.client.platform.android.deploy.ssh.SshHostKeyStore
@@ -31,6 +35,7 @@ import com.shod.client.ui.screens.deploy.hasWebPanelCredentials
 import com.shod.client.ui.screens.deploy.isDeployMainPasswordValid
 import com.shod.client.ui.screens.deploy.resolveServerPorts
 import com.shod.client.ui.screens.deploy.splitPastedHostPort
+import com.shod.client.ui.screens.deploy.describeServer
 import com.shod.client.ui.dialogs.DeployAuthorizationDialog
 import com.shod.client.ui.dialogs.DockerInstallInfoDialog
 import com.shod.client.ui.dialogs.UninstallConfirmDialog
@@ -86,7 +91,9 @@ internal fun DeployController(
     var keyPassphrase by remember(savedSettings.profile) { mutableStateOf(savedSettings.sshKeyPassphrase) }
     var certificate by remember(savedSettings.profile) { mutableStateOf(savedSettings.sshCertificate) }
     var pendingAction by remember { mutableStateOf<PlanAction?>(null) }
-    var pendingUninstall by remember { mutableStateOf(false) }
+    var removable by remember(savedSettings.profile) { mutableStateOf<List<FoundServer>?>(null) }
+    var removeNotes by remember(savedSettings.profile) { mutableStateOf<List<String>>(emptyList()) }
+    var pendingRemoval by remember(savedSettings.profile) { mutableStateOf<FoundServer?>(null) }
     var pendingHostKeyChange by remember { mutableStateOf<SshHostKeyStore.KeyChange?>(null) }
     var retryInspection by remember { mutableStateOf<((suspend (com.shod.client.deploy.inventory.ServerInventory) -> Unit))?>(null) }
 
@@ -163,6 +170,47 @@ internal fun DeployController(
                 if (changedKey != null) pendingHostKeyChange = changedKey
                 else report(error.message ?: "Не удалось проверить VPS")
             } finally {
+                busy = false
+            }
+        }
+    }
+
+    fun executeUninstall(server: FoundServer) {
+        if (busy) return
+        busy = true
+        progress = 0f
+        DeployDiagnostics.begin()
+        scope.launch {
+            try {
+                context.startForegroundService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_START" })
+                val result = withTimeout(30 * 60 * 1000L) {
+                    coordinator().uninstall(
+                        host = host.trim(),
+                        user = login.trim(),
+                        password = if (keysMode) "" else sshPassword,
+                        sshPort = ports().ssh,
+                        peerPort = server.peerPortOrDefault(),
+                        privateKey = if (keysMode) privateKey else "",
+                        keyPassphrase = if (keysMode) keyPassphrase else "",
+                        certificate = if (keysMode) certificate else "",
+                    )
+                }
+                report(result.failureMessage ?: if (result.successful) "Сервер удалён" else "Не удалось удалить сервер")
+            } catch (timeout: TimeoutCancellationException) {
+                DeployDiagnostics.forceReset("Автоматический сброс: удаление сервера превысило 30 минут")
+                progress = 0f
+                step = "Удаление принудительно остановлено по таймауту"
+                report(step)
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (error: Exception) {
+                DeployDiagnostics.recordError("Необработанная ошибка удаления: ${error.message ?: error.javaClass.simpleName}", error)
+                AndroidDeployCoordinator.cancelActiveOperation()
+                report(error.message ?: "Ошибка удаления")
+            } finally {
+                runCatching {
+                    context.startService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_STOP" })
+                }
                 busy = false
             }
         }
@@ -311,7 +359,14 @@ internal fun DeployController(
                     }
                 }
                 DeployAction.Uninstall -> {
-                    if (credentialsReady()) pendingUninstall = true
+                    if (state.canUninstall) {
+                        runInspection { inventory ->
+                            removable = removableServers(inventory)
+                            removeNotes = removalNotes(inventory)
+                        }
+                    } else {
+                        credentialsReady()
+                    }
                 }
             }
         },
@@ -353,42 +408,37 @@ internal fun DeployController(
         DockerInstallInfoDialog(onDismiss = { showDockerInfo = false })
     }
 
-    if (pendingUninstall) {
+    removable?.let { servers ->
+        ServerCheckDialog(
+            title = "Удаление с сервера",
+            servers = emptyList(),
+            emptyText = if (servers.isEmpty() && removeNotes.isEmpty()) {
+                "Серверов, установленных этим приложением, для безопасного удаления не найдено"
+            } else {
+                ""
+            },
+            notes = removeNotes,
+            choices = servers.map { server ->
+                val (name, detail) = describeServer(server, ports().peer)
+                CheckChoice("Удалить: $name", detail, CheckChoiceStyle.DESTRUCTIVE)
+            },
+            onChoose = { index ->
+                pendingRemoval = servers[index]
+                removable = null
+            },
+            onDismiss = { removable = null },
+        )
+    }
+
+    pendingRemoval?.let { server ->
+        val (name, _) = describeServer(server, ports().peer)
         UninstallConfirmDialog(
-            title = "Удалить Shod?",
-            text = "Будет выполнено штатное удаление Shod на сервере. Это действие необратимо.",
-            onDismiss = { pendingUninstall = false },
+            title = "Удаление: $name",
+            text = "Будут удалены бинарник, служба или контейнер Shod, конфигурация и только помеченные правила firewall/NAT. База пользователей остаётся в /etc/shod. Это действие необратимо.",
+            onDismiss = { pendingRemoval = null },
             onConfirm = {
-                pendingUninstall = false
-                runInspection { inventory ->
-                    val server = inventory.servers.firstOrNull { it.place == ServerPlace.STANDARD && it.installed }
-                    if (server == null) {
-                        report("На стандартном месте работающий сервер Shod не найден")
-                        return@runInspection
-                    }
-                    try {
-                        context.startForegroundService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_START" })
-                        val result = coordinator().uninstall(
-                            host = host.trim(),
-                            user = login.trim(),
-                            password = if (keysMode) "" else sshPassword,
-                            sshPort = ports().ssh,
-                            peerPort = server.peerPort ?: ports().peer,
-                            privateKey = if (keysMode) privateKey else "",
-                            keyPassphrase = if (keysMode) keyPassphrase else "",
-                            certificate = if (keysMode) certificate else "",
-                        )
-                        report(result.failureMessage ?: if (result.successful) "Shod удалён" else "Не удалось удалить Shod")
-                    } catch (cancelled: CancellationException) {
-                        throw cancelled
-                    } catch (error: Exception) {
-                        report(error.message ?: "Ошибка удаления")
-                    } finally {
-                        runCatching {
-                            context.startService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_STOP" })
-                        }
-                    }
-                }
+                pendingRemoval = null
+                executeUninstall(server)
             },
         )
     }
