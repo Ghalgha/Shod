@@ -7,6 +7,7 @@ import com.shod.client.network.wifi.policy.WifiNetworkListMode
 import com.shod.client.network.wifi.policy.normalizeWifiSsid
 import com.shod.client.network.wifi.preferences.WifiPreferences
 import com.shod.client.network.wifi.preferences.WifiPreferenceStore
+import com.shod.client.network.wifi.preferences.WifiCopy
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
