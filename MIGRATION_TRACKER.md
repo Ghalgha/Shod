@@ -149,9 +149,9 @@
 | 130 | `app/src/main/java/com/shod/client/ui/dialogs/WorkModeInfoDialog.kt` | `1816dce8f8ac706cd0a58a55752deea9eccd7565` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
 | 131 | `app/src/main/java/com/shod/client/ui/screens/CredentialsScreen.kt` | `c2d820e4028a6d40783e9a1c16f97318b83766ca` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело исходника полностью совпадает с целевой реализацией после исключения package/import; изменено только архитектурное расположение. |
 | 132 | `app/src/main/java/com/shod/client/ui/screens/HomeScreen.kt` | `9468673afcf75bf09b2beaadc8b9d759449e5cf3` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело исходника полностью совпадает с целевой реализацией после исключения package/import; изменено только архитектурное расположение. |
-| 133 | `app/src/main/java/com/shod/client/ui/screens/LogsScreen.kt` | `876d2642b3901a87821d4c60bf82c1cc80590fd0` | ТРЕБУЕТ СВЕРКИ — целевой файл короче; требуется проверить все состояния и обработчики логов. |
-| 134 | `app/src/main/java/com/shod/client/ui/screens/RoutingScreen.kt` | `c91bdb62f3b944d40d2f276380e3ce8622d57f49` | ТРЕБУЕТ СВЕРКИ — целевая версия значительно короче; требуется сопоставить разнесённые экраны/компоненты и сценарии выбора приложений. |
-| 135 | `app/src/main/java/com/shod/client/ui/screens/SettingsScreen.kt` | `8af16b384e8eee7ae7fc2c89091970cfd3fa1c93` | ТРЕБУЕТ СВЕРКИ — обнаружены небольшие различия реализации; требуется точечно проверить поведение настроек. |
+| 133 | `app/src/main/java/com/shod/client/ui/screens/LogsScreen.kt` | ТРЕБУЕТ СВЕРКИ — выявлены конкретные отличия поведения: удалена привязка автопрокрутки к `DeployManager.isDeploying`, изменены терминальные цвета, тексты пустого состояния/копирования и способ показа Toast. Проверить намеренность каждого отличия. |
+| 134 | `app/src/main/java/com/shod/client/ui/screens/RoutingScreen.kt` | ТРЕБУЕТ СВЕРКИ — UI разнесён по picker/dialog/import-export/rules и vpn.routing parser; подтверждено наличие части перенесённых функций, но нужно сопоставить полный импорт/экспорт, сохранение списков и reload/push routing side effects. |
+| 135 | `app/src/main/java/com/shod/client/ui/screens/SettingsScreen.kt` | ТРЕБУЕТ СВЕРКИ — основное тело и настройки совпадают; выявлено изменение формы карточек с `ShodShapes.Card` на `MaterialTheme.shapes.large`. Проверить, не меняет ли это визуальную систему/поведение. |
 | 136 | `app/src/main/java/com/shod/client/ui/TunnelTrafficSummary.kt` | `06c56b05bc4b1da3095ad4644b632faa59fd0e49` | НЕ ПРОВЕРЕН |
 | 137 | `app/src/main/java/com/shod/client/ui/utils/LinkUtils.kt` | `a26bf65525f98477fa4a5912a053368627809642` | НЕ ПРОВЕРЕН |
 | 138 | `app/src/main/java/com/shod/client/ui/WifiAutoPauseUi.kt` | `d07b12fee713fe6b5475e7f7f8b44cc9670058cb` | НЕ ПРОВЕРЕН |
@@ -404,6 +404,7 @@
 ## Журнал проверок
 
 | Дата | Диапазон / файлы | Результат | Изменение реестра |
+| 2026-11-22 | Углублённая сверка LogsScreen, RoutingScreen и SettingsScreen | Найдены конкретные изменения автопрокрутки логов, темы/Toast, распределения routing parser/dialogs и формы Settings cards; преждевременно подтверждать перенос нельзя | Уточнены причины обязательной сверки в 3 строках; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка VkTokenScraper, VpnRecoveryPolicy, VPN widgets и Wi-Fi discovery/policy | Все 6 реализаций совпадают после исключения package/import/comments; архитектурные пути соответствуют назначению модулей | 6 подтверждены; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка 8 VK integration/policy файлов | 5 реализаций совпали после исключения package/import/comments; 3 имеют существенные отличия и оставлены на обязательную сверку | 5 подтверждены, 3 требуют сверки; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка экранов Credentials/Home, theme presets/scale, UpdateLaunchGuard и первичная сверка Logs/Routing/Settings | 5 файлов подтверждены после сравнения тела; 3 экрана имеют отличия и оставлены на подробную сверку | 5 подтверждены, 3 переведены в обязательную сверку; код приложения не менялся, CI/тесты не запускались |
