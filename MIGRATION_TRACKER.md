@@ -327,11 +327,11 @@
 | 308 | `rust-client/vendor/netstack-smoltcp/src/filter.rs` | `daced192058ea16936f2798664dd6b6d6f014b79` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/vendor/netstack-smoltcp/src/filter.rs` побайтово совпадает с исходником (SHA совпадает). |
 | 309 | `rust-client/vendor/netstack-smoltcp/src/lib.rs` | `dc8fcc6f6062ba27d3b978f85b1fd8aa262b84a6` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/vendor/netstack-smoltcp/src/lib.rs` побайтово совпадает с исходником (SHA совпадает). |
 | 310 | `rust-client/vendor/netstack-smoltcp/src/packet.rs` | `fd1937ec82848a350129393c388ca6f3e16fb077` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/vendor/netstack-smoltcp/src/packet.rs` побайтово совпадает с исходником (SHA совпадает). |
-| 311 | `rust-client/vendor/netstack-smoltcp/src/runner.rs` | `c17957927ebfb6d75927867038f1507eae987472` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
-| 312 | `rust-client/vendor/netstack-smoltcp/src/stack.rs` | `ecc9b39aa97f82a687b06706efa4be8c2bd75e19` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
-| 313 | `rust-client/vendor/netstack-smoltcp/src/tcp.rs` | `ce23053a20efa4433e3ed301f2d66be6ad30d5ee` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
-| 314 | `rust-client/vendor/netstack-smoltcp/src/udp.rs` | `aeda9ee3ec53c794a5d082c361e28578da89c894` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
-| 315 | `rust-client/vendor/primp/Cargo.toml` | `22d2d714ff298f9fab97ad23382c10ce4b61b48a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
+| 311 | `rust-client/vendor/netstack-smoltcp/src/runner.rs` | `c17957927ebfb6d75927867038f1507eae987472` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой `rust-client/vendor/netstack-smoltcp/src/runner.rs` побайтово совпадает с исходником (SHA совпадает). |
+| 312 | `rust-client/vendor/netstack-smoltcp/src/stack.rs` | `ecc9b39aa97f82a687b06706efa4be8c2bd75e19` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой `rust-client/vendor/netstack-smoltcp/src/stack.rs` побайтово совпадает с исходником (SHA совпадает). |
+| 313 | `rust-client/vendor/netstack-smoltcp/src/tcp.rs` | `ce23053a20efa4433e3ed301f2d66be6ad30d5ee` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой `rust-client/vendor/netstack-smoltcp/src/tcp.rs` побайтово совпадает с исходником (SHA совпадает). |
+| 314 | `rust-client/vendor/netstack-smoltcp/src/udp.rs` | `aeda9ee3ec53c794a5d082c361e28578da89c894` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой `rust-client/vendor/netstack-smoltcp/src/udp.rs` побайтово совпадает с исходником (SHA совпадает). |
+| 315 | `rust-client/vendor/primp/Cargo.toml` | `22d2d714ff298f9fab97ad23382c10ce4b61b48a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой `rust-client/vendor/primp/Cargo.toml` побайтово совпадает с исходником (SHA совпадает). |
 | 316 | `rust-client/vendor/primp/src/imp/chrome/mod.rs` | `affd4ddff9c9a570b488cfe188a638b74e8f7630` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
 | 317 | `rust-client/vendor/primp/src/imp/edge/mod.rs` | `053a82e80dfc99b5de84937209bc2f9126e4c978` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
 | 318 | `rust-client/vendor/primp/src/imp/firefox/mod.rs` | `33fc006bb5965643dab65cb417e3ce16b3e7bcd9` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
@@ -563,3 +563,5 @@
 | 2026-11-22 | Проверка строк 301–305 | Повторно сверены пять записей: №301, №302, №304, №305 совпадают побайтово; №303 отличается только путём к модулю интеграционных тестов, перенесённому в архитектурный каталог TURN. Дополнительный перенос не требуется. CI, Cargo и тесты не запускались. |
 
 | 2026-11-22 | Проверка строк 305–310 | Все шесть файлов vendored netstack-smoltcp повторно сверены с Shodarchive: лицензии Apache/MIT и исходники device/filter/lib/packet совпадают побайтово по Git blob SHA и размеру. Архитектурное расположение сохранено, дополнительный перенос не требуется. CI, Cargo и тесты не запускались. |
+
+| 2026-11-22 | Проверка строк 311–315 | Все пять файлов повторно сверены с Shodarchive: runner.rs, stack.rs, tcp.rs, udp.rs и vendor/primp/Cargo.toml совпадают побайтово по Git blob SHA и размеру. Архитектурное расположение сохранено, дополнительный перенос не требуется. CI, Cargo и тесты не запускались. |
