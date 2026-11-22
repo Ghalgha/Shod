@@ -298,7 +298,7 @@ internal fun DeployController(
                 report(error.message ?: "Ошибка операции")
             } finally {
                 runCatching {
-                    context.startService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_STOP" })
+                    context.startService(Intent(context, TunnelService::class.java).apply { this.action = "DEPLOY_STOP" })
                 }
                 busy = false
             }
