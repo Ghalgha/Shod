@@ -641,3 +641,6 @@
 
 
 | 2026-11-22 | Завершена сверка `VkAutoCallsManager.kt` | Сравнены основной менеджер, `VkCallPolicies.kt` и call sites в `TunnelManager.kt`/`TunnelService.kt`: алгоритмы создания/завершения звонков, retry/429, pacing, token-invalid handling, логи и hash вычисление сохранены; DI (scope/log/token clear) — архитектурная замена глобальных вызовов. Выявлены compile blockers: ошибочный import `com.shod.client.WorkerCountPolicy` (target class расположен в `com.shod.client.vpn.workers`) и старый static call `VkAutoCallsManager.finishActiveCalls()` в `TunnelManager.kt` (теперь instance `vkAutoCallsManager`). | Строка 144: `ТРЕБУЕТ ИСПРАВЛЕНИЯ`. Только tracker изменён; код приложения не менялся, CI/сборка/тесты не запускались |
+
+
+| 2026-11-22 | Повторная проверка `VkCallPolicies.kt` и тестов | Сверены оба исходных и целевых файла: pacer и retry policy исполняемым телом совпадают; package/import обновлены под `integration/vk/calls/api` и `policy`. Все четыре теста перенесены без изменения сценариев; references проверены в менеджере VK calls и `TunnelService`. | Строка 145 подтверждена как `ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН`; compile blockers менеджера, уже зафиксированные строкой 144, не относятся к этому файлу. Только tracker изменён; CI/сборка/тесты не запускались. |
