@@ -17,11 +17,11 @@
 
 | № | Файл источника | SHA исходного файла | Статус |
 |---:|---|---|---|
-| 1 | `.gitattributes` | `16e50b1c5a0cb98910dabc2ae0c3b2eca49ed844` | НЕ ПРОВЕРЕН |
+| 1 | `.gitattributes` | `16e50b1c5a0cb98910dabc2ae0c3b2eca49ed844` | ТРЕБУЕТ СВЕРКИ — файла в целевом репозитории нет; проверить, нужны ли исходные правила атрибутов. |
 | 2 | `.github/workflows/ci.yml` | `1cdc496180a8fb258c6c619c77d1e8fc00bfdfa6` | НЕ ПРОВЕРЕН |
-| 3 | `.gitignore` | `62c0626eba3467e66a69b8d7defc7bde5c905f01` | НЕ ПРОВЕРЕН |
+| 3 | `.gitignore` | `62c0626eba3467e66a69b8d7defc7bde5c905f01` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — целевой файл потерял исходные исключения для артефактов сборки, локальных секретов и Rust output. |
 | 4 | `app/build.gradle.kts` | `9304dd5cfd58e5d8835f0eeda6d1cc9547048271` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 5 | `app/lint.xml` | `b9d9033d384c37a7d1b11989d3b7b79a5d07ff89` | НЕ ПРОВЕРЕН |
+| 5 | `app/lint.xml` | `b9d9033d384c37a7d1b11989d3b7b79a5d07ff89` | ТРЕБУЕТ СВЕРКИ — исходный файл отсутствует в целевой структуре; проверить эквивалентную конфигурацию lint. |
 | 6 | `app/proguard-rules.pro` | `dbed9f910eb52233f14ef2815aa04a971918cab7` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 7 | `app/src/androidTest/java/com/shod/client/DeployScriptAssetTest.kt` | `d9a590f34008ba74c38a8ee04287c2f1b1ecf873` | НЕ ПРОВЕРЕН |
 | 8 | `app/src/androidTest/java/com/shod/client/DesignCompatibilityTest.kt` | `9f03bd4d4e24fd81716caf51c6f395acc416d1c9` | ТОЧНОЕ СОВПАДЕНИЕ |
@@ -33,13 +33,13 @@
 | 14 | `app/src/androidTest/java/com/shod/client/SshConnectionSmokeTest.kt` | `f18560f5e152aa8cced27ff0ddc59f54d97f842e` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 15 | `app/src/androidTest/java/com/shod/client/SwitchRestorationTest.kt` | `5c1b7beccfc0cfc848f5066dcf7a363ef8228b02` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 16 | `app/src/androidTest/java/com/shod/client/VkAccountUiTest.kt` | `8060c95de1cb7bf661402d48dda4af59dc4cfa50` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 17 | `app/src/debug/AndroidManifest.xml` | `323e7fc8e4637d243200422c643843ecc92fca68` | НЕ ПРОВЕРЕН |
-| 18 | `app/src/debug/res/values/strings.xml` | `1eccaa5a274c5d9339b5a25f02bc70756ac9b456` | НЕ ПРОВЕРЕН |
-| 19 | `app/src/main/AndroidManifest.xml` | `3c4c005a2dd478f113a026dbcdc2c00163aca5ca` | НЕ ПРОВЕРЕН |
+| 17 | `app/src/debug/AndroidManifest.xml` | `323e7fc8e4637d243200422c643843ecc92fca68` | ТРЕБУЕТ СВЕРКИ — отдельный debug manifest отсутствует; выяснить, перенесено ли переопределение debug label в Gradle/ресурсы. |
+| 18 | `app/src/debug/res/values/strings.xml` | `1eccaa5a274c5d9339b5a25f02bc70756ac9b456` | ТРЕБУЕТ СВЕРКИ — debug-имя `Shod SSH Fix` не найдено в целевых ресурсах; проверить вариантную конфигурацию приложения. |
+| 19 | `app/src/main/AndroidManifest.xml` | `3c4c005a2dd478f113a026dbcdc2c00163aca5ca` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — все 8 Android-компонентов присутствуют; изменены только class paths вслед за архитектурным переносом. |
 | 20 | `app/src/main/assets/deploy.sh` | `c1753efc9ff4a6e4efac05df14b2ec615e05a9d1` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 21 | `app/src/main/assets/domains.txt` | `d52d29657e34ffa13544323087ed7f20b344737a` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 22 | `app/src/main/assets/licenses/primp-LICENSE` | `8454fa7eea7ba29de11efb579da5c754c0b597db` | НЕ ПРОВЕРЕН |
-| 23 | `app/src/main/assets/licenses/shod-LICENSE` | `5cc8cea945d6c9b51c89ba7253c279204df4f998` | НЕ ПРОВЕРЕН |
+| 22 | `app/src/main/assets/licenses/primp-LICENSE` | `8454fa7eea7ba29de11efb579da5c754c0b597db` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — лицензия исходного vendored-компонента `primp` не найдена в целевом дереве. |
+| 23 | `app/src/main/assets/licenses/shod-LICENSE` | `5cc8cea945d6c9b51c89ba7253c279204df4f998` | ТРЕБУЕТ СВЕРКИ — исходная лицензия Shod отсутствует в целевом дереве; определить правильное место хранения. |
 | 24 | `app/src/main/assets/server-downloads.json` | `f344ddbbb985c9d0b57b46a0c25fcdbdb93e7ad3` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 25 | `app/src/main/assets/shod.server-provenance.json` | `a72cf16c05cbb743c25d4468b410d86afc258f59` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 26 | `app/src/main/java/com/shod/client/AppRoutingPresets.kt` | `80a92ba959f972d9e09928a9732956711c110965` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — в целевом `direct`-наборе отсутствуют исходные `ru.rzd.pass` и `com.tutu.ru`; это потеря данных, не архитектурное изменение. |
@@ -418,3 +418,4 @@
 | 2026-11-22 | Проверка 14 Android/Kotlin-файлов: power, VK captcha, connection policy, storage, diagnostics, connectivity, probe adapters и Quick Settings | Реализации сопоставлены с исходниками; подтверждены переносы без изменения логики. Для `ConnectionSource`, `AppRoutingPresets`, `ProfilePingController` и `ProfileTunnelProbe` обнаружены содержательные расхождения — оставлены непроверенными до отдельного анализа | 14 строк отмечены подтверждёнными; 4 спорных файла не закрыты |
 | 2026-11-22 | Углублённая сверка `ConnectionSource`, `AppRoutingPresets`, `ProfilePingController`, `ProfileTunnelProbe` | `ConnectionSource` подтверждён по обеим ветвям; в `AppRoutingPresets` найдены два отсутствующих ID (`ru.rzd.pass`, `com.tutu.ru`); две probe-реализации требуют отдельного функционального сопоставления | Обновлены статусы 4 строк; код приложения не изменялся |
 | 2026-11-22 | Проверка `AppUpdate.kt` | Все функции и модели исходника найдены в двух целевых файлах: сетевой механизм в `RemoteVersionChecker`, версия/политика в `RemoteVersionPolicy` | Исходная строка отмечена как перенесённая/распределённая |
+| 2026-11-22 | Проверка Android manifest, debug-ресурсов, лицензий и корневых конфигураций | Основной manifest перенесён с новыми class paths; выявлены отсутствующие debug overrides, две лицензии, `.gitattributes`, `lint.xml` и часть правил `.gitignore` — требуется оценить и восстановить только нужные исходные данные | Обновлены 8 статусов; исходный код приложения не менялся |
