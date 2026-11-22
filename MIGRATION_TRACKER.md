@@ -357,11 +357,11 @@
 | 338 | `rust-server/protocol.rs` | `246ed612560238b9994ef28e8c0342c3d76e2375` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — `rust-server/src/protocol/protocol.rs`; побайтовое совпадение, SHA подтверждён. |
 | 339 | `rust-server/proxy_route.rs` | `622cc271c2f77ffe4ec84b4fbd6d4dc0b796bef2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — `rust-server/src/proxy/proxy_route.rs`; побайтовое совпадение, SHA подтверждён. |
 | 340 | `rust-server/rust-toolchain.toml` | `362cd953eb82ca72ef9bd71da83a5858d8ba708a` | ВОССТАНОВЛЕН — добавлен отсутствовавший файл; зафиксированы Rust 1.97.1, профиль minimal, rustfmt/clippy и target x86_64-unknown-linux-musl. Побайтовое совпадение с исходником подтверждено. |
-| 341 | `rust-server/server_config.rs` | `20a3f528d7e654add7e59791362f38fc241fedf5` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/config/server_config.rs`. |
-| 342 | `rust-server/tokio_io.rs` | `b7973a4502650452650b390ded1d0b4e4b64980c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/transport/tokio_io.rs`. |
-| 343 | `rust-server/tproxy.rs` | `caf86809f858bb015eecb9b8db2fe9e6118e5f8d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/proxy/tproxy.rs`. |
-| 344 | `rust-server/tun_device.rs` | `ee3aac50a949e4948a0a49c3d6875229181587dc` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/tun/tun_device.rs`. |
-| 345 | `rust-server/web_panel.rs` | `3e974fe72094d1bb2e802c8008ba967244de24cd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/web_panel/web_panel.rs`. |
+| 341 | `rust-server/server_config.rs` | `20a3f528d7e654add7e59791362f38fc241fedf5` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — `rust-server/src/config/server_config.rs`; побайтовое совпадение, SHA и размер подтверждены повторным чтением. |
+| 342 | `rust-server/tokio_io.rs` | `b7973a4502650452650b390ded1d0b4e4b64980c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — `rust-server/src/transport/tokio_io.rs`; побайтовое совпадение, SHA и размер подтверждены повторным чтением. |
+| 343 | `rust-server/tproxy.rs` | `caf86809f858bb015eecb9b8db2fe9e6118e5f8d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — `rust-server/src/proxy/tproxy.rs`; побайтовое совпадение, SHA и размер подтверждены повторным чтением. |
+| 344 | `rust-server/tun_device.rs` | `ee3aac50a949e4948a0a49c3d6875229181587dc` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — `rust-server/src/tun/tun_device.rs`; побайтовое совпадение, SHA и размер подтверждены повторным чтением. |
+| 345 | `rust-server/web_panel.rs` | `3e974fe72094d1bb2e802c8008ba967244de24cd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — `rust-server/src/web_panel/web_panel.rs`; побайтовое совпадение, SHA и размер подтверждены повторным чтением. |
 | 346 | `scripts/build_apk.bat` | `23e1ed753faa2d9281164a719ab82abc1e2cdd1c` | ТРЕБУЕТ СВЕРКИ — корневой batch-скрипт сборки APK отсутствует в target; проверить эквивалентность Gradle/других скриптов. |
 | 347 | `scripts/build_both_parallel.ps1` | `c7f32d2a29c740f82d5a0e818681a8e519aa9dfe` | ТРЕБУЕТ СВЕРКИ — скрипт параллельной сборки клиента и сервера отсутствует в target; функциональный аналог не подтверждён. |
 | 348 | `scripts/find_android_sdk_ndk.bat` | `a1f3d57b6b0be9ab1b670c2298759cdee8412e18` | ТРЕБУЕТ СВЕРКИ — отсутствует в target; вспомогательный Windows-скрипт поиска Android SDK/NDK, проверить, не заменён ли Gradle/PowerShell tooling. |
