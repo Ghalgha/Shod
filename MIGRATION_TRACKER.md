@@ -197,12 +197,12 @@
 | 178 | `app/src/main/res/drawable/ic_shod_logo.xml` | `dd489aabaf6b1f941086210f9a0dcd5c7844a8ab` | ТРЕБУЕТ СВЕРКИ — исходный drawable отсутствует в `app/src/main/res` целевого репозитория. Найдены только `ic_import_export.xml`, `ic_qr_scan.xml` и `ic_settings_gear.xml`; нужно проверить ссылки из перенесённого UI и решить, заменён ли ресурс объединённой иконкой или потерян. |
 | 179 | `app/src/main/res/drawable/ic_stat_c.xml` | `e478750027c21ae3e06ecc0f104b7504bdc8c915` | ТРЕБУЕТ СВЕРКИ — исходный drawable отсутствует в `app/src/main/res` целевого репозитория. Найдены только `ic_import_export.xml`, `ic_qr_scan.xml` и `ic_settings_gear.xml`; нужно проверить ссылки из перенесённого UI и решить, заменён ли ресурс объединённой иконкой или потерян. |
 | 180 | `app/src/main/res/drawable/ic_stop.xml` | `220ddeadffeebf1894d3cf1fcee22b3b4781099d` | ТРЕБУЕТ СВЕРКИ — исходный drawable отсутствует в `app/src/main/res` целевого репозитория. Найдены только `ic_import_export.xml`, `ic_qr_scan.xml` и `ic_settings_gear.xml`; нужно проверить ссылки из перенесённого UI и решить, заменён ли ресурс объединённой иконкой или потерян. |
-| 181 | `app/src/main/res/drawable/ic_telegram.xml` | `b4b07d15a5f43c0d041b72c8150477b922ef1eb7` | НЕ ПРОВЕРЕН |
+| 181 | `app/src/main/res/drawable/ic_telegram.xml` | `b4b07d15a5f43c0d041b72c8150477b922ef1eb7` | ТРЕБУЕТ СВЕРКИ — ресурс отсутствует; проверить, используется ли он в актуальном интерфейсе или заменён другим визуальным элементом. |
 | 182 | `app/src/main/res/font/manrope_variable.ttf` | `75274da58537d6123b14f2cd0c355ad4681fc2b3` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
 | 183 | `app/src/main/res/layout/vpn_widget.xml` | `a8883f939f0027728cd22660993a66002ce74903` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
 | 184 | `app/src/main/res/mipmap-anydpi/ic_launcher_round.xml` | `67112077d80d56c64e41657300b4df449a34fbbd` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
 | 185 | `app/src/main/res/mipmap-anydpi/ic_launcher.xml` | `67112077d80d56c64e41657300b4df449a34fbbd` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
-| 186 | `app/src/main/res/raw/manrope_ofl_license.txt` | `e271172a9ed0cddc895aabb6509f1c7d880b492d` | НЕ ПРОВЕРЕН |
+| 186 | `app/src/main/res/raw/manrope_ofl_license.txt` | `e271172a9ed0cddc895aabb6509f1c7d880b492d` | ТРЕБУЕТ СВЕРКИ — файл лицензии шрифта отсутствует; проверить наличие обязательного уведомления в другом месте и соблюдение условий распространения. |
 | 187 | `app/src/main/res/values-night-v31/colors.xml` | `39ec10f55a97973b58820eece5a045282876c737` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
 | 188 | `app/src/main/res/values-night/colors.xml` | `22829b9572279c02ac8b33174355c9b132eee139` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
 | 189 | `app/src/main/res/values-v31/colors.xml` | `729312322b6c5786166126d96acf462e8a59a97b` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
@@ -212,19 +212,19 @@
 | 193 | `app/src/main/res/values/themes.xml` | `883d95308ccb6a3e6a716fdf8bf14f6f8620d416` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
 | 194 | `app/src/main/res/xml/data_extraction_rules.xml` | `4b443b259e524b432aa1459b5a966c084e99f44e` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
 | 195 | `app/src/main/res/xml/vpn_widget_info.xml` | `9ce70546fc9a632957d4655756ed9d6cd94bcb7a` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
-| 196 | `app/src/test/java/com/shod/client/AppRoutingPresetsTest.kt` | `c5eb7551296cb4eaae7983bab88878605a210cc1` | НЕ ПРОВЕРЕН |
-| 197 | `app/src/test/java/com/shod/client/AppUpdateTest.kt` | `041c7d6d0140274745e87a818ef881de27990eeb` | НЕ ПРОВЕРЕН |
-| 198 | `app/src/test/java/com/shod/client/BatteryOptimizationPromptPolicyTest.kt` | `6ec947c10cbcb18118316f94ecf4e89a0d5e175e` | НЕ ПРОВЕРЕН |
-| 199 | `app/src/test/java/com/shod/client/BatterySaverTest.kt` | `8febe015c1830501d0843c504b53040e071199c1` | НЕ ПРОВЕРЕН |
-| 200 | `app/src/test/java/com/shod/client/CaptchaUriPolicyTest.kt` | `bce855f90bcd9fe4be50b239187a29360bc7e880` | НЕ ПРОВЕРЕН |
-| 201 | `app/src/test/java/com/shod/client/ConnectionStartPolicyTest.kt` | `7034b282c102a39b25bb38f440787efb709cc54f` | НЕ ПРОВЕРЕН |
-| 202 | `app/src/test/java/com/shod/client/DeployScopedDataStoreTest.kt` | `38f85265603b32ecc818e6307f7a21c7567339fa` | НЕ ПРОВЕРЕН |
-| 203 | `app/src/test/java/com/shod/client/DnsProfileNameTest.kt` | `3b915d884baecd2849fc9204f4eeffd225a7f6a3` | НЕ ПРОВЕРЕН |
-| 204 | `app/src/test/java/com/shod/client/DtlsLogParserTest.kt` | `6452e0201459448a9a915d54ea29d6f1c9247235` | НЕ ПРОВЕРЕН |
-| 205 | `app/src/test/java/com/shod/client/MainNavigationSwipeTest.kt` | `4703a86efca307381b29891d303688212fbddd40` | НЕ ПРОВЕРЕН |
-| 206 | `app/src/test/java/com/shod/client/MaskOwnerHashesTest.kt` | `e67cfb79858755c68a57a80e2748d14740a85d1e` | НЕ ПРОВЕРЕН |
-| 207 | `app/src/test/java/com/shod/client/NativeTunnelLogParserTest.kt` | `52144291619e3414b81851a9652ac1439c0c0f7d` | НЕ ПРОВЕРЕН |
-| 208 | `app/src/test/java/com/shod/client/NetworkPauseGateTest.kt` | `c3648a7c56512e819612d681bac179a35bdf7b40` | НЕ ПРОВЕРЕН |
+| 196 | `app/src/test/java/com/shod/client/AppRoutingPresetsTest.kt` | `c5eb7551296cb4eaae7983bab88878605a210cc1` | ТРЕБУЕТ СВЕРКИ — целевой тест отличается от исходного; требуется сопоставить изменённые сценарии и убедиться, что тесты не утратили проверки. |
+| 197 | `app/src/test/java/com/shod/client/AppUpdateTest.kt` | `041c7d6d0140274745e87a818ef881de27990eeb` | ТРЕБУЕТ СВЕРКИ — исходный тест отсутствует в target; поиск одноимённого или явного аналога не выявил переноса. |
+| 198 | `app/src/test/java/com/shod/client/BatteryOptimizationPromptPolicyTest.kt` | `6ec947c10cbcb18118316f94ecf4e89a0d5e175e` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 199 | `app/src/test/java/com/shod/client/BatterySaverTest.kt` | `8febe015c1830501d0843c504b53040e071199c1` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 200 | `app/src/test/java/com/shod/client/CaptchaUriPolicyTest.kt` | `bce855f90bcd9fe4be50b239187a29360bc7e880` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 201 | `app/src/test/java/com/shod/client/ConnectionStartPolicyTest.kt` | `7034b282c102a39b25bb38f440787efb709cc54f` | ТРЕБУЕТ СВЕРКИ — целевой тест существенно короче исходного; требуется сопоставить удалённые тест-кейсы с новой архитектурой и покрытием. |
+| 202 | `app/src/test/java/com/shod/client/DeployScopedDataStoreTest.kt` | `38f85265603b32ecc818e6307f7a21c7567339fa` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 203 | `app/src/test/java/com/shod/client/DnsProfileNameTest.kt` | `3b915d884baecd2849fc9204f4eeffd225a7f6a3` | ТРЕБУЕТ СВЕРКИ — исходный тест отсутствует в target; поиск одноимённого или явного аналога не выявил переноса. |
+| 204 | `app/src/test/java/com/shod/client/DtlsLogParserTest.kt` | `6452e0201459448a9a915d54ea29d6f1c9247235` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 205 | `app/src/test/java/com/shod/client/MainNavigationSwipeTest.kt` | `4703a86efca307381b29891d303688212fbddd40` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 206 | `app/src/test/java/com/shod/client/MaskOwnerHashesTest.kt` | `e67cfb79858755c68a57a80e2748d14740a85d1e` | ТРЕБУЕТ СВЕРКИ — исходный тест отсутствует в target; поиск одноимённого или явного аналога не выявил переноса. |
+| 207 | `app/src/test/java/com/shod/client/NativeTunnelLogParserTest.kt` | `52144291619e3414b81851a9652ac1439c0c0f7d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 208 | `app/src/test/java/com/shod/client/NetworkPauseGateTest.kt` | `c3648a7c56512e819612d681bac179a35bdf7b40` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
 | 209 | `app/src/test/java/com/shod/client/ParticipantHashesTest.kt` | `d9c39d1a0ec7c41e2c7ab4bd676e27cf97564ba2` | НЕ ПРОВЕРЕН |
 | 210 | `app/src/test/java/com/shod/client/PhysicalNetworkTrackerTest.kt` | `b381f7a823efcef94f0e9c4e4f65b90a4a096e61` | НЕ ПРОВЕРЕН |
 | 211 | `app/src/test/java/com/shod/client/ProbeOutputReaderTest.kt` | `0182b36cd7662366db3efa09bbddd5190cf786cc` | НЕ ПРОВЕРЕН |
@@ -403,6 +403,7 @@
 
 ## Журнал проверок
 
+| 2026-11-22 | Сверка 15 Android ресурсов и unit-тестов | Восемь тестов перенесены в новую структуру без изменений тел тестов (различаются package/import). Два теста изменены (`AppRoutingPresetsTest`, `ConnectionStartPolicyTest`) и требуют сопоставления сценариев. Иконка Telegram, лицензия Manrope и три теста (`AppUpdate`, `DnsProfileName`, `MaskOwnerHashes`) не найдены в target | 8 строк подтверждены как перенесённые, 7 переведены в `ТРЕБУЕТ СВЕРКИ`; код не менялся, CI/сборка/тесты не запускались |
 | 2026-11-22 | Проверка оставшихся client provenance и 11 drawable ресурсов | `libclient.provenance.json` отсутствует; похожий `shod.server-provenance.json` не эквивалентен, так как описывает server artifact. Все 11 исходных drawable отсутствуют в целевой `res`; обнаружены только три другие иконки, но использование и допустимость замены ещё не установлены | 12 строк переведены в `ТРЕБУЕТ СВЕРКИ`; код и ресурсы не менялись, CI/сборка/тесты не запускались |
 | 2026-11-22 | Проверка шести UI/utility-файлов: deployment secrets, secrets, server removal, traffic summary, link utils, Wi-Fi auto-pause | Для всех шести найдены распределённые или близкие реализации, но есть признаки упрощения UI либо непроверенные побочные эффекты; особенно важно подтвердить сохранность экранов трафика и полного сценария удаления. `LinkUtils` распределён в `links/ShodLinkCodec`, Wi-Fi UI — в `WifiAutoPauseContent` плюс platform/policy modules | Все шесть строк переведены в `ТРЕБУЕТ СВЕРКИ`; код приложения не менялся, CI/сборка/тесты не запускались |
 | 2026-11-22 | Углублённая сверка `DeployOperations.kt` и `TvDevicePolicy.kt` | DeployOperations распределён по workflow/server-check/uninstaller/SSH adapters; алгоритмы основных стадий прослеживаются, но диагностика ошибок server check и uninstall отличается от исходной, а полный аудит reconnect/upload fallback и побочных эффектов не завершён. `TvDevicePolicy` не найден в target; manifest TV features сохранены, но runtime detection policy не подтверждена | Обе строки переведены в `ТРЕБУЕТ СВЕРКИ`; код приложения не менялся, CI/сборка/тесты не запускались |
