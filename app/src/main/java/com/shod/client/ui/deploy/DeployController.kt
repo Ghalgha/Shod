@@ -36,6 +36,10 @@ import com.shod.client.ui.screens.deploy.splitPastedHostPort
 import com.shod.client.ui.dialogs.DeployAuthorizationDialog
 import com.shod.client.ui.dialogs.DockerInstallInfoDialog
 import com.shod.client.ui.dialogs.UninstallConfirmDialog
+import com.shod.client.ui.dialogs.ServerCheckDialog
+import com.shod.client.ui.dialogs.CheckChoice
+import com.shod.client.ui.dialogs.CheckChoiceStyle
+import com.shod.client.ui.dialogs.WebPanelInfoDialog
 import com.shod.client.ui.dialogs.HostKeyChangedDialog
 import com.shod.client.ui.dialogs.SshKeysDialog
 import kotlinx.coroutines.CancellationException
@@ -72,6 +76,7 @@ internal fun DeployController(
     var showAuth by remember { mutableStateOf(false) }
     var showKeys by remember { mutableStateOf(false) }
     var showDockerInfo by remember { mutableStateOf(false) }
+    var showPanelInfo by remember { mutableStateOf(false) }
     var mainPassword by remember(savedSettings.profile) { mutableStateOf(savedSettings.mainPassword) }
     var webLogin by remember(savedSettings.profile) { mutableStateOf(savedSettings.webLogin) }
     var webPassword by remember(savedSettings.profile) { mutableStateOf(savedSettings.webPassword) }
@@ -260,7 +265,7 @@ internal fun DeployController(
                 DeployAction.EditSshKeys -> showKeys = true
                 DeployAction.EditAuthorization -> showAuth = true
                 DeployAction.DockerInfo -> showDockerInfo = true
-                DeployAction.PanelInfo -> report("Ссылка панели открывается по указанному адресу и порту")
+                DeployAction.PanelInfo -> showPanelInfo = true
                 DeployAction.OpenControlPanel -> {
                     val port = ports().web
                     val path = savedSettings.secretPathUuid.trim('/').takeIf { savedSettings.secretPathEnabled && it.isNotBlank() }?.let { "/$it" } ?: ""
@@ -387,23 +392,30 @@ internal fun DeployController(
         )
     }
 
+    if (showPanelInfo) {
+        WebPanelInfoDialog(onDismiss = { showPanelInfo = false })
+    }
+
     checkState.plan.value?.let { plan ->
         if (plan.actions.size > 1 || plan.actions.singleOrNull()?.destructive == true) {
-            AlertDialog(
-                onDismissRequest = { checkState.plan.value = null },
-                title = { Text("Результат проверки VPS") },
-                text = { Text((plan.notes + plan.actions.map { it.title + ": " + it.detail }).joinToString("\n\n")) },
-                confirmButton = {
-                    Column {
-                        plan.actions.forEach { action ->
-                            TextButton(onClick = {
-                                checkState.plan.value = null
-                                if (action.destructive) pendingAction = action else executeDeploy(action)
-                            }) { Text(action.title) }
-                        }
-                    }
+            ServerCheckDialog(
+                title = "Результат проверки VPS",
+                servers = emptyList(),
+                emptyText = "",
+                notes = plan.notes,
+                choices = plan.actions.map { action ->
+                    CheckChoice(
+                        title = action.title,
+                        detail = action.detail,
+                        style = if (action.destructive) CheckChoiceStyle.DESTRUCTIVE else CheckChoiceStyle.OTHER,
+                    )
                 },
-                dismissButton = { TextButton(onClick = { checkState.plan.value = null }) { Text("Закрыть") } },
+                onChoose = { index ->
+                    val action = plan.actions[index]
+                    checkState.plan.value = null
+                    if (action.destructive) pendingAction = action else executeDeploy(action)
+                },
+                onDismiss = { checkState.plan.value = null },
             )
         }
     }
