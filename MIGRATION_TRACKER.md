@@ -281,17 +281,17 @@
 | 262 | `gradle/wrapper/gradle-wrapper.properties` | `c61a118f7ddb21223f1a2fdd05f6aec1b9863aec` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
 | 263 | `gradlew` | `727d6af8d7e8074828a48b143b83bf7ddefa9d66` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
 | 264 | `gradlew.bat` | `22fdb19759a5057da49087fd4216984baacab123` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
-| 265 | `KNOWN_ISSUES.md` | `0ef93169ba83d56cc77c09bd7cb55b6bc0f40a81` | НЕ ПРОВЕРЕН |
-| 266 | `LICENSE` | `5cc8cea945d6c9b51c89ba7253c279204df4f998` | НЕ ПРОВЕРЕН |
+| 265 | `KNOWN_ISSUES.md` | `0ef93169ba83d56cc77c09bd7cb55b6bc0f40a81` | ТРЕБУЕТ СВЕРКИ — документ с результатами аудита отсутствует в target; требуется решить, переносить ли его как сопровождающую документацию, не смешивая с кодом. |
+| 266 | `LICENSE` | `5cc8cea945d6c9b51c89ba7253c279204df4f998` | ТРЕБУЕТ СВЕРКИ — исходная проприетарная лицензия отсутствует в target; необходимо сохранить лицензионные условия и проверить согласованность с лицензиями сторонних компонентов. |
 | 267 | `rust-client/auth.rs` | `0505a22fb173ae9aebcd828a2876a4d1b5055efd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/auth/auth.rs`. |
-| 268 | `rust-client/build_android_abis.ps1` | `29e821d302ccaa469a72946333766c4249ed8efd` | НЕ ПРОВЕРЕН |
-| 269 | `rust-client/build_android_wsl.sh` | `0d142af9668f1ece3649f07c3c3b35b195e98b41` | НЕ ПРОВЕРЕН |
-| 270 | `rust-client/build_so.bat` | `29184a50f56fbe7aa31616a9b0cb7961f4a64c9e` | НЕ ПРОВЕРЕН |
+| 268 | `rust-client/build_android_abis.ps1` | `29e821d302ccaa469a72946333766c4249ed8efd` | ТРЕБУЕТ СВЕРКИ — скрипт сборки Android ABI отсутствует в target; проверить, не заменён ли другим скриптом и не потеряны ли поддерживаемые ABI. |
+| 269 | `rust-client/build_android_wsl.sh` | `0d142af9668f1ece3649f07c3c3b35b195e98b41` | ТРЕБУЕТ СВЕРКИ — WSL-скрипт сборки Android отсутствует в target; функциональный аналог не подтверждён. |
+| 270 | `rust-client/build_so.bat` | `29184a50f56fbe7aa31616a9b0cb7961f4a64c9e` | ТРЕБУЕТ СВЕРКИ — Windows batch-скрипт сборки shared object отсутствует в target; функциональный аналог не подтверждён. |
 | 271 | `rust-client/captcha_slider.rs` | `ebfe770153564f1e45fa05efc6c3b57ed5fd91d1` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/captcha/captcha_slider.rs`. |
 | 272 | `rust-client/captcha.rs` | `a23c4342ffe113f3e709299f190efee2c8d5493a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/captcha/captcha.rs`. |
-| 273 | `rust-client/Cargo.lock` | `e3a20d5de6ca055f3a68467a16b99e5175bc3a08` | НЕ ПРОВЕРЕН |
-| 274 | `rust-client/Cargo.toml` | `dbc971f0c2cd5fa765ed35f090cbfbaa34afe163` | НЕ ПРОВЕРЕН |
-| 275 | `rust-client/check_no_runtime_panics.ps1` | `c6408ca920015d10788d8e92d3201b2944569267` | НЕ ПРОВЕРЕН |
+| 273 | `rust-client/Cargo.lock` | `e3a20d5de6ca055f3a68467a16b99e5175bc3a08` | ТРЕБУЕТ СВЕРКИ — lockfile Rust-клиента отсутствует в target; проверить соответствие фиксированных версий зависимостей и reproducible build. |
+| 274 | `rust-client/Cargo.toml` | `dbc971f0c2cd5fa765ed35f090cbfbaa34afe163` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — manifest совпадает с исходником; единственное архитектурное изменение — путь бинарного entry point `main.rs` → `src/main.rs`. |
+| 275 | `rust-client/check_no_runtime_panics.ps1` | `c6408ca920015d10788d8e92d3201b2944569267` | ТРЕБУЕТ СВЕРКИ — скрипт проверки runtime panic отсутствует в target; функциональный аналог не найден. |
 | 276 | `rust-client/cpu_task.rs` | `6aca64aecbfa5c2699b851287a34d81052921705` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/threads/cpu_task.rs`. |
 | 277 | `rust-client/direct_relay.rs` | `de5829ff4b0c7a8af1c71d27939ed89c800b5b3c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/relay/direct_relay.rs`. |
 | 278 | `rust-client/dispatcher.rs` | `f52070e96b772386863b6584d225f0e2bd9285dd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/dispatcher/dispatcher.rs`. |
@@ -303,7 +303,7 @@
 | 284 | `rust-client/obfs.rs` | `44e2423ad11a6b8142578639b65f74bc81ec02a3` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/obfuscation/obfs.rs`. |
 | 285 | `rust-client/packet.rs` | `51245ebf87e44cbc4469c91473eccb0160d62850` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/packet/packet.rs`. |
 | 286 | `rust-client/profiles.rs` | `25c5c01a1f3713b2ad7e8dfe6a386edaf2b694e2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/runtime/profiles.rs`. |
-| 287 | `rust-client/proptest-regressions/session.txt` | `37bb44576e341826894f3002b4ebb5ccbaa35a57` | НЕ ПРОВЕРЕН |
+| 287 | `rust-client/proptest-regressions/session.txt` | `37bb44576e341826894f3002b4ebb5ccbaa35a57` | ТРЕБУЕТ СВЕРКИ — regression corpus proptest отсутствует в target; проверить, является ли файл необходимым воспроизводимым regression case. |
 | 288 | `rust-client/protocol.rs` | `4b50656fa6f9b18b0ccf13250b61602a4b3d78dd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/protocol/protocol.rs`. |
 | 289 | `rust-client/repair.rs` | `89b2bffcb555be01fbaaf52a7f1b56afbff81e48` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/runtime/repair.rs`. |
 | 290 | `rust-client/session.rs` | `32cd4a6222ded98664b7358b507c36e78f92f3f7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/session/session.rs`. |
@@ -342,12 +342,12 @@
 | 323 | `rust-client/vk_js_calls.rs` | `04f2a6a315c6392b47fe560e2f8ecdedefb39773` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/calls/vk_js_calls.rs`. |
 | 324 | `rust-client/worker.rs` | `f8e41e3ff249300d1ecabfde5990164f4a290768` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/threads/worker.rs`. |
 | 325 | `rust-client/wrap.rs` | `2429d6278870382a631acaf7e46e30d642d9ea41` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/security/wrap.rs`. |
-| 326 | `rust-server/.cargo/config.toml` | `3d032011640d70c3825e1fe16f7b3e93f09ff537` | НЕ ПРОВЕРЕН |
-| 327 | `rust-server/build_linux_variants.ps1` | `9b7f9e740dc17fd2e024a4723dbdd029e17b23ec` | НЕ ПРОВЕРЕН |
-| 328 | `rust-server/build_linux.bat` | `c514bc21d5587fc0efc46d5ebc4a829da92d6ad0` | НЕ ПРОВЕРЕН |
-| 329 | `rust-server/build_linux.sh` | `530ed45bb9dd7418cfaa48aedb47ce9085dd83a1` | НЕ ПРОВЕРЕН |
-| 330 | `rust-server/Cargo.lock` | `d3bf1cc21c19a0b036e00bda239b64a4106ae306` | НЕ ПРОВЕРЕН |
-| 331 | `rust-server/Cargo.toml` | `8041c62b55879012a73d6d5d14814a555944cabb` | НЕ ПРОВЕРЕН |
+| 326 | `rust-server/.cargo/config.toml` | `3d032011640d70c3825e1fe16f7b3e93f09ff537` | ТРЕБУЕТ СВЕРКИ — Cargo config сервера отсутствует в target; проверить настройки сборки/линковки и их перенос в другое место. |
+| 327 | `rust-server/build_linux_variants.ps1` | `9b7f9e740dc17fd2e024a4723dbdd029e17b23ec` | ТРЕБУЕТ СВЕРКИ — PowerShell-скрипт сборки вариантов Linux отсутствует в target; функциональный аналог не подтверждён. |
+| 328 | `rust-server/build_linux.bat` | `c514bc21d5587fc0efc46d5ebc4a829da92d6ad0` | ТРЕБУЕТ СВЕРКИ — Windows batch-скрипт сборки Linux-сервера отсутствует в target; функциональный аналог не подтверждён. |
+| 329 | `rust-server/build_linux.sh` | `530ed45bb9dd7418cfaa48aedb47ce9085dd83a1` | ТРЕБУЕТ СВЕРКИ — shell-скрипт сборки Linux-сервера отсутствует в target; функциональный аналог не подтверждён. |
+| 330 | `rust-server/Cargo.lock` | `d3bf1cc21c19a0b036e00bda239b64a4106ae306` | ТРЕБУЕТ СВЕРКИ — lockfile Rust-сервера отсутствует в target; проверить фиксированные версии зависимостей. |
+| 331 | `rust-server/Cargo.toml` | `8041c62b55879012a73d6d5d14814a555944cabb` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — manifest совпадает с исходником; единственное архитектурное изменение — путь бинарного entry point `main.rs` → `src/main.rs`. |
 | 332 | `rust-server/dataplane.rs` | `88037b2794433cc359e99a9afe3758fcc1586693` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/dataplane/dataplane.rs`. |
 | 333 | `rust-server/main.rs` | `cca694f812d3f8b81783bface6372633bb4cbbfb` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — всё содержимое совпадает после исключения директив путей модулей; модули перенесены в архитектурные каталоги `rust-server/src/*`. |
 | 334 | `rust-server/model.rs` | `148302fad86f016a03dc249b149b1a666e7bc360` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/config/model.rs`. |
@@ -356,14 +356,14 @@
 | 337 | `rust-server/path_probe.rs` | `d01883136a5bb86318453ccd8c2ad97f20c47694` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/diagnostics/path_probe.rs`. |
 | 338 | `rust-server/protocol.rs` | `246ed612560238b9994ef28e8c0342c3d76e2375` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/protocol/protocol.rs`. |
 | 339 | `rust-server/proxy_route.rs` | `622cc271c2f77ffe4ec84b4fbd6d4dc0b796bef2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/proxy/proxy_route.rs`. |
-| 340 | `rust-server/rust-toolchain.toml` | `362cd953eb82ca72ef9bd71da83a5858d8ba708a` | НЕ ПРОВЕРЕН |
+| 340 | `rust-server/rust-toolchain.toml` | `362cd953eb82ca72ef9bd71da83a5858d8ba708a` | ТРЕБУЕТ СВЕРКИ — toolchain pin отсутствует в target; проверить, не потеряно ли требование к версии Rust. |
 | 341 | `rust-server/server_config.rs` | `20a3f528d7e654add7e59791362f38fc241fedf5` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/config/server_config.rs`. |
 | 342 | `rust-server/tokio_io.rs` | `b7973a4502650452650b390ded1d0b4e4b64980c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/transport/tokio_io.rs`. |
 | 343 | `rust-server/tproxy.rs` | `caf86809f858bb015eecb9b8db2fe9e6118e5f8d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/proxy/tproxy.rs`. |
 | 344 | `rust-server/tun_device.rs` | `ee3aac50a949e4948a0a49c3d6875229181587dc` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/tun/tun_device.rs`. |
 | 345 | `rust-server/web_panel.rs` | `3e974fe72094d1bb2e802c8008ba967244de24cd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/web_panel/web_panel.rs`. |
-| 346 | `scripts/build_apk.bat` | `23e1ed753faa2d9281164a719ab82abc1e2cdd1c` | НЕ ПРОВЕРЕН |
-| 347 | `scripts/build_both_parallel.ps1` | `c7f32d2a29c740f82d5a0e818681a8e519aa9dfe` | НЕ ПРОВЕРЕН |
+| 346 | `scripts/build_apk.bat` | `23e1ed753faa2d9281164a719ab82abc1e2cdd1c` | ТРЕБУЕТ СВЕРКИ — корневой batch-скрипт сборки APK отсутствует в target; проверить эквивалентность Gradle/других скриптов. |
+| 347 | `scripts/build_both_parallel.ps1` | `c7f32d2a29c740f82d5a0e818681a8e519aa9dfe` | ТРЕБУЕТ СВЕРКИ — скрипт параллельной сборки клиента и сервера отсутствует в target; функциональный аналог не подтверждён. |
 | 348 | `scripts/find_android_sdk_ndk.bat` | `a1f3d57b6b0be9ab1b670c2298759cdee8412e18` | НЕ ПРОВЕРЕН |
 | 349 | `scripts/find_android_sdk.bat` | `96b08542f9e3a393b8b25f92914e89b1958082d6` | НЕ ПРОВЕРЕН |
 | 350 | `scripts/native_client_provenance.ps1` | `02361f4499c99f1e7e05b1f527df15605be07a6f` | НЕ ПРОВЕРЕН |
@@ -448,3 +448,5 @@
 | 2026-11-22 | Сверка host-key dialog, SSH keys dialog и VK auth dialog | VK auth dialog полностью совпадает; два диалога выделены из DeployController и требуют проверки полного поведения | Обновлены 3 строки; код не менялся |
 
 | 2026-11-22 | Сверка 14 оставшихся Android unit-тестов: SSH runtime dependency, update guard, VK policies/hash validation, VPN configuration/recovery, Wi-Fi policies/preferences и worker policies | 12 тестов полностью совпадают с исходниками после исключения package/import. `VkHashValidatorTest` утратил три сценария (JSON round-trip, invalidation/pending и фильтрация invalid hashes); `SshKeyRuntimeDependencyTest` отсутствует в target, его функциональный аналог не найден | 12 строк подтверждены как перенесённые, 2 оставлены на сверку; прикладной код не менялся, CI/сборка/тесты не запускались |
+
+| 2026-11-22 | Проверка 18 оставшихся файлов документации, лицензии, Rust manifests/lockfiles, toolchain и build scripts | Оба Cargo.toml содержат те же зависимости и настройки; отличается только путь `main.rs` → `src/main.rs`. 16 прочих файлов отсутствуют в target и оставлены на сверку (включая LICENSE и lockfiles) | 2 подтверждены как перенесённые, 16 требуют сверки; прикладной код не менялся, CI/сборка/тесты не запускались |
