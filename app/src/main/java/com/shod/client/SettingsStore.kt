@@ -55,6 +55,7 @@ import com.shod.client.settings.update.UpdatePreferencesStore
 import com.shod.client.settings.deploy.DeployInspectionStore
 import com.shod.client.settings.system.BatteryOptimizationPromptStore
 import com.shod.client.vpn.lifecycle.TunnelRuntimePreferencesStore
+import com.shod.client.vpn.lifecycle.reserveTunnelGenerationId
 import com.shod.client.network.wifi.policy.WifiNetworkListMode
 import com.shod.client.network.wifi.preferences.WifiPreferences
 import com.shod.client.network.wifi.preferences.WifiPreferenceStore
