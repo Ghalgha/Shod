@@ -91,7 +91,6 @@ import com.shod.client.ui.components.HeaderActions
 import com.shod.client.ui.screens.credentials.CredentialsScreen
 import com.shod.client.ShodConstants
 import com.shod.client.ui.deploy.DeployController
-import com.shod.client.ui.screens.deploy.DeployCheckState
 import com.shod.client.ui.components.LocalHeaderActions
 import com.shod.client.ui.design.ShodMotion
 import com.shod.client.ui.design.ShodShapes
