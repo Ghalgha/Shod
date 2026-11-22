@@ -101,9 +101,9 @@
 | 82 | `app/src/main/java/com/shod/client/TurnSubnetRegistry.kt` | `d3da334a85488e5710ac982887a66a5025cce078` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
 | 83 | `app/src/main/java/com/shod/client/TurnTransportPolicy.kt` | `4321e965c2ac0f136dde43f47cbbd18784f4fe96` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
 | 84 | `app/src/main/java/com/shod/client/TvDevicePolicy.kt` | `72778950dc775bdb761d27c45329c6107483c5f3` | НЕ ПРОВЕРЕН |
-| 85 | `app/src/main/java/com/shod/client/ui/AppSelectionOrdering.kt` | `9afed32923a2e896d89896b263b7b74f6d244712` | НЕ ПРОВЕРЕН |
+| 85 | `app/src/main/java/com/shod/client/ui/AppSelectionOrdering.kt` | `9afed32923a2e896d89896b263b7b74f6d244712` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — функция `selectedApplicationsFirst` перенесена без изменения сортировки в `ui/screens/routing/apps/SelectedApplicationsOrder.kt`. |
 | 86 | `app/src/main/java/com/shod/client/ui/background/AppBackdrop.kt` | `2cf5eacc9fb1f5c9f8db8ba8b44333cb0aa45a13` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 87 | `app/src/main/java/com/shod/client/ui/components/ApplicationRow.kt` | `fe536b58208eb7844bed9a7804a0575bbb28bac1` | НЕ ПРОВЕРЕН |
+| 87 | `app/src/main/java/com/shod/client/ui/components/ApplicationRow.kt` | `fe536b58208eb7844bed9a7804a0575bbb28bac1` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — модель `AppItem` выделена в `ui/screens/routing/apps/AppItem.kt`, composable `AppRow` перенесён в `AppRow.kt`; отображение, цвета, размеры, toggle и semantics сохранены. |
 | 88 | `app/src/main/java/com/shod/client/ui/components/AppSectionCard.kt` | `8014117b8206535d0fad5214757cec9065dcec77` | ТРЕБУЕТ СВЕРКИ — целевая реализация заметно короче; отличается вычисление цветов поверхности и границ. |
 | 89 | `app/src/main/java/com/shod/client/ui/components/ContentScreen.kt` | `ffa6a402cd741499b24ae2bc35e1ea41896bcb8b` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 90 | `app/src/main/java/com/shod/client/ui/components/HeaderActions.kt` | `d0a411047b334146761f2962134e5094d9e72352` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — отличие только в импорте `parseShodLink`, функциональный вызов сохранён. |
@@ -114,10 +114,10 @@
 | 95 | `app/src/main/java/com/shod/client/ui/components/TunnelProtocolChip.kt` | `d24cb37384c16831d9def9c81e03664da16d6b84` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 96 | `app/src/main/java/com/shod/client/ui/components/TunnelWorkersSlider.kt` | `0f0a75f85c460ca20f2408f04ba596b66a846185` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 97 | `app/src/main/java/com/shod/client/ui/controllers/ConnectionController.kt` | `da6f8488358ad843b6141b43b268d4ab23d5a2bb` | ТРЕБУЕТ СВЕРКИ — сборка START Intent вынесена в `TunnelServiceIntentFactory`; проверить все extras и параметры запуска. |
-| 98 | `app/src/main/java/com/shod/client/ui/deploy/DeployCheckState.kt` | `341ac357fd175b06711bcda0e02c127c362e64a4` | НЕ ПРОВЕРЕН |
+| 98 | `app/src/main/java/com/shod/client/ui/deploy/DeployCheckState.kt` | `341ac357fd175b06711bcda0e02c127c362e64a4` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — состояние `plan` и `replacement` полностью сохранено в `ui/screens/deploy/DeployCheckState.kt`; изменены только пакет и импорты типов. |
 | 99 | `app/src/main/java/com/shod/client/ui/deploy/DeployController.kt` | `4dd1207fe17f0d49893039bd5f4998e7a440d4bf` | ТРЕБУЕТ СВЕРКИ — исходник существенно больше; состояние и операции разнесены между Compose owner и AndroidDeployCoordinator. |
 | 100 | `app/src/main/java/com/shod/client/ui/deploy/DeployPlan.kt` | `3ba88c38ff013673bb84ed252eac233af0a42d54` | ТРЕБУЕТ СВЕРКИ — целевой файл расширен моделями портов и runtime label; проверить исходную модель и связанные типы. |
-| 101 | `app/src/main/java/com/shod/client/ui/deploy/DeployScreen.kt` | `fce80a175a2b4d27fdeb6c6a980d865d968e7cc4` | НЕ ПРОВЕРЕН |
+| 101 | `app/src/main/java/com/shod/client/ui/deploy/DeployScreen.kt` | `fce80a175a2b4d27fdeb6c6a980d865d968e7cc4` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело Compose-экрана полностью совпадает после исключения package/import; изменён только путь и пакет. |
 | 102 | `app/src/main/java/com/shod/client/ui/deploy/operations/DeployOperations.kt` | `af164fb2b77d7ab6fa2f17653812e7e0f55d8654` | НЕ ПРОВЕРЕН |
 | 103 | `app/src/main/java/com/shod/client/ui/deploy/operations/DeployScript.kt` | `0dc9d35716345b4ec3e5fb6acf92f86789a7f96d` | НЕ ПРОВЕРЕН |
 | 104 | `app/src/main/java/com/shod/client/ui/deploy/operations/SshTransportConnection.kt` | `e3f3d0f0a7d26e4611f8c9cbb74c913c1facb76c` | ТРЕБУЕТ СВЕРКИ — целевой файл добавляет документированную границу retry; проверить точное поведение повторов и исключений. |
@@ -404,6 +404,7 @@
 ## Журнал проверок
 
 | Дата | Диапазон / файлы | Результат | Изменение реестра |
+| 2026-11-22 | Сверка routing app picker и deploy UI: `AppSelectionOrdering`, `ApplicationRow`, `DeployCheckState`, `DeployScreen` | Все 4 исходных реализации найдены в целевых архитектурных путях; сортировка и UI-поведение сохранены, экран Deploy совпадает по телу после исключения package/import. `DeployOperations`, `DeployScript` и три диалога оставлены открытыми до сопоставления реализаций | 4 строки подтверждены; код приложения не менялся, CI не запускался |
 |---|---|---|---|
 | 2026-11-22 | Первичная инвентаризация всех 359 файлов | Создан полный перечень; точные blob-совпадения отмечены отдельно, содержимое ещё не признано перенесённым | Инициализация реестра |
 | 2026-11-22 | Проверка 5 крупных Rust-файлов: клиентский `main.rs`, `dispatcher.rs`, `auth.rs`; серверный `web_panel.rs`; TURN integration tests | 4 файла совпадают побайтово; `rust-client/main.rs` совпадает полностью после исключения директив путей модулей — в целевом проекте модульная раскладка разнесена по каталогам. Других отличий в теле `main.rs` нет | Пять строк получили подтверждённые статусы переноса/распределения |
