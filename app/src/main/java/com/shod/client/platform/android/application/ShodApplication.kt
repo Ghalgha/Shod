@@ -1,6 +1,7 @@
 package com.shod.client.platform.android.application
 
 import com.shod.client.*
+import com.shod.client.platform.android.deploy.DeployDiagnostics
 
 import android.app.Application
 import android.content.Context
@@ -12,7 +13,7 @@ import kotlinx.coroutines.launch
 class ShodApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        DeployManager.init(this)
+        DeployDiagnostics.initialize(this)
 
         // The QS tile and the widgets follow the tunnel from process start, not from MainActivity:
         // a tile or widget tap starts the process too, and the tile is refreshed only on request.
