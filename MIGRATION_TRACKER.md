@@ -375,7 +375,7 @@
 | 356 | `shared/dtls.rs` | `407915f519923b70473d48a936c663b98109f222` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `shared/dtls.rs`. |
 | 357 | `shared/spsc_ring.rs` | `ac4d6b6a0b1add12d7247842e472ddb5f81e3bc6` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `shared/spsc_ring.rs`. |
 | 358 | `shared/wire_protocol.rs` | `2ac9ed2474995531fe6b3ec6a3bd68e09a5916e8` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `shared/wire_protocol.rs`. |
-| 359 | `VERSIONING.md` | `ad5f8da834804d8c7590ffa4b5e6ae3a3aca8f42` | ТРЕБУЕТ СВЕРКИ — документ о версии исходников и происхождении встроенных бинарников отсутствует в target; часть сведений уже отражена в `shod.server-provenance.json`/других артефактах, проверить полноту. |
+| 359 | `VERSIONING.md` | `ad5f8da834804d8c7590ffa4b5e6ae3a3aca8f42` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — восстановлен в корне target как `VERSIONING.md`; сверены Android `versionName/versionCode`, версии обоих Cargo-пакетов и provenance-манифесты. Уточнён текст о server `artifactVersion`: текущий серверный provenance-скрипт сохраняет историческое значение 2.5.3 и не переводит его автоматически на 0.1.0. |
 
 ## Сводка по типам файлов
 
