@@ -1,4 +1,6 @@
 package com.shod.client.vpn.diagnostics
+
+import com.shod.client.LogLevel
 object TunnelLogPolicy {
     private val stunRecoveryCode = Regex("(?i)\\bSTUN(?:\\s+error)?[\\s:=]+(?:437|486)\\b")
     fun isAllowedWhenInactiveLogging(key: String, isError: Boolean, level: LogLevel?): Boolean {
