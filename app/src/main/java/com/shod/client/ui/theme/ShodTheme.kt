@@ -1,4 +1,6 @@
-package com.shod.client
+package com.shod.client.ui.theme
+
+import com.shod.client.R
 
 import android.os.Build
 import android.app.Activity

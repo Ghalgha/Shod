@@ -13,6 +13,7 @@ import com.shod.client.platform.android.network.wifi.WifiDiscovery
 import com.shod.client.platform.android.network.wifi.WifiDiscoveryNotification
 import com.shod.client.platform.android.power.shouldRequestBatteryOptimizationExemption
 import com.shod.client.ui.navigation.MainScreen
+import com.shod.client.ui.theme.ShodTheme
 
 import android.annotation.SuppressLint
 import android.Manifest
