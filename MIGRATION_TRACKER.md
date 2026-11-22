@@ -20,28 +20,28 @@
 | 1 | `.gitattributes` | `16e50b1c5a0cb98910dabc2ae0c3b2eca49ed844` | ТРЕБУЕТ СВЕРКИ — файла в целевом репозитории нет; проверить, нужны ли исходные правила атрибутов. |
 | 2 | `.github/workflows/ci.yml` | `1cdc496180a8fb258c6c619c77d1e8fc00bfdfa6` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — в целевом репозитории отсутствует CI workflow (есть только `.github/workflows/.gitkeep`); исходные проверки shell, Android lint/tests/build и Rust clippy/tests потеряны. Сам CI не запускался. |
 | 3 | `.gitignore` | `62c0626eba3467e66a69b8d7defc7bde5c905f01` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — целевой файл потерял исходные исключения для артефактов сборки, локальных секретов и Rust output. |
-| 4 | `app/build.gradle.kts` | `9304dd5cfd58e5d8835f0eeda6d1cc9547048271` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 4 | `app/build.gradle.kts` | `9304dd5cfd58e5d8835f0eeda6d1cc9547048271` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
 | 5 | `app/lint.xml` | `b9d9033d384c37a7d1b11989d3b7b79a5d07ff89` | ТРЕБУЕТ СВЕРКИ — исходный файл отсутствует в целевой структуре; проверить эквивалентную конфигурацию lint. |
-| 6 | `app/proguard-rules.pro` | `dbed9f910eb52233f14ef2815aa04a971918cab7` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 6 | `app/proguard-rules.pro` | `dbed9f910eb52233f14ef2815aa04a971918cab7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
 | 7 | `app/src/androidTest/java/com/shod/client/DeployScriptAssetTest.kt` | `d9a590f34008ba74c38a8ee04287c2f1b1ecf873` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тест полностью совпадает после исключения package/import. |
-| 8 | `app/src/androidTest/java/com/shod/client/DesignCompatibilityTest.kt` | `9f03bd4d4e24fd81716caf51c6f395acc416d1c9` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 9 | `app/src/androidTest/java/com/shod/client/HappInterfaceTest.kt` | `7ef94bb9c4543612369e29c85df21f022914a34a` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 8 | `app/src/androidTest/java/com/shod/client/DesignCompatibilityTest.kt` | `9f03bd4d4e24fd81716caf51c6f395acc416d1c9` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
+| 9 | `app/src/androidTest/java/com/shod/client/HappInterfaceTest.kt` | `7ef94bb9c4543612369e29c85df21f022914a34a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
 | 10 | `app/src/androidTest/java/com/shod/client/ProbeTunTransportTest.kt` | `8810c9b2317470c01983a4c49b128425a642d745` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой тест содержит исходные проверки и дополнительный сценарий отмены/ожидания. |
-| 11 | `app/src/androidTest/java/com/shod/client/ReviewedDeployInterfaceTest.kt` | `a30cc98dc7407dc95a45acf1507fa909023030fd` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 12 | `app/src/androidTest/java/com/shod/client/RoutingModeInteractionTest.kt` | `a502804e95ca3ab8165eaf51b837a1f56c94993f` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 13 | `app/src/androidTest/java/com/shod/client/SettingsStoreSshPortTest.kt` | `198eda51d2caf7790c6314f3fc637b0d82aee643` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 14 | `app/src/androidTest/java/com/shod/client/SshConnectionSmokeTest.kt` | `f18560f5e152aa8cced27ff0ddc59f54d97f842e` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 15 | `app/src/androidTest/java/com/shod/client/SwitchRestorationTest.kt` | `5c1b7beccfc0cfc848f5066dcf7a363ef8228b02` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 16 | `app/src/androidTest/java/com/shod/client/VkAccountUiTest.kt` | `8060c95de1cb7bf661402d48dda4af59dc4cfa50` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 11 | `app/src/androidTest/java/com/shod/client/ReviewedDeployInterfaceTest.kt` | `a30cc98dc7407dc95a45acf1507fa909023030fd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
+| 12 | `app/src/androidTest/java/com/shod/client/RoutingModeInteractionTest.kt` | `a502804e95ca3ab8165eaf51b837a1f56c94993f` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
+| 13 | `app/src/androidTest/java/com/shod/client/SettingsStoreSshPortTest.kt` | `198eda51d2caf7790c6314f3fc637b0d82aee643` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
+| 14 | `app/src/androidTest/java/com/shod/client/SshConnectionSmokeTest.kt` | `f18560f5e152aa8cced27ff0ddc59f54d97f842e` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
+| 15 | `app/src/androidTest/java/com/shod/client/SwitchRestorationTest.kt` | `5c1b7beccfc0cfc848f5066dcf7a363ef8228b02` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
+| 16 | `app/src/androidTest/java/com/shod/client/VkAccountUiTest.kt` | `8060c95de1cb7bf661402d48dda4af59dc4cfa50` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
 | 17 | `app/src/debug/AndroidManifest.xml` | `323e7fc8e4637d243200422c643843ecc92fca68` | ТРЕБУЕТ СВЕРКИ — отдельный debug manifest отсутствует; выяснить, перенесено ли переопределение debug label в Gradle/ресурсы. |
 | 18 | `app/src/debug/res/values/strings.xml` | `1eccaa5a274c5d9339b5a25f02bc70756ac9b456` | ТРЕБУЕТ СВЕРКИ — debug-имя `Shod SSH Fix` не найдено в целевых ресурсах; проверить вариантную конфигурацию приложения. |
 | 19 | `app/src/main/AndroidManifest.xml` | `3c4c005a2dd478f113a026dbcdc2c00163aca5ca` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — все 8 Android-компонентов присутствуют; изменены только class paths вслед за архитектурным переносом. |
-| 20 | `app/src/main/assets/deploy.sh` | `c1753efc9ff4a6e4efac05df14b2ec615e05a9d1` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 21 | `app/src/main/assets/domains.txt` | `d52d29657e34ffa13544323087ed7f20b344737a` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 20 | `app/src/main/assets/deploy.sh` | `c1753efc9ff4a6e4efac05df14b2ec615e05a9d1` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
+| 21 | `app/src/main/assets/domains.txt` | `d52d29657e34ffa13544323087ed7f20b344737a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
 | 22 | `app/src/main/assets/licenses/primp-LICENSE` | `8454fa7eea7ba29de11efb579da5c754c0b597db` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — лицензия исходного vendored-компонента `primp` не найдена в целевом дереве. |
 | 23 | `app/src/main/assets/licenses/shod-LICENSE` | `5cc8cea945d6c9b51c89ba7253c279204df4f998` | ТРЕБУЕТ СВЕРКИ — исходная лицензия Shod отсутствует в целевом дереве; определить правильное место хранения. |
-| 24 | `app/src/main/assets/server-downloads.json` | `f344ddbbb985c9d0b57b46a0c25fcdbdb93e7ad3` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 25 | `app/src/main/assets/shod.server-provenance.json` | `a72cf16c05cbb743c25d4468b410d86afc258f59` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 24 | `app/src/main/assets/server-downloads.json` | `f344ddbbb985c9d0b57b46a0c25fcdbdb93e7ad3` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
+| 25 | `app/src/main/assets/shod.server-provenance.json` | `a72cf16c05cbb743c25d4468b410d86afc258f59` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
 | 26 | `app/src/main/java/com/shod/client/AppRoutingPresets.kt` | `80a92ba959f972d9e09928a9732956711c110965` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — в целевом `direct`-наборе отсутствуют исходные `ru.rzd.pass` и `com.tutu.ru`; это потеря данных, не архитектурное изменение. |
 | 27 | `app/src/main/java/com/shod/client/AppUpdate.kt` | `7ec92efaa5c4fb6b3677683470a0395fbd56d751` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исходный файл разделён между `updates/RemoteVersionChecker.kt` (сетевые запросы) и `updates/RemoteVersionPolicy.kt` (версионная политика и модели); логика сопоставлена. |
 | 28 | `app/src/main/java/com/shod/client/BatteryOptimizationPromptPolicy.kt` | `c2910c4f9c962d78db76a71fb2a007227cd50888` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменён только пакет. |
@@ -51,7 +51,7 @@
 | 32 | `app/src/main/java/com/shod/client/CaptchaWebViewManager.kt` | `de0d31c12c7dd761f1280059dacafeaf458d2260` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — логика совпадает; изменены пакет и импорты после разделения VK captcha / Android. |
 | 33 | `app/src/main/java/com/shod/client/ConnectionSource.kt` | `1cf7931eb0613df1850c4d4ab593baf25187d688` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — сопоставлены обе ветви `resolveConnectionSource`, фильтрация хешей и сбор параметров; отличия только в импортах/форматировании. |
 | 34 | `app/src/main/java/com/shod/client/ConnectionStartPolicy.kt` | `641b42952ea9e60f995f8af067f012be629606f6` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменён только пакет. |
-| 35 | `app/src/main/java/com/shod/client/Constants.kt` | `ecf7f3c3f7eb2744e45ce0552554378b30a900a5` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 35 | `app/src/main/java/com/shod/client/Constants.kt` | `ecf7f3c3f7eb2744e45ce0552554378b30a900a5` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
 | 36 | `app/src/main/java/com/shod/client/DeployManager.kt` | `379011635522e28c5b45fa33d6d6752cba8d852e` | ТРЕБУЕТ СВЕРКИ — целевой deploy разделён на workflow/coordinator/controller и политики; необходимо сопоставить состояние сессии, сброс и прогресс. |
 | 37 | `app/src/main/java/com/shod/client/DeployScopedDataStore.kt` | `e128165879de9e22ee4d8694e2a4947d6778d0f7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменены пакет и импорт общей константы. |
 | 38 | `app/src/main/java/com/shod/client/DtlsLogParser.kt` | `0712903af4f9096d4442ee76a6e08a1e8079ec6b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — реализация совпадает; добавлены импорты типов из выделенного диагностического слоя. |
@@ -404,6 +404,7 @@
 ## Журнал проверок
 
 | Дата | Диапазон / файлы | Результат | Изменение реестра |
+| 2026-11-22 | Сверка 15 файлов: Gradle-конфигурация, 8 Android UI/instrumentation tests, assets и Constants | Все 15 целевых файлов проверены; содержимое совпадает побайтно, тесты размещены в соответствующих пакетах новой архитектуры | 15 строк подтверждены; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка 16 Kotlin-файлов: design tokens и dialogs | Все 16 файлов присутствуют по исходным архитектурным путям; SHA исходника и целевого файла совпадает побайтово | 16 строк подтверждены; код приложения не менялся, CI не запускался |
 | 2026-11-22 | Повторная проверка 9 точных Kotlin blob-совпадений: UI components, AppBackdrop и ExtendedColors | Все 9 файлов присутствуют по исходным архитектурным путям; SHA исходника и цели совпадают побайтово | 9 строк подтверждены; код приложения не менялся, CI не запускался |
 | 2026-11-22 | Проверка `DeployScript.kt` | Обе функции и нормализация BOM/переводов строк, чтение UTF-8 asset и запись результата совпадают с `deploy/script/DeployScriptAsset.kt`; в целевом файле добавлен только комментарий | 1 строка подтверждена; код приложения не менялся, CI не запускался |
