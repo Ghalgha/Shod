@@ -28,7 +28,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 
 import com.shod.client.network.connectivity.NetworkPauseGate
-import com.shod.client.network.connectivity.PhysicalNetworkPauseReason
 import com.shod.client.vpn.routing.ServerRoutingRule
 import com.shod.client.platform.android.widget.VpnWidgetProvider
 import com.shod.client.platform.android.quicksettings.QuickToggleTileService
