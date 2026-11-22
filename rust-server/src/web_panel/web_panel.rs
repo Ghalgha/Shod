@@ -4146,7 +4146,7 @@ async fn routing_rules_get(State(state): State<WebState>) -> Response {
     Json(list).into_response()
 }
 
-const TEMPLATE_DOMAINS_TXT: &str = include_str!("../app/src/main/assets/domains.txt");
+const TEMPLATE_DOMAINS_TXT: &str = include_str!("../../../app/src/main/assets/domains.txt");
 
 async fn template_domains_get() -> impl IntoResponse {
     (
