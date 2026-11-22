@@ -178,11 +178,11 @@
 | 159 | `app/src/main/java/com/shod/client/WorkerCountPolicy.kt` | `37bcdd93b090faf6ab2cdfb2c0fce2a939b9ff69` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — все функции и исполняемая логика совпадают; отличия только в package/import и форматировании. |
 | 160 | `app/src/main/java/com/shod/client/WorkerRecoveryPolicy.kt` | `e0d62e7a63d5d52177aa86abdea7684d1c67bebc` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — все функции и исполняемая логика совпадают; отличия только в package/import и форматировании. |
 | 161 | `app/src/main/libclient.provenance.json` | `0e00a45e990132f58a6f3d0fc9ba02f943d2b7f1` | НЕ ПРОВЕРЕН |
-| 162 | `app/src/main/res/drawable-nodpi/tv_banner.png` | `619f72fe238af730096dc2a3e9f3ce8e8b3aa08e` | НЕ ПРОВЕРЕН |
-| 163 | `app/src/main/res/drawable/bg_widget_button_active.xml` | `05e38f4f609f66ed96c5fd6cabf8793bedf77ea9` | НЕ ПРОВЕРЕН |
-| 164 | `app/src/main/res/drawable/bg_widget_button_inactive.xml` | `b3dc34b9aedf89121fde71c6e466a1dcd2d3bfa3` | НЕ ПРОВЕРЕН |
-| 165 | `app/src/main/res/drawable/bg_widget_card.xml` | `dd143120ba3a53a95ce2f8b89baf41086a1b8d6d` | НЕ ПРОВЕРЕН |
-| 166 | `app/src/main/res/drawable/ic_c_logo.xml` | `8e6a75027886c8519a482f4500c539820b167b96` | НЕ ПРОВЕРЕН |
+| 162 | `app/src/main/res/drawable-nodpi/tv_banner.png` | `619f72fe238af730096dc2a3e9f3ce8e8b3aa08e` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
+| 163 | `app/src/main/res/drawable/bg_widget_button_active.xml` | `05e38f4f609f66ed96c5fd6cabf8793bedf77ea9` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
+| 164 | `app/src/main/res/drawable/bg_widget_button_inactive.xml` | `b3dc34b9aedf89121fde71c6e466a1dcd2d3bfa3` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
+| 165 | `app/src/main/res/drawable/bg_widget_card.xml` | `dd143120ba3a53a95ce2f8b89baf41086a1b8d6d` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
+| 166 | `app/src/main/res/drawable/ic_c_logo.xml` | `8e6a75027886c8519a482f4500c539820b167b96` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
 | 167 | `app/src/main/res/drawable/ic_donate_heart.xml` | `f14523ac59512958faabcbe5b8f4b2c7f0b9559b` | НЕ ПРОВЕРЕН |
 | 168 | `app/src/main/res/drawable/ic_export.xml` | `131be7072aebdb8b9f2e545e63c6768764c2630c` | НЕ ПРОВЕРЕН |
 | 169 | `app/src/main/res/drawable/ic_github.xml` | `0688bf9675eed7c593b09dcb72c48b2010296a18` | НЕ ПРОВЕРЕН |
@@ -199,19 +199,19 @@
 | 180 | `app/src/main/res/drawable/ic_stop.xml` | `220ddeadffeebf1894d3cf1fcee22b3b4781099d` | НЕ ПРОВЕРЕН |
 | 181 | `app/src/main/res/drawable/ic_telegram.xml` | `b4b07d15a5f43c0d041b72c8150477b922ef1eb7` | НЕ ПРОВЕРЕН |
 | 182 | `app/src/main/res/font/manrope_variable.ttf` | `75274da58537d6123b14f2cd0c355ad4681fc2b3` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
-| 183 | `app/src/main/res/layout/vpn_widget.xml` | `a8883f939f0027728cd22660993a66002ce74903` | НЕ ПРОВЕРЕН |
-| 184 | `app/src/main/res/mipmap-anydpi/ic_launcher_round.xml` | `67112077d80d56c64e41657300b4df449a34fbbd` | НЕ ПРОВЕРЕН |
-| 185 | `app/src/main/res/mipmap-anydpi/ic_launcher.xml` | `67112077d80d56c64e41657300b4df449a34fbbd` | НЕ ПРОВЕРЕН |
+| 183 | `app/src/main/res/layout/vpn_widget.xml` | `a8883f939f0027728cd22660993a66002ce74903` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
+| 184 | `app/src/main/res/mipmap-anydpi/ic_launcher_round.xml` | `67112077d80d56c64e41657300b4df449a34fbbd` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
+| 185 | `app/src/main/res/mipmap-anydpi/ic_launcher.xml` | `67112077d80d56c64e41657300b4df449a34fbbd` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
 | 186 | `app/src/main/res/raw/manrope_ofl_license.txt` | `e271172a9ed0cddc895aabb6509f1c7d880b492d` | НЕ ПРОВЕРЕН |
-| 187 | `app/src/main/res/values-night-v31/colors.xml` | `39ec10f55a97973b58820eece5a045282876c737` | НЕ ПРОВЕРЕН |
-| 188 | `app/src/main/res/values-night/colors.xml` | `22829b9572279c02ac8b33174355c9b132eee139` | НЕ ПРОВЕРЕН |
-| 189 | `app/src/main/res/values-v31/colors.xml` | `729312322b6c5786166126d96acf462e8a59a97b` | НЕ ПРОВЕРЕН |
-| 190 | `app/src/main/res/values-v31/themes.xml` | `6a8e2b0b8303c1299b6d4bdb815c2617ba0b91e5` | НЕ ПРОВЕРЕН |
-| 191 | `app/src/main/res/values/colors.xml` | `21f3530a460513b4f02756901e45ef33aa79227e` | НЕ ПРОВЕРЕН |
-| 192 | `app/src/main/res/values/strings.xml` | `1a3559c05a7a81718229ca1793c63af306453b77` | НЕ ПРОВЕРЕН |
-| 193 | `app/src/main/res/values/themes.xml` | `883d95308ccb6a3e6a716fdf8bf14f6f8620d416` | НЕ ПРОВЕРЕН |
-| 194 | `app/src/main/res/xml/data_extraction_rules.xml` | `4b443b259e524b432aa1459b5a966c084e99f44e` | НЕ ПРОВЕРЕН |
-| 195 | `app/src/main/res/xml/vpn_widget_info.xml` | `9ce70546fc9a632957d4655756ed9d6cd94bcb7a` | НЕ ПРОВЕРЕН |
+| 187 | `app/src/main/res/values-night-v31/colors.xml` | `39ec10f55a97973b58820eece5a045282876c737` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
+| 188 | `app/src/main/res/values-night/colors.xml` | `22829b9572279c02ac8b33174355c9b132eee139` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
+| 189 | `app/src/main/res/values-v31/colors.xml` | `729312322b6c5786166126d96acf462e8a59a97b` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
+| 190 | `app/src/main/res/values-v31/themes.xml` | `6a8e2b0b8303c1299b6d4bdb815c2617ba0b91e5` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
+| 191 | `app/src/main/res/values/colors.xml` | `21f3530a460513b4f02756901e45ef33aa79227e` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
+| 192 | `app/src/main/res/values/strings.xml` | `1a3559c05a7a81718229ca1793c63af306453b77` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
+| 193 | `app/src/main/res/values/themes.xml` | `883d95308ccb6a3e6a716fdf8bf14f6f8620d416` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
+| 194 | `app/src/main/res/xml/data_extraction_rules.xml` | `4b443b259e524b432aa1459b5a966c084e99f44e` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
+| 195 | `app/src/main/res/xml/vpn_widget_info.xml` | `9ce70546fc9a632957d4655756ed9d6cd94bcb7a` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный ресурс отсутствует в целевом `app/src/main/res`; `AndroidManifest.xml` прямо ссылается на него или связанные ресурсы. |
 | 196 | `app/src/test/java/com/shod/client/AppRoutingPresetsTest.kt` | `c5eb7551296cb4eaae7983bab88878605a210cc1` | НЕ ПРОВЕРЕН |
 | 197 | `app/src/test/java/com/shod/client/AppUpdateTest.kt` | `041c7d6d0140274745e87a818ef881de27990eeb` | НЕ ПРОВЕРЕН |
 | 198 | `app/src/test/java/com/shod/client/BatteryOptimizationPromptPolicyTest.kt` | `6ec947c10cbcb18118316f94ecf4e89a0d5e175e` | НЕ ПРОВЕРЕН |
@@ -404,6 +404,7 @@
 ## Журнал проверок
 
 | Дата | Диапазон / файлы | Результат | Изменение реестра |
+| 2026-11-22 | Проверка Android ресурсов, упомянутых в manifest/widget | В целевом дереве `app/src/main/res` присутствуют только 3 ресурса; 17 исходных ресурсов отсутствуют, включая TV banner, launcher icons, strings/themes, data extraction rules и widget layout/provider. Manifest по-прежнему ссылается на них | 17 строк переведены в `ТРЕБУЕТ ИСПРАВЛЕНИЯ`; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка Wi-Fi preferences/SSID/network-list и worker count/recovery policies | Все 5 файлов семантически совпадают; функции и значения сохранены, изменения ограничены размещением, импортами и форматированием | 5 подтверждены; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Углублённая сверка LogsScreen, RoutingScreen и SettingsScreen | Найдены конкретные изменения автопрокрутки логов, темы/Toast, распределения routing parser/dialogs и формы Settings cards; преждевременно подтверждать перенос нельзя | Уточнены причины обязательной сверки в 3 строках; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка VkTokenScraper, VpnRecoveryPolicy, VPN widgets и Wi-Fi discovery/policy | Все 6 реализаций совпадают после исключения package/import/comments; архитектурные пути соответствуют назначению модулей | 6 подтверждены; код приложения не менялся, CI/тесты не запускались |
