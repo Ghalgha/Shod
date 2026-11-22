@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -34,6 +33,9 @@ import com.shod.client.ui.screens.deploy.hasWebPanelCredentials
 import com.shod.client.ui.screens.deploy.isDeployMainPasswordValid
 import com.shod.client.ui.screens.deploy.resolveServerPorts
 import com.shod.client.ui.screens.deploy.splitPastedHostPort
+import com.shod.client.ui.dialogs.DeployAuthorizationDialog
+import com.shod.client.ui.dialogs.HostKeyChangedDialog
+import com.shod.client.ui.dialogs.SshKeysDialog
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
@@ -296,44 +298,34 @@ internal fun DeployController(
     )
 
     if (showAuth) {
-        AlertDialog(
-            onDismissRequest = { showAuth = false },
-            title = { Text("Авторизация Shod") },
-            text = {
-                Column {
-                    OutlinedTextField(mainPassword, { mainPassword = it }, label = { Text("Пароль туннеля") }, modifier = Modifier.fillMaxWidth())
-                    OutlinedTextField(webLogin, { webLogin = it }, label = { Text("Логин web-панели") }, modifier = Modifier.fillMaxWidth())
-                    OutlinedTextField(webPassword, { webPassword = it }, label = { Text("Пароль web-панели") }, modifier = Modifier.fillMaxWidth())
-                }
+        DeployAuthorizationDialog(
+            mainPassword = mainPassword,
+            webLogin = webLogin,
+            webPassword = webPassword,
+            onMainPasswordChange = { mainPassword = it },
+            onWebLoginChange = { webLogin = it },
+            onWebPasswordChange = { webPassword = it },
+            onSave = {
+                showAuth = false
+                scope.launch { settingsStore.saveDeploySecrets(mainPassword, login, sshPassword, webLogin, webPassword) }
             },
-            confirmButton = {
-                Button(onClick = {
-                    showAuth = false
-                    scope.launch { settingsStore.saveDeploySecrets(mainPassword, login, sshPassword, webLogin, webPassword) }
-                }) { Text("Сохранить") }
-            },
-            dismissButton = { TextButton(onClick = { showAuth = false }) { Text("Отмена") } },
+            onDismiss = { showAuth = false },
         )
     }
 
-    if ( (showKeys)) {
-        AlertDialog(
-            onDismissRequest = { showKeys = false },
-            title = { Text("SSH private key") },
-            text = {
-                Column {
-                    OutlinedTextField(privateKey, { privateKey = it }, label = { Text("Приватный ключ") }, modifier = Modifier.fillMaxWidth(), minLines = 4)
-                    OutlinedTextField(keyPassphrase, { keyPassphrase = it }, label = { Text("Пароль ключа") }, modifier = Modifier.fillMaxWidth())
-                    OutlinedTextField(certificate, { certificate = it }, label = { Text("Сертификат (если нужен)") }, modifier = Modifier.fillMaxWidth(), minLines = 2)
-                }
+    if (showKeys) {
+        SshKeysDialog(
+            initialPrivateKey = privateKey,
+            initialPassphrase = keyPassphrase,
+            initialCertificate = certificate,
+            onSave = { key, passphrase, cert ->
+                privateKey = key
+                keyPassphrase = passphrase
+                certificate = cert
+                showKeys = false
+                scope.launch { settingsStore.saveSshKeys(key, passphrase, cert) }
             },
-            confirmButton = {
-                Button(onClick = {
-                    showKeys = false
-                    scope.launch { settingsStore.saveSshKeys(privateKey, keyPassphrase, certificate) }
-                }) { Text("Сохранить") }
-            },
-            dismissButton = { TextButton(onClick = { showKeys = false }) { Text("Отмена") } },
+            onDismiss = { showKeys = false },
         )
     }
 
@@ -391,25 +383,14 @@ internal fun DeployController(
 
 
     pendingHostKeyChange?.let { change ->
-        AlertDialog(
-            onDismissRequest = { pendingHostKeyChange = null },
-            title = { Text("Изменился SSH-ключ сервера") },
-            text = {
-                Text(
-                    "Адрес: ${change.host}:${change.port}\n\n" +
-                        "Сохранённый отпечаток:\n${change.pinned}\n\n" +
-                        "Новый отпечаток:\n${change.presented}\n\n" +
-                        "Продолжайте только если вы проверили новый ключ у администратора VPS."
-                )
+        HostKeyChangedDialog(
+            change = change,
+            onDismiss = { pendingHostKeyChange = null },
+            onTrust = {
+                SshHostKeyStore.trust(context, change)
+                pendingHostKeyChange = null
+                retryInspection?.let { retry -> runInspection(retry) }
             },
-            confirmButton = {
-                Button(onClick = {
-                    SshHostKeyStore.trust(context, change)
-                    pendingHostKeyChange = null
-                    retryInspection?.let { retry -> runInspection(retry) }
-                }) { Text("Доверять новому ключу") }
-            },
-            dismissButton = { TextButton(onClick = { pendingHostKeyChange = null }) { Text("Отмена") } },
         )
     }
 
