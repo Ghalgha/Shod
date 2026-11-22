@@ -102,17 +102,17 @@
 | 83 | `app/src/main/java/com/shod/client/TurnTransportPolicy.kt` | `4321e965c2ac0f136dde43f47cbbd18784f4fe96` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
 | 84 | `app/src/main/java/com/shod/client/TvDevicePolicy.kt` | `72778950dc775bdb761d27c45329c6107483c5f3` | НЕ ПРОВЕРЕН |
 | 85 | `app/src/main/java/com/shod/client/ui/AppSelectionOrdering.kt` | `9afed32923a2e896d89896b263b7b74f6d244712` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — функция `selectedApplicationsFirst` перенесена без изменения сортировки в `ui/screens/routing/apps/SelectedApplicationsOrder.kt`. |
-| 86 | `app/src/main/java/com/shod/client/ui/background/AppBackdrop.kt` | `2cf5eacc9fb1f5c9f8db8ba8b44333cb0aa45a13` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 86 | `app/src/main/java/com/shod/client/ui/background/AppBackdrop.kt` | `2cf5eacc9fb1f5c9f8db8ba8b44333cb0aa45a13` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл находится по исходному архитектурному пути и имеет тот же Git blob SHA; содержимое полностью идентично. |
 | 87 | `app/src/main/java/com/shod/client/ui/components/ApplicationRow.kt` | `fe536b58208eb7844bed9a7804a0575bbb28bac1` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — модель `AppItem` выделена в `ui/screens/routing/apps/AppItem.kt`, composable `AppRow` перенесён в `AppRow.kt`; отображение, цвета, размеры, toggle и semantics сохранены. |
 | 88 | `app/src/main/java/com/shod/client/ui/components/AppSectionCard.kt` | `8014117b8206535d0fad5214757cec9065dcec77` | ТРЕБУЕТ СВЕРКИ — целевая реализация заметно короче; отличается вычисление цветов поверхности и границ. |
-| 89 | `app/src/main/java/com/shod/client/ui/components/ContentScreen.kt` | `ffa6a402cd741499b24ae2bc35e1ea41896bcb8b` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 89 | `app/src/main/java/com/shod/client/ui/components/ContentScreen.kt` | `ffa6a402cd741499b24ae2bc35e1ea41896bcb8b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл находится по исходному архитектурному пути и имеет тот же Git blob SHA; содержимое полностью идентично. |
 | 90 | `app/src/main/java/com/shod/client/ui/components/HeaderActions.kt` | `d0a411047b334146761f2962134e5094d9e72352` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — отличие только в импорте `parseShodLink`, функциональный вызов сохранён. |
-| 91 | `app/src/main/java/com/shod/client/ui/components/SegmentedControl.kt` | `e70cba5114b80549bf908f08f452cfa2919da18d` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 92 | `app/src/main/java/com/shod/client/ui/components/SettingRow.kt` | `7a57a540df7b9485dfbcf07a3632a008a2c7fa30` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 93 | `app/src/main/java/com/shod/client/ui/components/States.kt` | `0a8572de0a71fc1620ceb57a98f59aa4d5ceae4c` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 94 | `app/src/main/java/com/shod/client/ui/components/TunnelDropdownSetting.kt` | `55cb7adde6ad2f821c402eefcf06ef92dc30d22f` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 95 | `app/src/main/java/com/shod/client/ui/components/TunnelProtocolChip.kt` | `d24cb37384c16831d9def9c81e03664da16d6b84` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 96 | `app/src/main/java/com/shod/client/ui/components/TunnelWorkersSlider.kt` | `0f0a75f85c460ca20f2408f04ba596b66a846185` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 91 | `app/src/main/java/com/shod/client/ui/components/SegmentedControl.kt` | `e70cba5114b80549bf908f08f452cfa2919da18d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл находится по исходному архитектурному пути и имеет тот же Git blob SHA; содержимое полностью идентично. |
+| 92 | `app/src/main/java/com/shod/client/ui/components/SettingRow.kt` | `7a57a540df7b9485dfbcf07a3632a008a2c7fa30` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл находится по исходному архитектурному пути и имеет тот же Git blob SHA; содержимое полностью идентично. |
+| 93 | `app/src/main/java/com/shod/client/ui/components/States.kt` | `0a8572de0a71fc1620ceb57a98f59aa4d5ceae4c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл находится по исходному архитектурному пути и имеет тот же Git blob SHA; содержимое полностью идентично. |
+| 94 | `app/src/main/java/com/shod/client/ui/components/TunnelDropdownSetting.kt` | `55cb7adde6ad2f821c402eefcf06ef92dc30d22f` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл находится по исходному архитектурному пути и имеет тот же Git blob SHA; содержимое полностью идентично. |
+| 95 | `app/src/main/java/com/shod/client/ui/components/TunnelProtocolChip.kt` | `d24cb37384c16831d9def9c81e03664da16d6b84` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл находится по исходному архитектурному пути и имеет тот же Git blob SHA; содержимое полностью идентично. |
+| 96 | `app/src/main/java/com/shod/client/ui/components/TunnelWorkersSlider.kt` | `0f0a75f85c460ca20f2408f04ba596b66a846185` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл находится по исходному архитектурному пути и имеет тот же Git blob SHA; содержимое полностью идентично. |
 | 97 | `app/src/main/java/com/shod/client/ui/controllers/ConnectionController.kt` | `da6f8488358ad843b6141b43b268d4ab23d5a2bb` | ТРЕБУЕТ СВЕРКИ — сборка START Intent вынесена в `TunnelServiceIntentFactory`; проверить все extras и параметры запуска. |
 | 98 | `app/src/main/java/com/shod/client/ui/deploy/DeployCheckState.kt` | `341ac357fd175b06711bcda0e02c127c362e64a4` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — состояние `plan` и `replacement` полностью сохранено в `ui/screens/deploy/DeployCheckState.kt`; изменены только пакет и импорты типов. |
 | 99 | `app/src/main/java/com/shod/client/ui/deploy/DeployController.kt` | `4dd1207fe17f0d49893039bd5f4998e7a440d4bf` | ТРЕБУЕТ СВЕРКИ — исходник существенно больше; состояние и операции разнесены между Compose owner и AndroidDeployCoordinator. |
@@ -122,7 +122,7 @@
 | 103 | `app/src/main/java/com/shod/client/ui/deploy/operations/DeployScript.kt` | `0dc9d35716345b4ec3e5fb6acf92f86789a7f96d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — обе функции `normalizeDeployScript` и `writeDeployScript` перенесены в `deploy/script/DeployScriptAsset.kt`; исполняемый код совпадает, добавлен только поясняющий комментарий. |
 | 104 | `app/src/main/java/com/shod/client/ui/deploy/operations/SshTransportConnection.kt` | `e3f3d0f0a7d26e4611f8c9cbb74c913c1facb76c` | ТРЕБУЕТ СВЕРКИ — целевой файл добавляет документированную границу retry; проверить точное поведение повторов и исключений. |
 | 105 | `app/src/main/java/com/shod/client/ui/deploy/ServerInventory.kt` | `8f929d3eec4a1372bce654375573ed2109fb2275` | ТРЕБУЕТ СВЕРКИ — целевая реализация короче более чем вдвое и меняет разбор окончания inventory; проверить обработку всех строк/ошибок. |
-| 106 | `app/src/main/java/com/shod/client/ui/design/ExtendedColors.kt` | `59410f63afd4f36260a69705052ecbce129688c2` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 106 | `app/src/main/java/com/shod/client/ui/design/ExtendedColors.kt` | `59410f63afd4f36260a69705052ecbce129688c2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл находится по исходному архитектурному пути и имеет тот же Git blob SHA; содержимое полностью идентично. |
 | 107 | `app/src/main/java/com/shod/client/ui/design/Motion.kt` | `0875bf164dd298058a4d10dfa5e82e81b4356fdc` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 108 | `app/src/main/java/com/shod/client/ui/design/Shapes.kt` | `f53fcf5a99c4e95fa227e888408dc0ddca8c15bc` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 109 | `app/src/main/java/com/shod/client/ui/design/Sizes.kt` | `44d309fa393960bbebf6b8fa35457f0a7e4bb145` | ТОЧНОЕ СОВПАДЕНИЕ |
@@ -404,6 +404,7 @@
 ## Журнал проверок
 
 | Дата | Диапазон / файлы | Результат | Изменение реестра |
+| 2026-11-22 | Повторная проверка 9 точных Kotlin blob-совпадений: UI components, AppBackdrop и ExtendedColors | Все 9 файлов присутствуют по исходным архитектурным путям; SHA исходника и цели совпадают побайтово | 9 строк подтверждены; код приложения не менялся, CI не запускался |
 | 2026-11-22 | Проверка `DeployScript.kt` | Обе функции и нормализация BOM/переводов строк, чтение UTF-8 asset и запись результата совпадают с `deploy/script/DeployScriptAsset.kt`; в целевом файле добавлен только комментарий | 1 строка подтверждена; код приложения не менялся, CI не запускался |
 | 2026-11-22 | Сверка routing app picker и deploy UI: `AppSelectionOrdering`, `ApplicationRow`, `DeployCheckState`, `DeployScreen` | Все 4 исходных реализации найдены в целевых архитектурных путях; сортировка и UI-поведение сохранены, экран Deploy совпадает по телу после исключения package/import. `DeployOperations`, `DeployScript` и три диалога оставлены открытыми до сопоставления реализаций | 4 строки подтверждены; код приложения не менялся, CI не запускался |
 |---|---|---|---|
