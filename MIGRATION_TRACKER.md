@@ -317,8 +317,8 @@
 | 298 | `rust-client/turn_core.rs` | `504c01b01c3ec8f56648ca736824a3fd500576e2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/turn/turn_core.rs`. |
 | 299 | `rust-client/turn_endpoint.rs` | `d8dda43273f6e841cc6d3219de9c89611588cfa0` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/turn/turn_endpoint.rs`. |
 | 300 | `rust-client/turn_integration_tests.rs` | `97b014dabf4f18a4c6003060ad141bc59c963a27` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/turn/integration_tests.rs`. |
-| 301 | `rust-client/turn_ip_pool.rs` | `07c29a6edbe7143d2d1856b853dd261ecce7a6ed` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 302 | `rust-client/turn_stream.rs` | `4c57e8a1e93ba2cdc46c9b626ff6bbf2e129165f` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 301 | `rust-client/turn_ip_pool.rs` | `07c29a6edbe7143d2d1856b853dd261ecce7a6ed` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/turn/turn_ip_pool.rs`. |
+| 302 | `rust-client/turn_stream.rs` | `4c57e8a1e93ba2cdc46c9b626ff6bbf2e129165f` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/turn/turn_stream.rs`. |
 | 303 | `rust-client/turn.rs` | `31787f837bb4121dc9a6c9535243ea72abc3dee9` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое совпадает; отличается только путь к тестовому модулю, который перенесён в `integration_tests.rs`. |
 | 304 | `rust-client/vendor/netstack-smoltcp/Cargo.toml` | `be3d5026dee23d247648f75d17d3e64a3a0e8ebb` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 305 | `rust-client/vendor/netstack-smoltcp/LICENSE-APACHE` | `f49a4e16e68b128803cc2dcea614603632b04eac` | ТОЧНОЕ СОВПАДЕНИЕ |
@@ -339,19 +339,19 @@
 | 320 | `rust-client/vendor/primp/src/imp/opera/mod.rs` | `fb81b2a4a5c21b6d3ed56ef69651330ff6cc4f81` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 321 | `rust-client/vendor/primp/src/imp/safari/mod.rs` | `bdd6cc0ad668347b4cc80168d66535fab4c5089a` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 322 | `rust-client/vendor/primp/src/lib.rs` | `613f49022fafb16ab87140a4660982451b496199` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 323 | `rust-client/vk_js_calls.rs` | `04f2a6a315c6392b47fe560e2f8ecdedefb39773` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 324 | `rust-client/worker.rs` | `f8e41e3ff249300d1ecabfde5990164f4a290768` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 325 | `rust-client/wrap.rs` | `2429d6278870382a631acaf7e46e30d642d9ea41` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 323 | `rust-client/vk_js_calls.rs` | `04f2a6a315c6392b47fe560e2f8ecdedefb39773` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/calls/vk_js_calls.rs`. |
+| 324 | `rust-client/worker.rs` | `f8e41e3ff249300d1ecabfde5990164f4a290768` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/threads/worker.rs`. |
+| 325 | `rust-client/wrap.rs` | `2429d6278870382a631acaf7e46e30d642d9ea41` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/security/wrap.rs`. |
 | 326 | `rust-server/.cargo/config.toml` | `3d032011640d70c3825e1fe16f7b3e93f09ff537` | НЕ ПРОВЕРЕН |
 | 327 | `rust-server/build_linux_variants.ps1` | `9b7f9e740dc17fd2e024a4723dbdd029e17b23ec` | НЕ ПРОВЕРЕН |
 | 328 | `rust-server/build_linux.bat` | `c514bc21d5587fc0efc46d5ebc4a829da92d6ad0` | НЕ ПРОВЕРЕН |
 | 329 | `rust-server/build_linux.sh` | `530ed45bb9dd7418cfaa48aedb47ce9085dd83a1` | НЕ ПРОВЕРЕН |
 | 330 | `rust-server/Cargo.lock` | `d3bf1cc21c19a0b036e00bda239b64a4106ae306` | НЕ ПРОВЕРЕН |
 | 331 | `rust-server/Cargo.toml` | `8041c62b55879012a73d6d5d14814a555944cabb` | НЕ ПРОВЕРЕН |
-| 332 | `rust-server/dataplane.rs` | `88037b2794433cc359e99a9afe3758fcc1586693` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 332 | `rust-server/dataplane.rs` | `88037b2794433cc359e99a9afe3758fcc1586693` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/dataplane/dataplane.rs`. |
 | 333 | `rust-server/main.rs` | `cca694f812d3f8b81783bface6372633bb4cbbfb` | НЕ ПРОВЕРЕН |
-| 334 | `rust-server/model.rs` | `148302fad86f016a03dc249b149b1a666e7bc360` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 335 | `rust-server/net_setup.rs` | `1e06a2cc6752d1af9577309116747fe84ba20b92` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 334 | `rust-server/model.rs` | `148302fad86f016a03dc249b149b1a666e7bc360` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/config/model.rs`. |
+| 335 | `rust-server/net_setup.rs` | `1e06a2cc6752d1af9577309116747fe84ba20b92` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/network/net_setup.rs`. |
 | 336 | `rust-server/packet.rs` | `808a6b6491d90bd75d9772bc233cba54dbdce934` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 337 | `rust-server/path_probe.rs` | `d01883136a5bb86318453ccd8c2ad97f20c47694` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 338 | `rust-server/protocol.rs` | `246ed612560238b9994ef28e8c0342c3d76e2375` | ТОЧНОЕ СОВПАДЕНИЕ |
@@ -410,3 +410,4 @@
 | 2026-11-22 | Проверка 8 Rust-файлов клиента: captcha, captcha_slider, cpu_task, direct_relay, dns, events, logging, obfs | Все 8 файлов полностью совпадают побайтово с соответствующими файлами в новой архитектуре каталогов | Восемь строк получили подтверждённый статус переноса/распределения |
 | 2026-11-22 | Проверка 8 Rust-файлов клиента: namegen, packet, profiles, protocol, repair, session, sni, srtp_mode | Все 8 файлов полностью совпадают побайтово с соответствующими файлами в целевой структуре | Ещё восемь строк получили подтверждённый статус переноса/распределения |
 | 2026-11-22 | Проверка 8 Rust-файлов клиента: stats, stream_diagnostics, stun_codec, traffic_diagnostics, tun, turn, turn_core, turn_endpoint | 7 файлов совпадают побайтово; `turn.rs` отличается только путём к файлу тестового модуля, сам код совпадает | Все 8 строк получили подтверждённый статус переноса/распределения |
+| 2026-11-22 | Проверка 8 Rust-файлов: turn_ip_pool, turn_stream, vk_js_calls, worker, wrap и серверные dataplane, model, net_setup | Все 8 исходных файлов полностью совпадают побайтово с соответствующими файлами целевого репозитория | Ещё восемь строк получили подтверждённый статус переноса/распределения |
