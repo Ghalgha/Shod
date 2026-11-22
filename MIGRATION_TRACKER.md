@@ -23,7 +23,7 @@
 | 4 | `app/build.gradle.kts` | `9304dd5cfd58e5d8835f0eeda6d1cc9547048271` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 5 | `app/lint.xml` | `b9d9033d384c37a7d1b11989d3b7b79a5d07ff89` | ТРЕБУЕТ СВЕРКИ — исходный файл отсутствует в целевой структуре; проверить эквивалентную конфигурацию lint. |
 | 6 | `app/proguard-rules.pro` | `dbed9f910eb52233f14ef2815aa04a971918cab7` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 7 | `app/src/androidTest/java/com/shod/client/DeployScriptAssetTest.kt` | `d9a590f34008ba74c38a8ee04287c2f1b1ecf873` | НЕ ПРОВЕРЕН |
+| 7 | `app/src/androidTest/java/com/shod/client/DeployScriptAssetTest.kt` | `d9a590f34008ba74c38a8ee04287c2f1b1ecf873` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тест полностью совпадает после исключения package/import. |
 | 8 | `app/src/androidTest/java/com/shod/client/DesignCompatibilityTest.kt` | `9f03bd4d4e24fd81716caf51c6f395acc416d1c9` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 9 | `app/src/androidTest/java/com/shod/client/HappInterfaceTest.kt` | `7ef94bb9c4543612369e29c85df21f022914a34a` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 10 | `app/src/androidTest/java/com/shod/client/ProbeTunTransportTest.kt` | `8810c9b2317470c01983a4c49b128425a642d745` | НЕ ПРОВЕРЕН |
@@ -56,8 +56,8 @@
 | 37 | `app/src/main/java/com/shod/client/DeployScopedDataStore.kt` | `e128165879de9e22ee4d8694e2a4947d6778d0f7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменены пакет и импорт общей константы. |
 | 38 | `app/src/main/java/com/shod/client/DtlsLogParser.kt` | `0712903af4f9096d4442ee76a6e08a1e8079ec6b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — реализация совпадает; добавлены импорты типов из выделенного диагностического слоя. |
 | 39 | `app/src/main/java/com/shod/client/MainActivity.kt` | `4d49e89ef91fda4d6edb4e03d44f8a77119f4ceb` | НЕ ПРОВЕРЕН |
-| 40 | `app/src/main/java/com/shod/client/ManlCaptchaActivity.kt` | `8c6e4cf70d1415817099b0bc8334c1d9afd255cb` | НЕ ПРОВЕРЕН |
-| 41 | `app/src/main/java/com/shod/client/ManlCaptchaWebViewManager.kt` | `3071d5d18f49d63fbaeaec4d5de620ff5f3f9518` | НЕ ПРОВЕРЕН |
+| 40 | `app/src/main/java/com/shod/client/ManlCaptchaActivity.kt` | `8c6e4cf70d1415817099b0bc8334c1d9afd255cb` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело полностью совпадает после исключения package/import; различий поведения нет. |
+| 41 | `app/src/main/java/com/shod/client/ManlCaptchaWebViewManager.kt` | `3071d5d18f49d63fbaeaec4d5de620ff5f3f9518` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — логика совпадает; обращение к `MainActivity.isForeground` заменено на выделенное состояние `AppForegroundState`. |
 | 42 | `app/src/main/java/com/shod/client/NativeTunnelLogParser.kt` | `d064982325ab89fec247f9e94266fd8fd8dcd9f9` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменён только пакет. |
 | 43 | `app/src/main/java/com/shod/client/NetworkPauseGate.kt` | `2aa5ecdaa79d278e29a623428eb04f27df25fe31` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменён только пакет. |
 | 44 | `app/src/main/java/com/shod/client/PhysicalNetworkTracker.kt` | `d352e0cbc49d578b7c31eb424d990a9c4413d05c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменён только пакет. |
@@ -67,11 +67,11 @@
 | 48 | `app/src/main/java/com/shod/client/ProfilePingController.kt` | `df8bf5175266f1b308d5e8440737808b123b363d` | ТРЕБУЕТ СВЕРКИ — исходные и целевые реализации различаются по структуре/обработке состояния; нельзя подтверждать полный перенос без построчного анализа. |
 | 49 | `app/src/main/java/com/shod/client/ProfileTunnelProbe.kt` | `73f5549efba3fc52bcd1289be9e214fb7543cd6d` | ТРЕБУЕТ СВЕРКИ — целевая реализация заметно расширена и разложена по компонентам; требуется сопоставить все исходные ветви и побочные эффекты. |
 | 50 | `app/src/main/java/com/shod/client/QuickToggleTileService.kt` | `3479ca76c65e00694b02773573eeb65e9dc7f92d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменены пакет и импорты Android-слоя. |
-| 51 | `app/src/main/java/com/shod/client/ReadOnlyProfileDataStore.kt` | `966894fd65e7bd3ab0471dfe9211a103d6aeb611` | НЕ ПРОВЕРЕН |
-| 52 | `app/src/main/java/com/shod/client/SavedVkAccounts.kt` | `c80ec9920106c8d1fafea071050209b515e3a307` | НЕ ПРОВЕРЕН |
-| 53 | `app/src/main/java/com/shod/client/SecureStringStore.kt` | `3701c11b8287aece109dd9efc8286ea5eec0ad7d` | НЕ ПРОВЕРЕН |
-| 54 | `app/src/main/java/com/shod/client/ServerCoreCache.kt` | `9e8e4611cdee37cadbbd69f8dba7fa17306b1fce` | НЕ ПРОВЕРЕН |
-| 55 | `app/src/main/java/com/shod/client/ServerRoutingRule.kt` | `448ed41e659d651cbd6c7be7d17320c0eb5783e4` | НЕ ПРОВЕРЕН |
+| 51 | `app/src/main/java/com/shod/client/ReadOnlyProfileDataStore.kt` | `966894fd65e7bd3ab0471dfe9211a103d6aeb611` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело полностью совпадает после исключения package/import. |
+| 52 | `app/src/main/java/com/shod/client/SavedVkAccounts.kt` | `c80ec9920106c8d1fafea071050209b515e3a307` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело полностью совпадает после исключения package/import. |
+| 53 | `app/src/main/java/com/shod/client/SecureStringStore.kt` | `3701c11b8287aece109dd9efc8286ea5eec0ad7d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело полностью совпадает после исключения package/import. |
+| 54 | `app/src/main/java/com/shod/client/ServerCoreCache.kt` | `9e8e4611cdee37cadbbd69f8dba7fa17306b1fce` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — алгоритм и проверки совпадают; отличия только в форматировании и комментарии. |
+| 55 | `app/src/main/java/com/shod/client/ServerRoutingRule.kt` | `448ed41e659d651cbd6c7be7d17320c0eb5783e4` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело полностью совпадает после исключения package/import. |
 | 56 | `app/src/main/java/com/shod/client/SettingsStore.kt` | `35268e2ab850ed3e478a76b3bab55e911f165885` | НЕ ПРОВЕРЕН |
 | 57 | `app/src/main/java/com/shod/client/ShodApplication.kt` | `9cd1e6fa259784faad130dea967689a56273127e` | НЕ ПРОВЕРЕН |
 | 58 | `app/src/main/java/com/shod/client/SshHostKeyStore.kt` | `e56ba7f7d8880bfa81b48f1caa605d04ef64c0c6` | НЕ ПРОВЕРЕН |
@@ -419,3 +419,4 @@
 | 2026-11-22 | Углублённая сверка `ConnectionSource`, `AppRoutingPresets`, `ProfilePingController`, `ProfileTunnelProbe` | `ConnectionSource` подтверждён по обеим ветвям; в `AppRoutingPresets` найдены два отсутствующих ID (`ru.rzd.pass`, `com.tutu.ru`); две probe-реализации требуют отдельного функционального сопоставления | Обновлены статусы 4 строк; код приложения не изменялся |
 | 2026-11-22 | Проверка `AppUpdate.kt` | Все функции и модели исходника найдены в двух целевых файлах: сетевой механизм в `RemoteVersionChecker`, версия/политика в `RemoteVersionPolicy` | Исходная строка отмечена как перенесённая/распределённая |
 | 2026-11-22 | Проверка Android manifest, debug-ресурсов, лицензий и корневых конфигураций | Основной manifest перенесён с новыми class paths; выявлены отсутствующие debug overrides, две лицензии, `.gitattributes`, `lint.xml` и часть правил `.gitignore` — требуется оценить и восстановить только нужные исходные данные | Обновлены 8 статусов; исходный код приложения не менялся |
+| 2026-11-22 | Сверка 8 Kotlin-файлов и одного Android instrumentation test | 8 исходных реализаций/тестов подтверждены в архитектурно новых путях; `MainActivity` и `ProbeTunTransportTest` оставлены на отдельную сверку из-за разбиения/расширений | 8 строк отмечены подтверждёнными; код не менялся |
