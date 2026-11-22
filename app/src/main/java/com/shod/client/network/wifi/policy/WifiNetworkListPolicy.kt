@@ -43,6 +43,9 @@ internal fun encodeWifiSsids(ssids: Collection<String>): String =
  * mode is ALL, preserving the old behaviour of pausing on every Wi-Fi.
  * Existing whitelist/blacklist values keep their original meaning during upgrades.
  */
+internal fun wifiDiscoveryCandidate(enabled: Boolean, ssid: String?, saved: Set<String>, dismissed: Set<String>): String? =
+    normalizeWifiSsid(ssid)?.takeIf { enabled && it !in saved && it !in dismissed }
+
 internal fun shouldPauseForWifiNetwork(
     enabled: Boolean,
     wifiConnected: Boolean,
