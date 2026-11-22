@@ -34,6 +34,8 @@ import com.shod.client.ui.screens.deploy.isDeployMainPasswordValid
 import com.shod.client.ui.screens.deploy.resolveServerPorts
 import com.shod.client.ui.screens.deploy.splitPastedHostPort
 import com.shod.client.ui.dialogs.DeployAuthorizationDialog
+import com.shod.client.ui.dialogs.DockerInstallInfoDialog
+import com.shod.client.ui.dialogs.UninstallConfirmDialog
 import com.shod.client.ui.dialogs.HostKeyChangedDialog
 import com.shod.client.ui.dialogs.SshKeysDialog
 import kotlinx.coroutines.CancellationException
@@ -330,57 +332,48 @@ internal fun DeployController(
     }
 
     if (showDockerInfo) {
-        AlertDialog(
-            onDismissRequest = { showDockerInfo = false },
-            title = { Text("Docker") },
-            text = { Text("В этом режиме Shod разворачивается в Docker-контейнере вместо системной службы.") },
-            confirmButton = { TextButton(onClick = { showDockerInfo = false }) { Text("Понятно") } },
-        )
+        DockerInstallInfoDialog(onDismiss = { showDockerInfo = false })
     }
 
     if (pendingUninstall) {
-        AlertDialog(
-            onDismissRequest = { pendingUninstall = false },
-            title = { Text("Удалить Shod?") },
-            text = { Text("Будет выполнено штатное удаление Shod на сервере. Это действие необратимо.") },
-            confirmButton = {
-                Button(onClick = {
-                    pendingUninstall = false
-                    runInspection { inventory ->
-                        val server = inventory.servers.firstOrNull { it.place == ServerPlace.STANDARD && it.installed }
-                        if (server == null) {
-                            report("На стандартном месте работающий сервер Shod не найден")
-                            return@runInspection
-                        }
-                        try {
-                            context.startForegroundService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_START" })
-                            val result = coordinator().uninstall(
-                                host = host.trim(),
-                                user = login.trim(),
-                                password = if (keysMode) "" else sshPassword,
-                                sshPort = ports().ssh,
-                                peerPort = server.peerPort ?: ports().peer,
-                                privateKey = if (keysMode) privateKey else "",
-                                keyPassphrase = if (keysMode) keyPassphrase else "",
-                                certificate = if (keysMode) certificate else "",
-                            )
-                            report(result.failureMessage ?: if (result.successful) "Shod удалён" else "Не удалось удалить Shod")
-                        } catch (cancelled: CancellationException) {
-                            throw cancelled
-                        } catch (error: Exception) {
-                            report(error.message ?: "Ошибка удаления")
-                        } finally {
-                            runCatching {
-                                context.startService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_STOP" })
-                            }
+        UninstallConfirmDialog(
+            title = "Удалить Shod?",
+            text = "Будет выполнено штатное удаление Shod на сервере. Это действие необратимо.",
+            onDismiss = { pendingUninstall = false },
+            onConfirm = {
+                pendingUninstall = false
+                runInspection { inventory ->
+                    val server = inventory.servers.firstOrNull { it.place == ServerPlace.STANDARD && it.installed }
+                    if (server == null) {
+                        report("На стандартном месте работающий сервер Shod не найден")
+                        return@runInspection
+                    }
+                    try {
+                        context.startForegroundService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_START" })
+                        val result = coordinator().uninstall(
+                            host = host.trim(),
+                            user = login.trim(),
+                            password = if (keysMode) "" else sshPassword,
+                            sshPort = ports().ssh,
+                            peerPort = server.peerPort ?: ports().peer,
+                            privateKey = if (keysMode) privateKey else "",
+                            keyPassphrase = if (keysMode) keyPassphrase else "",
+                            certificate = if (keysMode) certificate else "",
+                        )
+                        report(result.failureMessage ?: if (result.successful) "Shod удалён" else "Не удалось удалить Shod")
+                    } catch (cancelled: CancellationException) {
+                        throw cancelled
+                    } catch (error: Exception) {
+                        report(error.message ?: "Ошибка удаления")
+                    } finally {
+                        runCatching {
+                            context.startService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_STOP" })
                         }
                     }
-                }) { Text("Удалить") }
+                }
             },
-            dismissButton = { TextButton(onClick = { pendingUninstall = false }) { Text("Отмена") } },
         )
     }
-
 
     pendingHostKeyChange?.let { change ->
         HostKeyChangedDialog(
