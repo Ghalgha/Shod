@@ -18,7 +18,7 @@
 | № | Файл источника | SHA исходного файла | Статус |
 |---:|---|---|---|
 | 1 | `.gitattributes` | `16e50b1c5a0cb98910dabc2ae0c3b2eca49ed844` | ТРЕБУЕТ СВЕРКИ — файла в целевом репозитории нет; проверить, нужны ли исходные правила атрибутов. |
-| 2 | `.github/workflows/ci.yml` | `1cdc496180a8fb258c6c619c77d1e8fc00bfdfa6` | НЕ ПРОВЕРЕН |
+| 2 | `.github/workflows/ci.yml` | `1cdc496180a8fb258c6c619c77d1e8fc00bfdfa6` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — в целевом репозитории отсутствует CI workflow (есть только `.github/workflows/.gitkeep`); исходные проверки shell, Android lint/tests/build и Rust clippy/tests потеряны. Сам CI не запускался. |
 | 3 | `.gitignore` | `62c0626eba3467e66a69b8d7defc7bde5c905f01` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — целевой файл потерял исходные исключения для артефактов сборки, локальных секретов и Rust output. |
 | 4 | `app/build.gradle.kts` | `9304dd5cfd58e5d8835f0eeda6d1cc9547048271` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 5 | `app/lint.xml` | `b9d9033d384c37a7d1b11989d3b7b79a5d07ff89` | ТРЕБУЕТ СВЕРКИ — исходный файл отсутствует в целевой структуре; проверить эквивалентную конфигурацию lint. |
@@ -425,3 +425,4 @@
 | 2026-11-22 | Сверка lifecycle, diagnostics, notifications, secrets, probe packet, quick settings и tunnel manager | Подтверждены 7 переносов; `TunnelManager` требует сопоставления после выделения диагностических типов и утилит | Обновлены 8 строк; код не менялся |
 | 2026-11-22 | Сверка screen snapshot, service policies, session ID, startup progress, traffic, TUN recovery и Android VPN service | Подтверждены 7 переносов; `TunnelService` требует полного сопоставления выделенных battery monitor и service coordinators | Обновлены 8 строк; код не менялся |
 | 2026-11-22 | Сверка VK TURN subnet registry и transport policy | Обе реализации полностью совпадают с исходниками после исключения package/import | Обновлены 2 строки; код не менялся |
+| 2026-11-22 | Проверка `.github/workflows/ci.yml` | Исходный CI workflow отсутствует в целевом репозитории; найден только `.gitkeep`. Проверены определения шагов, запуск CI не выполнялся | Отмечена потеря CI-конфигурации; требуется восстановить workflow после согласования переноса |
