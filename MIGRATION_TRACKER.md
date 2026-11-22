@@ -42,14 +42,14 @@
 | 23 | `app/src/main/assets/licenses/shod-LICENSE` | `5cc8cea945d6c9b51c89ba7253c279204df4f998` | НЕ ПРОВЕРЕН |
 | 24 | `app/src/main/assets/server-downloads.json` | `f344ddbbb985c9d0b57b46a0c25fcdbdb93e7ad3` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 25 | `app/src/main/assets/shod.server-provenance.json` | `a72cf16c05cbb743c25d4468b410d86afc258f59` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 26 | `app/src/main/java/com/shod/client/AppRoutingPresets.kt` | `80a92ba959f972d9e09928a9732956711c110965` | НЕ ПРОВЕРЕН |
+| 26 | `app/src/main/java/com/shod/client/AppRoutingPresets.kt` | `80a92ba959f972d9e09928a9732956711c110965` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — в целевом `direct`-наборе отсутствуют исходные `ru.rzd.pass` и `com.tutu.ru`; это потеря данных, не архитектурное изменение. |
 | 27 | `app/src/main/java/com/shod/client/AppUpdate.kt` | `7ec92efaa5c4fb6b3677683470a0395fbd56d751` | НЕ ПРОВЕРЕН |
 | 28 | `app/src/main/java/com/shod/client/BatteryOptimizationPromptPolicy.kt` | `c2910c4f9c962d78db76a71fb2a007227cd50888` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменён только пакет. |
 | 29 | `app/src/main/java/com/shod/client/BatterySaver.kt` | `3a875f510f7b6c895fd4d362eaa1e4727b4324a8` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменён только пакет. |
 | 30 | `app/src/main/java/com/shod/client/CaptchaCancelReceiver.kt` | `279d5d8b3ad6b6d4d6769a3114351e61dbcd95a4` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — логика совпадает; изменены пакет и импорты после переноса Android-адаптера. |
 | 31 | `app/src/main/java/com/shod/client/CaptchaUriPolicy.kt` | `17c1fd46219c4fc5794e6a8fa00d03a0b1c89b60` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменён только пакет. |
 | 32 | `app/src/main/java/com/shod/client/CaptchaWebViewManager.kt` | `de0d31c12c7dd761f1280059dacafeaf458d2260` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — логика совпадает; изменены пакет и импорты после разделения VK captcha / Android. |
-| 33 | `app/src/main/java/com/shod/client/ConnectionSource.kt` | `1cf7931eb0613df1850c4d4ab593baf25187d688` | НЕ ПРОВЕРЕН |
+| 33 | `app/src/main/java/com/shod/client/ConnectionSource.kt` | `1cf7931eb0613df1850c4d4ab593baf25187d688` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — сопоставлены обе ветви `resolveConnectionSource`, фильтрация хешей и сбор параметров; отличия только в импортах/форматировании. |
 | 34 | `app/src/main/java/com/shod/client/ConnectionStartPolicy.kt` | `641b42952ea9e60f995f8af067f012be629606f6` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменён только пакет. |
 | 35 | `app/src/main/java/com/shod/client/Constants.kt` | `ecf7f3c3f7eb2744e45ce0552554378b30a900a5` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 36 | `app/src/main/java/com/shod/client/DeployManager.kt` | `379011635522e28c5b45fa33d6d6752cba8d852e` | НЕ ПРОВЕРЕН |
@@ -64,8 +64,8 @@
 | 45 | `app/src/main/java/com/shod/client/PingResultsCache.kt` | `727d5b65403c6e582f26353149e11b473bc5dd6e` | НЕ ПРОВЕРЕН |
 | 46 | `app/src/main/java/com/shod/client/ProbeOutputReader.kt` | `bb36113d6f5b4d6caf4c8f8871dd87a55b357643` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — логика совпадает; изменение сигнатуры только форматирует параметры. |
 | 47 | `app/src/main/java/com/shod/client/ProbeTunTransport.kt` | `d592de041440bf26165e1d3c2ad18d424e830fa2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — логика совпадает; изменены пакет, импорт и форматирование. |
-| 48 | `app/src/main/java/com/shod/client/ProfilePingController.kt` | `df8bf5175266f1b308d5e8440737808b123b363d` | НЕ ПРОВЕРЕН |
-| 49 | `app/src/main/java/com/shod/client/ProfileTunnelProbe.kt` | `73f5549efba3fc52bcd1289be9e214fb7543cd6d` | НЕ ПРОВЕРЕН |
+| 48 | `app/src/main/java/com/shod/client/ProfilePingController.kt` | `df8bf5175266f1b308d5e8440737808b123b363d` | ТРЕБУЕТ СВЕРКИ — исходные и целевые реализации различаются по структуре/обработке состояния; нельзя подтверждать полный перенос без построчного анализа. |
+| 49 | `app/src/main/java/com/shod/client/ProfileTunnelProbe.kt` | `73f5549efba3fc52bcd1289be9e214fb7543cd6d` | ТРЕБУЕТ СВЕРКИ — целевая реализация заметно расширена и разложена по компонентам; требуется сопоставить все исходные ветви и побочные эффекты. |
 | 50 | `app/src/main/java/com/shod/client/QuickToggleTileService.kt` | `3479ca76c65e00694b02773573eeb65e9dc7f92d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменены пакет и импорты Android-слоя. |
 | 51 | `app/src/main/java/com/shod/client/ReadOnlyProfileDataStore.kt` | `966894fd65e7bd3ab0471dfe9211a103d6aeb611` | НЕ ПРОВЕРЕН |
 | 52 | `app/src/main/java/com/shod/client/SavedVkAccounts.kt` | `c80ec9920106c8d1fafea071050209b515e3a307` | НЕ ПРОВЕРЕН |
@@ -416,3 +416,4 @@
 | 2026-11-22 | Проверка 8 файлов vendor: `netstack-smoltcp` TCP/UDP и все 6 модулей `primp` | Все 8 исходных файлов полностью совпадают побайтово с целевыми | Ещё восемь строк получили подтверждённый статус переноса/распределения |
 | 2026-11-22 | Проверка `rust-server/main.rs` | Полное тело файла совпадает после исключения директив путей модулей; подтверждена только архитектурная перекладка модулей в каталоги | Файл отмечен как перенесённый/распределённый |
 | 2026-11-22 | Проверка 14 Android/Kotlin-файлов: power, VK captcha, connection policy, storage, diagnostics, connectivity, probe adapters и Quick Settings | Реализации сопоставлены с исходниками; подтверждены переносы без изменения логики. Для `ConnectionSource`, `AppRoutingPresets`, `ProfilePingController` и `ProfileTunnelProbe` обнаружены содержательные расхождения — оставлены непроверенными до отдельного анализа | 14 строк отмечены подтверждёнными; 4 спорных файла не закрыты |
+| 2026-11-22 | Углублённая сверка `ConnectionSource`, `AppRoutingPresets`, `ProfilePingController`, `ProfileTunnelProbe` | `ConnectionSource` подтверждён по обеим ветвям; в `AppRoutingPresets` найдены два отсутствующих ID (`ru.rzd.pass`, `com.tutu.ru`); две probe-реализации требуют отдельного функционального сопоставления | Обновлены статусы 4 строк; код приложения не изменялся |
