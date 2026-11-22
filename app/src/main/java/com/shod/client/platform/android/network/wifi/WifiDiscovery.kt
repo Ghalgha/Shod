@@ -1,6 +1,8 @@
 package com.shod.client.platform.android.network.wifi
 
 import com.shod.client.SettingsStore
+import com.shod.client.R
+import com.shod.client.platform.android.activity.MainActivity
 import com.shod.client.network.wifi.policy.WifiNetworkListMode
 import com.shod.client.network.wifi.policy.normalizeWifiSsid
 import com.shod.client.network.wifi.preferences.WifiPreferences
