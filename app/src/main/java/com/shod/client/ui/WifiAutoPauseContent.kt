@@ -33,6 +33,7 @@ import com.shod.client.network.wifi.preferences.WifiCopy
 import com.shod.client.platform.android.network.wifi.WifiDiscovery
 import com.shod.client.platform.android.network.wifi.currentWifiSsid
 import com.shod.client.platform.android.network.wifi.hasWifiSsidAccess
+import com.shod.client.platform.android.ui.showRaisedToast
 import com.shod.client.platform.android.network.wifi.hasWifiSsidPermission
 import kotlinx.coroutines.launch
 
