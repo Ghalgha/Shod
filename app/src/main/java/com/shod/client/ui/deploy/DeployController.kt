@@ -315,15 +315,15 @@ internal fun DeployController(
 
     if (showKeys) {
         SshKeysDialog(
-            initialPrivateKey = privateKey,
-            initialPassphrase = keyPassphrase,
-            initialCertificate = certificate,
-            onSave = { key, passphrase, cert ->
-                privateKey = key
-                keyPassphrase = passphrase
-                certificate = cert
+            privateKey = privateKey,
+            passphrase = keyPassphrase,
+            certificate = certificate,
+            onPrivateKeyChange = { privateKey = it },
+            onPassphraseChange = { keyPassphrase = it },
+            onCertificateChange = { certificate = it },
+            onSave = {
                 showKeys = false
-                scope.launch { settingsStore.saveSshKeys(key, passphrase, cert) }
+                scope.launch { settingsStore.saveSshKeys(privateKey, keyPassphrase, certificate) }
             },
             onDismiss = { showKeys = false },
         )
