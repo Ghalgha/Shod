@@ -243,24 +243,24 @@
 | 224 | `app/src/test/java/com/shod/client/TunnelEventParserTest.kt` | `a6b14c9122b3dff302ca6c3d05cec6eccc6cd85a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
 | 225 | `app/src/test/java/com/shod/client/TunnelLifecycleStateChaosTest.kt` | `f28a970a345cf690675e72fcf93c2e37c6968986` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
 | 226 | `app/src/test/java/com/shod/client/TunnelLifecycleStateTest.kt` | `b43e6c5d74d169e2e1185e989066dafcc6c1e2ad` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
-| 227 | `app/src/test/java/com/shod/client/TunnelLogPolicyTest.kt` | `2ec41077912cecc8995b978d37d762120a4b3672` | НЕ ПРОВЕРЕН |
-| 228 | `app/src/test/java/com/shod/client/TunnelPasswordStorageTest.kt` | `83580f4b1aefe44bc9cd267bc36cef0d60e301f9` | НЕ ПРОВЕРЕН |
-| 229 | `app/src/test/java/com/shod/client/TunnelProbePacketTest.kt` | `c3aa7d091e1a761901ddcd6d2f86c1758b6c398a` | НЕ ПРОВЕРЕН |
-| 230 | `app/src/test/java/com/shod/client/TunnelServicePolicyTest.kt` | `448099b9d7c48b110cc4e1cd918768596214bd18` | НЕ ПРОВЕРЕН |
-| 231 | `app/src/test/java/com/shod/client/TunnelSessionIdTest.kt` | `ee23d0c9bbed8c0145a165747b7653945961e863` | НЕ ПРОВЕРЕН |
-| 232 | `app/src/test/java/com/shod/client/TunnelStartupProgressTest.kt` | `eea917cf526f36f70ba0294a1b0b0fada36c267c` | НЕ ПРОВЕРЕН |
-| 233 | `app/src/test/java/com/shod/client/TunnelTrafficTest.kt` | `290730e394d2d7261853ba3ae86c09d7eb3de10f` | НЕ ПРОВЕРЕН |
-| 234 | `app/src/test/java/com/shod/client/TunRecoveryPolicyTest.kt` | `523e80737f708a10b19cb8c288bd1f9904704223` | НЕ ПРОВЕРЕН |
-| 235 | `app/src/test/java/com/shod/client/TurnTransportPolicyTest.kt` | `020d402adfc5dba0f5d286e728a76aca4cec88bd` | НЕ ПРОВЕРЕН |
-| 236 | `app/src/test/java/com/shod/client/TvManifestTest.kt` | `cc02c50cb7be7985a69b125a76a39e20910b9a5b` | НЕ ПРОВЕРЕН |
-| 237 | `app/src/test/java/com/shod/client/ui/AppSelectionOrderingTest.kt` | `edc5505ddda731be5a9d1d2de34afc0dbc11ef87` | НЕ ПРОВЕРЕН |
-| 238 | `app/src/test/java/com/shod/client/ui/deploy/operations/DeployResultPolicyTest.kt` | `cbf731b248a41cd1f1e987fae6ddd33f108f8df3` | НЕ ПРОВЕРЕН |
-| 239 | `app/src/test/java/com/shod/client/ui/deploy/operations/DeployScriptLineEndingsTest.kt` | `8de8dfb8caaa1adebb1c657bdd5c614a83f5806e` | НЕ ПРОВЕРЕН |
-| 240 | `app/src/test/java/com/shod/client/ui/deploy/operations/DeployScriptPreflightTest.kt` | `53a643f660d35d7ac8182346d58a1d6e3005e052` | НЕ ПРОВЕРЕН |
-| 241 | `app/src/test/java/com/shod/client/ui/deploy/operations/SshTransportConnectionTest.kt` | `fdb57f28fd2745e5acad7c3afede84b6eff79479` | НЕ ПРОВЕРЕН |
-| 242 | `app/src/test/java/com/shod/client/ui/DeployUiStateTest.kt` | `259e713e4bb0712ed1f25a834f34062596eae608` | НЕ ПРОВЕРЕН |
-| 243 | `app/src/test/java/com/shod/client/ui/legacy/LinkTest.kt` | `5b6f6433c15f0bf00eb80e4b6156fd4bf2ec5e5a` | НЕ ПРОВЕРЕН |
-| 244 | `app/src/test/java/com/shod/client/ui/ServerCheckTest.kt` | `c86c97b4222039536bd0f1c7638c464528b34d1d` | НЕ ПРОВЕРЕН |
+| 227 | `app/src/test/java/com/shod/client/TunnelLogPolicyTest.kt` | `2ec41077912cecc8995b978d37d762120a4b3672` | ТРЕБУЕТ СВЕРКИ — исходный тест не найден в целевом дереве; необходимо проверить наличие функционального покрытия в других тестах. |
+| 228 | `app/src/test/java/com/shod/client/TunnelPasswordStorageTest.kt` | `83580f4b1aefe44bc9cd267bc36cef0d60e301f9` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 229 | `app/src/test/java/com/shod/client/TunnelProbePacketTest.kt` | `c3aa7d091e1a761901ddcd6d2f86c1758b6c398a` | ТРЕБУЕТ СВЕРКИ — целевой тест короче исходного; проверить, не потеряны ли сценарии проверки пакетов. |
+| 230 | `app/src/test/java/com/shod/client/TunnelServicePolicyTest.kt` | `448099b9d7c48b110cc4e1cd918768596214bd18` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 231 | `app/src/test/java/com/shod/client/TunnelSessionIdTest.kt` | `ee23d0c9bbed8c0145a165747b7653945961e863` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 232 | `app/src/test/java/com/shod/client/TunnelStartupProgressTest.kt` | `eea917cf526f36f70ba0294a1b0b0fada36c267c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 233 | `app/src/test/java/com/shod/client/TunnelTrafficTest.kt` | `290730e394d2d7261853ba3ae86c09d7eb3de10f` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 234 | `app/src/test/java/com/shod/client/TunRecoveryPolicyTest.kt` | `523e80737f708a10b19cb8c288bd1f9904704223` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 235 | `app/src/test/java/com/shod/client/TurnTransportPolicyTest.kt` | `020d402adfc5dba0f5d286e728a76aca4cec88bd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 236 | `app/src/test/java/com/shod/client/TvManifestTest.kt` | `cc02c50cb7be7985a69b125a76a39e20910b9a5b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 237 | `app/src/test/java/com/shod/client/ui/AppSelectionOrderingTest.kt` | `edc5505ddda731be5a9d1d2de34afc0dbc11ef87` | ТРЕБУЕТ СВЕРКИ — исходный тест не найден в целевом дереве; необходимо проверить наличие функционального покрытия в других тестах. |
+| 238 | `app/src/test/java/com/shod/client/ui/deploy/operations/DeployResultPolicyTest.kt` | `cbf731b248a41cd1f1e987fae6ddd33f108f8df3` | ТРЕБУЕТ СВЕРКИ — целевой файл обнаружен, но чтение содержимого через GitHub API вернуло 404; семантическое совпадение не подтверждено. |
+| 239 | `app/src/test/java/com/shod/client/ui/deploy/operations/DeployScriptLineEndingsTest.kt` | `8de8dfb8caaa1adebb1c657bdd5c614a83f5806e` | ТРЕБУЕТ СВЕРКИ — целевой файл обнаружен, но чтение содержимого через GitHub API вернуло 404; семантическое совпадение не подтверждено. |
+| 240 | `app/src/test/java/com/shod/client/ui/deploy/operations/DeployScriptPreflightTest.kt` | `53a643f660d35d7ac8182346d58a1d6e3005e052` | ТРЕБУЕТ СВЕРКИ — исходный тест не найден в целевом дереве; необходимо проверить наличие функционального покрытия в других тестах. |
+| 241 | `app/src/test/java/com/shod/client/ui/deploy/operations/SshTransportConnectionTest.kt` | `fdb57f28fd2745e5acad7c3afede84b6eff79479` | ТРЕБУЕТ СВЕРКИ — целевой файл обнаружен, но чтение содержимого через GitHub API вернуло 404; семантическое совпадение не подтверждено. |
+| 242 | `app/src/test/java/com/shod/client/ui/DeployUiStateTest.kt` | `259e713e4bb0712ed1f25a834f34062596eae608` | ТРЕБУЕТ СВЕРКИ — целевой файл обнаружен, но чтение содержимого через GitHub API вернуло 404; семантическое совпадение не подтверждено. |
+| 243 | `app/src/test/java/com/shod/client/ui/legacy/LinkTest.kt` | `5b6f6433c15f0bf00eb80e4b6156fd4bf2ec5e5a` | ТРЕБУЕТ СВЕРКИ — исходный тест не найден в целевом дереве; необходимо проверить наличие функционального покрытия в других тестах. |
+| 244 | `app/src/test/java/com/shod/client/ui/ServerCheckTest.kt` | `c86c97b4222039536bd0f1c7638c464528b34d1d` | ТРЕБУЕТ СВЕРКИ — исходный тест не найден в целевом дереве; необходимо проверить наличие функционального покрытия в других тестах. |
 | 245 | `app/src/test/java/com/shod/client/ui/SshKeyRuntimeDependencyTest.kt` | `82384eaf5361d96af1e980bc495b3d54b0f522ce` | НЕ ПРОВЕРЕН |
 | 246 | `app/src/test/java/com/shod/client/UpdateLaunchGuardTest.kt` | `c795af83f3ffb5fa66ab4bffb2cd714ff581cf7b` | НЕ ПРОВЕРЕН |
 | 247 | `app/src/test/java/com/shod/client/VkCallPoliciesTest.kt` | `d8a62070e2d9801df3c63cc14e423174b97ad37b` | НЕ ПРОВЕРЕН |
@@ -403,6 +403,7 @@
 
 ## Журнал проверок
 
+| 2026-11-22 | Сверка 18 unit-тестов жизненного цикла, транспорта и deployment | 8 тестов совпадают по телам после исключения package/import; `TunnelProbePacketTest` отличается и требует проверки; четыре целевых файла найдены, но GitHub API вернул 404 при чтении; пять исходных тестов не найдены | 8 строк подтверждены, 10 переведены в `ТРЕБУЕТ СВЕРКИ`; код не менялся, CI/сборка/тесты не запускались |
 | 2026-11-22 | Сверка 18 unit-тестов | 14 целевых тестов совпадают с исходниками по телам после исключения package/import; `ProbeOutputReaderTest`, `ProfilePingControllerTest`, `SshHostKeyStoreTest` отличаются и требуют анализа; `ParticipantHashesTest` не найден | 14 строк подтверждены как перенесённые, 4 переведены в `ТРЕБУЕТ СВЕРКИ`; код не менялся, CI/сборка/тесты не запускались |
 | 2026-11-22 | Сверка 15 Android ресурсов и unit-тестов | Восемь тестов перенесены в новую структуру без изменений тел тестов (различаются package/import). Два теста изменены (`AppRoutingPresetsTest`, `ConnectionStartPolicyTest`) и требуют сопоставления сценариев. Иконка Telegram, лицензия Manrope и три теста (`AppUpdate`, `DnsProfileName`, `MaskOwnerHashes`) не найдены в target | 8 строк подтверждены как перенесённые, 7 переведены в `ТРЕБУЕТ СВЕРКИ`; код не менялся, CI/сборка/тесты не запускались |
 | 2026-11-22 | Проверка оставшихся client provenance и 11 drawable ресурсов | `libclient.provenance.json` отсутствует; похожий `shod.server-provenance.json` не эквивалентен, так как описывает server artifact. Все 11 исходных drawable отсутствуют в целевой `res`; обнаружены только три другие иконки, но использование и допустимость замены ещё не установлены | 12 строк переведены в `ТРЕБУЕТ СВЕРКИ`; код и ресурсы не менялись, CI/сборка/тесты не запускались |
