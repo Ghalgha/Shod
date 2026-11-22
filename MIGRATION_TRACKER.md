@@ -186,19 +186,19 @@
 | 167 | `app/src/main/res/drawable/ic_donate_heart.xml` | `f14523ac59512958faabcbe5b8f4b2c7f0b9559b` | НЕ ПРОВЕРЕН |
 | 168 | `app/src/main/res/drawable/ic_export.xml` | `131be7072aebdb8b9f2e545e63c6768764c2630c` | НЕ ПРОВЕРЕН |
 | 169 | `app/src/main/res/drawable/ic_github.xml` | `0688bf9675eed7c593b09dcb72c48b2010296a18` | НЕ ПРОВЕРЕН |
-| 170 | `app/src/main/res/drawable/ic_import_export.xml` | `1df0210393cb616c444196836bfdacd957c3f4bd` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 170 | `app/src/main/res/drawable/ic_import_export.xml` | `1df0210393cb616c444196836bfdacd957c3f4bd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
 | 171 | `app/src/main/res/drawable/ic_import.xml` | `167d6e9261cfe4175633ebd3fde90eb0b17912cf` | НЕ ПРОВЕРЕН |
 | 172 | `app/src/main/res/drawable/ic_ip.xml` | `934cdeb151dfa470e406a6d90fdb357fe6301a01` | НЕ ПРОВЕРЕН |
 | 173 | `app/src/main/res/drawable/ic_launcher_foreground.xml` | `be17fbc911f2396b6e85b6634f4d139db7cd9439` | НЕ ПРОВЕРЕН |
 | 174 | `app/src/main/res/drawable/ic_launcher_monochrome.xml` | `4585f7079965b845ada2bbc10dc2799da45cf972` | НЕ ПРОВЕРЕН |
 | 175 | `app/src/main/res/drawable/ic_more_smooth.xml` | `a9a78c76478fcd5209eb5bff6c14f14679546f1b` | НЕ ПРОВЕРЕН |
-| 176 | `app/src/main/res/drawable/ic_qr_scan.xml` | `069ff94665db084ada8e8ceec430f193f7096ffa` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 177 | `app/src/main/res/drawable/ic_settings_gear.xml` | `59b954c37b40fc16f1b2abb8ee6419825dd688f9` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 176 | `app/src/main/res/drawable/ic_qr_scan.xml` | `069ff94665db084ada8e8ceec430f193f7096ffa` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
+| 177 | `app/src/main/res/drawable/ic_settings_gear.xml` | `59b954c37b40fc16f1b2abb8ee6419825dd688f9` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
 | 178 | `app/src/main/res/drawable/ic_shod_logo.xml` | `dd489aabaf6b1f941086210f9a0dcd5c7844a8ab` | НЕ ПРОВЕРЕН |
 | 179 | `app/src/main/res/drawable/ic_stat_c.xml` | `e478750027c21ae3e06ecc0f104b7504bdc8c915` | НЕ ПРОВЕРЕН |
 | 180 | `app/src/main/res/drawable/ic_stop.xml` | `220ddeadffeebf1894d3cf1fcee22b3b4781099d` | НЕ ПРОВЕРЕН |
 | 181 | `app/src/main/res/drawable/ic_telegram.xml` | `b4b07d15a5f43c0d041b72c8150477b922ef1eb7` | НЕ ПРОВЕРЕН |
-| 182 | `app/src/main/res/font/manrope_variable.ttf` | `75274da58537d6123b14f2cd0c355ad4681fc2b3` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 182 | `app/src/main/res/font/manrope_variable.ttf` | `75274da58537d6123b14f2cd0c355ad4681fc2b3` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
 | 183 | `app/src/main/res/layout/vpn_widget.xml` | `a8883f939f0027728cd22660993a66002ce74903` | НЕ ПРОВЕРЕН |
 | 184 | `app/src/main/res/mipmap-anydpi/ic_launcher_round.xml` | `67112077d80d56c64e41657300b4df449a34fbbd` | НЕ ПРОВЕРЕН |
 | 185 | `app/src/main/res/mipmap-anydpi/ic_launcher.xml` | `67112077d80d56c64e41657300b4df449a34fbbd` | НЕ ПРОВЕРЕН |
@@ -275,12 +275,12 @@
 | 256 | `app/src/test/java/com/shod/client/WifiPreferencesTest.kt` | `3702d2933fcb82eb6aadddb08d2d62b6e7946bdf` | НЕ ПРОВЕРЕН |
 | 257 | `app/src/test/java/com/shod/client/WorkerCountPolicyTest.kt` | `4d489af37380c1f7bb40047c22e6f761974d725a` | НЕ ПРОВЕРЕН |
 | 258 | `app/src/test/java/com/shod/client/WorkerRecoveryPolicyTest.kt` | `0f3312eab4d3c750e12f5f66b37384eca55691df` | НЕ ПРОВЕРЕН |
-| 259 | `build.gradle.kts` | `e53574b954d280ed7e9b6450d11759681841baa1` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 260 | `gradle.properties` | `140fbbbba0e7adccc34e7a915c2059a5187ad6bd` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 261 | `gradle/wrapper/gradle-wrapper.jar` | `2c3521197d7c4586c843d1d3e9090525f1898cde` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 262 | `gradle/wrapper/gradle-wrapper.properties` | `c61a118f7ddb21223f1a2fdd05f6aec1b9863aec` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 263 | `gradlew` | `727d6af8d7e8074828a48b143b83bf7ddefa9d66` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 264 | `gradlew.bat` | `22fdb19759a5057da49087fd4216984baacab123` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 259 | `build.gradle.kts` | `e53574b954d280ed7e9b6450d11759681841baa1` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
+| 260 | `gradle.properties` | `140fbbbba0e7adccc34e7a915c2059a5187ad6bd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
+| 261 | `gradle/wrapper/gradle-wrapper.jar` | `2c3521197d7c4586c843d1d3e9090525f1898cde` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
+| 262 | `gradle/wrapper/gradle-wrapper.properties` | `c61a118f7ddb21223f1a2fdd05f6aec1b9863aec` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
+| 263 | `gradlew` | `727d6af8d7e8074828a48b143b83bf7ddefa9d66` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
+| 264 | `gradlew.bat` | `22fdb19759a5057da49087fd4216984baacab123` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
 | 265 | `KNOWN_ISSUES.md` | `0ef93169ba83d56cc77c09bd7cb55b6bc0f40a81` | НЕ ПРОВЕРЕН |
 | 266 | `LICENSE` | `5cc8cea945d6c9b51c89ba7253c279204df4f998` | НЕ ПРОВЕРЕН |
 | 267 | `rust-client/auth.rs` | `0505a22fb173ae9aebcd828a2876a4d1b5055efd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/auth/auth.rs`. |
@@ -320,9 +320,9 @@
 | 301 | `rust-client/turn_ip_pool.rs` | `07c29a6edbe7143d2d1856b853dd261ecce7a6ed` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/turn/turn_ip_pool.rs`. |
 | 302 | `rust-client/turn_stream.rs` | `4c57e8a1e93ba2cdc46c9b626ff6bbf2e129165f` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/turn/turn_stream.rs`. |
 | 303 | `rust-client/turn.rs` | `31787f837bb4121dc9a6c9535243ea72abc3dee9` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое совпадает; отличается только путь к тестовому модулю, который перенесён в `integration_tests.rs`. |
-| 304 | `rust-client/vendor/netstack-smoltcp/Cargo.toml` | `be3d5026dee23d247648f75d17d3e64a3a0e8ebb` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 305 | `rust-client/vendor/netstack-smoltcp/LICENSE-APACHE` | `f49a4e16e68b128803cc2dcea614603632b04eac` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 306 | `rust-client/vendor/netstack-smoltcp/LICENSE-MIT` | `ede7ee90b0e7231f88b2fadcdd3854c4ffcd87b5` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 304 | `rust-client/vendor/netstack-smoltcp/Cargo.toml` | `be3d5026dee23d247648f75d17d3e64a3a0e8ebb` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
+| 305 | `rust-client/vendor/netstack-smoltcp/LICENSE-APACHE` | `f49a4e16e68b128803cc2dcea614603632b04eac` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
+| 306 | `rust-client/vendor/netstack-smoltcp/LICENSE-MIT` | `ede7ee90b0e7231f88b2fadcdd3854c4ffcd87b5` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
 | 307 | `rust-client/vendor/netstack-smoltcp/src/device.rs` | `941cb93c1ae4662f4bc4135543ca9c34c39ef114` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
 | 308 | `rust-client/vendor/netstack-smoltcp/src/filter.rs` | `daced192058ea16936f2798664dd6b6d6f014b79` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
 | 309 | `rust-client/vendor/netstack-smoltcp/src/lib.rs` | `dc8fcc6f6062ba27d3b978f85b1fd8aa262b84a6` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
@@ -331,14 +331,14 @@
 | 312 | `rust-client/vendor/netstack-smoltcp/src/stack.rs` | `ecc9b39aa97f82a687b06706efa4be8c2bd75e19` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
 | 313 | `rust-client/vendor/netstack-smoltcp/src/tcp.rs` | `ce23053a20efa4433e3ed301f2d66be6ad30d5ee` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
 | 314 | `rust-client/vendor/netstack-smoltcp/src/udp.rs` | `aeda9ee3ec53c794a5d082c361e28578da89c894` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
-| 315 | `rust-client/vendor/primp/Cargo.toml` | `22d2d714ff298f9fab97ad23382c10ce4b61b48a` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 315 | `rust-client/vendor/primp/Cargo.toml` | `22d2d714ff298f9fab97ad23382c10ce4b61b48a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
 | 316 | `rust-client/vendor/primp/src/imp/chrome/mod.rs` | `affd4ddff9c9a570b488cfe188a638b74e8f7630` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
 | 317 | `rust-client/vendor/primp/src/imp/edge/mod.rs` | `053a82e80dfc99b5de84937209bc2f9126e4c978` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
 | 318 | `rust-client/vendor/primp/src/imp/firefox/mod.rs` | `33fc006bb5965643dab65cb417e3ce16b3e7bcd9` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
 | 319 | `rust-client/vendor/primp/src/imp/mod.rs` | `f266b6ac8c741f885cd99a8e3683ee35630e6856` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
 | 320 | `rust-client/vendor/primp/src/imp/opera/mod.rs` | `fb81b2a4a5c21b6d3ed56ef69651330ff6cc4f81` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
 | 321 | `rust-client/vendor/primp/src/imp/safari/mod.rs` | `bdd6cc0ad668347b4cc80168d66535fab4c5089a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
-| 322 | `rust-client/vendor/primp/src/lib.rs` | `613f49022fafb16ab87140a4660982451b496199` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 322 | `rust-client/vendor/primp/src/lib.rs` | `613f49022fafb16ab87140a4660982451b496199` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
 | 323 | `rust-client/vk_js_calls.rs` | `04f2a6a315c6392b47fe560e2f8ecdedefb39773` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/calls/vk_js_calls.rs`. |
 | 324 | `rust-client/worker.rs` | `f8e41e3ff249300d1ecabfde5990164f4a290768` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/threads/worker.rs`. |
 | 325 | `rust-client/wrap.rs` | `2429d6278870382a631acaf7e46e30d642d9ea41` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/security/wrap.rs`. |
@@ -352,7 +352,7 @@
 | 333 | `rust-server/main.rs` | `cca694f812d3f8b81783bface6372633bb4cbbfb` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — всё содержимое совпадает после исключения директив путей модулей; модули перенесены в архитектурные каталоги `rust-server/src/*`. |
 | 334 | `rust-server/model.rs` | `148302fad86f016a03dc249b149b1a666e7bc360` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/config/model.rs`. |
 | 335 | `rust-server/net_setup.rs` | `1e06a2cc6752d1af9577309116747fe84ba20b92` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/network/net_setup.rs`. |
-| 336 | `rust-server/packet.rs` | `808a6b6491d90bd75d9772bc233cba54dbdce934` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 336 | `rust-server/packet.rs` | `808a6b6491d90bd75d9772bc233cba54dbdce934` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
 | 337 | `rust-server/path_probe.rs` | `d01883136a5bb86318453ccd8c2ad97f20c47694` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/diagnostics/path_probe.rs`. |
 | 338 | `rust-server/protocol.rs` | `246ed612560238b9994ef28e8c0342c3d76e2375` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/protocol/protocol.rs`. |
 | 339 | `rust-server/proxy_route.rs` | `622cc271c2f77ffe4ec84b4fbd6d4dc0b796bef2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/proxy/proxy_route.rs`. |
@@ -404,6 +404,7 @@
 ## Журнал проверок
 
 | Дата | Диапазон / файлы | Результат | Изменение реестра |
+| 2026-11-22 | Сверка 16 ресурсов, Gradle wrapper и Rust vendor/server packet | Побайтовое совпадение подтверждено; `rust-server/packet.rs` сопоставлен с `src/packet/packet.rs` | 16 строк подтверждены; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка 15 файлов: Gradle-конфигурация, 8 Android UI/instrumentation tests, assets и Constants | Все 15 целевых файлов проверены; содержимое совпадает побайтно, тесты размещены в соответствующих пакетах новой архитектуры | 15 строк подтверждены; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка 16 Kotlin-файлов: design tokens и dialogs | Все 16 файлов присутствуют по исходным архитектурным путям; SHA исходника и целевого файла совпадает побайтово | 16 строк подтверждены; код приложения не менялся, CI не запускался |
 | 2026-11-22 | Повторная проверка 9 точных Kotlin blob-совпадений: UI components, AppBackdrop и ExtendedColors | Все 9 файлов присутствуют по исходным архитектурным путям; SHA исходника и цели совпадают побайтово | 9 строк подтверждены; код приложения не менялся, CI не запускался |
