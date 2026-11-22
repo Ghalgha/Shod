@@ -309,17 +309,17 @@
 | 290 | `rust-client/session.rs` | `32cd4a6222ded98664b7358b507c36e78f92f3f7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/session/session.rs`. |
 | 291 | `rust-client/sni.rs` | `d4846a8a581aa9a0ee7fcd4482ff52325e6f41ec` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/security/sni.rs`. |
 | 292 | `rust-client/srtp_mode.rs` | `50d34f064d8c6180c9687b9c559b2bf3c1ef40fe` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/srtp/srtp_mode.rs`. |
-| 293 | `rust-client/stats.rs` | `01d17436a22d2db75834f43c281862efac3a1988` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 294 | `rust-client/stream_diagnostics.rs` | `9b82c8f58dafd96958cce010395febf3d843ed39` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 295 | `rust-client/stun_codec.rs` | `fc9b9e34b745a7099ba20adbf3f09c0e0902fb78` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 296 | `rust-client/traffic_diagnostics.rs` | `b5001809ea694cff9da2ee4b2671c9a0a44b8e04` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 297 | `rust-client/tun.rs` | `cd27762493ddb3be297f3af3a8dce2c90ccedb2c` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 298 | `rust-client/turn_core.rs` | `504c01b01c3ec8f56648ca736824a3fd500576e2` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 299 | `rust-client/turn_endpoint.rs` | `d8dda43273f6e841cc6d3219de9c89611588cfa0` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 293 | `rust-client/stats.rs` | `01d17436a22d2db75834f43c281862efac3a1988` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/stats/stats.rs`. |
+| 294 | `rust-client/stream_diagnostics.rs` | `9b82c8f58dafd96958cce010395febf3d843ed39` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/diagnostics/stream_diagnostics.rs`. |
+| 295 | `rust-client/stun_codec.rs` | `fc9b9e34b745a7099ba20adbf3f09c0e0902fb78` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/stun/stun_codec.rs`. |
+| 296 | `rust-client/traffic_diagnostics.rs` | `b5001809ea694cff9da2ee4b2671c9a0a44b8e04` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/diagnostics/traffic_diagnostics.rs`. |
+| 297 | `rust-client/tun.rs` | `cd27762493ddb3be297f3af3a8dce2c90ccedb2c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/tun/tun.rs`. |
+| 298 | `rust-client/turn_core.rs` | `504c01b01c3ec8f56648ca736824a3fd500576e2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/turn/turn_core.rs`. |
+| 299 | `rust-client/turn_endpoint.rs` | `d8dda43273f6e841cc6d3219de9c89611588cfa0` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/turn/turn_endpoint.rs`. |
 | 300 | `rust-client/turn_integration_tests.rs` | `97b014dabf4f18a4c6003060ad141bc59c963a27` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/turn/integration_tests.rs`. |
 | 301 | `rust-client/turn_ip_pool.rs` | `07c29a6edbe7143d2d1856b853dd261ecce7a6ed` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 302 | `rust-client/turn_stream.rs` | `4c57e8a1e93ba2cdc46c9b626ff6bbf2e129165f` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 303 | `rust-client/turn.rs` | `31787f837bb4121dc9a6c9535243ea72abc3dee9` | НЕ ПРОВЕРЕН |
+| 303 | `rust-client/turn.rs` | `31787f837bb4121dc9a6c9535243ea72abc3dee9` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое совпадает; отличается только путь к тестовому модулю, который перенесён в `integration_tests.rs`. |
 | 304 | `rust-client/vendor/netstack-smoltcp/Cargo.toml` | `be3d5026dee23d247648f75d17d3e64a3a0e8ebb` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 305 | `rust-client/vendor/netstack-smoltcp/LICENSE-APACHE` | `f49a4e16e68b128803cc2dcea614603632b04eac` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 306 | `rust-client/vendor/netstack-smoltcp/LICENSE-MIT` | `ede7ee90b0e7231f88b2fadcdd3854c4ffcd87b5` | ТОЧНОЕ СОВПАДЕНИЕ |
@@ -409,3 +409,4 @@
 | 2026-11-22 | Проверка 5 крупных Rust-файлов: клиентский `main.rs`, `dispatcher.rs`, `auth.rs`; серверный `web_panel.rs`; TURN integration tests | 4 файла совпадают побайтово; `rust-client/main.rs` совпадает полностью после исключения директив путей модулей — в целевом проекте модульная раскладка разнесена по каталогам. Других отличий в теле `main.rs` нет | Пять строк получили подтверждённые статусы переноса/распределения |
 | 2026-11-22 | Проверка 8 Rust-файлов клиента: captcha, captcha_slider, cpu_task, direct_relay, dns, events, logging, obfs | Все 8 файлов полностью совпадают побайтово с соответствующими файлами в новой архитектуре каталогов | Восемь строк получили подтверждённый статус переноса/распределения |
 | 2026-11-22 | Проверка 8 Rust-файлов клиента: namegen, packet, profiles, protocol, repair, session, sni, srtp_mode | Все 8 файлов полностью совпадают побайтово с соответствующими файлами в целевой структуре | Ещё восемь строк получили подтверждённый статус переноса/распределения |
+| 2026-11-22 | Проверка 8 Rust-файлов клиента: stats, stream_diagnostics, stun_codec, traffic_diagnostics, tun, turn, turn_core, turn_endpoint | 7 файлов совпадают побайтово; `turn.rs` отличается только путём к файлу тестового модуля, сам код совпадает | Все 8 строк получили подтверждённый статус переноса/распределения |
