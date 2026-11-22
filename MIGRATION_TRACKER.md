@@ -172,11 +172,11 @@
 | 153 | `app/src/main/java/com/shod/client/VpnWidgetToggleReceiver.kt` | `99193189bd005ab179ffd26afe633de8516cf4db` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import/comments. |
 | 154 | `app/src/main/java/com/shod/client/WifiAutoPausePolicy.kt` | `c07439b800139923cf527c8c88ec7ac5a1fd4ce1` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import/comments. |
 | 155 | `app/src/main/java/com/shod/client/WifiDiscovery.kt` | `30e4d8a6ec0304cc586c467e03852bd2c274fa8b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import/comments. |
-| 156 | `app/src/main/java/com/shod/client/WifiNetworkListPolicy.kt` | `501c518c5fdaf5020be190396bcf16ca0b8af5cf` | НЕ ПРОВЕРЕН |
-| 157 | `app/src/main/java/com/shod/client/WifiPreferences.kt` | `111197177994621d984976eb08739c1f2a16a837` | НЕ ПРОВЕРЕН |
-| 158 | `app/src/main/java/com/shod/client/WifiSsidResolver.kt` | `6a955f509f01c581fe8897be1c8f2d8d75b9c77f` | НЕ ПРОВЕРЕН |
-| 159 | `app/src/main/java/com/shod/client/WorkerCountPolicy.kt` | `37bcdd93b090faf6ab2cdfb2c0fce2a939b9ff69` | НЕ ПРОВЕРЕН |
-| 160 | `app/src/main/java/com/shod/client/WorkerRecoveryPolicy.kt` | `e0d62e7a63d5d52177aa86abdea7684d1c67bebc` | НЕ ПРОВЕРЕН |
+| 156 | `app/src/main/java/com/shod/client/WifiNetworkListPolicy.kt` | `501c518c5fdaf5020be190396bcf16ca0b8af5cf` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — все функции и исполняемая логика совпадают; отличия только в package/import и форматировании. |
+| 157 | `app/src/main/java/com/shod/client/WifiPreferences.kt` | `111197177994621d984976eb08739c1f2a16a837` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — все функции и исполняемая логика совпадают; отличия только в package/import и форматировании. |
+| 158 | `app/src/main/java/com/shod/client/WifiSsidResolver.kt` | `6a955f509f01c581fe8897be1c8f2d8d75b9c77f` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — все функции и исполняемая логика совпадают; отличия только в package/import и форматировании. |
+| 159 | `app/src/main/java/com/shod/client/WorkerCountPolicy.kt` | `37bcdd93b090faf6ab2cdfb2c0fce2a939b9ff69` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — все функции и исполняемая логика совпадают; отличия только в package/import и форматировании. |
+| 160 | `app/src/main/java/com/shod/client/WorkerRecoveryPolicy.kt` | `e0d62e7a63d5d52177aa86abdea7684d1c67bebc` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — все функции и исполняемая логика совпадают; отличия только в package/import и форматировании. |
 | 161 | `app/src/main/libclient.provenance.json` | `0e00a45e990132f58a6f3d0fc9ba02f943d2b7f1` | НЕ ПРОВЕРЕН |
 | 162 | `app/src/main/res/drawable-nodpi/tv_banner.png` | `619f72fe238af730096dc2a3e9f3ce8e8b3aa08e` | НЕ ПРОВЕРЕН |
 | 163 | `app/src/main/res/drawable/bg_widget_button_active.xml` | `05e38f4f609f66ed96c5fd6cabf8793bedf77ea9` | НЕ ПРОВЕРЕН |
@@ -404,6 +404,7 @@
 ## Журнал проверок
 
 | Дата | Диапазон / файлы | Результат | Изменение реестра |
+| 2026-11-22 | Сверка Wi-Fi preferences/SSID/network-list и worker count/recovery policies | Все 5 файлов семантически совпадают; функции и значения сохранены, изменения ограничены размещением, импортами и форматированием | 5 подтверждены; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Углублённая сверка LogsScreen, RoutingScreen и SettingsScreen | Найдены конкретные изменения автопрокрутки логов, темы/Toast, распределения routing parser/dialogs и формы Settings cards; преждевременно подтверждать перенос нельзя | Уточнены причины обязательной сверки в 3 строках; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка VkTokenScraper, VpnRecoveryPolicy, VPN widgets и Wi-Fi discovery/policy | Все 6 реализаций совпадают после исключения package/import/comments; архитектурные пути соответствуют назначению модулей | 6 подтверждены; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка 8 VK integration/policy файлов | 5 реализаций совпали после исключения package/import/comments; 3 имеют существенные отличия и оставлены на обязательную сверку | 5 подтверждены, 3 требуют сверки; код приложения не менялся, CI/тесты не запускались |
