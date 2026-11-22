@@ -2,6 +2,8 @@ package com.shod.client.platform.android.widget
 
 import com.shod.client.*
 import com.shod.client.platform.android.activity.MainActivity
+import com.shod.client.platform.android.quicksettings.toggleTunnelFromQuickAction
+import com.shod.client.platform.android.ui.showRaisedToast
 
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
