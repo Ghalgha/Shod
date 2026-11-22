@@ -28,7 +28,10 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 
 import com.shod.client.network.connectivity.NetworkPauseGate
+import com.shod.client.network.connectivity.PhysicalNetworkPauseReason
 import com.shod.client.vpn.routing.ServerRoutingRule
+import com.shod.client.vpn.routing.parseServerRoutingRule
+import com.shod.client.network.wifi.policy.dispatchTunnelStop
 import com.shod.client.platform.android.widget.VpnWidgetProvider
 import com.shod.client.platform.android.quicksettings.QuickToggleTileService
 import com.shod.client.vpn.session.newTunnelSessionId
@@ -471,7 +474,7 @@ object TunnelManager {
                 if (routingJsonStr.isNotEmpty()) {
                     activeScope.launch(Dispatchers.Main) {
                         if (!isCurrent(identity)) return@launch
-                        val rule = parseServerRoutingRuleJson(routingJsonStr)
+                        val rule = parseServerRoutingRule(routingJsonStr)
                         if (rule == null) {
                             handleCriticalError("Сервер передал некорректное правило маршрутизации", identity)
                             return@launch
