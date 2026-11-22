@@ -1,7 +1,7 @@
 package com.shod.client.integration.vk.captcha.android
 
 import com.shod.client.TunnelManager
-import com.shod.client.UpdateLaunchGuard
+import com.shod.client.platform.android.activity.UpdateLaunchGuard
 import com.shod.client.integration.vk.captcha.CaptchaUriPolicy
 
 import android.annotation.SuppressLint
