@@ -26,6 +26,34 @@ class SelectedApplicationsOrderTest {
         )
     }
 
+    private fun order(selected: Set<String>): List<String> {
+        val apps = listOf(
+            App("z", "Zulu"),
+            App("b", "beta"),
+            App("a", "Alpha"),
+            App("c", "Charlie"),
+        )
+        return selectedApplicationsFirst(apps, selected, App::packageName, App::label)
+            .map(App::packageName)
+    }
+
+    @Test
+    fun selectedAppsPrecedeUnselectedAndEachGroupIsAlphabetical() {
+        assertEquals(listOf("b", "z", "a", "c"), order(setOf("z", "b")))
+    }
+
+    @Test
+    fun blackAndWhiteListsUseTheirOwnSelection() {
+        assertEquals(listOf("c", "a", "b", "z"), order(setOf("c")))
+        assertEquals(listOf("z", "a", "b", "c"), order(setOf("z")))
+    }
+
+    @Test
+    fun emptySelectionAndUnknownPackagesKeepAlphabeticalOrder() {
+        assertEquals(listOf("a", "b", "c", "z"), order(emptySet()))
+        assertEquals(listOf("a", "b", "c", "z"), order(setOf("not.installed")))
+    }
+
     @Test
     fun packageNameBreaksTiesForEqualLabels() {
         val apps = listOf(App("z.example", "Same"), App("a.example", "same"))
