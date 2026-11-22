@@ -101,6 +101,12 @@ internal fun DeployController(
         if (host != savedSettings.ip && host.isBlank()) host = savedSettings.ip
     }
 
+    LaunchedEffect(savedSettings.profile, savedSettings.secretPathUuid) {
+        if (savedSettings.secretPathUuid.isBlank()) {
+            settingsStore.regenerateDeploySecretPathUuid()
+        }
+    }
+
     val state = DeployUiState(
         host = host,
         sshLogin = login,
@@ -222,8 +228,21 @@ internal fun DeployController(
         progress = 0f
         DeployDiagnostics.begin()
         val effective = ports()
+        val deploymentDraft = savedSettings.copy(
+            ip = host,
+            sshLogin = login,
+            sshPassword = sshPassword,
+            sshPort = effective.ssh.toString(),
+            serverPeerPort = action.peerPort,
+            serverWebPort = action.webPort,
+            mainPassword = mainPassword,
+            webLogin = webLogin,
+            webPassword = webPassword,
+            dockerInstall = docker,
+        )
         scope.launch {
             try {
+                settingsStore.saveDeployProfileDraft(deploymentDraft, restoreConnection = true)
                 context.startForegroundService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_START" })
                 val mode = when (action.kind) {
                     PlanKind.INSTALL -> DeployActionMode.Install
@@ -250,6 +269,8 @@ internal fun DeployController(
                 if (result.successful) {
                     settingsStore.saveDeployedServer(savedSettings.profile, host.trim(), action.peerPort, action.webPort)
                     settingsStore.savePorts(action.peerPort, action.webPort, effective.ssh.toString())
+                    peerPort = action.peerPort.toString()
+                    webPort = action.webPort.toString()
                     settingsStore.saveConnectionPassword(mainPassword, settingsStore.linkedConnectionProfile(savedSettings.profile))
                     report(when (mode) {
                         DeployActionMode.Install -> "Сервер установлен"
