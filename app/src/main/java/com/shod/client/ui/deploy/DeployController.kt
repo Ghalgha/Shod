@@ -37,6 +37,7 @@ import com.shod.client.ui.screens.deploy.resolveServerPorts
 import com.shod.client.ui.screens.deploy.splitPastedHostPort
 import com.shod.client.ui.screens.deploy.describeServer
 import com.shod.client.ui.dialogs.DeployAuthorizationDialog
+import com.shod.client.ui.utils.generate16CharPassword
 import com.shod.client.ui.dialogs.DockerInstallInfoDialog
 import com.shod.client.ui.dialogs.UninstallConfirmDialog
 import com.shod.client.ui.dialogs.ServerCheckDialog
@@ -84,7 +85,7 @@ internal fun DeployController(
     var showKeys by remember { mutableStateOf(false) }
     var showDockerInfo by remember { mutableStateOf(false) }
     var showPanelInfo by remember { mutableStateOf(false) }
-    var mainPassword by remember(savedSettings.profile) { mutableStateOf(savedSettings.mainPassword) }
+    var mainPassword by remember(savedSettings.profile) { mutableStateOf(savedSettings.mainPassword.ifBlank { generate16CharPassword() }) }
     var webLogin by remember(savedSettings.profile) { mutableStateOf(savedSettings.webLogin) }
     var webPassword by remember(savedSettings.profile) { mutableStateOf(savedSettings.webPassword) }
     var privateKey by remember(savedSettings.profile) { mutableStateOf(savedSettings.sshPrivateKey) }
@@ -402,7 +403,10 @@ internal fun DeployController(
             onWebPasswordChange = { webPassword = it },
             onSave = {
                 showAuth = false
-                scope.launch { settingsStore.saveDeploySecrets(mainPassword, login, sshPassword, webLogin, webPassword) }
+                scope.launch {
+                    settingsStore.saveDeploySecrets(mainPassword, login, sshPassword, webLogin, webPassword)
+                    settingsStore.saveConnectionPassword(mainPassword, settingsStore.linkedConnectionProfile(savedSettings.profile))
+                }
             },
             onDismiss = { showAuth = false },
         )
