@@ -1,5 +1,7 @@
 package com.shod.client.ui.navigation
 
+import com.shod.client.R
+
 import com.shod.client.*
 
 import android.annotation.SuppressLint
