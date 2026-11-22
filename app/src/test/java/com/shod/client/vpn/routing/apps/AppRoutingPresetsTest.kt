@@ -18,7 +18,7 @@ class AppRoutingPresetsTest {
     fun installedRussianAppsAreRecognizedByTheirActualPackageIds() {
         val installed = setOf(
             "com.vkontakte.android", "ru.ozon.app.android", "ru.ozon.fintech.finance",
-            "com.wildberries.ru", "ru.yandex.metro", "com.yandex.iot", "ru.sberbankmobile"
+            "com.wildberries.ru", "ru.yandex.metro", "com.yandex.iot", "ru.rzd.pass", "com.tutu.ru", "ru.sberbankmobile"
         )
         assertEquals(installed - "ru.sberbankmobile", AppRoutingPresets.initial(emptySet(), false, installed, false))
         assertTrue(AppRoutingPresets.initial(emptySet(), false, installed, true).isEmpty())
