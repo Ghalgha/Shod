@@ -239,7 +239,6 @@ fun RoutingScreen(
                         if (imported.domainWhitelist.isNotEmpty() || imported.domainWhitelistMode) {
                             settingsStore.saveDirectDomainsWhite(imported.domainWhitelist.joinToString(","))
                         }
-                        TunnelManager.pushLocalRouting(context)
                     }
                     if (imported.includeIps) {
                         settingsStore.saveIpIsWhitelist(imported.ipWhitelistMode)
@@ -250,6 +249,8 @@ fun RoutingScreen(
                         if (imported.ipWhitelist.isNotEmpty() || imported.ipWhitelistMode) {
                             settingsStore.saveDirectIpsWhite(imported.ipWhitelist.joinToString(","))
                         }
+                    }
+                    if (imported.includeDomains || imported.includeIps) {
                         TunnelManager.pushLocalRouting(context)
                     }
                 }
