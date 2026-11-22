@@ -332,11 +332,11 @@
 | 313 | `rust-client/vendor/netstack-smoltcp/src/tcp.rs` | `ce23053a20efa4433e3ed301f2d66be6ad30d5ee` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой `rust-client/vendor/netstack-smoltcp/src/tcp.rs` побайтово совпадает с исходником (SHA совпадает). |
 | 314 | `rust-client/vendor/netstack-smoltcp/src/udp.rs` | `aeda9ee3ec53c794a5d082c361e28578da89c894` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой `rust-client/vendor/netstack-smoltcp/src/udp.rs` побайтово совпадает с исходником (SHA совпадает). |
 | 315 | `rust-client/vendor/primp/Cargo.toml` | `22d2d714ff298f9fab97ad23382c10ce4b61b48a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой `rust-client/vendor/primp/Cargo.toml` побайтово совпадает с исходником (SHA совпадает). |
-| 316 | `rust-client/vendor/primp/src/imp/chrome/mod.rs` | `affd4ddff9c9a570b488cfe188a638b74e8f7630` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
-| 317 | `rust-client/vendor/primp/src/imp/edge/mod.rs` | `053a82e80dfc99b5de84937209bc2f9126e4c978` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
-| 318 | `rust-client/vendor/primp/src/imp/firefox/mod.rs` | `33fc006bb5965643dab65cb417e3ce16b3e7bcd9` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
-| 319 | `rust-client/vendor/primp/src/imp/mod.rs` | `f266b6ac8c741f885cd99a8e3683ee35630e6856` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
-| 320 | `rust-client/vendor/primp/src/imp/opera/mod.rs` | `fb81b2a4a5c21b6d3ed56ef69651330ff6cc4f81` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
+| 316 | `rust-client/vendor/primp/src/imp/chrome/mod.rs` | `affd4ddff9c9a570b488cfe188a638b74e8f7630` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой файл побайтово совпадает с исходником (SHA совпадает). |
+| 317 | `rust-client/vendor/primp/src/imp/edge/mod.rs` | `053a82e80dfc99b5de84937209bc2f9126e4c978` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой файл побайтово совпадает с исходником (SHA совпадает). |
+| 318 | `rust-client/vendor/primp/src/imp/firefox/mod.rs` | `33fc006bb5965643dab65cb417e3ce16b3e7bcd9` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой файл побайтово совпадает с исходником (SHA совпадает). |
+| 319 | `rust-client/vendor/primp/src/imp/mod.rs` | `f266b6ac8c741f885cd99a8e3683ee35630e6856` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой файл побайтово совпадает с исходником (SHA совпадает). |
+| 320 | `rust-client/vendor/primp/src/imp/opera/mod.rs` | `fb81b2a4a5c21b6d3ed56ef69651330ff6cc4f81` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой файл побайтово совпадает с исходником (SHA совпадает). |
 | 321 | `rust-client/vendor/primp/src/imp/safari/mod.rs` | `bdd6cc0ad668347b4cc80168d66535fab4c5089a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
 | 322 | `rust-client/vendor/primp/src/lib.rs` | `613f49022fafb16ab87140a4660982451b496199` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
 | 323 | `rust-client/vk_js_calls.rs` | `04f2a6a315c6392b47fe560e2f8ecdedefb39773` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/calls/vk_js_calls.rs`. |
@@ -565,3 +565,5 @@
 | 2026-11-22 | Проверка строк 305–310 | Все шесть файлов vendored netstack-smoltcp повторно сверены с Shodarchive: лицензии Apache/MIT и исходники device/filter/lib/packet совпадают побайтово по Git blob SHA и размеру. Архитектурное расположение сохранено, дополнительный перенос не требуется. CI, Cargo и тесты не запускались. |
 
 | 2026-11-22 | Проверка строк 311–315 | Все пять файлов повторно сверены с Shodarchive: runner.rs, stack.rs, tcp.rs, udp.rs и vendor/primp/Cargo.toml совпадают побайтово по Git blob SHA и размеру. Архитектурное расположение сохранено, дополнительный перенос не требуется. CI, Cargo и тесты не запускались. |
+
+| 2026-11-22 | Проверка строк 316–320 | Пять файлов vendored primp (Chrome, Edge, Firefox, общий модуль и Opera) повторно сверены с Shodarchive: каждый совпадает побайтово по Git blob SHA и размеру. Архитектурное расположение сохранено, дополнительный перенос не требуется. CI, Cargo и тесты не запускались. |
