@@ -21,7 +21,8 @@ internal object AppRoutingPresets {
         ru.mail.mailapp ru.mail.cloud ru.dublgis.dgismobile ru.rutube.app ru.vk.store
         ru.oneme.app com.bitrix24.android
         ru.mts.mymts ru.megafon.mlk ru.beeline.services ru.tele2.mytele2 ru.rt.lk
-        com.octopod.russianpost com.logistic.sdek ru.cian.main com.domclick.mortgage ru.drom ru.auto.ara
+        com.octopod.russianpost com.logistic.sdek ru.rzd.pass com.tutu.ru
+        ru.cian.main com.domclick.mortgage ru.drom ru.auto.ara
         ru.litres.android ru.instamart ru.sbcs.store ru.pyaterochka.app ru.tander.magnit com.icemobile.lenta.prod
     """.trimIndent().split(Regex("\\s+")).toSet()
 
