@@ -1,18 +1,34 @@
 # Android / Gradle
 .gradle/
+.kotlin/
 **/build/
+build/
 local.properties
 *.iml
 .idea/
 
-# Android signing material
+# Android build artifacts and signing material
+*.apk
+*.aab
 *.jks
 *.keystore
+*.p12
+app/src/main/jniLibs/
+app/src/main/assets/shod-linux-*
 
 # Rust
 **/target/
+rust-server/dist/
 
-# Local environment
+# Local environment and deployment
 .env
 .env.*
 !.env.example
+.local/
+auto-deploy/
+scripts/.env
+
+# Local working files and repository assets
+scratch/
+assets-files/
+docs/
