@@ -1,6 +1,8 @@
 package com.shod.client.platform.android.quicksettings
 
 import com.shod.client.*
+import com.shod.client.network.wifi.policy.tunnelPowerIsOn
+import com.shod.client.platform.android.ui.showRaisedToast
 import android.content.Context
 import android.content.Intent
 import android.net.VpnService
