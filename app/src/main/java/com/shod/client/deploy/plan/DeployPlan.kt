@@ -3,6 +3,7 @@ package com.shod.client.deploy.plan
 import com.shod.client.ShodConstants
 import com.shod.client.deploy.inventory.FoundServer
 import com.shod.client.deploy.inventory.ServerInventory
+import com.shod.client.deploy.inventory.ServerPlace
 import com.shod.client.deploy.inventory.isLine25
 
 /** Server ports selected by the user for a new installation. */
