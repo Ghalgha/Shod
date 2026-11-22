@@ -220,7 +220,7 @@ class TunnelService : Service() {
                         }
 
                         val requestedWorkers = intent.getIntExtra("workers_per_hash", 18)
-                        val requestedVkAuthMode = TunnelServiceInputPolicy.TunnelServiceInputPolicy.sanitizeVkAuthMode(intent.getStringExtra("vk_auth_mode"))
+                        val requestedVkAuthMode = TunnelServiceInputPolicy.sanitizeVkAuthMode(intent.getStringExtra("vk_auth_mode"))
                         val intentHashes = intent.getStringExtra("vk_hashes") ?: ""
                         val hashesFromLink = intent.getBooleanExtra("vk_hashes_from_link", false)
                         val linkAccessToken = intent.getStringExtra("vk_access_token")
