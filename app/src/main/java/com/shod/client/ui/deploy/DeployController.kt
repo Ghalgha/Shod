@@ -47,6 +47,7 @@ import com.shod.client.ui.dialogs.WebPanelInfoDialog
 import com.shod.client.ui.dialogs.ReinstallConfirmDialog
 import com.shod.client.ui.dialogs.HostKeyChangedDialog
 import com.shod.client.ui.dialogs.SshKeysDialog
+import com.shod.client.ui.dialogs.ServerRemovalProgressDialog
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
@@ -83,6 +84,8 @@ internal fun DeployController(
     var showValidation by remember { mutableStateOf(false) }
     var showAuth by remember { mutableStateOf(false) }
     var showKeys by remember { mutableStateOf(false) }
+    var showRemovalProgress by remember { mutableStateOf(false) }
+    var removalProgressError by remember { mutableStateOf<String?>(null) }
     var showDockerInfo by remember { mutableStateOf(false) }
     var showPanelInfo by remember { mutableStateOf(false) }
     var mainPassword by remember(savedSettings.profile) { mutableStateOf(savedSettings.mainPassword.ifBlank { generate16CharPassword() }) }
@@ -169,12 +172,14 @@ internal fun DeployController(
                     keyPassphrase = if (keysMode) keyPassphrase else "",
                     certificate = if (keysMode) certificate else "",
                 )
+                if (showRemovalProgress) showRemovalProgress = false
                 onInventory(result)
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (error: Exception) {
                 val changedKey = SshHostKeyStore.takeKeyChange(host.trim(), ports().ssh)
                 if (changedKey != null) pendingHostKeyChange = changedKey
+                else if (showRemovalProgress) removalProgressError = error.message ?: "Не удалось проверить VPS"
                 else report(error.message ?: "Не удалось проверить VPS")
             } finally {
                 busy = false
@@ -381,6 +386,8 @@ internal fun DeployController(
                 }
                 DeployAction.Uninstall -> {
                     if (state.canUninstall) {
+                        removalProgressError = null
+                        showRemovalProgress = true
                         runInspection { inventory ->
                             removable = removableServers(inventory)
                             removeNotes = removalNotes(inventory)
@@ -414,15 +421,15 @@ internal fun DeployController(
 
     if (showKeys) {
         SshKeysDialog(
-            privateKey = privateKey,
-            passphrase = keyPassphrase,
-            certificate = certificate,
-            onPrivateKeyChange = { privateKey = it },
-            onPassphraseChange = { keyPassphrase = it },
-            onCertificateChange = { certificate = it },
-            onSave = {
+            initialPrivateKey = privateKey,
+            initialPassphrase = keyPassphrase,
+            initialCertificate = certificate,
+            onSave = { savedPrivateKey, savedPassphrase, savedCertificate ->
+                privateKey = savedPrivateKey
+                keyPassphrase = savedPassphrase
+                certificate = savedCertificate
                 showKeys = false
-                scope.launch { settingsStore.saveSshKeys(privateKey, keyPassphrase, certificate) }
+                scope.launch { settingsStore.saveSshKeys(savedPrivateKey, savedPassphrase, savedCertificate) }
             },
             onDismiss = { showKeys = false },
         )
@@ -430,6 +437,21 @@ internal fun DeployController(
 
     if (showDockerInfo) {
         DockerInstallInfoDialog(onDismiss = { showDockerInfo = false })
+    }
+
+    if (showRemovalProgress) {
+        ServerRemovalProgressDialog(
+            name = "Shod",
+            host = host,
+            sshPort = sshPort,
+            busy = busy && removalProgressError == null,
+            error = removalProgressError,
+            onDismiss = {
+                if (busy) AndroidDeployCoordinator.cancelActiveOperation()
+                showRemovalProgress = false
+                removalProgressError = null
+            },
+        )
     }
 
     removable?.let { servers ->
