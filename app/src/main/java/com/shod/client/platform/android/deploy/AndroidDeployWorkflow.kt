@@ -5,6 +5,8 @@ import com.shod.client.ShodConstants
 import com.shod.client.deploy.artifact.DeployArtifactStager
 import com.shod.client.deploy.artifact.DeployConfigurationStager
 import com.shod.client.deploy.execution.DeployActionMode
+import com.shod.client.deploy.execution.DeployOutputLevel
+import com.shod.client.deploy.execution.parseDeployOutputLine
 import com.shod.client.deploy.execution.deployMode
 import com.shod.client.deploy.execution.deployFailureMessage
 import com.shod.client.deploy.execution.friendlyDeployError
@@ -88,6 +90,18 @@ internal class AndroidDeployWorkflow(
                 sudoPassword = password,
                 rootCommand = { command -> rootCommand(command, password) },
                 onProgress = { event -> onProgress(event.fraction, event.message) },
+                onStdout = { rawLine ->
+                    parseDeployOutputLine(rawLine)?.let { line ->
+                        when (line.level) {
+                            DeployOutputLevel.LOG -> onInfo(line.message)
+                            DeployOutputLevel.OK -> onSuccess(line.message)
+                            DeployOutputLevel.ERR -> onError("Сервер: ${line.message}")
+                        }
+                    }
+                },
+                onStderr = { rawLine ->
+                    onError("Сервер: ${parseDeployOutputLine(rawLine)?.message ?: rawLine.trim().take(500)}")
+                },
                 onInfo = onInfo,
                 onSuccess = onSuccess,
                 onError = onError,
