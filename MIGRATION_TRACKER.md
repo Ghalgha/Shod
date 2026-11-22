@@ -302,11 +302,11 @@
 | 283 | `rust-client/namegen.rs` | `74f3d6302f4d8888ffaf45e910ea33d162f5124a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/security/namegen.rs` побайтово совпадает с исходником (SHA совпадает). |
 | 284 | `rust-client/obfs.rs` | `44e2423ad11a6b8142578639b65f74bc81ec02a3` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/obfuscation/obfs.rs` побайтово совпадает с исходником (SHA совпадает). |
 | 285 | `rust-client/packet.rs` | `51245ebf87e44cbc4469c91473eccb0160d62850` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/packet/packet.rs` побайтово совпадает с исходником (SHA совпадает). |
-| 286 | `rust-client/profiles.rs` | `25c5c01a1f3713b2ad7e8dfe6a386edaf2b694e2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/runtime/profiles.rs`. |
-| 287 | `rust-client/proptest-regressions/session.txt` | `37bb44576e341826894f3002b4ebb5ccbaa35a57` | ТРЕБУЕТ СВЕРКИ — regression corpus proptest отсутствует в target; проверить, является ли файл необходимым воспроизводимым regression case. |
-| 288 | `rust-client/protocol.rs` | `4b50656fa6f9b18b0ccf13250b61602a4b3d78dd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/protocol/protocol.rs`. |
-| 289 | `rust-client/repair.rs` | `89b2bffcb555be01fbaaf52a7f1b56afbff81e48` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/runtime/repair.rs`. |
-| 290 | `rust-client/session.rs` | `32cd4a6222ded98664b7358b507c36e78f92f3f7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/session/session.rs`. |
+| 286 | `rust-client/profiles.rs` | `25c5c01a1f3713b2ad7e8dfe6a386edaf2b694e2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/runtime/profiles.rs` побайтово совпадает с исходником (SHA совпадает). |
+| 287 | `rust-client/proptest-regressions/session.txt` | `37bb44576e341826894f3002b4ebb5ccbaa35a57` | ПЕРЕНЕСЁН — восстановлен regression corpus proptest в `rust-client/proptest-regressions/session.txt`; source и target побайтово совпадают (SHA совпадает). Сохранены сохранённые случаи ошибок для повторного воспроизведения. |
+| 288 | `rust-client/protocol.rs` | `4b50656fa6f9b18b0ccf13250b61602a4b3d78dd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/protocol/protocol.rs` побайтово совпадает с исходником (SHA совпадает). |
+| 289 | `rust-client/repair.rs` | `89b2bffcb555be01fbaaf52a7f1b56afbff81e48` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/runtime/repair.rs` побайтово совпадает с исходником (SHA совпадает). |
+| 290 | `rust-client/session.rs` | `32cd4a6222ded98664b7358b507c36e78f92f3f7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/session/session.rs` побайтово совпадает с исходником (SHA совпадает). |
 | 291 | `rust-client/sni.rs` | `d4846a8a581aa9a0ee7fcd4482ff52325e6f41ec` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/security/sni.rs`. |
 | 292 | `rust-client/srtp_mode.rs` | `50d34f064d8c6180c9687b9c559b2bf3c1ef40fe` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/srtp/srtp_mode.rs`. |
 | 293 | `rust-client/stats.rs` | `01d17436a22d2db75834f43c281862efac3a1988` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/stats/stats.rs`. |
@@ -552,3 +552,5 @@
 
 
 | 2026-11-22 | Повторная проверка строк 281–285 | №281, 283–285: архитектурно размещённые файлы побайтово совпадают с оригиналами по Git blob SHA. №282: тело `main.rs` после импортов полностью идентично; различаются только объявления модулей с путями, адаптированными к `rust-client/src/`. Дополнительный перенос не потребовался. |
+
+| 2026-11-22 | Проверка строк 286–290 | №286, 288–290: архитектурно размещённые Rust-файлы побайтово совпадают с оригиналами по Git blob SHA. №287: отсутствовавший `proptest-regressions/session.txt` восстановлен в исходном относительном расположении; source и target SHA совпадают. Regression corpus сохранён для повторного воспроизведения исторических property-test failures. CI, Cargo и тесты не запускались. |
