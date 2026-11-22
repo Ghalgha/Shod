@@ -166,12 +166,12 @@
 | 147 | `app/src/main/java/com/shod/client/VkHashValidator.kt` | `805ffe3360f01ee2e216ec2e3daca173bb1eecde` | ТРЕБУЕТ СВЕРКИ — целевая реализация короче более чем вдвое; проверить перенос криптографических проверок и обработки ошибок. |
 | 148 | `app/src/main/java/com/shod/client/VkModePolicy.kt` | `51ddd37534dd2b7e10954c895f3a1eac6675b9a2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import и комментариев. |
 | 149 | `app/src/main/java/com/shod/client/VkNetworkProbePolicy.kt` | `9fc1504d243b2a658bfd7bcab5561d2ab89dc256` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import и комментариев. |
-| 150 | `app/src/main/java/com/shod/client/VkTokenScraper.kt` | `dec523e3f9afb17b5a10d3a0a3b14718d33b3845` | НЕ ПРОВЕРЕН |
-| 151 | `app/src/main/java/com/shod/client/VpnRecoveryPolicy.kt` | `955ff2e1d27edc6289bdadaa147051c410191e73` | НЕ ПРОВЕРЕН |
-| 152 | `app/src/main/java/com/shod/client/VpnWidgetProvider.kt` | `daf966e4b23b3ea356b28d0e109556f73ccedb07` | НЕ ПРОВЕРЕН |
-| 153 | `app/src/main/java/com/shod/client/VpnWidgetToggleReceiver.kt` | `99193189bd005ab179ffd26afe633de8516cf4db` | НЕ ПРОВЕРЕН |
-| 154 | `app/src/main/java/com/shod/client/WifiAutoPausePolicy.kt` | `c07439b800139923cf527c8c88ec7ac5a1fd4ce1` | НЕ ПРОВЕРЕН |
-| 155 | `app/src/main/java/com/shod/client/WifiDiscovery.kt` | `30e4d8a6ec0304cc586c467e03852bd2c274fa8b` | НЕ ПРОВЕРЕН |
+| 150 | `app/src/main/java/com/shod/client/VkTokenScraper.kt` | `dec523e3f9afb17b5a10d3a0a3b14718d33b3845` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import/comments. |
+| 151 | `app/src/main/java/com/shod/client/VpnRecoveryPolicy.kt` | `955ff2e1d27edc6289bdadaa147051c410191e73` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import/comments. |
+| 152 | `app/src/main/java/com/shod/client/VpnWidgetProvider.kt` | `daf966e4b23b3ea356b28d0e109556f73ccedb07` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import/comments. |
+| 153 | `app/src/main/java/com/shod/client/VpnWidgetToggleReceiver.kt` | `99193189bd005ab179ffd26afe633de8516cf4db` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import/comments. |
+| 154 | `app/src/main/java/com/shod/client/WifiAutoPausePolicy.kt` | `c07439b800139923cf527c8c88ec7ac5a1fd4ce1` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import/comments. |
+| 155 | `app/src/main/java/com/shod/client/WifiDiscovery.kt` | `30e4d8a6ec0304cc586c467e03852bd2c274fa8b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import/comments. |
 | 156 | `app/src/main/java/com/shod/client/WifiNetworkListPolicy.kt` | `501c518c5fdaf5020be190396bcf16ca0b8af5cf` | НЕ ПРОВЕРЕН |
 | 157 | `app/src/main/java/com/shod/client/WifiPreferences.kt` | `111197177994621d984976eb08739c1f2a16a837` | НЕ ПРОВЕРЕН |
 | 158 | `app/src/main/java/com/shod/client/WifiSsidResolver.kt` | `6a955f509f01c581fe8897be1c8f2d8d75b9c77f` | НЕ ПРОВЕРЕН |
@@ -404,6 +404,7 @@
 ## Журнал проверок
 
 | Дата | Диапазон / файлы | Результат | Изменение реестра |
+| 2026-11-22 | Сверка VkTokenScraper, VpnRecoveryPolicy, VPN widgets и Wi-Fi discovery/policy | Все 6 реализаций совпадают после исключения package/import/comments; архитектурные пути соответствуют назначению модулей | 6 подтверждены; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка 8 VK integration/policy файлов | 5 реализаций совпали после исключения package/import/comments; 3 имеют существенные отличия и оставлены на обязательную сверку | 5 подтверждены, 3 требуют сверки; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка экранов Credentials/Home, theme presets/scale, UpdateLaunchGuard и первичная сверка Logs/Routing/Settings | 5 файлов подтверждены после сравнения тела; 3 экрана имеют отличия и оставлены на подробную сверку | 5 подтверждены, 3 переведены в обязательную сверку; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка 16 ресурсов, Gradle wrapper и Rust vendor/server packet | Побайтовое совпадение подтверждено; `rust-server/packet.rs` сопоставлен с `src/packet/packet.rs` | 16 строк подтверждены; код приложения не менялся, CI/тесты не запускались |
