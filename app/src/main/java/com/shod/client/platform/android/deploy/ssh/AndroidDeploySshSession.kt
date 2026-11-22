@@ -64,7 +64,7 @@ internal class AndroidDeploySshSession(
     fun isConnected(): Boolean = ssh.isConnected
 
     private fun ensureConnected() {
-        if (!ssh.isConnected && reconnect() == null) {
+        if (!ssh.isConnected && !reconnect()) {
             throw IOException("SSH session is disconnected and reconnection failed")
         }
     }
