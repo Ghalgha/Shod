@@ -1,6 +1,7 @@
 package com.shod.client.platform.android.deploy.ssh
 
 import android.content.Context
+import com.shod.client.platform.android.deploy.DeployDiagnostics
 import net.schmizz.sshj.common.Buffer
 import net.schmizz.sshj.transport.verification.HostKeyVerifier
 import java.security.MessageDigest
@@ -43,7 +44,7 @@ object SshHostKeyStore {
     fun trust(
         context: Context,
         change: KeyChange,
-        onAudit: (String) -> Unit = {},
+        onAudit: (String) -> Unit = { DeployDiagnostics.recordError(it) },
     ) {
         context.applicationContext
             .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
