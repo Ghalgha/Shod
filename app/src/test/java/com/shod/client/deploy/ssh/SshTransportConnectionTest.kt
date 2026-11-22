@@ -1,6 +1,7 @@
 package com.shod.client.deploy.ssh
 
 import java.io.IOException
+import com.shod.client.deploy.execution.friendlyDeployError
 import java.net.SocketTimeoutException
 import net.schmizz.sshj.SSHClient
 import net.schmizz.sshj.transport.Transport
@@ -65,4 +66,8 @@ class SshTransportConnectionTest {
         verify(ssh).disconnect()
     }
 
+    @Test
+    fun `timed out spelling gets a readable deployment error`() {
+        assertEquals("Истекло время ожидания SSH/SFTP", friendlyDeployError("Connection timed out"))
+    }
 }
