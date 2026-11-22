@@ -35,6 +35,9 @@ data class RoutingRulesBackup(
     val ipBlacklist: List<String>,
     val ipWhitelist: List<String>,
     val ipWhitelistMode: Boolean,
+    val includeApps: Boolean = false,
+    val includeDomains: Boolean = false,
+    val includeIps: Boolean = false,
 )
 
 @Composable
@@ -101,6 +104,9 @@ fun RoutingRulesTransferDialog(
                             val root = runCatching { JSONObject(raw) }.getOrNull()
                             if (root != null) {
                                 val result = current.copy(
+                                    includeApps = apps && root.has("apps"),
+                                    includeDomains = domains && root.has("domains"),
+                                    includeIps = ips && root.has("ips"),
                                     appBlacklist = if (apps && root.has("apps")) packages(root.optJSONObject("apps")?.optJSONArray("blacklist")) else current.appBlacklist,
                                     appWhitelist = if (apps && root.has("apps")) packages(root.optJSONObject("apps")?.optJSONArray("whitelist")) else current.appWhitelist,
                                     appWhitelistMode = if (apps && root.has("apps")) mode(root.optJSONObject("apps")!!, current.appWhitelistMode) else current.appWhitelistMode,
@@ -120,8 +126,11 @@ fun RoutingRulesTransferDialog(
                                 val parsedApps = if (apps) AppRoutingTextParser.parse(raw) else null
                                 val parsedDomains = if (domains) DomainRoutingRules.parse(raw) else emptyList()
                                 val parsedIps = if (ips) IpRoutingRules.parse(raw) else emptyList()
-                                if (parsedApps != null || parsedDomains.isNotEmpty() || parsedIps.isNotEmpty()) {
+                                if (parsedApps != null || (domains && parsedDomains.isNotEmpty()) || (ips && parsedIps.isNotEmpty())) {
                                     onImport(current.copy(
+                                        includeApps = parsedApps != null,
+                                        includeDomains = domains && parsedDomains.isNotEmpty(),
+                                        includeIps = ips && parsedIps.isNotEmpty(),
                                         appBlacklist = parsedApps?.let { current.appBlacklist + it.blacklist } ?: current.appBlacklist,
                                         appWhitelist = parsedApps?.let { current.appWhitelist + it.whitelist } ?: current.appWhitelist,
                                         domainBlacklist = if (domains && !current.domainWhitelistMode) (current.domainBlacklist + parsedDomains).distinct().take(1024) else current.domainBlacklist,
