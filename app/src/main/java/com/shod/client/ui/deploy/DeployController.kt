@@ -220,7 +220,7 @@ internal fun DeployController(
                 report(error.message ?: "Ошибка удаления")
             } finally {
                 runCatching {
-                    context.startService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_STOP" })
+                    context.startService(Intent(context, TunnelService::class.java).apply { this.action = "DEPLOY_STOP" })
                 }
                 busy = false
             }
@@ -248,7 +248,7 @@ internal fun DeployController(
         scope.launch {
             try {
                 settingsStore.saveDeployProfileDraft(deploymentDraft, restoreConnection = true)
-                context.startForegroundService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_START" })
+                context.startForegroundService(Intent(context, TunnelService::class.java).apply { this.action = "DEPLOY_START" })
                 val mode = when (action.kind) {
                     PlanKind.INSTALL -> DeployActionMode.Install
                     PlanKind.UPDATE -> DeployActionMode.Update
