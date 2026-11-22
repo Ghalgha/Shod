@@ -104,34 +104,34 @@
 | 85 | `app/src/main/java/com/shod/client/ui/AppSelectionOrdering.kt` | `9afed32923a2e896d89896b263b7b74f6d244712` | НЕ ПРОВЕРЕН |
 | 86 | `app/src/main/java/com/shod/client/ui/background/AppBackdrop.kt` | `2cf5eacc9fb1f5c9f8db8ba8b44333cb0aa45a13` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 87 | `app/src/main/java/com/shod/client/ui/components/ApplicationRow.kt` | `fe536b58208eb7844bed9a7804a0575bbb28bac1` | НЕ ПРОВЕРЕН |
-| 88 | `app/src/main/java/com/shod/client/ui/components/AppSectionCard.kt` | `8014117b8206535d0fad5214757cec9065dcec77` | НЕ ПРОВЕРЕН |
+| 88 | `app/src/main/java/com/shod/client/ui/components/AppSectionCard.kt` | `8014117b8206535d0fad5214757cec9065dcec77` | ТРЕБУЕТ СВЕРКИ — целевая реализация заметно короче; отличается вычисление цветов поверхности и границ. |
 | 89 | `app/src/main/java/com/shod/client/ui/components/ContentScreen.kt` | `ffa6a402cd741499b24ae2bc35e1ea41896bcb8b` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 90 | `app/src/main/java/com/shod/client/ui/components/HeaderActions.kt` | `d0a411047b334146761f2962134e5094d9e72352` | НЕ ПРОВЕРЕН |
+| 90 | `app/src/main/java/com/shod/client/ui/components/HeaderActions.kt` | `d0a411047b334146761f2962134e5094d9e72352` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — отличие только в импорте `parseShodLink`, функциональный вызов сохранён. |
 | 91 | `app/src/main/java/com/shod/client/ui/components/SegmentedControl.kt` | `e70cba5114b80549bf908f08f452cfa2919da18d` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 92 | `app/src/main/java/com/shod/client/ui/components/SettingRow.kt` | `7a57a540df7b9485dfbcf07a3632a008a2c7fa30` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 93 | `app/src/main/java/com/shod/client/ui/components/States.kt` | `0a8572de0a71fc1620ceb57a98f59aa4d5ceae4c` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 94 | `app/src/main/java/com/shod/client/ui/components/TunnelDropdownSetting.kt` | `55cb7adde6ad2f821c402eefcf06ef92dc30d22f` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 95 | `app/src/main/java/com/shod/client/ui/components/TunnelProtocolChip.kt` | `d24cb37384c16831d9def9c81e03664da16d6b84` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 96 | `app/src/main/java/com/shod/client/ui/components/TunnelWorkersSlider.kt` | `0f0a75f85c460ca20f2408f04ba596b66a846185` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 97 | `app/src/main/java/com/shod/client/ui/controllers/ConnectionController.kt` | `da6f8488358ad843b6141b43b268d4ab23d5a2bb` | НЕ ПРОВЕРЕН |
+| 97 | `app/src/main/java/com/shod/client/ui/controllers/ConnectionController.kt` | `da6f8488358ad843b6141b43b268d4ab23d5a2bb` | ТРЕБУЕТ СВЕРКИ — сборка START Intent вынесена в `TunnelServiceIntentFactory`; проверить все extras и параметры запуска. |
 | 98 | `app/src/main/java/com/shod/client/ui/deploy/DeployCheckState.kt` | `341ac357fd175b06711bcda0e02c127c362e64a4` | НЕ ПРОВЕРЕН |
-| 99 | `app/src/main/java/com/shod/client/ui/deploy/DeployController.kt` | `4dd1207fe17f0d49893039bd5f4998e7a440d4bf` | НЕ ПРОВЕРЕН |
-| 100 | `app/src/main/java/com/shod/client/ui/deploy/DeployPlan.kt` | `3ba88c38ff013673bb84ed252eac233af0a42d54` | НЕ ПРОВЕРЕН |
+| 99 | `app/src/main/java/com/shod/client/ui/deploy/DeployController.kt` | `4dd1207fe17f0d49893039bd5f4998e7a440d4bf` | ТРЕБУЕТ СВЕРКИ — исходник существенно больше; состояние и операции разнесены между Compose owner и AndroidDeployCoordinator. |
+| 100 | `app/src/main/java/com/shod/client/ui/deploy/DeployPlan.kt` | `3ba88c38ff013673bb84ed252eac233af0a42d54` | ТРЕБУЕТ СВЕРКИ — целевой файл расширен моделями портов и runtime label; проверить исходную модель и связанные типы. |
 | 101 | `app/src/main/java/com/shod/client/ui/deploy/DeployScreen.kt` | `fce80a175a2b4d27fdeb6c6a980d865d968e7cc4` | НЕ ПРОВЕРЕН |
 | 102 | `app/src/main/java/com/shod/client/ui/deploy/operations/DeployOperations.kt` | `af164fb2b77d7ab6fa2f17653812e7e0f55d8654` | НЕ ПРОВЕРЕН |
 | 103 | `app/src/main/java/com/shod/client/ui/deploy/operations/DeployScript.kt` | `0dc9d35716345b4ec3e5fb6acf92f86789a7f96d` | НЕ ПРОВЕРЕН |
-| 104 | `app/src/main/java/com/shod/client/ui/deploy/operations/SshTransportConnection.kt` | `e3f3d0f0a7d26e4611f8c9cbb74c913c1facb76c` | НЕ ПРОВЕРЕН |
-| 105 | `app/src/main/java/com/shod/client/ui/deploy/ServerInventory.kt` | `8f929d3eec4a1372bce654375573ed2109fb2275` | НЕ ПРОВЕРЕН |
+| 104 | `app/src/main/java/com/shod/client/ui/deploy/operations/SshTransportConnection.kt` | `e3f3d0f0a7d26e4611f8c9cbb74c913c1facb76c` | ТРЕБУЕТ СВЕРКИ — целевой файл добавляет документированную границу retry; проверить точное поведение повторов и исключений. |
+| 105 | `app/src/main/java/com/shod/client/ui/deploy/ServerInventory.kt` | `8f929d3eec4a1372bce654375573ed2109fb2275` | ТРЕБУЕТ СВЕРКИ — целевая реализация короче более чем вдвое и меняет разбор окончания inventory; проверить обработку всех строк/ошибок. |
 | 106 | `app/src/main/java/com/shod/client/ui/design/ExtendedColors.kt` | `59410f63afd4f36260a69705052ecbce129688c2` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 107 | `app/src/main/java/com/shod/client/ui/design/Motion.kt` | `0875bf164dd298058a4d10dfa5e82e81b4356fdc` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 108 | `app/src/main/java/com/shod/client/ui/design/Shapes.kt` | `f53fcf5a99c4e95fa227e888408dc0ddca8c15bc` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 109 | `app/src/main/java/com/shod/client/ui/design/Sizes.kt` | `44d309fa393960bbebf6b8fa35457f0a7e4bb145` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 110 | `app/src/main/java/com/shod/client/ui/design/Spacing.kt` | `615c3a45e3b67e40cf4357473b42e3b78e166cd2` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 111 | `app/src/main/java/com/shod/client/ui/dialogs/AppUpdateDialog.kt` | `8362c2dbbbdb207edaca3a7ad244df2a55886160` | НЕ ПРОВЕРЕН |
+| 111 | `app/src/main/java/com/shod/client/ui/dialogs/AppUpdateDialog.kt` | `8362c2dbbbdb207edaca3a7ad244df2a55886160` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
 | 112 | `app/src/main/java/com/shod/client/ui/dialogs/AutoVkRiskDialog.kt` | `0073035064465c1ad24e77d1f5bcdd1c01b14aaa` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 113 | `app/src/main/java/com/shod/client/ui/dialogs/DeploySecretsDialog.kt` | `12376ea4b5da119158e897a5999910ec1e33b6f4` | НЕ ПРОВЕРЕН |
 | 114 | `app/src/main/java/com/shod/client/ui/dialogs/DockerInstallInfoDialog.kt` | `114c49b2b67c895263c7f78dceebc77b3304b2f7` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 115 | `app/src/main/java/com/shod/client/ui/dialogs/HashesDialog.kt` | `f17c7997ac137d5b8911b47a79c75afd15fa0099` | НЕ ПРОВЕРЕН |
+| 115 | `app/src/main/java/com/shod/client/ui/dialogs/HashesDialog.kt` | `f17c7997ac137d5b8911b47a79c75afd15fa0099` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
 | 116 | `app/src/main/java/com/shod/client/ui/dialogs/HashModeInfoDialog.kt` | `ab5a130a41958528ec9d9cdce503721c5d5a5af8` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 117 | `app/src/main/java/com/shod/client/ui/dialogs/HostKeyChangedDialog.kt` | `0d2719805d9c5f3c6cd5687ec7c44e2018c9b4f7` | НЕ ПРОВЕРЕН |
 | 118 | `app/src/main/java/com/shod/client/ui/dialogs/ImportExportDialog.kt` | `f0102a1e2d8edb6ef1f185a4a2d86f2de6dbfeff` | ТОЧНОЕ СОВПАДЕНИЕ |
@@ -426,3 +426,4 @@
 | 2026-11-22 | Сверка screen snapshot, service policies, session ID, startup progress, traffic, TUN recovery и Android VPN service | Подтверждены 7 переносов; `TunnelService` требует полного сопоставления выделенных battery monitor и service coordinators | Обновлены 8 строк; код не менялся |
 | 2026-11-22 | Сверка VK TURN subnet registry и transport policy | Обе реализации полностью совпадают с исходниками после исключения package/import | Обновлены 2 строки; код не менялся |
 | 2026-11-22 | Проверка `.github/workflows/ci.yml` | Исходный CI workflow отсутствует в целевом репозитории; найден только `.gitkeep`. Проверены определения шагов, запуск CI не выполнялся | Отмечена потеря CI-конфигурации; требуется восстановить workflow после согласования переноса |
+| 2026-11-22 | Сверка UI components, connection controller, deploy plan/controller, SSH transport, inventory и dialogs | Подтверждены 3 файла; 6 требуют функциональной сверки после архитектурного разбиения/изменений. `AppUpdateDialog` и `HashesDialog` совпадают полностью | Обновлены 9 строк; код не менялся |
