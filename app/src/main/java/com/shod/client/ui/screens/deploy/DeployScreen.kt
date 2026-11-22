@@ -520,7 +520,7 @@ private fun DeployProgressCard(
 @Preview(name = "Deploy dark", widthDp = 720, heightDp = 900, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DeployScreenPreview() {
-    com.shod.client.ShodTheme(themeMode = ShodConstants.Theme.MODE_DARK) {
+    ShodTheme(themeMode = ShodConstants.Theme.MODE_DARK) {
         DeployScreen(
             state = DeployUiState(
                 host = "vpn.example.com",
