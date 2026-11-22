@@ -16,11 +16,7 @@ class DeployScriptLineEndingsTest {
 
     @Test
     fun `Linux script keeps shell syntax unchanged`() {
-        val script = "#!/bin/bash\nset -Eeuo pipefail\nprintf '%s\\n' \"${'
-        assertEquals(script, normalizeDeployScript(script))
-    }
-}
-}{HOME}\"\n"
+        val script = "#!/bin/bash\nset -Eeuo pipefail\nprintf '%s\\n' \"${'$'}{HOME}\"\n"
         assertEquals(script, normalizeDeployScript(script))
     }
 }
