@@ -2,6 +2,7 @@ package com.shod.client
 
 import com.shod.client.platform.android.vpn.TunVpnService
 import com.shod.client.platform.android.deploy.AndroidDeployCoordinator
+import com.shod.client.platform.android.deploy.DeployDiagnostics
 import com.shod.client.vpn.telemetry.TunnelTrafficText
 import com.shod.client.platform.android.vpn.notification.withTunnelText
 import com.shod.client.vpn.workers.WorkerCountPolicy
@@ -351,7 +352,7 @@ class TunnelService : Service() {
                     prepareForDeploy()
                     acquireWakeLock()
                 } catch (e: Exception) {
-                    TunnelManager.addDeployErrorLog("Deploy foreground service failed: ${e.message}")
+                    DeployDiagnostics.recordError("Deploy foreground service failed: ${e.message}", e)
                     TunnelManager.addDeployErrorLog(
                         "Не удалось запустить сервис установки: ${e.message?.take(120) ?: e.javaClass.simpleName}"
                     )
@@ -364,7 +365,7 @@ class TunnelService : Service() {
             }
             "DEPLOY_CANCEL" -> {
                 AndroidDeployCoordinator.cancelActiveOperation()
-                TunnelManager.addDeployErrorLog("Операция установки или удаления отменена пользователем")
+                DeployDiagnostics.recordError("✗ Установка отменена пользователем")
                 if (TunnelManager.running.value) {
                     lastNotificationText = null
                     lastNotificationPostElapsedMs = 0L
@@ -1298,7 +1299,7 @@ class TunnelService : Service() {
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
 
     private val batteryMonitor by lazy {
-        TunnelBatteryMonitor(applicationContext, serviceScope) { save, changed ->
+        TunnelBatteryMonitor(applicationContext, serviceScope, AndroidDeployCoordinator.isDeploying) { save, changed ->
             if (save) {
                 if (!AndroidDeployCoordinator.hasActiveOperation()) releaseWakeLock()
             } else if ((TunnelManager.running.value && !autoPausedForWifi) || AndroidDeployCoordinator.hasActiveOperation()) {
