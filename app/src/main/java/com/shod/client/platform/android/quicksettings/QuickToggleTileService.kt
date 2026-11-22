@@ -2,6 +2,7 @@ package com.shod.client.platform.android.quicksettings
 
 import com.shod.client.*
 import com.shod.client.platform.android.activity.MainActivity
+import com.shod.client.platform.android.ui.showRaisedToast
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
