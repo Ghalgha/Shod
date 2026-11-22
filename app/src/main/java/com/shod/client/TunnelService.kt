@@ -12,6 +12,11 @@ import com.shod.client.network.connectivity.PhysicalNetworkTransition
 import com.shod.client.network.connectivity.physicalNetworkPauseReason
 import com.shod.client.network.connectivity.isEligiblePhysicalNetwork
 import com.shod.client.vpn.power.BatterySaver
+import com.shod.client.vpn.power.TunnelBatteryMonitor
+import com.shod.client.vpn.session.newTunnelSessionId
+import com.shod.client.settings.secret.StoredSecretState
+import com.shod.client.integration.vk.captcha.android.CaptchaWebViewManager
+import com.shod.client.network.wifi.policy.WifiAutoPauseAction
 import com.shod.client.network.wifi.policy.WifiNetworkListMode
 import com.shod.client.network.wifi.policy.normalizeWifiSsid
 import com.shod.client.network.wifi.policy.runWifiAutoPauseTransition
@@ -209,7 +214,7 @@ class TunnelService : Service() {
                         }
 
                         val requestedWorkers = intent.getIntExtra("workers_per_hash", 18)
-                        val requestedVkAuthMode = TunnelServiceInputPolicy.sanitizeVkAuthMode(intent.getStringExtra("vk_auth_mode"))
+                        val requestedVkAuthMode = TunnelServiceInputPolicy.TunnelServiceInputPolicy.sanitizeVkAuthMode(intent.getStringExtra("vk_auth_mode"))
                         val intentHashes = intent.getStringExtra("vk_hashes") ?: ""
                         val hashesFromLink = intent.getBooleanExtra("vk_hashes_from_link", false)
                         val linkAccessToken = intent.getStringExtra("vk_access_token")
@@ -458,7 +463,7 @@ class TunnelService : Service() {
                 }
                 val genId = store.reserveConnectionGeneration()
                 val salt = newTunnelSessionId()
-                val requestedVkAuthMode = sanitizeVkAuthMode(store.vkAuthMode.first())
+                val requestedVkAuthMode = TunnelServiceInputPolicy.sanitizeVkAuthMode(store.vkAuthMode.first())
                 TunnelManager.isLoggingEnabled = store.loggingEnabled.first()
                 val configuredHashMode = store.vkHashMode.first()
                 val vkAuthMode = when {
@@ -515,10 +520,10 @@ class TunnelService : Service() {
                     connectionPassword = source.password,
                     obfsMode = store.obfsMode.first(),
                     turnTransport = store.turnTransport.first(),
-                    srtpMode = sanitizeSrtpMode(store.srtpMode.first()),
+                    srtpMode = TunnelServiceInputPolicy.sanitizeSrtpMode(store.srtpMode.first()),
                     customTurnIps = store.customTurnIps.first(),
                     vkAuthMode = vkAuthMode,
-                    captchaMode = sanitizeCaptchaMode(store.captchaMode.first()),
+                    captchaMode = TunnelServiceInputPolicy.sanitizeCaptchaMode(store.captchaMode.first()),
                     captchaSolveMethod = store.captchaSolveMethod.first(),
                     fingerprint = store.selectedFingerprint.first(),
                     clientIds = store.activeClientIds.first(),
