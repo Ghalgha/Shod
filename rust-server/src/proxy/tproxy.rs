@@ -1933,7 +1933,9 @@ mod linux {
             quotas: quotas.clone(),
             buffers: buffers.clone(),
         };
-        let async_fd = match AsyncFd::new(socket.clone()) {
+        // SAFETY: socket.clone() creates an independently owned socket descriptor;
+        // the registered clone stays open and unchanged for the AsyncFd lifetime.
+        let async_fd = match unsafe { AsyncFd::register(socket.clone()) } {
             Ok(fd) => fd,
             Err(error) => {
                 log(
