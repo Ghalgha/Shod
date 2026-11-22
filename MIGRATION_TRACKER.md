@@ -123,30 +123,30 @@
 | 104 | `app/src/main/java/com/shod/client/ui/deploy/operations/SshTransportConnection.kt` | `e3f3d0f0a7d26e4611f8c9cbb74c913c1facb76c` | ТРЕБУЕТ СВЕРКИ — целевой файл добавляет документированную границу retry; проверить точное поведение повторов и исключений. |
 | 105 | `app/src/main/java/com/shod/client/ui/deploy/ServerInventory.kt` | `8f929d3eec4a1372bce654375573ed2109fb2275` | ТРЕБУЕТ СВЕРКИ — целевая реализация короче более чем вдвое и меняет разбор окончания inventory; проверить обработку всех строк/ошибок. |
 | 106 | `app/src/main/java/com/shod/client/ui/design/ExtendedColors.kt` | `59410f63afd4f36260a69705052ecbce129688c2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл находится по исходному архитектурному пути и имеет тот же Git blob SHA; содержимое полностью идентично. |
-| 107 | `app/src/main/java/com/shod/client/ui/design/Motion.kt` | `0875bf164dd298058a4d10dfa5e82e81b4356fdc` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 108 | `app/src/main/java/com/shod/client/ui/design/Shapes.kt` | `f53fcf5a99c4e95fa227e888408dc0ddca8c15bc` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 109 | `app/src/main/java/com/shod/client/ui/design/Sizes.kt` | `44d309fa393960bbebf6b8fa35457f0a7e4bb145` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 110 | `app/src/main/java/com/shod/client/ui/design/Spacing.kt` | `615c3a45e3b67e40cf4357473b42e3b78e166cd2` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 107 | `app/src/main/java/com/shod/client/ui/design/Motion.kt` | `0875bf164dd298058a4d10dfa5e82e81b4356fdc` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
+| 108 | `app/src/main/java/com/shod/client/ui/design/Shapes.kt` | `f53fcf5a99c4e95fa227e888408dc0ddca8c15bc` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
+| 109 | `app/src/main/java/com/shod/client/ui/design/Sizes.kt` | `44d309fa393960bbebf6b8fa35457f0a7e4bb145` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
+| 110 | `app/src/main/java/com/shod/client/ui/design/Spacing.kt` | `615c3a45e3b67e40cf4357473b42e3b78e166cd2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
 | 111 | `app/src/main/java/com/shod/client/ui/dialogs/AppUpdateDialog.kt` | `8362c2dbbbdb207edaca3a7ad244df2a55886160` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
-| 112 | `app/src/main/java/com/shod/client/ui/dialogs/AutoVkRiskDialog.kt` | `0073035064465c1ad24e77d1f5bcdd1c01b14aaa` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 112 | `app/src/main/java/com/shod/client/ui/dialogs/AutoVkRiskDialog.kt` | `0073035064465c1ad24e77d1f5bcdd1c01b14aaa` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
 | 113 | `app/src/main/java/com/shod/client/ui/dialogs/DeploySecretsDialog.kt` | `12376ea4b5da119158e897a5999910ec1e33b6f4` | НЕ ПРОВЕРЕН |
-| 114 | `app/src/main/java/com/shod/client/ui/dialogs/DockerInstallInfoDialog.kt` | `114c49b2b67c895263c7f78dceebc77b3304b2f7` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 114 | `app/src/main/java/com/shod/client/ui/dialogs/DockerInstallInfoDialog.kt` | `114c49b2b67c895263c7f78dceebc77b3304b2f7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
 | 115 | `app/src/main/java/com/shod/client/ui/dialogs/HashesDialog.kt` | `f17c7997ac137d5b8911b47a79c75afd15fa0099` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
-| 116 | `app/src/main/java/com/shod/client/ui/dialogs/HashModeInfoDialog.kt` | `ab5a130a41958528ec9d9cdce503721c5d5a5af8` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 116 | `app/src/main/java/com/shod/client/ui/dialogs/HashModeInfoDialog.kt` | `ab5a130a41958528ec9d9cdce503721c5d5a5af8` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
 | 117 | `app/src/main/java/com/shod/client/ui/dialogs/HostKeyChangedDialog.kt` | `0d2719805d9c5f3c6cd5687ec7c44e2018c9b4f7` | ТРЕБУЕТ СВЕРКИ — диалог сокращён с 2,9 КБ до 706 байт; проверить вывод обоих fingerprints, объяснение риска, Trust/Cancel и повторную проверку. |
-| 118 | `app/src/main/java/com/shod/client/ui/dialogs/ImportExportDialog.kt` | `f0102a1e2d8edb6ef1f185a4a2d86f2de6dbfeff` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 119 | `app/src/main/java/com/shod/client/ui/dialogs/QrScannerDialog.kt` | `8283595e084f5d5e31159ff9662e62c989436718` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 118 | `app/src/main/java/com/shod/client/ui/dialogs/ImportExportDialog.kt` | `f0102a1e2d8edb6ef1f185a4a2d86f2de6dbfeff` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
+| 119 | `app/src/main/java/com/shod/client/ui/dialogs/QrScannerDialog.kt` | `8283595e084f5d5e31159ff9662e62c989436718` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
 | 120 | `app/src/main/java/com/shod/client/ui/dialogs/SecretsDialog.kt` | `3c38476ea344d6ae623cba5d0f778f9d771d2e2e` | НЕ ПРОВЕРЕН |
-| 121 | `app/src/main/java/com/shod/client/ui/dialogs/ServerCheckDialog.kt` | `7a67e01bac15ee2c078d5f2391b2461f04000cba` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 121 | `app/src/main/java/com/shod/client/ui/dialogs/ServerCheckDialog.kt` | `7a67e01bac15ee2c078d5f2391b2461f04000cba` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
 | 122 | `app/src/main/java/com/shod/client/ui/dialogs/ServerRemovalDialogs.kt` | `ebed9bb3efdd90d938f8b09269dd4daad7aca920` | НЕ ПРОВЕРЕН |
 | 123 | `app/src/main/java/com/shod/client/ui/dialogs/SshKeysDialog.kt` | `4a8b6cfbe755a2726c9cc9b31ce9582b80e4beb5` | ТРЕБУЕТ СВЕРКИ — UI сокращён с 6,9 КБ до 1 КБ и получает состояние извне; проверить все поля ключей/сертификатов, валидацию, сохранение и отмену. |
-| 124 | `app/src/main/java/com/shod/client/ui/dialogs/TurnTransportInfoDialog.kt` | `90cdcf9ecba80f3c790104dbd01d2a3f1eb20b81` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 125 | `app/src/main/java/com/shod/client/ui/dialogs/UninstallConfirmDialog.kt` | `9c4b6b4291572619881d6ca2a78d83a6823cb475` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 124 | `app/src/main/java/com/shod/client/ui/dialogs/TurnTransportInfoDialog.kt` | `90cdcf9ecba80f3c790104dbd01d2a3f1eb20b81` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
+| 125 | `app/src/main/java/com/shod/client/ui/dialogs/UninstallConfirmDialog.kt` | `9c4b6b4291572619881d6ca2a78d83a6823cb475` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
 | 126 | `app/src/main/java/com/shod/client/ui/dialogs/VkAuthDialog.kt` | `92b226724113ab5ad034fead5e9c5876cbd05edc` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
-| 127 | `app/src/main/java/com/shod/client/ui/dialogs/VkTokenRevokeDialog.kt` | `fba57d9996301b7b1deec764bb1abc026a4f426c` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 128 | `app/src/main/java/com/shod/client/ui/dialogs/WebPanelInfoDialog.kt` | `6a08bff6e1203d0ab8f81bd157730e66c1f9978b` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 129 | `app/src/main/java/com/shod/client/ui/dialogs/WorkersInfoDialog.kt` | `74c22e2571b092e9941c5b5ecc287697c322e4f7` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 130 | `app/src/main/java/com/shod/client/ui/dialogs/WorkModeInfoDialog.kt` | `1816dce8f8ac706cd0a58a55752deea9eccd7565` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 127 | `app/src/main/java/com/shod/client/ui/dialogs/VkTokenRevokeDialog.kt` | `fba57d9996301b7b1deec764bb1abc026a4f426c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
+| 128 | `app/src/main/java/com/shod/client/ui/dialogs/WebPanelInfoDialog.kt` | `6a08bff6e1203d0ab8f81bd157730e66c1f9978b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
+| 129 | `app/src/main/java/com/shod/client/ui/dialogs/WorkersInfoDialog.kt` | `74c22e2571b092e9941c5b5ecc287697c322e4f7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
+| 130 | `app/src/main/java/com/shod/client/ui/dialogs/WorkModeInfoDialog.kt` | `1816dce8f8ac706cd0a58a55752deea9eccd7565` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
 | 131 | `app/src/main/java/com/shod/client/ui/screens/CredentialsScreen.kt` | `c2d820e4028a6d40783e9a1c16f97318b83766ca` | НЕ ПРОВЕРЕН |
 | 132 | `app/src/main/java/com/shod/client/ui/screens/HomeScreen.kt` | `9468673afcf75bf09b2beaadc8b9d759449e5cf3` | НЕ ПРОВЕРЕН |
 | 133 | `app/src/main/java/com/shod/client/ui/screens/LogsScreen.kt` | `876d2642b3901a87821d4c60bf82c1cc80590fd0` | НЕ ПРОВЕРЕН |
@@ -404,6 +404,7 @@
 ## Журнал проверок
 
 | Дата | Диапазон / файлы | Результат | Изменение реестра |
+| 2026-11-22 | Сверка 16 Kotlin-файлов: design tokens и dialogs | Все 16 файлов присутствуют по исходным архитектурным путям; SHA исходника и целевого файла совпадает побайтово | 16 строк подтверждены; код приложения не менялся, CI не запускался |
 | 2026-11-22 | Повторная проверка 9 точных Kotlin blob-совпадений: UI components, AppBackdrop и ExtendedColors | Все 9 файлов присутствуют по исходным архитектурным путям; SHA исходника и цели совпадают побайтово | 9 строк подтверждены; код приложения не менялся, CI не запускался |
 | 2026-11-22 | Проверка `DeployScript.kt` | Обе функции и нормализация BOM/переводов строк, чтение UTF-8 asset и запись результата совпадают с `deploy/script/DeployScriptAsset.kt`; в целевом файле добавлен только комментарий | 1 строка подтверждена; код приложения не менялся, CI не запускался |
 | 2026-11-22 | Сверка routing app picker и deploy UI: `AppSelectionOrdering`, `ApplicationRow`, `DeployCheckState`, `DeployScreen` | Все 4 исходных реализации найдены в целевых архитектурных путях; сортировка и UI-поведение сохранены, экран Deploy совпадает по телу после исключения package/import. `DeployOperations`, `DeployScript` и три диалога оставлены открытыми до сопоставления реализаций | 4 строки подтверждены; код приложения не менялся, CI не запускался |
