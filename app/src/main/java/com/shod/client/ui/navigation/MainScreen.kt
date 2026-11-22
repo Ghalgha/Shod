@@ -73,7 +73,7 @@ import com.shod.client.ui.screens.SettingsScreen
 import com.shod.client.ui.screens.LogsScreen
 import com.shod.client.ui.screens.RoutingScreen
 import com.shod.client.ui.components.HeaderActions
-import com.shod.client.ui.screens.CredentialsScreen
+import com.shod.client.ui.screens.credentials.CredentialsScreen
 import com.shod.client.ShodConstants
 import com.shod.client.ui.deploy.DeployController
 import com.shod.client.ui.screens.deploy.DeployCheckState
