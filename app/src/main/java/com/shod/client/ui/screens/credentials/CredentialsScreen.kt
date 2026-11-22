@@ -46,7 +46,7 @@ import com.shod.client.integration.vk.transport.turn.shouldConfirmTcpTransport
 import com.shod.client.integration.vk.policy.vkAuthModeForHashMode
 import com.shod.client.ui.components.SettingRow
 import com.shod.client.ui.design.ShodShapes
-import com.shod.client.ui.theme.ShodTheme
+import com.shod.client.ui.design.ShodTheme as ShodDesignTheme
 import com.shod.client.ui.design.ShodSizes
 import com.shod.client.ui.dialogs.HashesDialog
 import com.shod.client.ui.dialogs.VkTokenRevokeDialog
@@ -103,7 +103,7 @@ internal fun CredentialsScreenContent(
     credentialsOnly: Boolean,
 ) {
     val indicatorErrorColor = MaterialTheme.colorScheme.error
-    val indicatorSuccessColor = ShodTheme.extendedColors.success
+    val indicatorSuccessColor = ShodDesignTheme.extendedColors.success
     val indicatorPrimaryColor = MaterialTheme.colorScheme.primary
 
     val workersPerHash = remember(settingsStore) {
@@ -1216,7 +1216,7 @@ private fun VkHashModeControls(
     manualAllowed: Boolean = true,
     tokenFromLink: Boolean = false,
 ) {
-    val indicatorSuccessColor = ShodTheme.extendedColors.success
+    val indicatorSuccessColor = ShodDesignTheme.extendedColors.success
     val indicatorPrimaryColor = MaterialTheme.colorScheme.primary
 
     if (!hashSettingsLoaded) return

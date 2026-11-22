@@ -29,7 +29,7 @@ import com.shod.client.integration.vk.hash.codec.VkHashValidationCodec
 import com.shod.client.integration.vk.hash.codec.VkHashValidationStatus
 import com.shod.client.links.stripVkUrlStatic
 import com.shod.client.ui.design.ShodShapes
-import com.shod.client.ui.theme.ShodTheme as ShodDesignTheme
+import com.shod.client.ui.design.ShodTheme as ShodDesignTheme
 import com.shod.client.ui.design.ShodSizes
 import kotlinx.coroutines.launch
 

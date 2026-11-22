@@ -4,3 +4,7 @@ members = [
     "rust-client",
     "rust-server",
 ]
+
+[patch.crates-io]
+primp = { path = "rust-client/vendor/primp" }
+netstack-smoltcp = { path = "rust-client/vendor/netstack-smoltcp" }

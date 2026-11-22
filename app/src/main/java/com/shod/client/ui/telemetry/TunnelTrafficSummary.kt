@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shod.client.TunnelManager
-import com.shod.client.TunnelTrafficText
+import com.shod.client.vpn.telemetry.TunnelTrafficText
 
 @Composable
 internal fun TunnelTrafficSummary(

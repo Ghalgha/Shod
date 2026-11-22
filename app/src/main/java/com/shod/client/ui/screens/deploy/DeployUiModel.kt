@@ -2,7 +2,7 @@ package com.shod.client.ui.screens.deploy
 
 import androidx.compose.runtime.Immutable
 import com.shod.client.ShodConstants
-import com.shod.client.ui.utils.isValidTunnelPassword
+import com.shod.client.links.isValidTunnelPassword
 
 @Immutable
 internal data class DeployUiState(

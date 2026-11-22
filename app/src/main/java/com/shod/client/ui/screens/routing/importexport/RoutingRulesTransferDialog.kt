@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import com.shod.client.vpn.routing.importexport.AppRoutingTextParser
 import com.shod.client.vpn.routing.DomainRoutingRules
 import com.shod.client.vpn.routing.IpRoutingRules
 import org.json.JSONArray

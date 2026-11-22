@@ -56,14 +56,14 @@ import com.shod.client.ShodConstants
 import com.shod.client.R
 import com.shod.client.SettingsStore
 import com.shod.client.StoredSecretState
-import com.shod.client.TunnelAuthSnapshot
+import com.shod.client.settings.model.TunnelAuthSnapshot
 import com.shod.client.TunnelManager
 import com.shod.client.TunnelService
 import com.shod.client.platform.android.services.TunnelServiceIntentFactory
 import com.shod.client.platform.android.services.TunnelStartOptions
 import com.shod.client.newTunnelSessionId
 import com.shod.client.resolveConnectionSource
-import com.shod.client.showRaisedToast
+import com.shod.client.platform.android.ui.showRaisedToast
 import com.shod.client.links.parseShodLink
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

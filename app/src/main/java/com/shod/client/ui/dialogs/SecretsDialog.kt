@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.shod.client.SettingsStore
-import com.shod.client.ui.utils.TUNNEL_PASSWORD_RULE
-import com.shod.client.ui.utils.isValidTunnelPassword
+import com.shod.client.links.TUNNEL_PASSWORD_RULE
+import com.shod.client.links.isValidTunnelPassword
 import kotlinx.coroutines.launch
 import com.shod.client.ui.design.ShodShapes
 import com.shod.client.ui.design.ShodSizes

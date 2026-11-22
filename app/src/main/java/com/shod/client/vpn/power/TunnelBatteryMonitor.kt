@@ -7,7 +7,7 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.PowerManager
 import androidx.core.content.ContextCompat
-import com.shod.client.BatterySaver
+import com.shod.client.vpn.power.BatterySaver
 import com.shod.client.SettingsStore
 import com.shod.client.TunnelManager
 import kotlinx.coroutines.CoroutineScope

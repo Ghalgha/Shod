@@ -46,6 +46,7 @@ import com.shod.client.ui.components.AppSectionCard
 import com.shod.client.ui.components.SettingRow
 import com.shod.client.ui.design.ShodShapes
 import com.shod.client.ui.design.ShodSpacing
+import com.shod.client.ui.theme.ShodTheme
 
 @Composable
 internal fun DeployScreen(

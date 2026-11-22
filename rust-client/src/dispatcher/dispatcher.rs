@@ -900,7 +900,8 @@ impl Dispatcher {
 
         let mut file = initial_file;
         loop {
-            let device = match AsyncFd::new(file) {
+            // SAFETY: file is an owned File moved into AsyncFd and remains open while registered.
+            let device = match unsafe { AsyncFd::register(file) } {
                 Ok(device) => Arc::new(device),
                 Err(error) => {
                     crate::log_error!("[ОШИБКА] Не удалось зарегистрировать TUN FD: {error}");

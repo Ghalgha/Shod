@@ -60,11 +60,11 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.HelpOutline
-import com.shod.client.ImportedConnectionSettings
+import com.shod.client.settings.model.ImportedConnectionSettings
 import com.shod.client.SettingsStore
 import com.shod.client.TunnelManager
-import com.shod.client.WorkerCountPolicy
-import com.shod.client.defaultProfileName
+import com.shod.client.vpn.workers.WorkerCountPolicy
+import com.shod.client.settings.model.defaultProfileName
 import com.shod.client.links.parseShodLink
 import com.shod.client.ui.design.ShodShapes
 import com.shod.client.ui.design.ShodSizes

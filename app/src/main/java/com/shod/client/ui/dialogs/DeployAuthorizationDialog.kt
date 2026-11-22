@@ -36,9 +36,9 @@ import com.shod.client.ui.components.appSectionCardBorderColor
 import com.shod.client.ui.components.appSectionCardColor
 import com.shod.client.ui.design.ShodShapes
 import com.shod.client.ui.design.ShodSizes
-import com.shod.client.ui.utils.TUNNEL_PASSWORD_RULE
-import com.shod.client.ui.utils.generate16CharPassword
-import com.shod.client.ui.utils.isValidTunnelPassword
+import com.shod.client.links.TUNNEL_PASSWORD_RULE
+import com.shod.client.links.generate16CharPassword
+import com.shod.client.links.isValidTunnelPassword
 
 /** UI-only credential editor; DeployController owns persistence and profile updates. */
 @Composable

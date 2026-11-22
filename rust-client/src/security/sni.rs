@@ -254,7 +254,7 @@ pub fn is_ru_zone(host: &str) -> bool {
     false
 }
 
-pub static TEMPLATE_DOMAINS_RAW: &str = include_str!("../app/src/main/assets/domains.txt");
+pub static TEMPLATE_DOMAINS_RAW: &str = include_str!("../../../app/src/main/assets/domains.txt");
 
 pub static TEMPLATE_DOMAINS_SET: LazyLock<HashSet<&'static str>> = LazyLock::new(|| {
     let mut set = HashSet::with_capacity(512);

@@ -37,7 +37,7 @@ import com.shod.client.ui.screens.deploy.resolveServerPorts
 import com.shod.client.ui.screens.deploy.splitPastedHostPort
 import com.shod.client.ui.screens.deploy.describeServer
 import com.shod.client.ui.dialogs.DeployAuthorizationDialog
-import com.shod.client.ui.utils.generate16CharPassword
+import com.shod.client.links.generate16CharPassword
 import com.shod.client.ui.dialogs.DockerInstallInfoDialog
 import com.shod.client.ui.dialogs.UninstallConfirmDialog
 import com.shod.client.ui.dialogs.ServerCheckDialog
@@ -193,7 +193,7 @@ internal fun DeployController(
         progress = 0f
         scope.launch {
             try {
-                context.startForegroundService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_START" })
+                context.startForegroundService(Intent(context, TunnelService::class.java).apply { this.action = "DEPLOY_START" })
                 val result = withTimeout(30 * 60 * 1000L) {
                     coordinator().uninstall(
                         host = host.trim(),
