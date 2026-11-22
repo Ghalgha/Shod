@@ -1,5 +1,8 @@
 package com.shod.client
 
+import com.shod.client.settings.theme.UiDesignPresets
+import com.shod.client.settings.theme.UiScale
+
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.datastore.preferences.core.MutablePreferences
