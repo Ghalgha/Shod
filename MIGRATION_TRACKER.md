@@ -133,16 +133,16 @@
 | 114 | `app/src/main/java/com/shod/client/ui/dialogs/DockerInstallInfoDialog.kt` | `114c49b2b67c895263c7f78dceebc77b3304b2f7` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 115 | `app/src/main/java/com/shod/client/ui/dialogs/HashesDialog.kt` | `f17c7997ac137d5b8911b47a79c75afd15fa0099` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
 | 116 | `app/src/main/java/com/shod/client/ui/dialogs/HashModeInfoDialog.kt` | `ab5a130a41958528ec9d9cdce503721c5d5a5af8` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 117 | `app/src/main/java/com/shod/client/ui/dialogs/HostKeyChangedDialog.kt` | `0d2719805d9c5f3c6cd5687ec7c44e2018c9b4f7` | НЕ ПРОВЕРЕН |
+| 117 | `app/src/main/java/com/shod/client/ui/dialogs/HostKeyChangedDialog.kt` | `0d2719805d9c5f3c6cd5687ec7c44e2018c9b4f7` | ТРЕБУЕТ СВЕРКИ — диалог сокращён с 2,9 КБ до 706 байт; проверить вывод обоих fingerprints, объяснение риска, Trust/Cancel и повторную проверку. |
 | 118 | `app/src/main/java/com/shod/client/ui/dialogs/ImportExportDialog.kt` | `f0102a1e2d8edb6ef1f185a4a2d86f2de6dbfeff` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 119 | `app/src/main/java/com/shod/client/ui/dialogs/QrScannerDialog.kt` | `8283595e084f5d5e31159ff9662e62c989436718` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 120 | `app/src/main/java/com/shod/client/ui/dialogs/SecretsDialog.kt` | `3c38476ea344d6ae623cba5d0f778f9d771d2e2e` | НЕ ПРОВЕРЕН |
 | 121 | `app/src/main/java/com/shod/client/ui/dialogs/ServerCheckDialog.kt` | `7a67e01bac15ee2c078d5f2391b2461f04000cba` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 122 | `app/src/main/java/com/shod/client/ui/dialogs/ServerRemovalDialogs.kt` | `ebed9bb3efdd90d938f8b09269dd4daad7aca920` | НЕ ПРОВЕРЕН |
-| 123 | `app/src/main/java/com/shod/client/ui/dialogs/SshKeysDialog.kt` | `4a8b6cfbe755a2726c9cc9b31ce9582b80e4beb5` | НЕ ПРОВЕРЕН |
+| 123 | `app/src/main/java/com/shod/client/ui/dialogs/SshKeysDialog.kt` | `4a8b6cfbe755a2726c9cc9b31ce9582b80e4beb5` | ТРЕБУЕТ СВЕРКИ — UI сокращён с 6,9 КБ до 1 КБ и получает состояние извне; проверить все поля ключей/сертификатов, валидацию, сохранение и отмену. |
 | 124 | `app/src/main/java/com/shod/client/ui/dialogs/TurnTransportInfoDialog.kt` | `90cdcf9ecba80f3c790104dbd01d2a3f1eb20b81` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 125 | `app/src/main/java/com/shod/client/ui/dialogs/UninstallConfirmDialog.kt` | `9c4b6b4291572619881d6ca2a78d83a6823cb475` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 126 | `app/src/main/java/com/shod/client/ui/dialogs/VkAuthDialog.kt` | `92b226724113ab5ad034fead5e9c5876cbd05edc` | НЕ ПРОВЕРЕН |
+| 126 | `app/src/main/java/com/shod/client/ui/dialogs/VkAuthDialog.kt` | `92b226724113ab5ad034fead5e9c5876cbd05edc` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
 | 127 | `app/src/main/java/com/shod/client/ui/dialogs/VkTokenRevokeDialog.kt` | `fba57d9996301b7b1deec764bb1abc026a4f426c` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 128 | `app/src/main/java/com/shod/client/ui/dialogs/WebPanelInfoDialog.kt` | `6a08bff6e1203d0ab8f81bd157730e66c1f9978b` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 129 | `app/src/main/java/com/shod/client/ui/dialogs/WorkersInfoDialog.kt` | `74c22e2571b092e9941c5b5ecc287697c322e4f7` | ТОЧНОЕ СОВПАДЕНИЕ |
@@ -427,3 +427,4 @@
 | 2026-11-22 | Сверка VK TURN subnet registry и transport policy | Обе реализации полностью совпадают с исходниками после исключения package/import | Обновлены 2 строки; код не менялся |
 | 2026-11-22 | Проверка `.github/workflows/ci.yml` | Исходный CI workflow отсутствует в целевом репозитории; найден только `.gitkeep`. Проверены определения шагов, запуск CI не выполнялся | Отмечена потеря CI-конфигурации; требуется восстановить workflow после согласования переноса |
 | 2026-11-22 | Сверка UI components, connection controller, deploy plan/controller, SSH transport, inventory и dialogs | Подтверждены 3 файла; 6 требуют функциональной сверки после архитектурного разбиения/изменений. `AppUpdateDialog` и `HashesDialog` совпадают полностью | Обновлены 9 строк; код не менялся |
+| 2026-11-22 | Сверка host-key dialog, SSH keys dialog и VK auth dialog | VK auth dialog полностью совпадает; два диалога выделены из DeployController и требуют проверки полного поведения | Обновлены 3 строки; код не менялся |
