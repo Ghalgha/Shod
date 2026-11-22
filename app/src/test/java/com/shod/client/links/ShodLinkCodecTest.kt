@@ -6,7 +6,7 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class LinkTest {
+class ShodLinkCodecTest {
     private fun enc(plain: String): String = "shod://" + encryptShodPayload(plain)
 
     @Test
