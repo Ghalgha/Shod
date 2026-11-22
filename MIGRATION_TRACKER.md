@@ -98,8 +98,8 @@
 | 79 | `app/src/main/java/com/shod/client/TunnelTraffic.kt` | `4ee00258be3a071c6345733aa7cbc840daf4692a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
 | 80 | `app/src/main/java/com/shod/client/TunRecoveryPolicy.kt` | `e47edc58e394c7a5b62d9b7c7586aba103b0178a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
 | 81 | `app/src/main/java/com/shod/client/TunVpnService.kt` | `a392d65dd48e7545a313506a99f753e0140f4b66` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
-| 82 | `app/src/main/java/com/shod/client/TurnSubnetRegistry.kt` | `d3da334a85488e5710ac982887a66a5025cce078` | НЕ ПРОВЕРЕН |
-| 83 | `app/src/main/java/com/shod/client/TurnTransportPolicy.kt` | `4321e965c2ac0f136dde43f47cbbd18784f4fe96` | НЕ ПРОВЕРЕН |
+| 82 | `app/src/main/java/com/shod/client/TurnSubnetRegistry.kt` | `d3da334a85488e5710ac982887a66a5025cce078` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
+| 83 | `app/src/main/java/com/shod/client/TurnTransportPolicy.kt` | `4321e965c2ac0f136dde43f47cbbd18784f4fe96` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
 | 84 | `app/src/main/java/com/shod/client/TvDevicePolicy.kt` | `72778950dc775bdb761d27c45329c6107483c5f3` | НЕ ПРОВЕРЕН |
 | 85 | `app/src/main/java/com/shod/client/ui/AppSelectionOrdering.kt` | `9afed32923a2e896d89896b263b7b74f6d244712` | НЕ ПРОВЕРЕН |
 | 86 | `app/src/main/java/com/shod/client/ui/background/AppBackdrop.kt` | `2cf5eacc9fb1f5c9f8db8ba8b44333cb0aa45a13` | ТОЧНОЕ СОВПАДЕНИЕ |
@@ -424,3 +424,4 @@
 | 2026-11-22 | Сверка `SettingsStore`, `ShodApplication`, SSH host-key storage, secret state, stream/traffic diagnostics и subscription modules | Подтверждены 6 переносов; `SettingsStore` требует функционального сопоставления после разбиения, SSH TOFU — проверки аудита | Обновлены 8 строк; прикладной код не менялся |
 | 2026-11-22 | Сверка lifecycle, diagnostics, notifications, secrets, probe packet, quick settings и tunnel manager | Подтверждены 7 переносов; `TunnelManager` требует сопоставления после выделения диагностических типов и утилит | Обновлены 8 строк; код не менялся |
 | 2026-11-22 | Сверка screen snapshot, service policies, session ID, startup progress, traffic, TUN recovery и Android VPN service | Подтверждены 7 переносов; `TunnelService` требует полного сопоставления выделенных battery monitor и service coordinators | Обновлены 8 строк; код не менялся |
+| 2026-11-22 | Сверка VK TURN subnet registry и transport policy | Обе реализации полностью совпадают с исходниками после исключения package/import | Обновлены 2 строки; код не менялся |
