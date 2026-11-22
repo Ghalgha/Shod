@@ -353,14 +353,14 @@
 | 334 | `rust-server/model.rs` | `148302fad86f016a03dc249b149b1a666e7bc360` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/config/model.rs`. |
 | 335 | `rust-server/net_setup.rs` | `1e06a2cc6752d1af9577309116747fe84ba20b92` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/network/net_setup.rs`. |
 | 336 | `rust-server/packet.rs` | `808a6b6491d90bd75d9772bc233cba54dbdce934` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 337 | `rust-server/path_probe.rs` | `d01883136a5bb86318453ccd8c2ad97f20c47694` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 338 | `rust-server/protocol.rs` | `246ed612560238b9994ef28e8c0342c3d76e2375` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 339 | `rust-server/proxy_route.rs` | `622cc271c2f77ffe4ec84b4fbd6d4dc0b796bef2` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 337 | `rust-server/path_probe.rs` | `d01883136a5bb86318453ccd8c2ad97f20c47694` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/diagnostics/path_probe.rs`. |
+| 338 | `rust-server/protocol.rs` | `246ed612560238b9994ef28e8c0342c3d76e2375` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/protocol/protocol.rs`. |
+| 339 | `rust-server/proxy_route.rs` | `622cc271c2f77ffe4ec84b4fbd6d4dc0b796bef2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/proxy/proxy_route.rs`. |
 | 340 | `rust-server/rust-toolchain.toml` | `362cd953eb82ca72ef9bd71da83a5858d8ba708a` | НЕ ПРОВЕРЕН |
-| 341 | `rust-server/server_config.rs` | `20a3f528d7e654add7e59791362f38fc241fedf5` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 342 | `rust-server/tokio_io.rs` | `b7973a4502650452650b390ded1d0b4e4b64980c` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 343 | `rust-server/tproxy.rs` | `caf86809f858bb015eecb9b8db2fe9e6118e5f8d` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 344 | `rust-server/tun_device.rs` | `ee3aac50a949e4948a0a49c3d6875229181587dc` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 341 | `rust-server/server_config.rs` | `20a3f528d7e654add7e59791362f38fc241fedf5` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/config/server_config.rs`. |
+| 342 | `rust-server/tokio_io.rs` | `b7973a4502650452650b390ded1d0b4e4b64980c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/transport/tokio_io.rs`. |
+| 343 | `rust-server/tproxy.rs` | `caf86809f858bb015eecb9b8db2fe9e6118e5f8d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/proxy/tproxy.rs`. |
+| 344 | `rust-server/tun_device.rs` | `ee3aac50a949e4948a0a49c3d6875229181587dc` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/tun/tun_device.rs`. |
 | 345 | `rust-server/web_panel.rs` | `3e974fe72094d1bb2e802c8008ba967244de24cd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/web_panel/web_panel.rs`. |
 | 346 | `scripts/build_apk.bat` | `23e1ed753faa2d9281164a719ab82abc1e2cdd1c` | НЕ ПРОВЕРЕН |
 | 347 | `scripts/build_both_parallel.ps1` | `c7f32d2a29c740f82d5a0e818681a8e519aa9dfe` | НЕ ПРОВЕРЕН |
@@ -372,7 +372,7 @@
 | 353 | `scripts/test_wsl_unified.bat` | `b07ff882960365d69cf173f4413780d757a26a27` | НЕ ПРОВЕРЕН |
 | 354 | `scripts/test_wsl_unified.ps1` | `23e7e0e23fe59d4d97901184da58c41ab7284033` | НЕ ПРОВЕРЕН |
 | 355 | `settings.gradle.kts` | `cf1c1d2712ce45903bb273c0445ec098a366df9c` | НЕ ПРОВЕРЕН |
-| 356 | `shared/dtls.rs` | `407915f519923b70473d48a936c663b98109f222` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 356 | `shared/dtls.rs` | `407915f519923b70473d48a936c663b98109f222` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `shared/dtls.rs`. |
 | 357 | `shared/spsc_ring.rs` | `ac4d6b6a0b1add12d7247842e472ddb5f81e3bc6` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 358 | `shared/wire_protocol.rs` | `2ac9ed2474995531fe6b3ec6a3bd68e09a5916e8` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 359 | `VERSIONING.md` | `ad5f8da834804d8c7590ffa4b5e6ae3a3aca8f42` | НЕ ПРОВЕРЕН |
@@ -411,3 +411,4 @@
 | 2026-11-22 | Проверка 8 Rust-файлов клиента: namegen, packet, profiles, protocol, repair, session, sni, srtp_mode | Все 8 файлов полностью совпадают побайтово с соответствующими файлами в целевой структуре | Ещё восемь строк получили подтверждённый статус переноса/распределения |
 | 2026-11-22 | Проверка 8 Rust-файлов клиента: stats, stream_diagnostics, stun_codec, traffic_diagnostics, tun, turn, turn_core, turn_endpoint | 7 файлов совпадают побайтово; `turn.rs` отличается только путём к файлу тестового модуля, сам код совпадает | Все 8 строк получили подтверждённый статус переноса/распределения |
 | 2026-11-22 | Проверка 8 Rust-файлов: turn_ip_pool, turn_stream, vk_js_calls, worker, wrap и серверные dataplane, model, net_setup | Все 8 исходных файлов полностью совпадают побайтово с соответствующими файлами целевого репозитория | Ещё восемь строк получили подтверждённый статус переноса/распределения |
+| 2026-11-22 | Проверка 8 Rust-файлов сервера/shared: path_probe, protocol, proxy_route, server_config, tokio_io, tproxy, tun_device, dtls | Все 8 файлов полностью совпадают побайтово с соответствующими файлами целевого репозитория | Ещё восемь строк получили подтверждённый статус переноса/распределения |
