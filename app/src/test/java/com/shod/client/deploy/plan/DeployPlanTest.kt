@@ -13,7 +13,7 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class ServerCheckTest {
+class DeployPlanTest {
     private fun inv(vararg lines: String): ServerInventory =
         parseServerInventory((lines.toList() + "Shod_INV|end").joinToString("\n"))!!
 
@@ -48,7 +48,7 @@ class ServerCheckTest {
     @Test
     fun `an empty server gets the standard place on the standard ports, or the form's`() {
         assertEquals(listOf("INSTALL:46000/46002"), plan(inv()).kinds())
-        assertEquals(listOf("INSTALL:47000/47002"), plan(inv(), ServerPorts(22, 47000, 47002)).kinds())
+        assertEquals(listOf("INSTALL:47000/47002"), plan(inv(), ServerPorts(47000, 47002)).kinds())
         // the store an uninstall kept is reused: its clients come back
         val reuse = plan(inv(storeOnly))
         assertEquals(listOf("INSTALL:46000/46002"), reuse.kinds())
@@ -57,7 +57,7 @@ class ServerCheckTest {
 
     @Test
     fun `a 2_5 server is updated on its own ports, whatever the form says`() {
-        val p = plan(inv(server("standard", "2.5.0", 47000, 47002)), EffectiveServerPorts(22, 46000, 46002))
+        val p = plan(inv(server("standard", "2.5.0", 47000, 47002)), ServerPorts(46000, 46002))
         assertEquals(listOf("UPDATE:47000/47002"), p.kinds())
         assertEquals("Обновить", p.actions[0].title)
         assertTrue(p.actions[0].detail.contains("2.5.0 → 2.5.2"))
@@ -104,7 +104,7 @@ class ServerCheckTest {
         val p = plan(inv(busy))
         assertTrue(p.actions.isEmpty())
         assertTrue(p.notes.single().contains("nginx"))
-        assertEquals(listOf("INSTALL:47000/47002"), plan(inv(busy), EffectiveServerPorts(22, 47000, 47002)).kinds())
+        assertEquals(listOf("INSTALL:47000/47002"), plan(inv(busy), ServerPorts(47000, 47002)).kinds())
     }
 
     @Test
