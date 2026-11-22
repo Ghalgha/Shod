@@ -147,17 +147,17 @@
 | 128 | `app/src/main/java/com/shod/client/ui/dialogs/WebPanelInfoDialog.kt` | `6a08bff6e1203d0ab8f81bd157730e66c1f9978b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
 | 129 | `app/src/main/java/com/shod/client/ui/dialogs/WorkersInfoDialog.kt` | `74c22e2571b092e9941c5b5ecc287697c322e4f7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
 | 130 | `app/src/main/java/com/shod/client/ui/dialogs/WorkModeInfoDialog.kt` | `1816dce8f8ac706cd0a58a55752deea9eccd7565` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл расположен по исходному архитектурному пути; Git blob SHA полностью совпадает с исходником. |
-| 131 | `app/src/main/java/com/shod/client/ui/screens/CredentialsScreen.kt` | `c2d820e4028a6d40783e9a1c16f97318b83766ca` | НЕ ПРОВЕРЕН |
-| 132 | `app/src/main/java/com/shod/client/ui/screens/HomeScreen.kt` | `9468673afcf75bf09b2beaadc8b9d759449e5cf3` | НЕ ПРОВЕРЕН |
-| 133 | `app/src/main/java/com/shod/client/ui/screens/LogsScreen.kt` | `876d2642b3901a87821d4c60bf82c1cc80590fd0` | НЕ ПРОВЕРЕН |
-| 134 | `app/src/main/java/com/shod/client/ui/screens/RoutingScreen.kt` | `c91bdb62f3b944d40d2f276380e3ce8622d57f49` | НЕ ПРОВЕРЕН |
-| 135 | `app/src/main/java/com/shod/client/ui/screens/SettingsScreen.kt` | `8af16b384e8eee7ae7fc2c89091970cfd3fa1c93` | НЕ ПРОВЕРЕН |
+| 131 | `app/src/main/java/com/shod/client/ui/screens/CredentialsScreen.kt` | `c2d820e4028a6d40783e9a1c16f97318b83766ca` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело исходника полностью совпадает с целевой реализацией после исключения package/import; изменено только архитектурное расположение. |
+| 132 | `app/src/main/java/com/shod/client/ui/screens/HomeScreen.kt` | `9468673afcf75bf09b2beaadc8b9d759449e5cf3` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело исходника полностью совпадает с целевой реализацией после исключения package/import; изменено только архитектурное расположение. |
+| 133 | `app/src/main/java/com/shod/client/ui/screens/LogsScreen.kt` | `876d2642b3901a87821d4c60bf82c1cc80590fd0` | ТРЕБУЕТ СВЕРКИ — целевой файл короче; требуется проверить все состояния и обработчики логов. |
+| 134 | `app/src/main/java/com/shod/client/ui/screens/RoutingScreen.kt` | `c91bdb62f3b944d40d2f276380e3ce8622d57f49` | ТРЕБУЕТ СВЕРКИ — целевая версия значительно короче; требуется сопоставить разнесённые экраны/компоненты и сценарии выбора приложений. |
+| 135 | `app/src/main/java/com/shod/client/ui/screens/SettingsScreen.kt` | `8af16b384e8eee7ae7fc2c89091970cfd3fa1c93` | ТРЕБУЕТ СВЕРКИ — обнаружены небольшие различия реализации; требуется точечно проверить поведение настроек. |
 | 136 | `app/src/main/java/com/shod/client/ui/TunnelTrafficSummary.kt` | `06c56b05bc4b1da3095ad4644b632faa59fd0e49` | НЕ ПРОВЕРЕН |
 | 137 | `app/src/main/java/com/shod/client/ui/utils/LinkUtils.kt` | `a26bf65525f98477fa4a5912a053368627809642` | НЕ ПРОВЕРЕН |
 | 138 | `app/src/main/java/com/shod/client/ui/WifiAutoPauseUi.kt` | `d07b12fee713fe6b5475e7f7f8b44cc9670058cb` | НЕ ПРОВЕРЕН |
-| 139 | `app/src/main/java/com/shod/client/UiDesignPresets.kt` | `508622d5c0f2edd4438475ef2117b920370b9f7b` | НЕ ПРОВЕРЕН |
-| 140 | `app/src/main/java/com/shod/client/UiScale.kt` | `60b67d5551a30dd1ea0757a52e70927c6de33fb7` | НЕ ПРОВЕРЕН |
-| 141 | `app/src/main/java/com/shod/client/UpdateLaunchGuard.kt` | `79b9ca5f6dcab1cacd16ce19daf8d7768b424fe1` | НЕ ПРОВЕРЕН |
+| 139 | `app/src/main/java/com/shod/client/UiDesignPresets.kt` | `508622d5c0f2edd4438475ef2117b920370b9f7b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело исходника полностью совпадает с целевой реализацией после исключения package/import; изменено только архитектурное расположение. |
+| 140 | `app/src/main/java/com/shod/client/UiScale.kt` | `60b67d5551a30dd1ea0757a52e70927c6de33fb7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело исходника полностью совпадает с целевой реализацией после исключения package/import; изменено только архитектурное расположение. |
+| 141 | `app/src/main/java/com/shod/client/UpdateLaunchGuard.kt` | `79b9ca5f6dcab1cacd16ce19daf8d7768b424fe1` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело исходника полностью совпадает с целевой реализацией после исключения package/import; изменено только архитектурное расположение. |
 | 142 | `app/src/main/java/com/shod/client/VkApi.kt` | `8154e630a396c2ebe97917e31c2ec77e87145050` | НЕ ПРОВЕРЕН |
 | 143 | `app/src/main/java/com/shod/client/VkAuthWebViewManager.kt` | `57eb07a0114702b683361ef59098d4047fc79238` | НЕ ПРОВЕРЕН |
 | 144 | `app/src/main/java/com/shod/client/VkAutoCallsManager.kt` | `6e0a2c11e26e79caaf942f97204b769238fa6530` | НЕ ПРОВЕРЕН |
@@ -404,6 +404,7 @@
 ## Журнал проверок
 
 | Дата | Диапазон / файлы | Результат | Изменение реестра |
+| 2026-11-22 | Сверка экранов Credentials/Home, theme presets/scale, UpdateLaunchGuard и первичная сверка Logs/Routing/Settings | 5 файлов подтверждены после сравнения тела; 3 экрана имеют отличия и оставлены на подробную сверку | 5 подтверждены, 3 переведены в обязательную сверку; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка 16 ресурсов, Gradle wrapper и Rust vendor/server packet | Побайтовое совпадение подтверждено; `rust-server/packet.rs` сопоставлен с `src/packet/packet.rs` | 16 строк подтверждены; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка 15 файлов: Gradle-конфигурация, 8 Android UI/instrumentation tests, assets и Constants | Все 15 целевых файлов проверены; содержимое совпадает побайтно, тесты размещены в соответствующих пакетах новой архитектуры | 15 строк подтверждены; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка 16 Kotlin-файлов: design tokens и dialogs | Все 16 файлов присутствуют по исходным архитектурным путям; SHA исходника и целевого файла совпадает побайтово | 16 строк подтверждены; код приложения не менялся, CI не запускался |
