@@ -90,14 +90,14 @@
 | 71 | `app/src/main/java/com/shod/client/TunnelPasswordStorage.kt` | `e4d53ccd686a61d791c7b6c9439441c06cb3cf60` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
 | 72 | `app/src/main/java/com/shod/client/TunnelProbePacket.kt` | `09968dec6ce1de90259836237653739bc7b6cb02` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
 | 73 | `app/src/main/java/com/shod/client/TunnelQuickActions.kt` | `7613ee5c293ccf2c413ab46e0f2c80c50afa9a0e` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
-| 74 | `app/src/main/java/com/shod/client/TunnelScreenSnapshot.kt` | `83242d315b165ed39dc626a0d5f0f967dc5c0ccd` | НЕ ПРОВЕРЕН |
-| 75 | `app/src/main/java/com/shod/client/TunnelService.kt` | `3212e645cf4c90ed3ad25120226f26c976163fa4` | НЕ ПРОВЕРЕН |
-| 76 | `app/src/main/java/com/shod/client/TunnelServicePolicy.kt` | `9d3b31ae999bb8572ad0b405e9536511c700fb74` | НЕ ПРОВЕРЕН |
-| 77 | `app/src/main/java/com/shod/client/TunnelSessionId.kt` | `829689d198ff8a43fe5c784277984d4843aa874d` | НЕ ПРОВЕРЕН |
-| 78 | `app/src/main/java/com/shod/client/TunnelStartupProgress.kt` | `08ec1f94b979e4f9060522698694b525aeed802a` | НЕ ПРОВЕРЕН |
-| 79 | `app/src/main/java/com/shod/client/TunnelTraffic.kt` | `4ee00258be3a071c6345733aa7cbc840daf4692a` | НЕ ПРОВЕРЕН |
-| 80 | `app/src/main/java/com/shod/client/TunRecoveryPolicy.kt` | `e47edc58e394c7a5b62d9b7c7586aba103b0178a` | НЕ ПРОВЕРЕН |
-| 81 | `app/src/main/java/com/shod/client/TunVpnService.kt` | `a392d65dd48e7545a313506a99f753e0140f4b66` | НЕ ПРОВЕРЕН |
+| 74 | `app/src/main/java/com/shod/client/TunnelScreenSnapshot.kt` | `83242d315b165ed39dc626a0d5f0f967dc5c0ccd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
+| 75 | `app/src/main/java/com/shod/client/TunnelService.kt` | `3212e645cf4c90ed3ad25120226f26c976163fa4` | ТРЕБУЕТ СВЕРКИ — часть батарейной логики выделена в `TunnelBatteryMonitor`, часть параметров/вызовов перенесена в политики и координаторы; проверить каждую ветвь старого Service. |
+| 76 | `app/src/main/java/com/shod/client/TunnelServicePolicy.kt` | `9d3b31ae999bb8572ad0b405e9536511c700fb74` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
+| 77 | `app/src/main/java/com/shod/client/TunnelSessionId.kt` | `829689d198ff8a43fe5c784277984d4843aa874d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
+| 78 | `app/src/main/java/com/shod/client/TunnelStartupProgress.kt` | `08ec1f94b979e4f9060522698694b525aeed802a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
+| 79 | `app/src/main/java/com/shod/client/TunnelTraffic.kt` | `4ee00258be3a071c6345733aa7cbc840daf4692a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
+| 80 | `app/src/main/java/com/shod/client/TunRecoveryPolicy.kt` | `e47edc58e394c7a5b62d9b7c7586aba103b0178a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
+| 81 | `app/src/main/java/com/shod/client/TunVpnService.kt` | `a392d65dd48e7545a313506a99f753e0140f4b66` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
 | 82 | `app/src/main/java/com/shod/client/TurnSubnetRegistry.kt` | `d3da334a85488e5710ac982887a66a5025cce078` | НЕ ПРОВЕРЕН |
 | 83 | `app/src/main/java/com/shod/client/TurnTransportPolicy.kt` | `4321e965c2ac0f136dde43f47cbbd18784f4fe96` | НЕ ПРОВЕРЕН |
 | 84 | `app/src/main/java/com/shod/client/TvDevicePolicy.kt` | `72778950dc775bdb761d27c45329c6107483c5f3` | НЕ ПРОВЕРЕН |
@@ -423,3 +423,4 @@
 | 2026-11-22 | Проверка deploy manager, ping cache, темы, toast helper и instrumentation test | Подтверждены ping store, тема и тест транспорта; deploy manager и MainActivity требуют проверки распределённых реализаций; исходный ToastExt не найден | Обновлены 6 статусов; код не менялся |
 | 2026-11-22 | Сверка `SettingsStore`, `ShodApplication`, SSH host-key storage, secret state, stream/traffic diagnostics и subscription modules | Подтверждены 6 переносов; `SettingsStore` требует функционального сопоставления после разбиения, SSH TOFU — проверки аудита | Обновлены 8 строк; прикладной код не менялся |
 | 2026-11-22 | Сверка lifecycle, diagnostics, notifications, secrets, probe packet, quick settings и tunnel manager | Подтверждены 7 переносов; `TunnelManager` требует сопоставления после выделения диагностических типов и утилит | Обновлены 8 строк; код не менялся |
+| 2026-11-22 | Сверка screen snapshot, service policies, session ID, startup progress, traffic, TUN recovery и Android VPN service | Подтверждены 7 переносов; `TunnelService` требует полного сопоставления выделенных battery monitor и service coordinators | Обновлены 8 строк; код не менялся |
