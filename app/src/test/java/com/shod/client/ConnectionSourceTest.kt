@@ -25,4 +25,16 @@ class ConnectionSourceTest {
 
         assertEquals("owner-hash-123456,own-hash-123456", result)
     }
+    @Test
+    fun participantHashesKeepsOwnHashesWhenAllOwnerHashesAreRemoved() {
+        assertEquals(
+            "cccccccccccccccccccc",
+            participantHashes(
+                linkHashes = listOf("aaaaaaaaaaaaaaaaaaaa"),
+                removed = setOf("aaaaaaaaaaaaaaaaaaaa"),
+                ownHashes = "cccccccccccccccccccc, cccccccccccccccccccc",
+            ),
+        )
+    }
+
 }
