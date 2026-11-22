@@ -307,11 +307,11 @@
 | 288 | `rust-client/protocol.rs` | `4b50656fa6f9b18b0ccf13250b61602a4b3d78dd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/protocol/protocol.rs` побайтово совпадает с исходником (SHA совпадает). |
 | 289 | `rust-client/repair.rs` | `89b2bffcb555be01fbaaf52a7f1b56afbff81e48` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/runtime/repair.rs` побайтово совпадает с исходником (SHA совпадает). |
 | 290 | `rust-client/session.rs` | `32cd4a6222ded98664b7358b507c36e78f92f3f7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/session/session.rs` побайтово совпадает с исходником (SHA совпадает). |
-| 291 | `rust-client/sni.rs` | `d4846a8a581aa9a0ee7fcd4482ff52325e6f41ec` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/security/sni.rs`. |
-| 292 | `rust-client/srtp_mode.rs` | `50d34f064d8c6180c9687b9c559b2bf3c1ef40fe` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/srtp/srtp_mode.rs`. |
-| 293 | `rust-client/stats.rs` | `01d17436a22d2db75834f43c281862efac3a1988` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/stats/stats.rs`. |
-| 294 | `rust-client/stream_diagnostics.rs` | `9b82c8f58dafd96958cce010395febf3d843ed39` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/diagnostics/stream_diagnostics.rs`. |
-| 295 | `rust-client/stun_codec.rs` | `fc9b9e34b745a7099ba20adbf3f09c0e0902fb78` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/stun/stun_codec.rs`. |
+| 291 | `rust-client/sni.rs` | `d4846a8a581aa9a0ee7fcd4482ff52325e6f41ec` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/security/sni.rs` побайтово совпадает с исходником (SHA совпадает). |
+| 292 | `rust-client/srtp_mode.rs` | `50d34f064d8c6180c9687b9c559b2bf3c1ef40fe` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/transport/srtp/srtp_mode.rs` побайтово совпадает с исходником (SHA совпадает). |
+| 293 | `rust-client/stats.rs` | `01d17436a22d2db75834f43c281862efac3a1988` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/stats/stats.rs` побайтово совпадает с исходником (SHA совпадает). |
+| 294 | `rust-client/stream_diagnostics.rs` | `9b82c8f58dafd96958cce010395febf3d843ed39` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/diagnostics/stream_diagnostics.rs` побайтово совпадает с исходником (SHA совпадает). |
+| 295 | `rust-client/stun_codec.rs` | `fc9b9e34b745a7099ba20adbf3f09c0e0902fb78` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/transport/stun/stun_codec.rs` побайтово совпадает с исходником (SHA совпадает). |
 | 296 | `rust-client/traffic_diagnostics.rs` | `b5001809ea694cff9da2ee4b2671c9a0a44b8e04` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/diagnostics/traffic_diagnostics.rs`. |
 | 297 | `rust-client/tun.rs` | `cd27762493ddb3be297f3af3a8dce2c90ccedb2c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/tun/tun.rs`. |
 | 298 | `rust-client/turn_core.rs` | `504c01b01c3ec8f56648ca736824a3fd500576e2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/turn/turn_core.rs`. |
@@ -554,3 +554,5 @@
 | 2026-11-22 | Повторная проверка строк 281–285 | №281, 283–285: архитектурно размещённые файлы побайтово совпадают с оригиналами по Git blob SHA. №282: тело `main.rs` после импортов полностью идентично; различаются только объявления модулей с путями, адаптированными к `rust-client/src/`. Дополнительный перенос не потребовался. |
 
 | 2026-11-22 | Проверка строк 286–290 | №286, 288–290: архитектурно размещённые Rust-файлы побайтово совпадают с оригиналами по Git blob SHA. №287: отсутствовавший `proptest-regressions/session.txt` восстановлен в исходном относительном расположении; source и target SHA совпадают. Regression corpus сохранён для повторного воспроизведения исторических property-test failures. CI, Cargo и тесты не запускались. |
+
+| 2026-11-22 | Проверка строк 291–295 | Все пять Rust-файлов найдены в архитектурно соответствующих каталогах target и побайтово совпадают с оригиналами по Git blob SHA. Дополнительный перенос не потребовался. CI, Cargo и тесты не запускались. |
