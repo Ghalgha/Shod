@@ -26,7 +26,7 @@
 | 7 | `app/src/androidTest/java/com/shod/client/DeployScriptAssetTest.kt` | `d9a590f34008ba74c38a8ee04287c2f1b1ecf873` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тест полностью совпадает после исключения package/import. |
 | 8 | `app/src/androidTest/java/com/shod/client/DesignCompatibilityTest.kt` | `9f03bd4d4e24fd81716caf51c6f395acc416d1c9` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 9 | `app/src/androidTest/java/com/shod/client/HappInterfaceTest.kt` | `7ef94bb9c4543612369e29c85df21f022914a34a` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 10 | `app/src/androidTest/java/com/shod/client/ProbeTunTransportTest.kt` | `8810c9b2317470c01983a4c49b128425a642d745` | НЕ ПРОВЕРЕН |
+| 10 | `app/src/androidTest/java/com/shod/client/ProbeTunTransportTest.kt` | `8810c9b2317470c01983a4c49b128425a642d745` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой тест содержит исходные проверки и дополнительный сценарий отмены/ожидания. |
 | 11 | `app/src/androidTest/java/com/shod/client/ReviewedDeployInterfaceTest.kt` | `a30cc98dc7407dc95a45acf1507fa909023030fd` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 12 | `app/src/androidTest/java/com/shod/client/RoutingModeInteractionTest.kt` | `a502804e95ca3ab8165eaf51b837a1f56c94993f` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 13 | `app/src/androidTest/java/com/shod/client/SettingsStoreSshPortTest.kt` | `198eda51d2caf7790c6314f3fc637b0d82aee643` | ТОЧНОЕ СОВПАДЕНИЕ |
@@ -52,16 +52,16 @@
 | 33 | `app/src/main/java/com/shod/client/ConnectionSource.kt` | `1cf7931eb0613df1850c4d4ab593baf25187d688` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — сопоставлены обе ветви `resolveConnectionSource`, фильтрация хешей и сбор параметров; отличия только в импортах/форматировании. |
 | 34 | `app/src/main/java/com/shod/client/ConnectionStartPolicy.kt` | `641b42952ea9e60f995f8af067f012be629606f6` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменён только пакет. |
 | 35 | `app/src/main/java/com/shod/client/Constants.kt` | `ecf7f3c3f7eb2744e45ce0552554378b30a900a5` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 36 | `app/src/main/java/com/shod/client/DeployManager.kt` | `379011635522e28c5b45fa33d6d6752cba8d852e` | НЕ ПРОВЕРЕН |
+| 36 | `app/src/main/java/com/shod/client/DeployManager.kt` | `379011635522e28c5b45fa33d6d6752cba8d852e` | ТРЕБУЕТ СВЕРКИ — целевой deploy разделён на workflow/coordinator/controller и политики; необходимо сопоставить состояние сессии, сброс и прогресс. |
 | 37 | `app/src/main/java/com/shod/client/DeployScopedDataStore.kt` | `e128165879de9e22ee4d8694e2a4947d6778d0f7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменены пакет и импорт общей константы. |
 | 38 | `app/src/main/java/com/shod/client/DtlsLogParser.kt` | `0712903af4f9096d4442ee76a6e08a1e8079ec6b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — реализация совпадает; добавлены импорты типов из выделенного диагностического слоя. |
-| 39 | `app/src/main/java/com/shod/client/MainActivity.kt` | `4d49e89ef91fda4d6edb4e03d44f8a77119f4ceb` | НЕ ПРОВЕРЕН |
+| 39 | `app/src/main/java/com/shod/client/MainActivity.kt` | `4d49e89ef91fda4d6edb4e03d44f8a77119f4ceb` | ТРЕБУЕТ СВЕРКИ — исходный файл разделён между Android Activity, `ui/navigation/MainScreen` и другими слоями; требуется сверка всех UI-состояний и update-check. |
 | 40 | `app/src/main/java/com/shod/client/ManlCaptchaActivity.kt` | `8c6e4cf70d1415817099b0bc8334c1d9afd255cb` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело полностью совпадает после исключения package/import; различий поведения нет. |
 | 41 | `app/src/main/java/com/shod/client/ManlCaptchaWebViewManager.kt` | `3071d5d18f49d63fbaeaec4d5de620ff5f3f9518` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — логика совпадает; обращение к `MainActivity.isForeground` заменено на выделенное состояние `AppForegroundState`. |
 | 42 | `app/src/main/java/com/shod/client/NativeTunnelLogParser.kt` | `d064982325ab89fec247f9e94266fd8fd8dcd9f9` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменён только пакет. |
 | 43 | `app/src/main/java/com/shod/client/NetworkPauseGate.kt` | `2aa5ecdaa79d278e29a623428eb04f27df25fe31` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменён только пакет. |
 | 44 | `app/src/main/java/com/shod/client/PhysicalNetworkTracker.kt` | `d352e0cbc49d578b7c31eb424d990a9c4413d05c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело совпадает; изменён только пакет. |
-| 45 | `app/src/main/java/com/shod/client/PingResultsCache.kt` | `727d5b65403c6e582f26353149e11b473bc5dd6e` | НЕ ПРОВЕРЕН |
+| 45 | `app/src/main/java/com/shod/client/PingResultsCache.kt` | `727d5b65403c6e582f26353149e11b473bc5dd6e` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — операции и хранилища результатов присутствуют в `ProfilePingResultsStore`; имя поля `subnets` уточнено как `turnSubnets`. |
 | 46 | `app/src/main/java/com/shod/client/ProbeOutputReader.kt` | `bb36113d6f5b4d6caf4c8f8871dd87a55b357643` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — логика совпадает; изменение сигнатуры только форматирует параметры. |
 | 47 | `app/src/main/java/com/shod/client/ProbeTunTransport.kt` | `d592de041440bf26165e1d3c2ad18d424e830fa2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — логика совпадает; изменены пакет, импорт и форматирование. |
 | 48 | `app/src/main/java/com/shod/client/ProfilePingController.kt` | `df8bf5175266f1b308d5e8440737808b123b363d` | ТРЕБУЕТ СВЕРКИ — исходные и целевые реализации различаются по структуре/обработке состояния; нельзя подтверждать полный перенос без построчного анализа. |
@@ -79,8 +79,8 @@
 | 60 | `app/src/main/java/com/shod/client/StreamDiagnosticParser.kt` | `2737a7b002cb6117c5835ce25af7f59a8d2928dc` | НЕ ПРОВЕРЕН |
 | 61 | `app/src/main/java/com/shod/client/SubscriptionImporter.kt` | `6069515899dc4bb459373657e45b47505ce8a61b` | НЕ ПРОВЕРЕН |
 | 62 | `app/src/main/java/com/shod/client/SubscriptionSync.kt` | `de912f9117f30af281cf2df136ae1ca8e7a50235` | НЕ ПРОВЕРЕН |
-| 63 | `app/src/main/java/com/shod/client/Theme.kt` | `04a76c3198c668e2cf91f30f5384fea12df57196` | НЕ ПРОВЕРЕН |
-| 64 | `app/src/main/java/com/shod/client/ToastExt.kt` | `5201e2009def30071b52650fe0bf65afdbce830f` | НЕ ПРОВЕРЕН |
+| 63 | `app/src/main/java/com/shod/client/Theme.kt` | `04a76c3198c668e2cf91f30f5384fea12df57196` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — все исходные элементы темы и системной раскраски присутствуют в `ui/theme/ShodTheme.kt`. |
+| 64 | `app/src/main/java/com/shod/client/ToastExt.kt` | `5201e2009def30071b52650fe0bf65afdbce830f` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный механизм transient toast не найден в целевом дереве; `ui/components/States.kt` его не заменяет. |
 | 65 | `app/src/main/java/com/shod/client/TrafficDiagnosticParser.kt` | `0e6566c7a109413a7c803d8477326d5053eaabef` | НЕ ПРОВЕРЕН |
 | 66 | `app/src/main/java/com/shod/client/TunnelEventParser.kt` | `158b7aacd82a5b83d8447c29afb93a0a034be2e7` | НЕ ПРОВЕРЕН |
 | 67 | `app/src/main/java/com/shod/client/TunnelLifecycleState.kt` | `7052cb982e502861c8dfe630eaf47b5ae267993b` | НЕ ПРОВЕРЕН |
@@ -420,3 +420,4 @@
 | 2026-11-22 | Проверка `AppUpdate.kt` | Все функции и модели исходника найдены в двух целевых файлах: сетевой механизм в `RemoteVersionChecker`, версия/политика в `RemoteVersionPolicy` | Исходная строка отмечена как перенесённая/распределённая |
 | 2026-11-22 | Проверка Android manifest, debug-ресурсов, лицензий и корневых конфигураций | Основной manifest перенесён с новыми class paths; выявлены отсутствующие debug overrides, две лицензии, `.gitattributes`, `lint.xml` и часть правил `.gitignore` — требуется оценить и восстановить только нужные исходные данные | Обновлены 8 статусов; исходный код приложения не менялся |
 | 2026-11-22 | Сверка 8 Kotlin-файлов и одного Android instrumentation test | 8 исходных реализаций/тестов подтверждены в архитектурно новых путях; `MainActivity` и `ProbeTunTransportTest` оставлены на отдельную сверку из-за разбиения/расширений | 8 строк отмечены подтверждёнными; код не менялся |
+| 2026-11-22 | Проверка deploy manager, ping cache, темы, toast helper и instrumentation test | Подтверждены ping store, тема и тест транспорта; deploy manager и MainActivity требуют проверки распределённых реализаций; исходный ToastExt не найден | Обновлены 6 статусов; код не менялся |
