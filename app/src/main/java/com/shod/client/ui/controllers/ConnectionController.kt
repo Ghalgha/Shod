@@ -213,7 +213,7 @@ internal fun ConnectionController(
 
     fun toggleTunnel() {
         if (TunnelManager.stopping.value) return
-        if (com.shod.client.tunnelPowerIsOn(TunnelManager.running.value, TunnelManager.starting.value, TunnelManager.autoPausedForWifi.value)) {
+        if (tunnelPowerIsOn(TunnelManager.running.value, TunnelManager.starting.value, TunnelManager.autoPausedForWifi.value)) {
             pendingStartAfterVpnPermission = false
             context.startService(Intent(context, TunnelService::class.java).apply { action = "STOP" })
             return
