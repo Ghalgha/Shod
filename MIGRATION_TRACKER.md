@@ -158,14 +158,14 @@
 | 139 | `app/src/main/java/com/shod/client/UiDesignPresets.kt` | `508622d5c0f2edd4438475ef2117b920370b9f7b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело исходника полностью совпадает с целевой реализацией после исключения package/import; изменено только архитектурное расположение. |
 | 140 | `app/src/main/java/com/shod/client/UiScale.kt` | `60b67d5551a30dd1ea0757a52e70927c6de33fb7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело исходника полностью совпадает с целевой реализацией после исключения package/import; изменено только архитектурное расположение. |
 | 141 | `app/src/main/java/com/shod/client/UpdateLaunchGuard.kt` | `79b9ca5f6dcab1cacd16ce19daf8d7768b424fe1` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело исходника полностью совпадает с целевой реализацией после исключения package/import; изменено только архитектурное расположение. |
-| 142 | `app/src/main/java/com/shod/client/VkApi.kt` | `8154e630a396c2ebe97917e31c2ec77e87145050` | НЕ ПРОВЕРЕН |
-| 143 | `app/src/main/java/com/shod/client/VkAuthWebViewManager.kt` | `57eb07a0114702b683361ef59098d4047fc79238` | НЕ ПРОВЕРЕН |
-| 144 | `app/src/main/java/com/shod/client/VkAutoCallsManager.kt` | `6e0a2c11e26e79caaf942f97204b769238fa6530` | НЕ ПРОВЕРЕН |
-| 145 | `app/src/main/java/com/shod/client/VkCallPolicies.kt` | `0ef24b011934e9b8761b266fcaf6ecc6fd43a03d` | НЕ ПРОВЕРЕН |
-| 146 | `app/src/main/java/com/shod/client/VkCookieScope.kt` | `2b6293de18a5ac01cdd3aa950f82522cf6e29ecd` | НЕ ПРОВЕРЕН |
-| 147 | `app/src/main/java/com/shod/client/VkHashValidator.kt` | `805ffe3360f01ee2e216ec2e3daca173bb1eecde` | НЕ ПРОВЕРЕН |
-| 148 | `app/src/main/java/com/shod/client/VkModePolicy.kt` | `51ddd37534dd2b7e10954c895f3a1eac6675b9a2` | НЕ ПРОВЕРЕН |
-| 149 | `app/src/main/java/com/shod/client/VkNetworkProbePolicy.kt` | `9fc1504d243b2a658bfd7bcab5561d2ab89dc256` | НЕ ПРОВЕРЕН |
+| 142 | `app/src/main/java/com/shod/client/VkApi.kt` | `8154e630a396c2ebe97917e31c2ec77e87145050` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import и комментариев. |
+| 143 | `app/src/main/java/com/shod/client/VkAuthWebViewManager.kt` | `57eb07a0114702b683361ef59098d4047fc79238` | ТРЕБУЕТ СВЕРКИ — обнаружены различия при переносе Android WebView auth; проверить все callbacks, cookies и lifecycle. |
+| 144 | `app/src/main/java/com/shod/client/VkAutoCallsManager.kt` | `6e0a2c11e26e79caaf942f97204b769238fa6530` | ТРЕБУЕТ СВЕРКИ — обнаружены различия в call manager; проверить состояния, таймауты и обработку ошибок. |
+| 145 | `app/src/main/java/com/shod/client/VkCallPolicies.kt` | `0ef24b011934e9b8761b266fcaf6ecc6fd43a03d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import и комментариев. |
+| 146 | `app/src/main/java/com/shod/client/VkCookieScope.kt` | `2b6293de18a5ac01cdd3aa950f82522cf6e29ecd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import и комментариев. |
+| 147 | `app/src/main/java/com/shod/client/VkHashValidator.kt` | `805ffe3360f01ee2e216ec2e3daca173bb1eecde` | ТРЕБУЕТ СВЕРКИ — целевая реализация короче более чем вдвое; проверить перенос криптографических проверок и обработки ошибок. |
+| 148 | `app/src/main/java/com/shod/client/VkModePolicy.kt` | `51ddd37534dd2b7e10954c895f3a1eac6675b9a2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import и комментариев. |
+| 149 | `app/src/main/java/com/shod/client/VkNetworkProbePolicy.kt` | `9fc1504d243b2a658bfd7bcab5561d2ab89dc256` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — исполняемое тело полностью совпадает с целевым файлом после исключения package/import и комментариев. |
 | 150 | `app/src/main/java/com/shod/client/VkTokenScraper.kt` | `dec523e3f9afb17b5a10d3a0a3b14718d33b3845` | НЕ ПРОВЕРЕН |
 | 151 | `app/src/main/java/com/shod/client/VpnRecoveryPolicy.kt` | `955ff2e1d27edc6289bdadaa147051c410191e73` | НЕ ПРОВЕРЕН |
 | 152 | `app/src/main/java/com/shod/client/VpnWidgetProvider.kt` | `daf966e4b23b3ea356b28d0e109556f73ccedb07` | НЕ ПРОВЕРЕН |
@@ -404,6 +404,7 @@
 ## Журнал проверок
 
 | Дата | Диапазон / файлы | Результат | Изменение реестра |
+| 2026-11-22 | Сверка 8 VK integration/policy файлов | 5 реализаций совпали после исключения package/import/comments; 3 имеют существенные отличия и оставлены на обязательную сверку | 5 подтверждены, 3 требуют сверки; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка экранов Credentials/Home, theme presets/scale, UpdateLaunchGuard и первичная сверка Logs/Routing/Settings | 5 файлов подтверждены после сравнения тела; 3 экрана имеют отличия и оставлены на подробную сверку | 5 подтверждены, 3 переведены в обязательную сверку; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка 16 ресурсов, Gradle wrapper и Rust vendor/server packet | Побайтовое совпадение подтверждено; `rust-server/packet.rs` сопоставлен с `src/packet/packet.rs` | 16 строк подтверждены; код приложения не менялся, CI/тесты не запускались |
 | 2026-11-22 | Сверка 15 файлов: Gradle-конфигурация, 8 Android UI/instrumentation tests, assets и Constants | Все 15 целевых файлов проверены; содержимое совпадает побайтно, тесты размещены в соответствующих пакетах новой архитектуры | 15 строк подтверждены; код приложения не менялся, CI/тесты не запускались |
