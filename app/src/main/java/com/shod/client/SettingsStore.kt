@@ -4,8 +4,6 @@ import com.shod.client.settings.theme.UiDesignPresets
 import com.shod.client.settings.theme.UiScale
 import com.shod.client.vpn.power.BatterySaver
 import com.shod.client.vpn.workers.WorkerCountPolicy
-import com.shod.client.vpn.diagnostics.probe.PingResultsCache
-import com.shod.client.vpn.session.reserveTunnelGenerationId
 import com.shod.client.integration.vk.transport.turn.TurnSubnetRegistry
 import com.shod.client.integration.vk.hash.codec.VkHashValidationCodec
 import com.shod.client.integration.vk.hash.codec.VkHashValidationStatus
@@ -1655,7 +1653,7 @@ private val DEPLOY_SECRET_PATH_UUID = stringPreferencesKey("deploy_secret_path_u
                 prefs.putSecret(DEPLOY_MAIN_PASSWORD_ENCRYPTED, DEPLOY_MAIN_PASSWORD, generate16CharPassword(), profile)
             if (prefs[getProfileKey(DEPLOY_WEB_LOGIN, profile)].isNullOrBlank()) prefs[getProfileKey(DEPLOY_WEB_LOGIN, profile)] = "admin"
             if (readSecret(prefs, DEPLOY_WEB_PASSWORD_ENCRYPTED, DEPLOY_WEB_PASSWORD, profile).isBlank())
-                prefs.putSecret(DEPLOY_WEB_PASSWORD_ENCRYPTED, DEPLOY_WEB_PASSWORD, com.shod.client.ui.utils.generate16CharPassword(), profile)
+                prefs.putSecret(DEPLOY_WEB_PASSWORD_ENCRYPTED, DEPLOY_WEB_PASSWORD, com.shod.client.links.generate16CharPassword(), profile)
         }
     }
 
