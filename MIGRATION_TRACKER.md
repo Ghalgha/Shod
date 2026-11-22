@@ -337,11 +337,11 @@
 | 318 | `rust-client/vendor/primp/src/imp/firefox/mod.rs` | `33fc006bb5965643dab65cb417e3ce16b3e7bcd9` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой файл побайтово совпадает с исходником (SHA совпадает). |
 | 319 | `rust-client/vendor/primp/src/imp/mod.rs` | `f266b6ac8c741f885cd99a8e3683ee35630e6856` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой файл побайтово совпадает с исходником (SHA совпадает). |
 | 320 | `rust-client/vendor/primp/src/imp/opera/mod.rs` | `fb81b2a4a5c21b6d3ed56ef69651330ff6cc4f81` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой файл побайтово совпадает с исходником (SHA совпадает). |
-| 321 | `rust-client/vendor/primp/src/imp/safari/mod.rs` | `bdd6cc0ad668347b4cc80168d66535fab4c5089a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
-| 322 | `rust-client/vendor/primp/src/lib.rs` | `613f49022fafb16ab87140a4660982451b496199` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
-| 323 | `rust-client/vk_js_calls.rs` | `04f2a6a315c6392b47fe560e2f8ecdedefb39773` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/calls/vk_js_calls.rs`. |
-| 324 | `rust-client/worker.rs` | `f8e41e3ff249300d1ecabfde5990164f4a290768` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/threads/worker.rs`. |
-| 325 | `rust-client/wrap.rs` | `2429d6278870382a631acaf7e46e30d642d9ea41` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/security/wrap.rs`. |
+| 321 | `rust-client/vendor/primp/src/imp/safari/mod.rs` | `bdd6cc0ad668347b4cc80168d66535fab4c5089a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой файл побайтово идентичен исходнику (SHA и размер совпадают). |
+| 322 | `rust-client/vendor/primp/src/lib.rs` | `613f49022fafb16ab87140a4660982451b496199` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: целевой файл побайтово идентичен исходнику (SHA и размер совпадают). |
+| 323 | `rust-client/vk_js_calls.rs` | `04f2a6a315c6392b47fe560e2f8ecdedefb39773` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: логика находится в `rust-client/src/calls/vk_js_calls.rs`; файл побайтово идентичен исходнику (SHA совпадает). |
+| 324 | `rust-client/worker.rs` | `f8e41e3ff249300d1ecabfde5990164f4a290768` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: логика находится в `rust-client/src/threads/worker.rs`; файл побайтово идентичен исходнику (SHA совпадает). |
+| 325 | `rust-client/wrap.rs` | `2429d6278870382a631acaf7e46e30d642d9ea41` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: логика находится в `rust-client/src/security/wrap.rs`; файл побайтово идентичен исходнику (SHA совпадает). |
 | 326 | `rust-server/.cargo/config.toml` | `3d032011640d70c3825e1fe16f7b3e93f09ff537` | ТРЕБУЕТ СВЕРКИ — Cargo config сервера отсутствует в target; проверить настройки сборки/линковки и их перенос в другое место. |
 | 327 | `rust-server/build_linux_variants.ps1` | `9b7f9e740dc17fd2e024a4723dbdd029e17b23ec` | ТРЕБУЕТ СВЕРКИ — PowerShell-скрипт сборки вариантов Linux отсутствует в target; функциональный аналог не подтверждён. |
 | 328 | `rust-server/build_linux.bat` | `c514bc21d5587fc0efc46d5ebc4a829da92d6ad0` | ТРЕБУЕТ СВЕРКИ — Windows batch-скрипт сборки Linux-сервера отсутствует в target; функциональный аналог не подтверждён. |
