@@ -23,7 +23,7 @@ $manifestPath = Join-Path $assetDirectory "shod.server-provenance.json"
 $cargoTomlPath = Join-Path $projectRoot "rust-server\Cargo.toml"
 $cargoLockPath = Join-Path $projectRoot "rust-server\Cargo.lock"
 $wireProtocolPath = Join-Path $projectRoot "shared\wire_protocol.rs"
-$wireProtocolRevisionPath = Join-Path $projectRoot "rust-server\main.rs"
+$wireProtocolRevisionPath = Join-Path $projectRoot "rust-server\src\main.rs"
 $schema = "shod.server-asset-provenance.v3"
 $marker = "Shod_RUST_SERVER_PRODUCTION_V1"
 $assetSpecs = @(
@@ -109,7 +109,7 @@ function Get-BuildInputHash {
         $wireProtocolPath,
         $PSCommandPath
     )
-    $files += Get-ChildItem -LiteralPath (Join-Path $projectRoot "rust-server") -File -Filter *.rs |
+    $files += Get-ChildItem -LiteralPath (Join-Path $projectRoot "rust-server\src") -Recurse -File -Filter *.rs |
         ForEach-Object { $_.FullName }
     $rootPrefix = $projectRoot.TrimEnd([char[]]@('\', '/')) + [IO.Path]::DirectorySeparatorChar
     $builder = New-Object Text.StringBuilder
