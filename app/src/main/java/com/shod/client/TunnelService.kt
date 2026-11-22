@@ -352,6 +352,9 @@ class TunnelService : Service() {
                     prepareForDeploy()
                     acquireWakeLock()
                 } catch (e: Exception) {
+                    // A foreground-start failure must also terminate any deploy operation
+                    // that may already have registered its coroutine or SSH session.
+                    AndroidDeployCoordinator.cancelActiveOperation()
                     DeployDiagnostics.recordError("Deploy foreground service failed: ${e.message}", e)
                     TunnelManager.addDeployErrorLog(
                         "Не удалось запустить сервис установки: ${e.message?.take(120) ?: e.javaClass.simpleName}"
