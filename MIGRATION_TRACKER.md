@@ -261,20 +261,20 @@
 | 242 | `app/src/test/java/com/shod/client/ui/DeployUiStateTest.kt` | `259e713e4bb0712ed1f25a834f34062596eae608` | ТРЕБУЕТ СВЕРКИ — целевой файл обнаружен, но чтение содержимого через GitHub API вернуло 404; семантическое совпадение не подтверждено. |
 | 243 | `app/src/test/java/com/shod/client/ui/legacy/LinkTest.kt` | `5b6f6433c15f0bf00eb80e4b6156fd4bf2ec5e5a` | ТРЕБУЕТ СВЕРКИ — исходный тест не найден в целевом дереве; необходимо проверить наличие функционального покрытия в других тестах. |
 | 244 | `app/src/test/java/com/shod/client/ui/ServerCheckTest.kt` | `c86c97b4222039536bd0f1c7638c464528b34d1d` | ТРЕБУЕТ СВЕРКИ — исходный тест не найден в целевом дереве; необходимо проверить наличие функционального покрытия в других тестах. |
-| 245 | `app/src/test/java/com/shod/client/ui/SshKeyRuntimeDependencyTest.kt` | `82384eaf5361d96af1e980bc495b3d54b0f522ce` | НЕ ПРОВЕРЕН |
-| 246 | `app/src/test/java/com/shod/client/UpdateLaunchGuardTest.kt` | `c795af83f3ffb5fa66ab4bffb2cd714ff581cf7b` | НЕ ПРОВЕРЕН |
-| 247 | `app/src/test/java/com/shod/client/VkCallPoliciesTest.kt` | `d8a62070e2d9801df3c63cc14e423174b97ad37b` | НЕ ПРОВЕРЕН |
-| 248 | `app/src/test/java/com/shod/client/VkCookieScopeTest.kt` | `05403999a6af3f278561b4722e9adf934f4093ee` | НЕ ПРОВЕРЕН |
-| 249 | `app/src/test/java/com/shod/client/VkHashValidatorTest.kt` | `e6e22921b7c39268ff8437629a067bd4de1211dc` | НЕ ПРОВЕРЕН |
-| 250 | `app/src/test/java/com/shod/client/VkModePolicyTest.kt` | `d8d6cf099b0cee790d4d499dfc276ed0f0377fce` | НЕ ПРОВЕРЕН |
-| 251 | `app/src/test/java/com/shod/client/VkNetworkProbePolicyTest.kt` | `33b347e50bedc55061fbc90f9eb7588236ff8c11` | НЕ ПРОВЕРЕН |
-| 252 | `app/src/test/java/com/shod/client/VpnConfigurationTest.kt` | `86535eac173bed893a24ff715a9e60193a8da9a2` | НЕ ПРОВЕРЕН |
-| 253 | `app/src/test/java/com/shod/client/VpnRecoveryPolicyTest.kt` | `27afdd1e2a782fafac4ffe442c70fdc79b4f445c` | НЕ ПРОВЕРЕН |
-| 254 | `app/src/test/java/com/shod/client/WifiAutoPausePolicyTest.kt` | `7cde5822b73d5cab292cb78d4048da223badf92f` | НЕ ПРОВЕРЕН |
-| 255 | `app/src/test/java/com/shod/client/WifiNetworkListPolicyTest.kt` | `16ed8339a9957ab3d5aa9816021adea8fa64300b` | НЕ ПРОВЕРЕН |
-| 256 | `app/src/test/java/com/shod/client/WifiPreferencesTest.kt` | `3702d2933fcb82eb6aadddb08d2d62b6e7946bdf` | НЕ ПРОВЕРЕН |
-| 257 | `app/src/test/java/com/shod/client/WorkerCountPolicyTest.kt` | `4d489af37380c1f7bb40047c22e6f761974d725a` | НЕ ПРОВЕРЕН |
-| 258 | `app/src/test/java/com/shod/client/WorkerRecoveryPolicyTest.kt` | `0f3312eab4d3c750e12f5f66b37384eca55691df` | НЕ ПРОВЕРЕН |
+| 245 | `app/src/test/java/com/shod/client/ui/SshKeyRuntimeDependencyTest.kt` | `82384eaf5361d96af1e980bc495b3d54b0f522ce` | ТРЕБУЕТ СВЕРКИ — целевой тест отсутствует; проверить, сохранено ли тестовое подтверждение наличия BouncyCastle PEMParser и JcaPEMKeyConverter. |
+| 246 | `app/src/test/java/com/shod/client/UpdateLaunchGuardTest.kt` | `c795af83f3ffb5fa66ab4bffb2cd714ff581cf7b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело теста полностью совпадает после исключения package/import. |
+| 247 | `app/src/test/java/com/shod/client/VkCallPoliciesTest.kt` | `d8a62070e2d9801df3c63cc14e423174b97ad37b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело теста полностью совпадает после исключения package/import. |
+| 248 | `app/src/test/java/com/shod/client/VkCookieScopeTest.kt` | `05403999a6af3f278561b4722e9adf934f4093ee` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело теста полностью совпадает после исключения package/import. |
+| 249 | `app/src/test/java/com/shod/client/VkHashValidatorTest.kt` | `e6e22921b7c39268ff8437629a067bd4de1211dc` | ТРЕБУЕТ СВЕРКИ — целевой тест сохранил проверки разбора вывода и безопасной команды, но потерял три исходных сценария: JSON round-trip результатов, инвалидирование изменённого хеша/выбор pending и исключение невалидных хешей из tunnel source при сохранении для UI. |
+| 250 | `app/src/test/java/com/shod/client/VkModePolicyTest.kt` | `d8d6cf099b0cee790d4d499dfc276ed0f0377fce` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело теста полностью совпадает после исключения package/import. |
+| 251 | `app/src/test/java/com/shod/client/VkNetworkProbePolicyTest.kt` | `33b347e50bedc55061fbc90f9eb7588236ff8c11` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело теста полностью совпадает после исключения package/import. |
+| 252 | `app/src/test/java/com/shod/client/VpnConfigurationTest.kt` | `86535eac173bed893a24ff715a9e60193a8da9a2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело теста полностью совпадает после исключения package/import. |
+| 253 | `app/src/test/java/com/shod/client/VpnRecoveryPolicyTest.kt` | `27afdd1e2a782fafac4ffe442c70fdc79b4f445c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело теста полностью совпадает после исключения package/import. |
+| 254 | `app/src/test/java/com/shod/client/WifiAutoPausePolicyTest.kt` | `7cde5822b73d5cab292cb78d4048da223badf92f` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело теста полностью совпадает после исключения package/import. |
+| 255 | `app/src/test/java/com/shod/client/WifiNetworkListPolicyTest.kt` | `16ed8339a9957ab3d5aa9816021adea8fa64300b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело теста полностью совпадает после исключения package/import. |
+| 256 | `app/src/test/java/com/shod/client/WifiPreferencesTest.kt` | `3702d2933fcb82eb6aadddb08d2d62b6e7946bdf` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело теста полностью совпадает после исключения package/import. |
+| 257 | `app/src/test/java/com/shod/client/WorkerCountPolicyTest.kt` | `4d489af37380c1f7bb40047c22e6f761974d725a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело теста полностью совпадает после исключения package/import. |
+| 258 | `app/src/test/java/com/shod/client/WorkerRecoveryPolicyTest.kt` | `0f3312eab4d3c750e12f5f66b37384eca55691df` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело теста полностью совпадает после исключения package/import. |
 | 259 | `build.gradle.kts` | `e53574b954d280ed7e9b6450d11759681841baa1` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
 | 260 | `gradle.properties` | `140fbbbba0e7adccc34e7a915c2059a5187ad6bd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
 | 261 | `gradle/wrapper/gradle-wrapper.jar` | `2c3521197d7c4586c843d1d3e9090525f1898cde` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
@@ -446,3 +446,5 @@
 | 2026-11-22 | Проверка `.github/workflows/ci.yml` | Исходный CI workflow отсутствует в целевом репозитории; найден только `.gitkeep`. Проверены определения шагов, запуск CI не выполнялся | Отмечена потеря CI-конфигурации; требуется восстановить workflow после согласования переноса |
 | 2026-11-22 | Сверка UI components, connection controller, deploy plan/controller, SSH transport, inventory и dialogs | Подтверждены 3 файла; 6 требуют функциональной сверки после архитектурного разбиения/изменений. `AppUpdateDialog` и `HashesDialog` совпадают полностью | Обновлены 9 строк; код не менялся |
 | 2026-11-22 | Сверка host-key dialog, SSH keys dialog и VK auth dialog | VK auth dialog полностью совпадает; два диалога выделены из DeployController и требуют проверки полного поведения | Обновлены 3 строки; код не менялся |
+
+| 2026-11-22 | Сверка 14 оставшихся Android unit-тестов: SSH runtime dependency, update guard, VK policies/hash validation, VPN configuration/recovery, Wi-Fi policies/preferences и worker policies | 12 тестов полностью совпадают с исходниками после исключения package/import. `VkHashValidatorTest` утратил три сценария (JSON round-trip, invalidation/pending и фильтрация invalid hashes); `SshKeyRuntimeDependencyTest` отсутствует в target, его функциональный аналог не найден | 12 строк подтверждены как перенесённые, 2 оставлены на сверку; прикладной код не менялся, CI/сборка/тесты не запускались |
