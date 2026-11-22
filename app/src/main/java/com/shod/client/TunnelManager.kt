@@ -1,5 +1,8 @@
 package com.shod.client
 
+import com.shod.client.vpn.lifecycle.TunnelStartupProgress
+import com.shod.client.vpn.lifecycle.TunnelStartupStage
+
 import com.shod.client.platform.android.vpn.TunVpnService
 import com.shod.client.vpn.workers.WorkerCountPolicy
 
