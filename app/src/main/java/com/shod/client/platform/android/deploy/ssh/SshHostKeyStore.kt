@@ -64,7 +64,7 @@ object SshHostKeyStore {
 
     class TofuVerifier(
         context: Context,
-        private val onAudit: (String) -> Unit = {},
+        private val onAudit: (String) -> Unit = { DeployDiagnostics.recordError(it) },
     ) : HostKeyVerifier {
         private val prefs = context.applicationContext
             .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
