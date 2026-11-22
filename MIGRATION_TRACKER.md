@@ -82,14 +82,14 @@
 | 63 | `app/src/main/java/com/shod/client/Theme.kt` | `04a76c3198c668e2cf91f30f5384fea12df57196` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — все исходные элементы темы и системной раскраски присутствуют в `ui/theme/ShodTheme.kt`. |
 | 64 | `app/src/main/java/com/shod/client/ToastExt.kt` | `5201e2009def30071b52650fe0bf65afdbce830f` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — исходный механизм transient toast не найден в целевом дереве; `ui/components/States.kt` его не заменяет. |
 | 65 | `app/src/main/java/com/shod/client/TrafficDiagnosticParser.kt` | `0e6566c7a109413a7c803d8477326d5053eaabef` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
-| 66 | `app/src/main/java/com/shod/client/TunnelEventParser.kt` | `158b7aacd82a5b83d8447c29afb93a0a034be2e7` | НЕ ПРОВЕРЕН |
-| 67 | `app/src/main/java/com/shod/client/TunnelLifecycleState.kt` | `7052cb982e502861c8dfe630eaf47b5ae267993b` | НЕ ПРОВЕРЕН |
-| 68 | `app/src/main/java/com/shod/client/TunnelLogPolicy.kt` | `7bfb8657f3676b02ce2962940a53fb1c2840dd1f` | НЕ ПРОВЕРЕН |
-| 69 | `app/src/main/java/com/shod/client/TunnelManager.kt` | `bf504505072bc03ee46930bd0ae63ab2799e3d98` | НЕ ПРОВЕРЕН |
-| 70 | `app/src/main/java/com/shod/client/TunnelNotificationText.kt` | `0c6244738f64cf0efd69a83850b886a3bcf64e42` | НЕ ПРОВЕРЕН |
-| 71 | `app/src/main/java/com/shod/client/TunnelPasswordStorage.kt` | `e4d53ccd686a61d791c7b6c9439441c06cb3cf60` | НЕ ПРОВЕРЕН |
-| 72 | `app/src/main/java/com/shod/client/TunnelProbePacket.kt` | `09968dec6ce1de90259836237653739bc7b6cb02` | НЕ ПРОВЕРЕН |
-| 73 | `app/src/main/java/com/shod/client/TunnelQuickActions.kt` | `7613ee5c293ccf2c413ab46e0f2c80c50afa9a0e` | НЕ ПРОВЕРЕН |
+| 66 | `app/src/main/java/com/shod/client/TunnelEventParser.kt` | `158b7aacd82a5b83d8447c29afb93a0a034be2e7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
+| 67 | `app/src/main/java/com/shod/client/TunnelLifecycleState.kt` | `7052cb982e502861c8dfe630eaf47b5ae267993b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
+| 68 | `app/src/main/java/com/shod/client/TunnelLogPolicy.kt` | `7bfb8657f3676b02ce2962940a53fb1c2840dd1f` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
+| 69 | `app/src/main/java/com/shod/client/TunnelManager.kt` | `bf504505072bc03ee46930bd0ae63ab2799e3d98` | ТРЕБУЕТ СВЕРКИ — диагностические enum/модели и санитайзер вынесены в отдельный слой, исходник на 5,4 КБ больше; проверить все оставшиеся функции, свойства и побочные эффекты в целевых модулях. |
+| 70 | `app/src/main/java/com/shod/client/TunnelNotificationText.kt` | `0c6244738f64cf0efd69a83850b886a3bcf64e42` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
+| 71 | `app/src/main/java/com/shod/client/TunnelPasswordStorage.kt` | `e4d53ccd686a61d791c7b6c9439441c06cb3cf60` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
+| 72 | `app/src/main/java/com/shod/client/TunnelProbePacket.kt` | `09968dec6ce1de90259836237653739bc7b6cb02` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
+| 73 | `app/src/main/java/com/shod/client/TunnelQuickActions.kt` | `7613ee5c293ccf2c413ab46e0f2c80c50afa9a0e` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — содержимое полностью совпадает после исключения package/import. |
 | 74 | `app/src/main/java/com/shod/client/TunnelScreenSnapshot.kt` | `83242d315b165ed39dc626a0d5f0f967dc5c0ccd` | НЕ ПРОВЕРЕН |
 | 75 | `app/src/main/java/com/shod/client/TunnelService.kt` | `3212e645cf4c90ed3ad25120226f26c976163fa4` | НЕ ПРОВЕРЕН |
 | 76 | `app/src/main/java/com/shod/client/TunnelServicePolicy.kt` | `9d3b31ae999bb8572ad0b405e9536511c700fb74` | НЕ ПРОВЕРЕН |
@@ -422,3 +422,4 @@
 | 2026-11-22 | Сверка 8 Kotlin-файлов и одного Android instrumentation test | 8 исходных реализаций/тестов подтверждены в архитектурно новых путях; `MainActivity` и `ProbeTunTransportTest` оставлены на отдельную сверку из-за разбиения/расширений | 8 строк отмечены подтверждёнными; код не менялся |
 | 2026-11-22 | Проверка deploy manager, ping cache, темы, toast helper и instrumentation test | Подтверждены ping store, тема и тест транспорта; deploy manager и MainActivity требуют проверки распределённых реализаций; исходный ToastExt не найден | Обновлены 6 статусов; код не менялся |
 | 2026-11-22 | Сверка `SettingsStore`, `ShodApplication`, SSH host-key storage, secret state, stream/traffic diagnostics и subscription modules | Подтверждены 6 переносов; `SettingsStore` требует функционального сопоставления после разбиения, SSH TOFU — проверки аудита | Обновлены 8 строк; прикладной код не менялся |
+| 2026-11-22 | Сверка lifecycle, diagnostics, notifications, secrets, probe packet, quick settings и tunnel manager | Подтверждены 7 переносов; `TunnelManager` требует сопоставления после выделения диагностических типов и утилит | Обновлены 8 строк; код не менялся |
