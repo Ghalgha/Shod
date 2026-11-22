@@ -299,16 +299,16 @@
 | 280 | `rust-client/events.rs` | `2d3b38817740fff22fdbdfe8de9d7be756d42e6d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/diagnostics/events.rs`. |
 | 281 | `rust-client/logging.rs` | `c6bb13005c09788c3efebcafd88280fd9c947ebe` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/diagnostics/logging.rs`. |
 | 282 | `rust-client/main.rs` | `03f2d01988ec37128de72e2598977b42863e569d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело полностью совпадает после исключения директив путей модулей; изменена только раскладка `#[path]`. |
-| 283 | `rust-client/namegen.rs` | `74f3d6302f4d8888ffaf45e910ea33d162f5124a` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 283 | `rust-client/namegen.rs` | `74f3d6302f4d8888ffaf45e910ea33d162f5124a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/security/namegen.rs`. |
 | 284 | `rust-client/obfs.rs` | `44e2423ad11a6b8142578639b65f74bc81ec02a3` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/obfuscation/obfs.rs`. |
-| 285 | `rust-client/packet.rs` | `51245ebf87e44cbc4469c91473eccb0160d62850` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 286 | `rust-client/profiles.rs` | `25c5c01a1f3713b2ad7e8dfe6a386edaf2b694e2` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 285 | `rust-client/packet.rs` | `51245ebf87e44cbc4469c91473eccb0160d62850` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/packet/packet.rs`. |
+| 286 | `rust-client/profiles.rs` | `25c5c01a1f3713b2ad7e8dfe6a386edaf2b694e2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/runtime/profiles.rs`. |
 | 287 | `rust-client/proptest-regressions/session.txt` | `37bb44576e341826894f3002b4ebb5ccbaa35a57` | НЕ ПРОВЕРЕН |
-| 288 | `rust-client/protocol.rs` | `4b50656fa6f9b18b0ccf13250b61602a4b3d78dd` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 289 | `rust-client/repair.rs` | `89b2bffcb555be01fbaaf52a7f1b56afbff81e48` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 290 | `rust-client/session.rs` | `32cd4a6222ded98664b7358b507c36e78f92f3f7` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 291 | `rust-client/sni.rs` | `d4846a8a581aa9a0ee7fcd4482ff52325e6f41ec` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 292 | `rust-client/srtp_mode.rs` | `50d34f064d8c6180c9687b9c559b2bf3c1ef40fe` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 288 | `rust-client/protocol.rs` | `4b50656fa6f9b18b0ccf13250b61602a4b3d78dd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/protocol/protocol.rs`. |
+| 289 | `rust-client/repair.rs` | `89b2bffcb555be01fbaaf52a7f1b56afbff81e48` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/runtime/repair.rs`. |
+| 290 | `rust-client/session.rs` | `32cd4a6222ded98664b7358b507c36e78f92f3f7` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/session/session.rs`. |
+| 291 | `rust-client/sni.rs` | `d4846a8a581aa9a0ee7fcd4482ff52325e6f41ec` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/security/sni.rs`. |
+| 292 | `rust-client/srtp_mode.rs` | `50d34f064d8c6180c9687b9c559b2bf3c1ef40fe` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/transport/srtp/srtp_mode.rs`. |
 | 293 | `rust-client/stats.rs` | `01d17436a22d2db75834f43c281862efac3a1988` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 294 | `rust-client/stream_diagnostics.rs` | `9b82c8f58dafd96958cce010395febf3d843ed39` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 295 | `rust-client/stun_codec.rs` | `fc9b9e34b745a7099ba20adbf3f09c0e0902fb78` | ТОЧНОЕ СОВПАДЕНИЕ |
@@ -408,3 +408,4 @@
 | 2026-11-22 | Первичная инвентаризация всех 359 файлов | Создан полный перечень; точные blob-совпадения отмечены отдельно, содержимое ещё не признано перенесённым | Инициализация реестра |
 | 2026-11-22 | Проверка 5 крупных Rust-файлов: клиентский `main.rs`, `dispatcher.rs`, `auth.rs`; серверный `web_panel.rs`; TURN integration tests | 4 файла совпадают побайтово; `rust-client/main.rs` совпадает полностью после исключения директив путей модулей — в целевом проекте модульная раскладка разнесена по каталогам. Других отличий в теле `main.rs` нет | Пять строк получили подтверждённые статусы переноса/распределения |
 | 2026-11-22 | Проверка 8 Rust-файлов клиента: captcha, captcha_slider, cpu_task, direct_relay, dns, events, logging, obfs | Все 8 файлов полностью совпадают побайтово с соответствующими файлами в новой архитектуре каталогов | Восемь строк получили подтверждённый статус переноса/распределения |
+| 2026-11-22 | Проверка 8 Rust-файлов клиента: namegen, packet, profiles, protocol, repair, session, sni, srtp_mode | Все 8 файлов полностью совпадают побайтово с соответствующими файлами в целевой структуре | Ещё восемь строк получили подтверждённый статус переноса/распределения |
