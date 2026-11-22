@@ -511,7 +511,7 @@ impl TokioIo {
         // SAFETY: TunDevice owns the TUN device for the entire AsyncFd lifetime;
         // its file descriptor remains open and stable until TunDevice is dropped.
         let tun = unsafe { AsyncFd::register(TunDevice(device)) }
-            .map_err(|error| error.into_io())
+            .map_err(std::io::Error::from)
             .context("register TUN in tokio")?;
 
         Ok(Self {
