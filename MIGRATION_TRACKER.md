@@ -225,24 +225,24 @@
 | 206 | `app/src/test/java/com/shod/client/MaskOwnerHashesTest.kt` | `e67cfb79858755c68a57a80e2748d14740a85d1e` | ТРЕБУЕТ СВЕРКИ — исходный тест отсутствует в target; поиск одноимённого или явного аналога не выявил переноса. |
 | 207 | `app/src/test/java/com/shod/client/NativeTunnelLogParserTest.kt` | `52144291619e3414b81851a9652ac1439c0c0f7d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
 | 208 | `app/src/test/java/com/shod/client/NetworkPauseGateTest.kt` | `c3648a7c56512e819612d681bac179a35bdf7b40` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
-| 209 | `app/src/test/java/com/shod/client/ParticipantHashesTest.kt` | `d9c39d1a0ec7c41e2c7ab4bd676e27cf97564ba2` | НЕ ПРОВЕРЕН |
-| 210 | `app/src/test/java/com/shod/client/PhysicalNetworkTrackerTest.kt` | `b381f7a823efcef94f0e9c4e4f65b90a4a096e61` | НЕ ПРОВЕРЕН |
-| 211 | `app/src/test/java/com/shod/client/ProbeOutputReaderTest.kt` | `0182b36cd7662366db3efa09bbddd5190cf786cc` | НЕ ПРОВЕРЕН |
-| 212 | `app/src/test/java/com/shod/client/ProfilePingControllerTest.kt` | `872cb27d5677177601cc2c6bf77e513b2428a0b6` | НЕ ПРОВЕРЕН |
-| 213 | `app/src/test/java/com/shod/client/ReadOnlyProfileDataStoreTest.kt` | `d6e153b52e2ebca4a597e12270b88825523df47b` | НЕ ПРОВЕРЕН |
-| 214 | `app/src/test/java/com/shod/client/SavedVkAccountsTest.kt` | `9f211ddffbe259996b0e6317bf9ad66261bafc0c` | НЕ ПРОВЕРЕН |
-| 215 | `app/src/test/java/com/shod/client/ServerCoreCacheTest.kt` | `a096594adfc607988d8c3000f56e92d59cbe4cc9` | НЕ ПРОВЕРЕН |
-| 216 | `app/src/test/java/com/shod/client/ServerRoutingRuleTest.kt` | `bc8b0bdfae03943b944d458e2df9bd15fb1b7335` | НЕ ПРОВЕРЕН |
-| 217 | `app/src/test/java/com/shod/client/SettingsStoreInitOrderTest.kt` | `2dfa539aa73e82a4b3f89466f69c81c789855e4a` | НЕ ПРОВЕРЕН |
-| 218 | `app/src/test/java/com/shod/client/SshHostKeyStoreTest.kt` | `a8260c77aa9fa515df4f9d3caa4f0e15b9d4a8b6` | НЕ ПРОВЕРЕН |
-| 219 | `app/src/test/java/com/shod/client/StoredSecretStateTest.kt` | `ecee577790270088276ccd8f80662ab9de17bf3c` | НЕ ПРОВЕРЕН |
-| 220 | `app/src/test/java/com/shod/client/StreamDiagnosticParserTest.kt` | `83e90e68604613f44cde7abe7905159c2777bada` | НЕ ПРОВЕРЕН |
-| 221 | `app/src/test/java/com/shod/client/SubscriptionImporterTest.kt` | `75e9b6cb31c35b00808f9fb50358f9321a6f1d53` | НЕ ПРОВЕРЕН |
-| 222 | `app/src/test/java/com/shod/client/TrafficDiagnosticParserTest.kt` | `3b0fa509c6bc330dc8b2c4aa7c8f4c73ca083d9b` | НЕ ПРОВЕРЕН |
-| 223 | `app/src/test/java/com/shod/client/TunnelAuthSnapshotTest.kt` | `9271ab55a1ef35b2467b44fd1b51269aaa459cd1` | НЕ ПРОВЕРЕН |
-| 224 | `app/src/test/java/com/shod/client/TunnelEventParserTest.kt` | `a6b14c9122b3dff302ca6c3d05cec6eccc6cd85a` | НЕ ПРОВЕРЕН |
-| 225 | `app/src/test/java/com/shod/client/TunnelLifecycleStateChaosTest.kt` | `f28a970a345cf690675e72fcf93c2e37c6968986` | НЕ ПРОВЕРЕН |
-| 226 | `app/src/test/java/com/shod/client/TunnelLifecycleStateTest.kt` | `b43e6c5d74d169e2e1185e989066dafcc6c1e2ad` | НЕ ПРОВЕРЕН |
+| 209 | `app/src/test/java/com/shod/client/ParticipantHashesTest.kt` | `d9c39d1a0ec7c41e2c7ab4bd676e27cf97564ba2` | ТРЕБУЕТ СВЕРКИ — исходный тест отсутствует в target; явный аналог не найден. |
+| 210 | `app/src/test/java/com/shod/client/PhysicalNetworkTrackerTest.kt` | `b381f7a823efcef94f0e9c4e4f65b90a4a096e61` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 211 | `app/src/test/java/com/shod/client/ProbeOutputReaderTest.kt` | `0182b36cd7662366db3efa09bbddd5190cf786cc` | ТРЕБУЕТ СВЕРКИ — целевой тест отличается от исходного; проверить дополнительные и изменённые сценарии чтения вывода. |
+| 212 | `app/src/test/java/com/shod/client/ProfilePingControllerTest.kt` | `872cb27d5677177601cc2c6bf77e513b2428a0b6` | ТРЕБУЕТ СВЕРКИ — целевой тест отличается от исходного; проверить покрытие ping/probe поведения и обработки ошибок. |
+| 213 | `app/src/test/java/com/shod/client/ReadOnlyProfileDataStoreTest.kt` | `d6e153b52e2ebca4a597e12270b88825523df47b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 214 | `app/src/test/java/com/shod/client/SavedVkAccountsTest.kt` | `9f211ddffbe259996b0e6317bf9ad66261bafc0c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 215 | `app/src/test/java/com/shod/client/ServerCoreCacheTest.kt` | `a096594adfc607988d8c3000f56e92d59cbe4cc9` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 216 | `app/src/test/java/com/shod/client/ServerRoutingRuleTest.kt` | `bc8b0bdfae03943b944d458e2df9bd15fb1b7335` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 217 | `app/src/test/java/com/shod/client/SettingsStoreInitOrderTest.kt` | `2dfa539aa73e82a4b3f89466f69c81c789855e4a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 218 | `app/src/test/java/com/shod/client/SshHostKeyStoreTest.kt` | `a8260c77aa9fa515df4f9d3caa4f0e15b9d4a8b6` | ТРЕБУЕТ СВЕРКИ — целевой тест отличается от исходного; проверить сценарии TOFU, callback и сохранения host key. |
+| 219 | `app/src/test/java/com/shod/client/StoredSecretStateTest.kt` | `ecee577790270088276ccd8f80662ab9de17bf3c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 220 | `app/src/test/java/com/shod/client/StreamDiagnosticParserTest.kt` | `83e90e68604613f44cde7abe7905159c2777bada` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 221 | `app/src/test/java/com/shod/client/SubscriptionImporterTest.kt` | `75e9b6cb31c35b00808f9fb50358f9321a6f1d53` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 222 | `app/src/test/java/com/shod/client/TrafficDiagnosticParserTest.kt` | `3b0fa509c6bc330dc8b2c4aa7c8f4c73ca083d9b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 223 | `app/src/test/java/com/shod/client/TunnelAuthSnapshotTest.kt` | `9271ab55a1ef35b2467b44fd1b51269aaa459cd1` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 224 | `app/src/test/java/com/shod/client/TunnelEventParserTest.kt` | `a6b14c9122b3dff302ca6c3d05cec6eccc6cd85a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 225 | `app/src/test/java/com/shod/client/TunnelLifecycleStateChaosTest.kt` | `f28a970a345cf690675e72fcf93c2e37c6968986` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
+| 226 | `app/src/test/java/com/shod/client/TunnelLifecycleStateTest.kt` | `b43e6c5d74d169e2e1185e989066dafcc6c1e2ad` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН |
 | 227 | `app/src/test/java/com/shod/client/TunnelLogPolicyTest.kt` | `2ec41077912cecc8995b978d37d762120a4b3672` | НЕ ПРОВЕРЕН |
 | 228 | `app/src/test/java/com/shod/client/TunnelPasswordStorageTest.kt` | `83580f4b1aefe44bc9cd267bc36cef0d60e301f9` | НЕ ПРОВЕРЕН |
 | 229 | `app/src/test/java/com/shod/client/TunnelProbePacketTest.kt` | `c3aa7d091e1a761901ddcd6d2f86c1758b6c398a` | НЕ ПРОВЕРЕН |
@@ -403,6 +403,7 @@
 
 ## Журнал проверок
 
+| 2026-11-22 | Сверка 18 unit-тестов | 14 целевых тестов совпадают с исходниками по телам после исключения package/import; `ProbeOutputReaderTest`, `ProfilePingControllerTest`, `SshHostKeyStoreTest` отличаются и требуют анализа; `ParticipantHashesTest` не найден | 14 строк подтверждены как перенесённые, 4 переведены в `ТРЕБУЕТ СВЕРКИ`; код не менялся, CI/сборка/тесты не запускались |
 | 2026-11-22 | Сверка 15 Android ресурсов и unit-тестов | Восемь тестов перенесены в новую структуру без изменений тел тестов (различаются package/import). Два теста изменены (`AppRoutingPresetsTest`, `ConnectionStartPolicyTest`) и требуют сопоставления сценариев. Иконка Telegram, лицензия Manrope и три теста (`AppUpdate`, `DnsProfileName`, `MaskOwnerHashes`) не найдены в target | 8 строк подтверждены как перенесённые, 7 переведены в `ТРЕБУЕТ СВЕРКИ`; код не менялся, CI/сборка/тесты не запускались |
 | 2026-11-22 | Проверка оставшихся client provenance и 11 drawable ресурсов | `libclient.provenance.json` отсутствует; похожий `shod.server-provenance.json` не эквивалентен, так как описывает server artifact. Все 11 исходных drawable отсутствуют в целевой `res`; обнаружены только три другие иконки, но использование и допустимость замены ещё не установлены | 12 строк переведены в `ТРЕБУЕТ СВЕРКИ`; код и ресурсы не менялись, CI/сборка/тесты не запускались |
 | 2026-11-22 | Проверка шести UI/utility-файлов: deployment secrets, secrets, server removal, traffic summary, link utils, Wi-Fi auto-pause | Для всех шести найдены распределённые или близкие реализации, но есть признаки упрощения UI либо непроверенные побочные эффекты; особенно важно подтвердить сохранность экранов трафика и полного сценария удаления. `LinkUtils` распределён в `links/ShodLinkCodec`, Wi-Fi UI — в `WifiAutoPauseContent` плюс platform/policy modules | Все шесть строк переведены в `ТРЕБУЕТ СВЕРКИ`; код приложения не менялся, CI/сборка/тесты не запускались |
