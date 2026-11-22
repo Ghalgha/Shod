@@ -217,24 +217,41 @@ fun RoutingScreen(
                 ipWhitelistMode = ipMode,
             ),
             onImport = { imported ->
-                appBlacklist = imported.appBlacklist
-                appWhitelist = imported.appWhitelist
+                if (imported.includeApps) {
+                    appBlacklist = imported.appBlacklist
+                    appWhitelist = imported.appWhitelist
+                }
                 scope.launch {
-                    settingsStore.saveAppRoutingLists(
-                        imported.appBlacklist.sorted().joinToString(","),
-                        imported.appWhitelist.sorted().joinToString(","),
-                        imported.appWhitelistMode,
-                    )
-                    settingsStore.saveDomainIsWhitelist(imported.domainWhitelistMode)
-                    settingsStore.saveTemplateDomainsEnabled(imported.templateDomainsEnabled)
-                    settingsStore.saveDirectDomainsBlack(imported.domainBlacklist.joinToString(","))
-                    settingsStore.saveDirectDomainsWhite(imported.domainWhitelist.joinToString(","))
-                    settingsStore.saveIpIsWhitelist(imported.ipWhitelistMode)
-                    settingsStore.saveIpRoutingEnabled(true)
-                    settingsStore.saveDirectIpsBlack(imported.ipBlacklist.joinToString(","))
-                    settingsStore.saveDirectIpsWhite(imported.ipWhitelist.joinToString(","))
-                    TunnelManager.reloadVpn()
-                    TunnelManager.pushLocalRouting(context)
+                    if (imported.includeApps) {
+                        settingsStore.saveAppRoutingLists(
+                            imported.appBlacklist.sorted().joinToString(","),
+                            imported.appWhitelist.sorted().joinToString(","),
+                            imported.appWhitelistMode,
+                        )
+                        TunnelManager.reloadVpn()
+                    }
+                    if (imported.includeDomains) {
+                        settingsStore.saveDomainIsWhitelist(imported.domainWhitelistMode)
+                        settingsStore.saveTemplateDomainsEnabled(imported.templateDomainsEnabled)
+                        if (imported.domainBlacklist.isNotEmpty() || !imported.domainWhitelistMode) {
+                            settingsStore.saveDirectDomainsBlack(imported.domainBlacklist.joinToString(","))
+                        }
+                        if (imported.domainWhitelist.isNotEmpty() || imported.domainWhitelistMode) {
+                            settingsStore.saveDirectDomainsWhite(imported.domainWhitelist.joinToString(","))
+                        }
+                        TunnelManager.pushLocalRouting(context)
+                    }
+                    if (imported.includeIps) {
+                        settingsStore.saveIpIsWhitelist(imported.ipWhitelistMode)
+                        settingsStore.saveIpRoutingEnabled(true)
+                        if (imported.ipBlacklist.isNotEmpty() || !imported.ipWhitelistMode) {
+                            settingsStore.saveDirectIpsBlack(imported.ipBlacklist.joinToString(","))
+                        }
+                        if (imported.ipWhitelist.isNotEmpty() || imported.ipWhitelistMode) {
+                            settingsStore.saveDirectIpsWhite(imported.ipWhitelist.joinToString(","))
+                        }
+                        TunnelManager.pushLocalRouting(context)
+                    }
                 }
             },
             onDismiss = { showAppTransfer = false },
