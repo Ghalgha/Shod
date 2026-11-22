@@ -364,18 +364,18 @@
 | 345 | `rust-server/web_panel.rs` | `3e974fe72094d1bb2e802c8008ba967244de24cd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/web_panel/web_panel.rs`. |
 | 346 | `scripts/build_apk.bat` | `23e1ed753faa2d9281164a719ab82abc1e2cdd1c` | ТРЕБУЕТ СВЕРКИ — корневой batch-скрипт сборки APK отсутствует в target; проверить эквивалентность Gradle/других скриптов. |
 | 347 | `scripts/build_both_parallel.ps1` | `c7f32d2a29c740f82d5a0e818681a8e519aa9dfe` | ТРЕБУЕТ СВЕРКИ — скрипт параллельной сборки клиента и сервера отсутствует в target; функциональный аналог не подтверждён. |
-| 348 | `scripts/find_android_sdk_ndk.bat` | `a1f3d57b6b0be9ab1b670c2298759cdee8412e18` | НЕ ПРОВЕРЕН |
-| 349 | `scripts/find_android_sdk.bat` | `96b08542f9e3a393b8b25f92914e89b1958082d6` | НЕ ПРОВЕРЕН |
-| 350 | `scripts/native_client_provenance.ps1` | `02361f4499c99f1e7e05b1f527df15605be07a6f` | НЕ ПРОВЕРЕН |
-| 351 | `scripts/run_wsl_checks.sh` | `b5528f7b68f058f7ee0b0158be6b0eb861033d89` | НЕ ПРОВЕРЕН |
-| 352 | `scripts/server_asset_provenance.ps1` | `cbd9e4b2b4aaef093ba3d676834e4ffe5b596062` | НЕ ПРОВЕРЕН |
-| 353 | `scripts/test_wsl_unified.bat` | `b07ff882960365d69cf173f4413780d757a26a27` | НЕ ПРОВЕРЕН |
-| 354 | `scripts/test_wsl_unified.ps1` | `23e7e0e23fe59d4d97901184da58c41ab7284033` | НЕ ПРОВЕРЕН |
-| 355 | `settings.gradle.kts` | `cf1c1d2712ce45903bb273c0445ec098a366df9c` | НЕ ПРОВЕРЕН |
+| 348 | `scripts/find_android_sdk_ndk.bat` | `a1f3d57b6b0be9ab1b670c2298759cdee8412e18` | ТРЕБУЕТ СВЕРКИ — отсутствует в target; вспомогательный Windows-скрипт поиска Android SDK/NDK, проверить, не заменён ли Gradle/PowerShell tooling. |
+| 349 | `scripts/find_android_sdk.bat` | `96b08542f9e3a393b8b25f92914e89b1958082d6` | ТРЕБУЕТ СВЕРКИ — отсутствует в target; вспомогательный Windows-скрипт поиска Android SDK, проверить наличие эквивалента и необходимость отдельной версии без NDK. |
+| 350 | `scripts/native_client_provenance.ps1` | `02361f4499c99f1e7e05b1f527df15605be07a6f` | ТРЕБУЕТ СВЕРКИ — отсутствует в target; формирует/проверяет provenance встроенного native client и связывает его с отсутствующими build scripts, нельзя считать заменённым без проверки. |
+| 351 | `scripts/run_wsl_checks.sh` | `b5528f7b68f058f7ee0b0158be6b0eb861033d89` | ТРЕБУЕТ СВЕРКИ — отсутствует в target; WSL-проверки содержат жёстко заданный путь `/mnt/f/shod/shod-2.5.0` и команды очистки процессов/interfaces, перенос без адаптации небезопасен. |
+| 352 | `scripts/server_asset_provenance.ps1` | `cbd9e4b2b4aaef093ba3d676834e4ffe5b596062` | ТРЕБУЕТ СВЕРКИ — отсутствует в target; формирует/проверяет provenance server assets, требуется сверка с существующим `shod.server-provenance.json` и новой структурой assets. |
+| 353 | `scripts/test_wsl_unified.bat` | `b07ff882960365d69cf173f4413780d757a26a27` | ТРЕБУЕТ СВЕРКИ — отсутствует в target; оболочка Windows для WSL verification runner, сам runner также отсутствует. |
+| 354 | `scripts/test_wsl_unified.ps1` | `23e7e0e23fe59d4d97901184da58c41ab7284033` | ТРЕБУЕТ СВЕРКИ — отсутствует в target; WSL runner содержит жёстко заданный `F:\shod\shod-2.5.0`, требует адаптации/проверки актуальности до переноса. |
+| 355 | `settings.gradle.kts` | `cf1c1d2712ce45903bb273c0445ec098a366df9c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой settings.gradle.kts содержит те же plugin/dependency repositories, rootProject.name и include(":app"); различия только форматирование/пустые строки. |
 | 356 | `shared/dtls.rs` | `407915f519923b70473d48a936c663b98109f222` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `shared/dtls.rs`. |
 | 357 | `shared/spsc_ring.rs` | `ac4d6b6a0b1add12d7247842e472ddb5f81e3bc6` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `shared/spsc_ring.rs`. |
 | 358 | `shared/wire_protocol.rs` | `2ac9ed2474995531fe6b3ec6a3bd68e09a5916e8` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `shared/wire_protocol.rs`. |
-| 359 | `VERSIONING.md` | `ad5f8da834804d8c7590ffa4b5e6ae3a3aca8f42` | НЕ ПРОВЕРЕН |
+| 359 | `VERSIONING.md` | `ad5f8da834804d8c7590ffa4b5e6ae3a3aca8f42` | ТРЕБУЕТ СВЕРКИ — документ о версии исходников и происхождении встроенных бинарников отсутствует в target; часть сведений уже отражена в `shod.server-provenance.json`/других артефактах, проверить полноту. |
 
 ## Сводка по типам файлов
 
@@ -450,3 +450,5 @@
 | 2026-11-22 | Сверка 14 оставшихся Android unit-тестов: SSH runtime dependency, update guard, VK policies/hash validation, VPN configuration/recovery, Wi-Fi policies/preferences и worker policies | 12 тестов полностью совпадают с исходниками после исключения package/import. `VkHashValidatorTest` утратил три сценария (JSON round-trip, invalidation/pending и фильтрация invalid hashes); `SshKeyRuntimeDependencyTest` отсутствует в target, его функциональный аналог не найден | 12 строк подтверждены как перенесённые, 2 оставлены на сверку; прикладной код не менялся, CI/сборка/тесты не запускались |
 
 | 2026-11-22 | Проверка 18 оставшихся файлов документации, лицензии, Rust manifests/lockfiles, toolchain и build scripts | Оба Cargo.toml содержат те же зависимости и настройки; отличается только путь `main.rs` → `src/main.rs`. 16 прочих файлов отсутствуют в target и оставлены на сверку (включая LICENSE и lockfiles) | 2 подтверждены как перенесённые, 16 требуют сверки; прикладной код не менялся, CI/сборка/тесты не запускались |
+
+| 2026-11-22 | Проверка последних 9 непроверенных строк: Windows SDK discovery, provenance scripts, WSL runners, Gradle settings и versioning doc | `settings.gradle.kts` совпадает по настройкам; 7 вспомогательных скриптов отсутствуют (WSL-скрипты содержат устаревшие абсолютные пути и потенциально разрушительные команды); `VERSIONING.md` отсутствует, часть данных может дублировать provenance | 1 подтверждён как перенесённый, 8 требуют сверки; прикладной код не менялся, CI/сборка/тесты не запускались |
