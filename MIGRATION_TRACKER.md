@@ -352,11 +352,11 @@
 | 333 | `rust-server/main.rs` | `cca694f812d3f8b81783bface6372633bb4cbbfb` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — `rust-server/src/main.rs`; всё исполняемое содержимое идентично после исключения только объявлений модулей и `#[path]`, обновлённых под архитектурные каталоги `src/{dataplane,config,network,packet,diagnostics,protocol,proxy,transport,tun,web_panel}` и общий `shared`. |
 | 334 | `rust-server/model.rs` | `148302fad86f016a03dc249b149b1a666e7bc360` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — `rust-server/src/config/model.rs`; побайтовое совпадение, SHA совпадает. |
 | 335 | `rust-server/net_setup.rs` | `1e06a2cc6752d1af9577309116747fe84ba20b92` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — `rust-server/src/network/net_setup.rs`; побайтовое совпадение, SHA и размер совпадают. |
-| 336 | `rust-server/packet.rs` | `808a6b6491d90bd75d9772bc233cba54dbdce934` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — побайтовое совпадение исходника и целевого файла подтверждено; Rust packet дополнительно проверен по новому пути. |
-| 337 | `rust-server/path_probe.rs` | `d01883136a5bb86318453ccd8c2ad97f20c47694` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/diagnostics/path_probe.rs`. |
-| 338 | `rust-server/protocol.rs` | `246ed612560238b9994ef28e8c0342c3d76e2375` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/protocol/protocol.rs`. |
-| 339 | `rust-server/proxy_route.rs` | `622cc271c2f77ffe4ec84b4fbd6d4dc0b796bef2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/proxy/proxy_route.rs`. |
-| 340 | `rust-server/rust-toolchain.toml` | `362cd953eb82ca72ef9bd71da83a5858d8ba708a` | ТРЕБУЕТ СВЕРКИ — toolchain pin отсутствует в target; проверить, не потеряно ли требование к версии Rust. |
+| 336 | `rust-server/packet.rs` | `808a6b6491d90bd75d9772bc233cba54dbdce934` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — `rust-server/src/packet/packet.rs`; побайтовое совпадение, SHA подтверждён. |
+| 337 | `rust-server/path_probe.rs` | `d01883136a5bb86318453ccd8c2ad97f20c47694` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — `rust-server/src/diagnostics/path_probe.rs`; побайтовое совпадение, SHA подтверждён. |
+| 338 | `rust-server/protocol.rs` | `246ed612560238b9994ef28e8c0342c3d76e2375` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — `rust-server/src/protocol/protocol.rs`; побайтовое совпадение, SHA подтверждён. |
+| 339 | `rust-server/proxy_route.rs` | `622cc271c2f77ffe4ec84b4fbd6d4dc0b796bef2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — `rust-server/src/proxy/proxy_route.rs`; побайтовое совпадение, SHA подтверждён. |
+| 340 | `rust-server/rust-toolchain.toml` | `362cd953eb82ca72ef9bd71da83a5858d8ba708a` | ВОССТАНОВЛЕН — добавлен отсутствовавший файл; зафиксированы Rust 1.97.1, профиль minimal, rustfmt/clippy и target x86_64-unknown-linux-musl. Побайтовое совпадение с исходником подтверждено. |
 | 341 | `rust-server/server_config.rs` | `20a3f528d7e654add7e59791362f38fc241fedf5` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/config/server_config.rs`. |
 | 342 | `rust-server/tokio_io.rs` | `b7973a4502650452650b390ded1d0b4e4b64980c` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/transport/tokio_io.rs`. |
 | 343 | `rust-server/tproxy.rs` | `caf86809f858bb015eecb9b8db2fe9e6118e5f8d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-server/src/proxy/tproxy.rs`. |
