@@ -323,12 +323,12 @@
 | 304 | `rust-client/vendor/netstack-smoltcp/Cargo.toml` | `be3d5026dee23d247648f75d17d3e64a3a0e8ebb` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 305 | `rust-client/vendor/netstack-smoltcp/LICENSE-APACHE` | `f49a4e16e68b128803cc2dcea614603632b04eac` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 306 | `rust-client/vendor/netstack-smoltcp/LICENSE-MIT` | `ede7ee90b0e7231f88b2fadcdd3854c4ffcd87b5` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 307 | `rust-client/vendor/netstack-smoltcp/src/device.rs` | `941cb93c1ae4662f4bc4135543ca9c34c39ef114` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 308 | `rust-client/vendor/netstack-smoltcp/src/filter.rs` | `daced192058ea16936f2798664dd6b6d6f014b79` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 309 | `rust-client/vendor/netstack-smoltcp/src/lib.rs` | `dc8fcc6f6062ba27d3b978f85b1fd8aa262b84a6` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 310 | `rust-client/vendor/netstack-smoltcp/src/packet.rs` | `fd1937ec82848a350129393c388ca6f3e16fb077` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 311 | `rust-client/vendor/netstack-smoltcp/src/runner.rs` | `c17957927ebfb6d75927867038f1507eae987472` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 312 | `rust-client/vendor/netstack-smoltcp/src/stack.rs` | `ecc9b39aa97f82a687b06706efa4be8c2bd75e19` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 307 | `rust-client/vendor/netstack-smoltcp/src/device.rs` | `941cb93c1ae4662f4bc4135543ca9c34c39ef114` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
+| 308 | `rust-client/vendor/netstack-smoltcp/src/filter.rs` | `daced192058ea16936f2798664dd6b6d6f014b79` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
+| 309 | `rust-client/vendor/netstack-smoltcp/src/lib.rs` | `dc8fcc6f6062ba27d3b978f85b1fd8aa262b84a6` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
+| 310 | `rust-client/vendor/netstack-smoltcp/src/packet.rs` | `fd1937ec82848a350129393c388ca6f3e16fb077` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
+| 311 | `rust-client/vendor/netstack-smoltcp/src/runner.rs` | `c17957927ebfb6d75927867038f1507eae987472` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
+| 312 | `rust-client/vendor/netstack-smoltcp/src/stack.rs` | `ecc9b39aa97f82a687b06706efa4be8c2bd75e19` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в целевом файле. |
 | 313 | `rust-client/vendor/netstack-smoltcp/src/tcp.rs` | `ce23053a20efa4433e3ed301f2d66be6ad30d5ee` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 314 | `rust-client/vendor/netstack-smoltcp/src/udp.rs` | `aeda9ee3ec53c794a5d082c361e28578da89c894` | ТОЧНОЕ СОВПАДЕНИЕ |
 | 315 | `rust-client/vendor/primp/Cargo.toml` | `22d2d714ff298f9fab97ad23382c10ce4b61b48a` | ТОЧНОЕ СОВПАДЕНИЕ |
@@ -373,8 +373,8 @@
 | 354 | `scripts/test_wsl_unified.ps1` | `23e7e0e23fe59d4d97901184da58c41ab7284033` | НЕ ПРОВЕРЕН |
 | 355 | `settings.gradle.kts` | `cf1c1d2712ce45903bb273c0445ec098a366df9c` | НЕ ПРОВЕРЕН |
 | 356 | `shared/dtls.rs` | `407915f519923b70473d48a936c663b98109f222` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `shared/dtls.rs`. |
-| 357 | `shared/spsc_ring.rs` | `ac4d6b6a0b1add12d7247842e472ddb5f81e3bc6` | ТОЧНОЕ СОВПАДЕНИЕ |
-| 358 | `shared/wire_protocol.rs` | `2ac9ed2474995531fe6b3ec6a3bd68e09a5916e8` | ТОЧНОЕ СОВПАДЕНИЕ |
+| 357 | `shared/spsc_ring.rs` | `ac4d6b6a0b1add12d7247842e472ddb5f81e3bc6` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `shared/spsc_ring.rs`. |
+| 358 | `shared/wire_protocol.rs` | `2ac9ed2474995531fe6b3ec6a3bd68e09a5916e8` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `shared/wire_protocol.rs`. |
 | 359 | `VERSIONING.md` | `ad5f8da834804d8c7590ffa4b5e6ae3a3aca8f42` | НЕ ПРОВЕРЕН |
 
 ## Сводка по типам файлов
@@ -412,3 +412,4 @@
 | 2026-11-22 | Проверка 8 Rust-файлов клиента: stats, stream_diagnostics, stun_codec, traffic_diagnostics, tun, turn, turn_core, turn_endpoint | 7 файлов совпадают побайтово; `turn.rs` отличается только путём к файлу тестового модуля, сам код совпадает | Все 8 строк получили подтверждённый статус переноса/распределения |
 | 2026-11-22 | Проверка 8 Rust-файлов: turn_ip_pool, turn_stream, vk_js_calls, worker, wrap и серверные dataplane, model, net_setup | Все 8 исходных файлов полностью совпадают побайтово с соответствующими файлами целевого репозитория | Ещё восемь строк получили подтверждённый статус переноса/распределения |
 | 2026-11-22 | Проверка 8 Rust-файлов сервера/shared: path_probe, protocol, proxy_route, server_config, tokio_io, tproxy, tun_device, dtls | Все 8 файлов полностью совпадают побайтово с соответствующими файлами целевого репозитория | Ещё восемь строк получили подтверждённый статус переноса/распределения |
+| 2026-11-22 | Проверка 8 Rust-файлов shared/vendor: `spsc_ring.rs`, `wire_protocol.rs` и 6 файлов `netstack-smoltcp` | Все 8 исходных файлов полностью совпадают побайтово с целевыми | Ещё восемь строк получили подтверждённый статус переноса/распределения |
