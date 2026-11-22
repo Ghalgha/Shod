@@ -18,7 +18,7 @@
 | № | Файл источника | SHA исходного файла | Статус |
 |---:|---|---|---|
 | 1 | `.gitattributes` | `16e50b1c5a0cb98910dabc2ae0c3b2eca49ed844` | ПЕРЕНЕСЁН — восстановлен в корне target с исходными правилами: `*.sh text eol=lf`, `*.ps1 text eol=crlf`; сохранён UTF-8 BOM. |
-| 2 | `.github/workflows/ci.yml` | `1cdc496180a8fb258c6c619c77d1e8fc00bfdfa6` | ТРЕБУЕТ ИСПРАВЛЕНИЯ — в целевом репозитории отсутствует CI workflow (есть только `.github/workflows/.gitkeep`); исходные проверки shell, Android lint/tests/build и Rust clippy/tests потеряны. Сам CI не запускался. |
+| 2 | `.github/workflows/ci.yml` | `1cdc496180a8fb258c6c619c77d1e8fc00bfdfa6` | ВОССТАНОВЛЕН — исходные проверки shell, Android lint/unit tests/debug APK и Rust format/Clippy/tests сохранены; push-триггер расширен на `migration/phase-1-foundation`, чтобы проверить целевую ветку. CI запускается добавлением workflow. |
 | 3 | `.gitignore` | `62c0626eba3467e66a69b8d7defc7bde5c905f01` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — восстановлены все отсутствовавшие исходные исключения; дополнительные правила target (`*.iml`, `.env`, `.env.*`, `!.env.example`) сохранены. |
 | 4 | `app/build.gradle.kts` | `9304dd5cfd58e5d8835f0eeda6d1cc9547048271` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — целевой файл проверен; SHA совпадает с исходником. Для UI-тестов подтверждено также совпадение тела после изменения package/import. |
 | 5 | `app/lint.xml` | `b9d9033d384c37a7d1b11989d3b7b79a5d07ff89` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точный исходный файл добавлен в `app/lint.xml`; SHA и содержимое соответствуют source. |
