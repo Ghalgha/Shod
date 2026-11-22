@@ -19,7 +19,7 @@ import java.net.URLDecoder
 import java.util.concurrent.atomic.AtomicInteger
 
 import com.shod.client.ShodConstants
-import com.shod.client.TvDevicePolicy
+import com.shod.client.platform.android.device.TvDevicePolicy
 import com.shod.client.integration.vk.auth.model.VkAuthPayload
 import com.shod.client.integration.vk.auth.model.VkAuthPhase
 import com.shod.client.integration.vk.auth.network.VkTokenScraper
