@@ -119,7 +119,7 @@
 | 100 | `app/src/main/java/com/shod/client/ui/deploy/DeployPlan.kt` | `3ba88c38ff013673bb84ed252eac233af0a42d54` | ТРЕБУЕТ СВЕРКИ — целевой файл расширен моделями портов и runtime label; проверить исходную модель и связанные типы. |
 | 101 | `app/src/main/java/com/shod/client/ui/deploy/DeployScreen.kt` | `fce80a175a2b4d27fdeb6c6a980d865d968e7cc4` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело Compose-экрана полностью совпадает после исключения package/import; изменён только путь и пакет. |
 | 102 | `app/src/main/java/com/shod/client/ui/deploy/operations/DeployOperations.kt` | `af164fb2b77d7ab6fa2f17653812e7e0f55d8654` | НЕ ПРОВЕРЕН |
-| 103 | `app/src/main/java/com/shod/client/ui/deploy/operations/DeployScript.kt` | `0dc9d35716345b4ec3e5fb6acf92f86789a7f96d` | НЕ ПРОВЕРЕН |
+| 103 | `app/src/main/java/com/shod/client/ui/deploy/operations/DeployScript.kt` | `0dc9d35716345b4ec3e5fb6acf92f86789a7f96d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — обе функции `normalizeDeployScript` и `writeDeployScript` перенесены в `deploy/script/DeployScriptAsset.kt`; исполняемый код совпадает, добавлен только поясняющий комментарий. |
 | 104 | `app/src/main/java/com/shod/client/ui/deploy/operations/SshTransportConnection.kt` | `e3f3d0f0a7d26e4611f8c9cbb74c913c1facb76c` | ТРЕБУЕТ СВЕРКИ — целевой файл добавляет документированную границу retry; проверить точное поведение повторов и исключений. |
 | 105 | `app/src/main/java/com/shod/client/ui/deploy/ServerInventory.kt` | `8f929d3eec4a1372bce654375573ed2109fb2275` | ТРЕБУЕТ СВЕРКИ — целевая реализация короче более чем вдвое и меняет разбор окончания inventory; проверить обработку всех строк/ошибок. |
 | 106 | `app/src/main/java/com/shod/client/ui/design/ExtendedColors.kt` | `59410f63afd4f36260a69705052ecbce129688c2` | ТОЧНОЕ СОВПАДЕНИЕ |
@@ -404,6 +404,7 @@
 ## Журнал проверок
 
 | Дата | Диапазон / файлы | Результат | Изменение реестра |
+| 2026-11-22 | Проверка `DeployScript.kt` | Обе функции и нормализация BOM/переводов строк, чтение UTF-8 asset и запись результата совпадают с `deploy/script/DeployScriptAsset.kt`; в целевом файле добавлен только комментарий | 1 строка подтверждена; код приложения не менялся, CI не запускался |
 | 2026-11-22 | Сверка routing app picker и deploy UI: `AppSelectionOrdering`, `ApplicationRow`, `DeployCheckState`, `DeployScreen` | Все 4 исходных реализации найдены в целевых архитектурных путях; сортировка и UI-поведение сохранены, экран Deploy совпадает по телу после исключения package/import. `DeployOperations`, `DeployScript` и три диалога оставлены открытыми до сопоставления реализаций | 4 строки подтверждены; код приложения не менялся, CI не запускался |
 |---|---|---|---|
 | 2026-11-22 | Первичная инвентаризация всех 359 файлов | Создан полный перечень; точные blob-совпадения отмечены отдельно, содержимое ещё не признано перенесённым | Инициализация реестра |
