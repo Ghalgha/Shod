@@ -1676,7 +1676,7 @@ private val DEPLOY_SECRET_PATH_UUID = stringPreferencesKey("deploy_secret_path_u
             val previousHost = prefs[getProfileKey(DEPLOY_IP, profile)].orEmpty()
             val mainPassword = draft.mainPassword.ifBlank {
                 readSecret(prefs, DEPLOY_MAIN_PASSWORD_ENCRYPTED, DEPLOY_MAIN_PASSWORD, profile)
-                    .ifBlank { com.shod.client.ui.utils.generate16CharPassword() }
+                    .ifBlank { generate16CharPassword() }
             }
             val matches = (ShodConstants.Profiles.MIN_INDEX..ShodConstants.Profiles.MAX_INDEX).filter { p ->
                 prefs[getProfileKey(PEER, p)] == draft.ip.trim() &&
@@ -1737,7 +1737,7 @@ private val DEPLOY_SECRET_PATH_UUID = stringPreferencesKey("deploy_secret_path_u
             prefs.putSecret(DEPLOY_PASSWORD_ENCRYPTED, DEPLOY_PASSWORD, draft.sshPassword, profile)
             prefs.putSecret(DEPLOY_MAIN_PASSWORD_ENCRYPTED, DEPLOY_MAIN_PASSWORD, mainPassword, profile)
             prefs[getProfileKey(DEPLOY_WEB_LOGIN, profile)] = draft.webLogin.ifBlank { prefs[getProfileKey(DEPLOY_WEB_LOGIN, profile)].orEmpty().ifBlank { "admin" } }
-            val webPassword = draft.webPassword.ifBlank { readSecret(prefs, DEPLOY_WEB_PASSWORD_ENCRYPTED, DEPLOY_WEB_PASSWORD, profile).ifBlank { com.shod.client.ui.utils.generate16CharPassword() } }
+            val webPassword = draft.webPassword.ifBlank { readSecret(prefs, DEPLOY_WEB_PASSWORD_ENCRYPTED, DEPLOY_WEB_PASSWORD, profile).ifBlank { generate16CharPassword() } }
             prefs.putSecret(DEPLOY_WEB_PASSWORD_ENCRYPTED, DEPLOY_WEB_PASSWORD, webPassword, profile)
             prefs[getProfileKey(DEPLOY_SSH_PORT, profile)] = draft.sshPort
             prefs[getProfileKey(DEPLOY_MANUAL_PORTS, profile)] = draft.manualPortsEnabled
