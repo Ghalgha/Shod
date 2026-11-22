@@ -21,6 +21,7 @@ import com.shod.client.deploy.plan.ServerPorts
 import com.shod.client.deploy.plan.planDeploy
 import com.shod.client.deploy.inventory.ServerPlace
 import com.shod.client.platform.android.deploy.AndroidDeployCoordinator
+import com.shod.client.platform.android.deploy.DeployDiagnostics
 import com.shod.client.platform.android.deploy.ssh.SshHostKeyStore
 import com.shod.client.ui.screens.deploy.DeployAction
 import com.shod.client.ui.screens.deploy.DeployCheckState
@@ -42,6 +43,8 @@ import com.shod.client.ui.dialogs.HostKeyChangedDialog
 import com.shod.client.ui.dialogs.SshKeysDialog
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.TimeoutCancellationException
 
 /**
  * Compose owner for deploy form state and user-triggered deployment operations.
@@ -57,6 +60,7 @@ internal fun DeployController(
     val context = LocalContext.current.applicationContext
     val scope = rememberCoroutineScope()
     val snackbar = remember { SnackbarHostState() }
+    SideEffect { DeployDiagnostics.initialize(context) }
 
     var host by remember(savedSettings.profile) { mutableStateOf(savedSettings.ip) }
     var login by remember(savedSettings.profile) { mutableStateOf(savedSettings.sshLogin) }
@@ -120,7 +124,10 @@ internal fun DeployController(
         onProgress = { value, message -> progress = value; step = message },
         onInfo = { step = it },
         onSuccess = { step = it },
-        onError = { step = it },
+        onError = { message ->
+            step = message
+            DeployDiagnostics.recordError(message)
+        },
     )
     fun credentialsReady(): Boolean {
         showValidation = true
@@ -165,6 +172,7 @@ internal fun DeployController(
         if (busy) return
         busy = true
         progress = 0f
+        DeployDiagnostics.begin()
         val effective = ports()
         scope.launch {
             try {
@@ -174,7 +182,7 @@ internal fun DeployController(
                     PlanKind.UPDATE -> DeployActionMode.Update
                     PlanKind.REPLACE -> DeployActionMode.Reinstall
                 }
-                val result = coordinator().deploy(
+                val result = withTimeout(30 * 60 * 1000L) { coordinator().deploy(
                     host = host.trim(),
                     user = login.trim(),
                     password = if (keysMode) "" else sshPassword,
@@ -190,7 +198,7 @@ internal fun DeployController(
                     installInDocker = docker,
                     secretPath = if (savedSettings.secretPathEnabled) savedSettings.secretPathUuid else "",
                     mode = mode,
-                )
+                ) }
                 if (result.successful) {
                     settingsStore.saveDeployedServer(savedSettings.profile, host.trim(), action.peerPort, action.webPort)
                     settingsStore.savePorts(action.peerPort, action.webPort, effective.ssh.toString())
@@ -203,9 +211,16 @@ internal fun DeployController(
                 } else {
                     report(result.failureMessage ?: "Операция завершилась ошибкой")
                 }
+            } catch (timeout: TimeoutCancellationException) {
+                DeployDiagnostics.forceReset("Автоматический сброс: операция установки превысила 30 минут")
+                progress = 0f
+                step = "Установка принудительно остановлена по таймауту"
+                report(step)
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (error: Exception) {
+                DeployDiagnostics.recordError("Необработанная ошибка установки: ${error.message ?: error.javaClass.simpleName}", error)
+                AndroidDeployCoordinator.cancelActiveOperation()
                 report(error.message ?: "Ошибка операции")
             } finally {
                 runCatching {
