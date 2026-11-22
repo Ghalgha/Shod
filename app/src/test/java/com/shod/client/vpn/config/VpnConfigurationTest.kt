@@ -1,5 +1,7 @@
 package com.shod.client.vpn.config
 
+import com.shod.client.ShodConstants
+
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
