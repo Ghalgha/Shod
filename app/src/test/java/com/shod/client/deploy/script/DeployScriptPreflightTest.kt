@@ -223,7 +223,7 @@ class DeployScriptPreflightTest {
         assertFalse(deploy.contains("nft delete table ip shod"))
         assertFalse(deploy.contains("fw_add_input_tcp \"\$SSH_PORT\""))
         assertFalse(deploy.contains("--dport \"\$SSH_PORT\" -m comment --comment \"\$IPT_COMMENT\""))
-        assertTrue(client.contains("bash /tmp/deploy.sh \\${mode.scriptAction}"))
+        assertTrue(client.contains("SshDeployFileTransfer"))
         assertFalse(client.contains("pkill -x shod"))
         assertFalse(client.contains("docker rm -f shod"))
         assertFalse(client.contains("nft delete table ip shod"))
