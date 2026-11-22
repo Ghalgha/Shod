@@ -1,0 +1,24 @@
+<!-- SPDX-FileCopyrightText: 2026 amurcanov -->
+<!-- SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- SHOD knot: two interlocking rope loops, reduced to a single-color mark. -->
+    <path
+        android:pathData="M 29,31 C 40,20 57,23 62,36 C 67,49 54,55 43,64 C 32,73 40,87 53,82 C 66,77 78,62 69,49"
+        android:strokeColor="#8FB4E2"
+        android:strokeWidth="9"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+    <path
+        android:pathData="M 79,31 C 68,20 51,23 46,36 C 41,49 54,55 65,64 C 76,73 68,87 55,82 C 42,77 30,62 39,49"
+        android:strokeColor="#8FB4E2"
+        android:strokeWidth="9"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>
