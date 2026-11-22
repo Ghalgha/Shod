@@ -5,6 +5,9 @@ import com.shod.client.deploy.execution.DeployActionMode
 import com.shod.client.deploy.inventory.ServerInventory
 import com.shod.client.platform.android.deploy.ssh.AndroidDeploySshSession
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.currentCoroutineContext
 import java.util.concurrent.atomic.AtomicReference
 
@@ -122,15 +125,18 @@ internal class AndroidDeployCoordinator(
         val job = currentCoroutineContext()[Job]
             ?: error("Deploy operation has no coroutine job")
         activeOperation.set(job)
+        _isDeploying.value = true
         return try {
             block()
         } finally {
-            activeOperation.compareAndSet(job, null)
+            if (activeOperation.compareAndSet(job, null)) _isDeploying.value = false
         }
     }
 
     companion object {
         private val activeOperation = AtomicReference<Job?>(null)
+        private val _isDeploying = MutableStateFlow(false)
+        val isDeploying: StateFlow<Boolean> = _isDeploying.asStateFlow()
 
         fun hasActiveOperation(): Boolean = activeOperation.get()?.isActive == true
 
