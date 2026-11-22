@@ -20,19 +20,31 @@ pub(crate) fn collect_allocator_thread_heap() -> bool {
     false
 }
 
+#[path = "dataplane/dataplane.rs"]
 mod dataplane;
 #[path = "../../shared/dtls.rs"]
 pub mod dtls;
+#[path = "config/model.rs"]
 mod model;
+#[path = "network/net_setup.rs"]
 mod net_setup;
+#[path = "packet/packet.rs"]
 mod packet;
+#[path = "diagnostics/path_probe.rs"]
 mod path_probe;
+#[path = "protocol/protocol.rs"]
 mod protocol;
+#[path = "proxy/proxy_route.rs"]
 mod proxy_route;
+#[path = "config/server_config.rs"]
 mod server_config;
+#[path = "transport/tokio_io.rs"]
 mod tokio_io;
+#[path = "proxy/tproxy.rs"]
 mod tproxy;
+#[path = "tun/tun_device.rs"]
 mod tun_device;
+#[path = "web_panel/web_panel.rs"]
 mod web_panel;
 #[path = "../../shared/wire_protocol.rs"]
 mod wire_protocol;
