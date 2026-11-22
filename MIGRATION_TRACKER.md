@@ -297,11 +297,11 @@
 | 278 | `rust-client/dispatcher.rs` | `f52070e96b772386863b6584d225f0e2bd9285dd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/dispatcher/dispatcher.rs` побайтово совпадает с исходником (SHA совпадает). |
 | 279 | `rust-client/dns.rs` | `44fcd0d386cc832c0969df94a405a0bbc85ac51b` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/routing/dns/dns.rs` побайтово совпадает с исходником (SHA совпадает). |
 | 280 | `rust-client/events.rs` | `2d3b38817740fff22fdbdfe8de9d7be756d42e6d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/diagnostics/events.rs` побайтово совпадает с исходником (SHA совпадает). |
-| 281 | `rust-client/logging.rs` | `c6bb13005c09788c3efebcafd88280fd9c947ebe` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/diagnostics/logging.rs`. |
-| 282 | `rust-client/main.rs` | `03f2d01988ec37128de72e2598977b42863e569d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — тело полностью совпадает после исключения директив путей модулей; изменена только раскладка `#[path]`. |
-| 283 | `rust-client/namegen.rs` | `74f3d6302f4d8888ffaf45e910ea33d162f5124a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/security/namegen.rs`. |
-| 284 | `rust-client/obfs.rs` | `44e2423ad11a6b8142578639b65f74bc81ec02a3` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/obfuscation/obfs.rs`. |
-| 285 | `rust-client/packet.rs` | `51245ebf87e44cbc4469c91473eccb0160d62850` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/packet/packet.rs`. |
+| 281 | `rust-client/logging.rs` | `c6bb13005c09788c3efebcafd88280fd9c947ebe` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/diagnostics/logging.rs` побайтово совпадает с исходником (SHA совпадает). |
+| 282 | `rust-client/main.rs` | `03f2d01988ec37128de72e2598977b42863e569d` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: всё тело после импортов побайтово идентично исходнику; изменены только объявления модулей `#[path]` для новой структуры `src/`. |
+| 283 | `rust-client/namegen.rs` | `74f3d6302f4d8888ffaf45e910ea33d162f5124a` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/security/namegen.rs` побайтово совпадает с исходником (SHA совпадает). |
+| 284 | `rust-client/obfs.rs` | `44e2423ad11a6b8142578639b65f74bc81ec02a3` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/obfuscation/obfs.rs` побайтово совпадает с исходником (SHA совпадает). |
+| 285 | `rust-client/packet.rs` | `51245ebf87e44cbc4469c91473eccb0160d62850` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — повторно сверено: `rust-client/src/packet/packet.rs` побайтово совпадает с исходником (SHA совпадает). |
 | 286 | `rust-client/profiles.rs` | `25c5c01a1f3713b2ad7e8dfe6a386edaf2b694e2` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/runtime/profiles.rs`. |
 | 287 | `rust-client/proptest-regressions/session.txt` | `37bb44576e341826894f3002b4ebb5ccbaa35a57` | ТРЕБУЕТ СВЕРКИ — regression corpus proptest отсутствует в target; проверить, является ли файл необходимым воспроизводимым regression case. |
 | 288 | `rust-client/protocol.rs` | `4b50656fa6f9b18b0ccf13250b61602a4b3d78dd` | ПЕРЕНЕСЁН / РАСПРЕДЕЛЁН — точное побайтовое совпадение в `rust-client/src/protocol/protocol.rs`. |
@@ -549,3 +549,6 @@
 
 
 | 2026-11-22 | Повторная проверка строк 276–280 | Все пять Rust-файлов повторно сравнены с архитектурно размещёнными файлами в `rust-client/src/`; Git blob SHA и размеры совпадают. Дополнительный перенос кода не потребовался. |
+
+
+| 2026-11-22 | Повторная проверка строк 281–285 | №281, 283–285: архитектурно размещённые файлы побайтово совпадают с оригиналами по Git blob SHA. №282: тело `main.rs` после импортов полностью идентично; различаются только объявления модулей с путями, адаптированными к `rust-client/src/`. Дополнительный перенос не потребовался. |
