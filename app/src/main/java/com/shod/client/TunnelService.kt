@@ -32,6 +32,9 @@ import com.shod.client.platform.android.network.wifi.hasWifiSsidAccess
 
 import android.annotation.SuppressLint
 import com.shod.client.vpn.lifecycle.TunnelServiceInputPolicy
+import com.shod.client.vpn.lifecycle.TunnelServiceInputPolicy.sanitizeVkAuthMode
+import com.shod.client.vpn.lifecycle.TunnelServiceInputPolicy.sanitizeSrtpMode
+import com.shod.client.vpn.lifecycle.TunnelServiceInputPolicy.sanitizeCaptchaMode
 import com.shod.client.vpn.lifecycle.TunnelServicePolicy
 import android.app.Notification
 import android.app.NotificationChannel
