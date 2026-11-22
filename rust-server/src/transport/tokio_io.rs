@@ -508,7 +508,11 @@ impl TokioIo {
         })
         .await
         .context("join TUN setup task")??;
-        let tun = AsyncFd::new(TunDevice(device)).context("register TUN in tokio")?;
+        // SAFETY: TunDevice owns the TUN device for the entire AsyncFd lifetime;
+        // its file descriptor remains open and stable until TunDevice is dropped.
+        let tun = unsafe { AsyncFd::register(TunDevice(device)) }
+            .map_err(|error| error.into_io())
+            .context("register TUN in tokio")?;
 
         Ok(Self {
             udp,
