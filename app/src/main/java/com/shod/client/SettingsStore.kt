@@ -60,6 +60,7 @@ import com.shod.client.network.wifi.preferences.WifiPreferences
 import com.shod.client.network.wifi.preferences.WifiPreferenceStore
 import com.shod.client.network.wifi.policy.decodeWifiSsids
 import com.shod.client.network.wifi.policy.encodeWifiSsids
+import com.shod.client.vpn.diagnostics.probe.ProfilePingResultsStore
 import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -76,6 +77,7 @@ private fun <T> Flow<T>.onIo(): Flow<T> = flowOn(Dispatchers.IO)
 
 class SettingsStore(context: Context, deployScope: Boolean = false, readOnlyProfile: Int? = null) {
     private val appContext = context.applicationContext
+    private val profilePingResultsStore = ProfilePingResultsStore()
     companion object {
         private val ACTIVE_PROFILE = intPreferencesKey("active_profile")
         private val UI_OWNER_MODE = booleanPreferencesKey("ui_owner_mode")
@@ -332,7 +334,7 @@ private val DEPLOY_SECRET_PATH_UUID = stringPreferencesKey("deploy_secret_path_u
         dataStore,
         ShodConstants.Profiles.MIN_INDEX,
         ShodConstants.Profiles.MAX_INDEX,
-    ) { profile -> PingResultsCache.removeProfile(profile) }
+    ) { profile -> profilePingResultsStore.removeProfile(profile) }
     private val profileSubscriptionStore = ProfileSubscriptionStore(
         dataStore,
         profileLifecycleStore,
@@ -345,7 +347,7 @@ private val DEPLOY_SECRET_PATH_UUID = stringPreferencesKey("deploy_secret_path_u
         normalizeWorkers = { workers ->
             WorkerCountPolicy.normalize(workers, maximum = ShodConstants.Tunnel.MAX_WORKERS)
         },
-        invalidateProfileCache = { profile -> PingResultsCache.removeProfile(profile) },
+        invalidateProfileCache = { profile -> profilePingResultsStore.removeProfile(profile) },
         rewriteParticipantLink = { currentLink, peer, port, password ->
             parseShodLink(currentLink)?.let { link ->
                 formatShodLink(
@@ -877,7 +879,7 @@ private val DEPLOY_SECRET_PATH_UUID = stringPreferencesKey("deploy_secret_path_u
         dataStore.edit { prefs ->
             prefs[getProfileKey(PROFILE_REMOVED, profile)] = false
             prefs[getProfileKey(PROFILE_REVISION, profile)] = (prefs[getProfileKey(PROFILE_REVISION, profile)] ?: 0L) + 1L
-            PingResultsCache.removeProfile(profile)
+            profilePingResultsStore.removeProfile(profile)
             prefs[getProfileKey(PEER, profile)] =
                 if (host.contains(':')) "[$host]:${imported.port}" else host
             prefs[getProfileKey(SERVER_PEER_PORT, profile)] = imported.port
@@ -1708,7 +1710,7 @@ private val DEPLOY_SECRET_PATH_UUID = stringPreferencesKey("deploy_secret_path_u
                     (prefs[getProfileKey(SERVER_PEER_PORT, target)] ?: ShodConstants.Network.DEFAULT_SERVER_PEER_PORT) != draft.serverPeerPort ||
                     (updatePassword && oldPassword != mainPassword)) {
                     prefs[getProfileKey(PROFILE_REVISION, target)] = (prefs[getProfileKey(PROFILE_REVISION, target)] ?: 0L) + 1L
-                    PingResultsCache.removeProfile(target)
+                    profilePingResultsStore.removeProfile(target)
                 }
                 prefs[getProfileKey(DEPLOY_CONNECTION_PROFILE, profile)] = target
                 prefs[getProfileKey(PEER, target)] = draft.ip.trim()
