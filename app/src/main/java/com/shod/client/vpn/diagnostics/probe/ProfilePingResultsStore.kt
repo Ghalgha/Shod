@@ -30,16 +30,3 @@ internal class ProfilePingResultsStore {
         turnSubnets.value = emptyMap()
     }
 }
-
-/** Compatibility facade for settings/profile lifecycle code; all state is held by one session store. */
-internal object PingResultsCache {
-    private val store = ProfilePingResultsStore()
-
-    val profileResults get() = store.profileResults
-    val turnResults get() = store.turnResults
-
-    fun saveProfile(profile: Int, result: ProfilePingResult) = store.saveProfile(profile, result)
-    fun removeProfile(profile: Int) = store.removeProfile(profile)
-    fun saveTurn(subnet: String, milliseconds: Int) = store.saveTurn(subnet, milliseconds)
-    fun clearTurn() = store.clearTurn()
-}
