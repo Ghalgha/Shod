@@ -1763,5 +1763,5 @@ mod tests {
 }
 
 #[cfg(test)]
-#[path = "turn_integration_tests.rs"]
+#[path = "integration_tests.rs"]
 mod integration_tests;

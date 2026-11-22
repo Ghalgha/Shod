@@ -1,41 +1,72 @@
 #![allow(linker_messages)]
 
+#[path = "auth/auth.rs"]
 mod auth;
+#[path = "captcha/captcha.rs"]
 mod captcha;
+#[path = "captcha/captcha_slider.rs"]
 mod captcha_slider;
+#[path = "threads/cpu_task.rs"]
 mod cpu_task;
+#[path = "transport/relay/direct_relay.rs"]
 pub mod direct_relay;
+#[path = "dispatcher/dispatcher.rs"]
 mod dispatcher;
+#[path = "routing/dns/dns.rs"]
 mod dns;
 #[path = "../../shared/dtls.rs"]
 pub mod dtls;
+#[path = "diagnostics/events.rs"]
 mod events;
+#[path = "diagnostics/logging.rs"]
 mod logging;
+#[path = "diagnostics/stream_diagnostics.rs"]
 mod stream_diagnostics;
+#[path = "security/namegen.rs"]
 mod namegen;
+#[path = "obfuscation/obfs.rs"]
 mod obfs;
+#[path = "packet/packet.rs"]
 mod packet;
+#[path = "runtime/profiles.rs"]
 mod profiles;
+#[path = "protocol/protocol.rs"]
 mod protocol;
+#[path = "runtime/repair.rs"]
 mod repair;
+#[path = "session/session.rs"]
 mod session;
+#[path = "security/sni.rs"]
 mod sni;
 #[path = "../../shared/spsc_ring.rs"]
 mod spsc_ring;
+#[path = "transport/srtp/srtp_mode.rs"]
 mod srtp_mode;
+#[path = "stats/stats.rs"]
 mod stats;
+#[path = "diagnostics/traffic_diagnostics.rs"]
 mod traffic_diagnostics;
+#[path = "transport/stun/stun_codec.rs"]
 mod stun_codec;
+#[path = "tun/tun.rs"]
 mod tun;
+#[path = "transport/turn/turn.rs"]
 mod turn;
+#[path = "transport/turn/turn_core.rs"]
 mod turn_core;
+#[path = "transport/turn/turn_endpoint.rs"]
 mod turn_endpoint;
+#[path = "transport/turn/turn_ip_pool.rs"]
 mod turn_ip_pool;
+#[path = "transport/turn/turn_stream.rs"]
 mod turn_stream;
+#[path = "calls/vk_js_calls.rs"]
 mod vk_js_calls;
 #[path = "../../shared/wire_protocol.rs"]
 mod wire_protocol;
+#[path = "threads/worker.rs"]
 mod worker;
+#[path = "security/wrap.rs"]
 mod wrap;
 
 use anyhow::{Context, Result, bail};
