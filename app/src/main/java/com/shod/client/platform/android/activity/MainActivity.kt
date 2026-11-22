@@ -1,5 +1,7 @@
 package com.shod.client.platform.android.activity
 
+import com.shod.client.platform.android.activity.UpdateLaunchGuard
+
 import com.shod.client.subscriptions.SubscriptionSync
 
 import com.shod.client.*
