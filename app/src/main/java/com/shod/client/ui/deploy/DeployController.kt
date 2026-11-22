@@ -185,7 +185,6 @@ internal fun DeployController(
         if (busy) return
         busy = true
         progress = 0f
-        DeployDiagnostics.begin()
         scope.launch {
             try {
                 context.startForegroundService(Intent(context, TunnelService::class.java).apply { action = "DEPLOY_START" })
