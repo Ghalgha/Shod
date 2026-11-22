@@ -1,6 +1,5 @@
 package com.shod.client.integration.vk.calls
 
-import com.shod.client.vpn.workers.WorkerCountPolicy
 import android.content.Context
 import android.os.SystemClock
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +16,7 @@ import java.security.MessageDigest
 import java.util.concurrent.CopyOnWriteArrayList
 
 import com.shod.client.ShodConstants
-import com.shod.client.WorkerCountPolicy
+import com.shod.client.vpn.workers.WorkerCountPolicy
 import com.shod.client.integration.vk.calls.api.VkApi
 import com.shod.client.integration.vk.calls.api.VkApiResult
 import com.shod.client.integration.vk.calls.policy.VkRequestPacer
