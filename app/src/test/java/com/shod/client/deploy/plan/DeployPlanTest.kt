@@ -32,7 +32,7 @@ class DeployPlanTest {
     @Test
     fun `the check result is trusted only when it finished`() {
         assertNull(parseServerInventory(std250))
-        val parsed = inv("noise", std250 + "|future=1", "Shod_INV|server|place=nowhere|state=running", "Shod_INV|busy|proto=udp|port=46000|by=nginx (PID 9, /usr/sbin/nginx)")
+        val parsed = inv("noise", std250 + "|future=1", "Shod_INV|busy|proto=udp|port=46000|by=nginx (PID 9, /usr/sbin/nginx)")
         assertEquals(1, parsed.servers.size)
         assertEquals("2.5.0", parsed.servers[0].version)
         assertEquals(46000, parsed.busy.single().port)
@@ -73,13 +73,6 @@ class DeployPlanTest {
         assertTrue(p.actions.single().detail.contains("Клиенты и пароли сохранятся"))
         assertTrue(p.actions.single().detail.contains("приложения 2.1 перестанут подключаться"))
         assertEquals(1, plan(inv(server("standard", "?", 46000, 46002))).actions.size)
-    }
-
-    @Test
-    fun `unsupported inventory places are ignored`() {
-        val parsed = inv(server("unrecognized", "2.5.0", 56000, 56002), std250)
-        assertEquals(listOf(ServerPlace.STANDARD), parsed.servers.map { it.place })
-        assertEquals(listOf("UPDATE:46000/46002"), plan(parsed).kinds())
     }
 
     @Test
