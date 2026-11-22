@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-FileCopyrightText: 2026 amurcanov -->
+<!-- SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 -->
+
+<resources>
+    <!-- SHOD light widget palette for API 31+ -->
+    <color name="widget_card_background">#FFFFFF</color>
+    <color name="widget_card_stroke">#D7DEE7</color>
+    <color name="widget_button_bg_active">#DCE7F3</color>
+    <color name="widget_button_bg_inactive">#E8EDF3</color>
+    <color name="widget_button_stroke_active">#315F96</color>
+    <color name="widget_button_stroke_inactive">#D7DEE7</color>
+</resources>
