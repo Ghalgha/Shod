@@ -216,6 +216,17 @@ if ($Mode -eq "Write") {
                 if (-not $artifactMap.ContainsKey($spec.AssetName)) {
                     throw "Cannot update selected server assets: existing provenance is missing $($spec.AssetName)"
                 }
+                if ($spec.AssetName -notin @($assetSpecs | ForEach-Object { $_.AssetName })) {
+                    $actual = Assert-ServerBinary -Spec $spec -Revision $revision
+                    $record = $artifactMap[$spec.AssetName]
+                    if ($record.target -ne $actual.target -or
+                        [int]$record.elfClass -ne [int]$actual.elfClass -or
+                        [int]$record.elfMachine -ne [int]$actual.elfMachine -or
+                        [int64]$record.binarySize -ne [int64]$actual.binarySize -or
+                        $record.binarySha256 -ne $actual.binarySha256) {
+                        throw "Cannot update selected server assets: unselected asset does not match existing provenance: $($spec.AssetName)"
+                    }
+                }
             }
             foreach ($artifact in $selectedArtifacts) {
                 $artifactMap[$artifact.assetName] = $artifact
