@@ -29,7 +29,7 @@ impl FdReceiver {
                     listen(&listener, Backlog::new(8)?)?;
                     return Ok(Self {
                         // SAFETY: listener is an owned descriptor kept alive by AsyncFd.
-                        listener: unsafe { tokio::io::unix::AsyncFd::new(listener)? },
+                        listener: tokio::io::unix::AsyncFd::new(listener)?,
                     });
                 }
                 Err(Errno::EADDRINUSE) if attempt < 29 => {
@@ -90,7 +90,7 @@ impl FdReceiver {
             };
 
             // SAFETY: connection is an OwnedFd moved into AsyncFd and remains open while registered.
-            let connection = match unsafe { AsyncFd::new(connection) } {
+            let connection = match AsyncFd::new(connection) {
                 Ok(c) => c,
                 Err(_) => continue,
             };
