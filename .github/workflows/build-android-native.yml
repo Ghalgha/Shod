@@ -57,6 +57,29 @@ jobs:
       - name: Install cargo-ndk
         run: cargo install cargo-ndk --locked
 
+      - name: Diagnose Android Cargo lockfile resolution
+        shell: bash
+        run: |
+          set -uo pipefail
+          backup="$RUNNER_TEMP/android-Cargo.lock.before"
+          cp rust-client/Cargo.lock "$backup"
+          restore_lock() {
+            cp "$backup" rust-client/Cargo.lock
+          }
+          trap restore_lock EXIT
+
+          set +e
+          cargo metadata --manifest-path rust-client/Cargo.toml \
+            --format-version 1 \
+            --filter-platform aarch64-linux-android
+          metadata_status=$?
+          set -e
+
+          echo "Cargo metadata exit code: $metadata_status"
+          echo "Differences Cargo wanted to make to rust-client/Cargo.lock:"
+          diff -u "$backup" rust-client/Cargo.lock || true
+          echo "Original Cargo.lock will be restored before the build."
+          
       - name: Build all Android ABIs
         run: bash rust-client/build_android_wsl.sh arm64-v8a armeabi-v7a x86_64
 
