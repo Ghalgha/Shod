@@ -47,7 +47,7 @@ class SshHostKeyStoreTest {
         val shown = newKey()
         assertTrue(verifier.verify("vps.example", 22, old))
         assertFalse(verifier.verify("vps.example", 22, shown))
-        SshHostKeyStore.trust(context, SshHostKeyStore.takeKeyChange("VPS.example", 22)!!)
+        SshHostKeyStore.trust(context, SshHostKeyStore.takeKeyChange("VPS.example", 22)!!) {}
 
         assertTrue(verifier.verify("vps.example", 22, shown))
         assertFalse(verifier.verify("vps.example", 22, old))
