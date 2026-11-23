@@ -17,11 +17,17 @@ class DeployScriptPreflightTest {
     private fun deployClientCode(): String {
         val candidates = listOf(
             "app/src/main/java/com/shod/client/platform/android/deploy/AndroidDeployWorkflow.kt",
+            "src/main/java/com/shod/client/platform/android/deploy/AndroidDeployWorkflow.kt",
             "app/src/main/java/com/shod/client/platform/android/deploy/AndroidDeployCoordinator.kt",
+            "src/main/java/com/shod/client/platform/android/deploy/AndroidDeployCoordinator.kt",
             "app/src/main/java/com/shod/client/deploy/artifact/DeployArtifactStager.kt",
+            "src/main/java/com/shod/client/deploy/artifact/DeployArtifactStager.kt",
             "app/src/main/java/com/shod/client/deploy/artifact/DeployConfigurationStager.kt",
+            "src/main/java/com/shod/client/deploy/artifact/DeployConfigurationStager.kt",
             "app/src/main/java/com/shod/client/deploy/script/DeployScriptAsset.kt",
+            "src/main/java/com/shod/client/deploy/script/DeployScriptAsset.kt",
             "app/src/main/java/com/shod/client/deploy/transfer/SshDeployFileTransfer.kt",
+            "src/main/java/com/shod/client/deploy/transfer/SshDeployFileTransfer.kt",
         )
         return candidates
             .map { File(it) }
