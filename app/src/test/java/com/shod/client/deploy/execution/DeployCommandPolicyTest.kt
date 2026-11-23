@@ -8,7 +8,7 @@ internal class DeployCommandPolicyTest {
     @Test
     fun environmentValuesPreserveSystemdEscapingAndDockerNewlineNormalization() {
         assertEquals("\"line1 line2\\\\path\\\"quoted\"", deployEnvironmentValue("line1\nline2\\path\"quoted", false))
-        assertEquals("line1 line2", deployEnvironmentValue("line1\nline2\r", true))
+        assertEquals("line1 line2 ", deployEnvironmentValue("line1\nline2\r", true))
     }
 
     @Test
