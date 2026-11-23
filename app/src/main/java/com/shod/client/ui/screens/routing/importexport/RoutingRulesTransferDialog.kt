@@ -176,5 +176,5 @@ private fun ips(obj: JSONObject, key: String, flatKey: String, isWhite: Boolean,
     val bothListsEmpty = (obj.optJSONArray("blacklist")?.length() ?: 0) == 0 &&
         (obj.optJSONArray("whitelist")?.length() ?: 0) == 0
     val source = listed?.takeIf { it.length() > 0 } ?: if (bothListsEmpty) obj.optJSONArray(flatKey) else null
-    return source?.let { array -> (0 until array.length()).map { IpRoutingRules.clean(it) }.filter(IpRoutingRules::isValid).distinct().take(1024) }.orEmpty()
+    return source?.let { array -> (0 until array.length()).map { IpRoutingRules.clean(array.optString(it)) }.filter(IpRoutingRules::isValid).distinct().take(1024) }.orEmpty()
 }
