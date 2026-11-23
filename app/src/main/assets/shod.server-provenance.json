@@ -5,7 +5,7 @@
   "runtime": "rust",
   "package": "shod",
   "repositoryPackageVersion": "0.1.0",
-  "artifactVersion": "2.5.3",
+  "artifactVersion": "0.1.0",
   "wireProtocolRevision": "Shod-WIRE-3",
   "buildInputSha256": "94F01E770EAB8BAF8DA5C6E10578635EF9154D160A5B5F3643835F4C4494B979",
   "cargoTomlSha256": "3E9936FAE6E7ECA46CFA0F1594363617EAA8D918545C93BE8A9DF38B2D20BBB4",
