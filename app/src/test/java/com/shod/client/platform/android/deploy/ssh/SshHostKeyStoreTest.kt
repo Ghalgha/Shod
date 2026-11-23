@@ -20,7 +20,7 @@ class SshHostKeyStoreTest {
         `when`(it.applicationContext).thenReturn(it)
         `when`(it.getSharedPreferences(anyString(), anyInt())).thenReturn(prefs)
     }
-    private val verifier = SshHostKeyStore.TofuVerifier(context)
+    private val verifier = SshHostKeyStore.TofuVerifier(context) {}
 
     private fun newKey(): PublicKey =
         KeyPairGenerator.getInstance("RSA").apply { initialize(1024) }.genKeyPair().public
