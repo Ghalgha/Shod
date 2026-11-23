@@ -55,9 +55,6 @@ jobs:
       - name: Install cargo-ndk
         run: cargo install cargo-ndk --locked
 
-      - name: Set up PowerShell
-        uses: microsoft/setup-powershell@v1
-
       - name: Build all Android ABIs
         run: bash rust-client/build_android_wsl.sh arm64-v8a armeabi-v7a x86_64
 
