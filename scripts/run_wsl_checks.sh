@@ -207,7 +207,7 @@ if [[ "${SHOD_CHECK_DOCKER:-0}" == "1" ]]; then
         printf 'OK (container HTTPS 200)\n'
     fi
 else
-    printf '[3/3] Docker check: SKIPPED (set SHOD_CHECK_DOCKER=1 to opt in)\n'
+    printf '[4/4] Docker check: SKIPPED (set SHOD_CHECK_DOCKER=1 to opt in)\n'
 fi
 
 printf '%s\n' 'STATUS: requested checks completed successfully.'
