@@ -2,11 +2,19 @@ package com.shod.client.vpn.workers
 
 import com.shod.client.ShodConstants
 import com.shod.client.integration.vk.calls.VkAutoCallsManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class WorkerCountPolicyTest {
+    private val autoCallsManager = VkAutoCallsManager(
+        scope = CoroutineScope(Dispatchers.Unconfined),
+        isLoggingEnabled = { false },
+        updateLog = { _, _, _, _ -> },
+        clearStoredToken = { },
+    )
 
     @Test
     fun everySupportedTotalRemainsAnExactMultipleOfTen() {
@@ -139,13 +147,13 @@ class WorkerCountPolicyTest {
 
     @Test
     fun automaticCallCountScalesToSevenHashes() {
-        assertEquals(1, VkAutoCallsManager.callCountForWorkers(10))
+        assertEquals(1, autoCallsManager.callCountForWorkers(10))
         assertEquals(2, VkAutoCallsManager.callCountForWorkers(20))
         assertEquals(3, VkAutoCallsManager.callCountForWorkers(30))
         assertEquals(5, VkAutoCallsManager.callCountForWorkers(45))
         assertEquals(6, VkAutoCallsManager.callCountForWorkers(60))
         assertEquals(7, VkAutoCallsManager.callCountForWorkers(100))
-        assertEquals(ShodConstants.VkAutoHash.AUTO_CALL_SMALL_DELAY_MS, VkAutoCallsManager.requestDelayForCallCount(1))
+        assertEquals(ShodConstants.VkAutoHash.AUTO_CALL_SMALL_DELAY_MS, autoCallsManager.requestDelayForCallCount(1))
         assertEquals(ShodConstants.VkAutoHash.AUTO_CALL_SMALL_DELAY_MS, VkAutoCallsManager.requestDelayForCallCount(4))
         assertEquals(ShodConstants.VkAutoHash.AUTO_CALL_LARGE_DELAY_MS, VkAutoCallsManager.requestDelayForCallCount(5))
         assertEquals(ShodConstants.VkAutoHash.AUTO_CALL_LARGE_DELAY_MS, VkAutoCallsManager.requestDelayForCallCount(6))
