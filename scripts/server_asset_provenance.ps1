@@ -22,6 +22,7 @@ $assetDirectory = Join-Path $projectRoot "app\src\main\assets"
 $manifestPath = Join-Path $assetDirectory "shod.server-provenance.json"
 $cargoTomlPath = Join-Path $projectRoot "rust-server\Cargo.toml"
 $cargoLockPath = Join-Path $projectRoot "rust-server\Cargo.lock"
+$appBuildGradlePath = Join-Path $projectRoot "app\build.gradle.kts"
 $wireProtocolPath = Join-Path $projectRoot "shared\wire_protocol.rs"
 $wireProtocolRevisionPath = Join-Path $projectRoot "rust-server\src\main.rs"
 $schema = "shod.server-asset-provenance.v3"
@@ -86,6 +87,232 @@ function Get-CargoPackage {
         throw "Unable to read Rust server package identity"
     }
     return [pscustomobject]@{ Name = $name; Version = $version }
+}
+
+function Get-AppVersionName {
+    Assert-RegularFile -Path $appBuildGradlePath -Label "Android application Gradle configuration"
+    $content = [IO.File]::ReadAllText($appBuildGradlePath)
+    $matches = [regex]::Matches($content, '(?m)^\s*versionName\s*=\s*"([^"]+)"\s*    Assert-RegularFile -Path $wireProtocolRevisionPath -Label "Wire protocol revision source"
+    $match = [regex]::Match(
+        [IO.File]::ReadAllText($wireProtocolRevisionPath),
+        'WIRE_PROTOCOL_REVISION\s*:\s*&str\s*=\s*"([^"]+)"'
+    )
+    if (-not $match.Success) {
+        throw "Wire protocol revision is missing"
+    }
+    return $match.Groups[1].Value
+}
+
+function Get-BuildInputHash {
+    $files = @(
+        (Join-Path $projectRoot "rust-server\build_linux.bat"),
+        (Join-Path $projectRoot "rust-server\build_linux.sh"),
+        (Join-Path $projectRoot "rust-server\build_linux_variants.ps1"),
+        $cargoTomlPath,
+        $cargoLockPath,
+        $wireProtocolPath,
+        $PSCommandPath
+    )
+    $files += Get-ChildItem -LiteralPath (Join-Path $projectRoot "rust-server\src") -Recurse -File -Filter *.rs |
+        ForEach-Object { $_.FullName }
+    $rootPrefix = $projectRoot.TrimEnd([char[]]@('\', '/')) + [IO.Path]::DirectorySeparatorChar
+    $builder = New-Object Text.StringBuilder
+    $sortedFiles = [string[]]@($files | Select-Object -Unique)
+    [Array]::Sort($sortedFiles, [StringComparer]::Ordinal)
+    foreach ($file in $sortedFiles) {
+        Assert-RegularFile -Path $file -Label "Server build input"
+        $fullPath = [IO.Path]::GetFullPath($file)
+        if (-not $fullPath.StartsWith($rootPrefix, [StringComparison]::OrdinalIgnoreCase)) {
+            throw "Server build input escaped project root: $fullPath"
+        }
+        [void]$builder.Append($fullPath.Substring($rootPrefix.Length).Replace("\", "/"))
+        [void]$builder.Append(":")
+        [void]$builder.Append((Get-Sha256 -Path $fullPath))
+        [void]$builder.Append("`n")
+    }
+    $hash = [Security.Cryptography.SHA256]::Create()
+    try {
+        return ([BitConverter]::ToString($hash.ComputeHash([Text.Encoding]::UTF8.GetBytes($builder.ToString())))).Replace("-", "")
+    }
+    finally {
+        $hash.Dispose()
+    }
+}
+
+function Assert-ServerBinary {
+    param($Spec, [string]$Revision)
+
+    $binaryPath = Join-Path $assetDirectory $Spec.AssetName
+    Assert-RegularFile -Path $binaryPath -Label "Linux server asset $($Spec.AssetName)"
+    [byte[]]$bytes = [IO.File]::ReadAllBytes($binaryPath)
+    if ($bytes.Length -lt 20 -or $bytes[0] -ne 0x7f -or $bytes[1] -ne 0x45 -or $bytes[2] -ne 0x4c -or $bytes[3] -ne 0x46) {
+        throw "Linux server asset $($Spec.AssetName) is not ELF"
+    }
+    if ($bytes[4] -ne $Spec.ElfClass -or $bytes[5] -ne 1) {
+        throw "ELF class or endianness mismatch for $($Spec.AssetName)"
+    }
+    $machine = [int]$bytes[18] -bor ([int]$bytes[19] -shl 8)
+    if ($machine -ne $Spec.ElfMachine) {
+        throw "ELF machine mismatch for $($Spec.AssetName): expected $($Spec.ElfMachine), got $machine"
+    }
+    if (-not ([Text.Encoding]::ASCII.GetString($bytes).Contains($Revision))) {
+        throw "Linux server asset $($Spec.AssetName) does not expose wire protocol revision $Revision"
+    }
+    $file = Get-Item -LiteralPath $binaryPath
+    return [pscustomobject]@{
+        assetName = $Spec.AssetName
+        target = $Spec.Target
+        elfClass = $Spec.ElfClass
+        elfMachine = $Spec.ElfMachine
+        binarySize = [int64]$file.Length
+        binarySha256 = Get-Sha256 -Path $binaryPath
+    }
+}
+
+$package = Get-CargoPackage
+$appVersion = Get-AppVersionName
+$revision = Get-WireProtocolRevision
+$buildInputHash = Get-BuildInputHash
+
+if ($Mode -eq "Write") {
+    Assert-RegularFile -Path $cargoLockPath -Label "Server Cargo.lock"
+    $selectedArtifacts = @($assetSpecs | ForEach-Object { Assert-ServerBinary -Spec $_ -Revision $revision })
+    $artifacts = $selectedArtifacts
+    $artifactVersion = $appVersion
+    if (Test-Path -LiteralPath $manifestPath -PathType Leaf) {
+        try {
+            $existingManifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+        }
+        catch {
+            throw "Existing server provenance is invalid; refusing to replace it: $manifestPath"
+        }
+
+        if ($assetSpecs.Count -ne $allAssetSpecs.Count) {
+            if ($existingManifest.schema -ne $schema -or
+                $existingManifest.marker -ne $marker -or
+                $existingManifest.producer -ne "rust-server/build_linux.bat" -or
+                $existingManifest.runtime -ne "rust" -or
+                $existingManifest.package -ne $package.Name -or
+                $existingManifest.repositoryPackageVersion -ne $package.Version -or
+                $existingManifest.artifactVersion -ne $appVersion -or
+                $existingManifest.wireProtocolRevision -ne $revision) {
+                throw "Cannot update selected server assets: existing provenance identity does not match the current build"
+            }
+            if ($existingManifest.buildInputSha256 -ne $buildInputHash) {
+                throw "Cannot update selected server assets: existing artifacts were built from different inputs; rebuild all server variants first"
+            }
+
+            $existingArtifacts = @($existingManifest.artifacts)
+            if ($existingArtifacts.Count -ne $allAssetSpecs.Count) {
+                throw "Cannot update selected server assets: existing provenance does not contain all server variants"
+            }
+            $artifactMap = @{}
+            foreach ($existingArtifact in $existingArtifacts) {
+                $assetName = [string]$existingArtifact.assetName
+                if ($assetName -notin @($allAssetSpecs | ForEach-Object { $_.AssetName }) -or $artifactMap.ContainsKey($assetName)) {
+                    throw "Cannot update selected server assets: existing provenance contains an unknown or duplicate artifact"
+                }
+                $artifactMap[$assetName] = $existingArtifact
+            }
+            foreach ($spec in $allAssetSpecs) {
+                if (-not $artifactMap.ContainsKey($spec.AssetName)) {
+                    throw "Cannot update selected server assets: existing provenance is missing $($spec.AssetName)"
+                }
+                if ($spec.AssetName -notin @($assetSpecs | ForEach-Object { $_.AssetName })) {
+                    $actual = Assert-ServerBinary -Spec $spec -Revision $revision
+                    $record = $artifactMap[$spec.AssetName]
+                    if ($record.target -ne $actual.target -or
+                        [int]$record.elfClass -ne [int]$actual.elfClass -or
+                        [int]$record.elfMachine -ne [int]$actual.elfMachine -or
+                        [int64]$record.binarySize -ne [int64]$actual.binarySize -or
+                        $record.binarySha256 -ne $actual.binarySha256) {
+                        throw "Cannot update selected server assets: unselected asset does not match existing provenance: $($spec.AssetName)"
+                    }
+                }
+            }
+            foreach ($artifact in $selectedArtifacts) {
+                $artifactMap[$artifact.assetName] = $artifact
+            }
+            $artifacts = @($allAssetSpecs | ForEach-Object { $artifactMap[$_.AssetName] })
+        }
+    }
+    elseif ($assetSpecs.Count -ne $allAssetSpecs.Count) {
+        throw "Cannot write partial server provenance without an existing complete manifest; build all server variants first"
+    }
+
+    $manifest = [ordered]@{
+        schema = $schema
+        marker = $marker
+        producer = "rust-server/build_linux.bat"
+        runtime = "rust"
+        package = $package.Name
+        repositoryPackageVersion = $package.Version
+        artifactVersion = $artifactVersion
+        wireProtocolRevision = $revision
+        buildInputSha256 = $buildInputHash
+        cargoTomlSha256 = Get-Sha256 -Path $cargoTomlPath
+        cargoLockSha256 = Get-Sha256 -Path $cargoLockPath
+        artifacts = $artifacts
+        generatedAtUtc = [DateTime]::UtcNow.ToString("o")
+    }
+    $temporaryPath = "$manifestPath.tmp.$PID"
+    [IO.File]::WriteAllText($temporaryPath, ($manifest | ConvertTo-Json -Depth 4) + [Environment]::NewLine, (New-Object Text.UTF8Encoding($false)))
+    Move-Item -LiteralPath $temporaryPath -Destination $manifestPath -Force
+    Write-Output "Wrote Rust server provenance: $manifestPath"
+    exit 0
+}
+
+Assert-RegularFile -Path $manifestPath -Label "Rust server provenance"
+try {
+    $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+}
+catch {
+    throw "Invalid Rust server provenance JSON: $manifestPath"
+}
+
+if ($manifest.schema -ne $schema -or
+    $manifest.marker -ne $marker -or
+    $manifest.producer -ne "rust-server/build_linux.bat" -or
+    $manifest.runtime -ne "rust") {
+    throw "Rust server provenance identity mismatch"
+}
+if ($manifest.package -ne $package.Name -or
+    $manifest.repositoryPackageVersion -ne $package.Version -or
+    $manifest.artifactVersion -ne $appVersion -or
+    $manifest.wireProtocolRevision -ne $revision) {
+    throw "Rust server package or wire protocol identity changed after build"
+}
+if ($manifest.cargoTomlSha256 -ne (Get-Sha256 -Path $cargoTomlPath) -or
+    $manifest.cargoLockSha256 -ne (Get-Sha256 -Path $cargoLockPath) -or
+    $manifest.buildInputSha256 -ne $buildInputHash) {
+    throw "Rust server source changed after the production asset build"
+}
+$manifestArtifacts = @($manifest.artifacts)
+if ($manifestArtifacts.Count -ne $assetSpecs.Count) {
+    throw "Rust server provenance artifact count mismatch"
+}
+foreach ($spec in $assetSpecs) {
+    $matches = @($manifestArtifacts | Where-Object { $_.assetName -eq $spec.AssetName })
+    if ($matches.Count -ne 1) {
+        throw "Rust server provenance is missing $($spec.AssetName)"
+    }
+    $actual = Assert-ServerBinary -Spec $spec -Revision $revision
+    $record = $matches[0]
+    if ($record.target -ne $actual.target -or
+        [int]$record.elfClass -ne [int]$actual.elfClass -or
+        [int]$record.elfMachine -ne [int]$actual.elfMachine -or
+        [int64]$record.binarySize -ne [int64]$actual.binarySize -or
+        $record.binarySha256 -ne $actual.binarySha256) {
+        throw "Rust server asset does not match provenance: $($spec.AssetName)"
+    }
+}
+
+Write-Output "Rust server provenance verified: $marker"
+)
+    if ($matches.Count -ne 1 -or [string]::IsNullOrWhiteSpace($matches[0].Groups[1].Value)) {
+        throw "Unable to determine a unique Android application versionName"
+    }
+    return $matches[0].Groups[1].Value
 }
 
 function Get-WireProtocolRevision {
