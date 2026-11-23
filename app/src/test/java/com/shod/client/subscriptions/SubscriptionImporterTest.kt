@@ -1,6 +1,6 @@
 package com.shod.client.subscriptions
 
-import com.shod.client.ui.utils.encryptShodPayload
+import com.shod.client.links.encryptShodPayload
 import com.sun.net.httpserver.HttpServer
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
