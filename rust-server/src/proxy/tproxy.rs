@@ -1935,7 +1935,7 @@ mod linux {
         };
         // SAFETY: socket.clone() creates an independently owned socket descriptor;
         // the registered clone stays open and unchanged for the AsyncFd lifetime.
-        let async_fd = match unsafe { AsyncFd::register(socket.clone()) } {
+        let async_fd = match AsyncFd::new(socket.clone()) {
             Ok(fd) => fd,
             Err(error) => {
                 log(
