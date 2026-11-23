@@ -35,17 +35,16 @@ class ServerInventoryParserTest {
     }
 
     @Test
-    fun ignoresUnknownPlacesAndMalformedBusyPortsButRequiresEndMarker() {
-        val inventory = parseServerInventory(
-            """
-            Shod_INV|server|place=unknown|state=running
-            Shod_INV|busy|proto=tcp|port=not-a-port|by=service
-            Shod_INV|end
-            """.trimIndent()
+    fun rejectsUnknownPlacesAndMalformedBusyPorts() {
+        assertNull(
+            parseServerInventory(
+                """
+                Shod_INV|server|place=unknown|state=running
+                Shod_INV|busy|proto=tcp|port=not-a-port|by=service
+                Shod_INV|end
+                """.trimIndent()
+            )
         )
-        requireNotNull(inventory)
-        assertTrue(inventory.servers.isEmpty())
-        assertTrue(inventory.busy.isEmpty())
     }
 
     @Test
