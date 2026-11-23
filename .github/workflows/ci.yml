@@ -58,8 +58,8 @@ jobs:
       - name: Verify Gradle wrapper
         uses: gradle/actions/wrapper-validation@v4
 
-      - name: Isolated ProbeOutputReaderTest diagnostic
-        run: bash ./gradlew --no-daemon :app:testDebugUnitTest --tests 'com.shod.client.platform.android.process.probe.ProbeOutputReaderTest' --stacktrace --info
+      - name: Run Android lint, unit tests, and assemble debug APK
+        run: bash ./gradlew --no-daemon --stacktrace lintDebug testDebugUnitTest assembleDebug
 
       - name: Upload universal debug APK
         uses: actions/upload-artifact@v4
