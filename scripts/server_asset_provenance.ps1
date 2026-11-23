@@ -26,12 +26,12 @@ $wireProtocolPath = Join-Path $projectRoot "shared\wire_protocol.rs"
 $wireProtocolRevisionPath = Join-Path $projectRoot "rust-server\src\main.rs"
 $schema = "shod.server-asset-provenance.v3"
 $marker = "Shod_RUST_SERVER_PRODUCTION_V1"
-$assetSpecs = @(
+$allAssetSpecs = @(
     [pscustomobject]@{ AssetName = "shod-linux-amd64"; Target = "x86_64-unknown-linux-musl"; ElfClass = 2; ElfMachine = 62 },
     [pscustomobject]@{ AssetName = "shod-linux-arm64"; Target = "aarch64-unknown-linux-musl"; ElfClass = 2; ElfMachine = 183 },
     [pscustomobject]@{ AssetName = "shod-linux-armv7"; Target = "armv7-unknown-linux-musleabihf"; ElfClass = 1; ElfMachine = 40 }
 )
-$assetSpecs = @($assetSpecs | Where-Object { $_.AssetName -in $Assets })
+$assetSpecs = @($allAssetSpecs | Where-Object { $_.AssetName -in $Assets })
 if ($assetSpecs.Count -eq 0) { throw "Select at least one server asset" }
 
 function Assert-RegularFile {
@@ -104,6 +104,7 @@ function Get-BuildInputHash {
     $files = @(
         (Join-Path $projectRoot "rust-server\build_linux.bat"),
         (Join-Path $projectRoot "rust-server\build_linux.sh"),
+        (Join-Path $projectRoot "rust-server\build_linux_variants.ps1"),
         $cargoTomlPath,
         $cargoLockPath,
         $wireProtocolPath,
@@ -171,7 +172,8 @@ $buildInputHash = Get-BuildInputHash
 
 if ($Mode -eq "Write") {
     Assert-RegularFile -Path $cargoLockPath -Label "Server Cargo.lock"
-    $artifacts = @($assetSpecs | ForEach-Object { Assert-ServerBinary -Spec $_ -Revision $revision })
+    $selectedArtifacts = @($assetSpecs | ForEach-Object { Assert-ServerBinary -Spec $_ -Revision $revision })
+    $artifacts = $selectedArtifacts
     $artifactVersion = $package.Version
     if (Test-Path -LiteralPath $manifestPath -PathType Leaf) {
         try {
@@ -183,7 +185,48 @@ if ($Mode -eq "Write") {
         catch {
             throw "Existing server provenance is invalid; refusing to replace it: $manifestPath"
         }
+
+        if ($assetSpecs.Count -ne $allAssetSpecs.Count) {
+            if ($existingManifest.schema -ne $schema -or
+                $existingManifest.marker -ne $marker -or
+                $existingManifest.producer -ne "rust-server/build_linux.bat" -or
+                $existingManifest.runtime -ne "rust" -or
+                $existingManifest.package -ne $package.Name -or
+                $existingManifest.repositoryPackageVersion -ne $package.Version -or
+                $existingManifest.wireProtocolRevision -ne $revision) {
+                throw "Cannot update selected server assets: existing provenance identity does not match the current build"
+            }
+            if ($existingManifest.buildInputSha256 -ne $buildInputHash) {
+                throw "Cannot update selected server assets: existing artifacts were built from different inputs; rebuild all server variants first"
+            }
+
+            $existingArtifacts = @($existingManifest.artifacts)
+            if ($existingArtifacts.Count -ne $allAssetSpecs.Count) {
+                throw "Cannot update selected server assets: existing provenance does not contain all server variants"
+            }
+            $artifactMap = @{}
+            foreach ($existingArtifact in $existingArtifacts) {
+                $assetName = [string]$existingArtifact.assetName
+                if ($assetName -notin @($allAssetSpecs | ForEach-Object { $_.AssetName }) -or $artifactMap.ContainsKey($assetName)) {
+                    throw "Cannot update selected server assets: existing provenance contains an unknown or duplicate artifact"
+                }
+                $artifactMap[$assetName] = $existingArtifact
+            }
+            foreach ($spec in $allAssetSpecs) {
+                if (-not $artifactMap.ContainsKey($spec.AssetName)) {
+                    throw "Cannot update selected server assets: existing provenance is missing $($spec.AssetName)"
+                }
+            }
+            foreach ($artifact in $selectedArtifacts) {
+                $artifactMap[$artifact.assetName] = $artifact
+            }
+            $artifacts = @($allAssetSpecs | ForEach-Object { $artifactMap[$_.AssetName] })
+        }
     }
+    elseif ($assetSpecs.Count -ne $allAssetSpecs.Count) {
+        throw "Cannot write partial server provenance without an existing complete manifest; build all server variants first"
+    }
+
     $manifest = [ordered]@{
         schema = $schema
         marker = $marker
