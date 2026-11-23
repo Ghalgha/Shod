@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.fail
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -19,7 +20,7 @@ class ProbeOutputReaderTest {
             override fun available() = 0
             override fun read(): Int = error("Must never block on a silent process")
         }
-        val reader = launch { readProbeOutput(input, { true }) { error("No output expected") } }
+        val reader = launch { readProbeOutput(input, { true }) { fail("No output expected") } }
         runCurrent()
         reader.cancelAndJoin()
         assertTrue(reader.isCompleted)
