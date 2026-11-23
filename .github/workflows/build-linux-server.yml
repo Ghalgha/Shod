@@ -1,0 +1,55 @@
+name: Build Linux server assets
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linux-server-assets-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-linux-server:
+    name: Build amd64, arm64 and armv7 server binaries
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Zig
+        uses: mlugg/setup-zig@v2
+        with:
+          version: 0.14.1
+
+      - name: Set up Rust toolchain
+        run: |
+          rustup toolchain install 1.97.1 --profile minimal --component rustfmt --component clippy
+          rustup default 1.97.1
+
+      - name: Install cargo-zigbuild
+        run: cargo install cargo-zigbuild --locked
+
+      - name: Verify build tools
+        run: |
+          rustc +1.97.1 --version
+          cargo zigbuild --help
+          zig version
+          command -v pwsh
+
+      - name: Build all Linux server variants and verify provenance
+        run: bash ./rust-server/build_linux.sh --no-tests
+
+      - name: Upload verified Linux server assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: shod-linux-server-assets
+          path: |
+            app/src/main/assets/shod-linux-amd64
+            app/src/main/assets/shod-linux-arm64
+            app/src/main/assets/shod-linux-armv7
+            app/src/main/assets/shod.server-provenance.json
+          if-no-files-found: error
+          retention-days: 30
