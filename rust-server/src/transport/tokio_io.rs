@@ -665,7 +665,7 @@ impl TokioIo {
                 self.counters.udp_rx_errors = self.counters.udp_rx_errors.saturating_add(1);
                 continue;
             };
-            let control_len = (usize::from(msg.msg_controllen)).min(self.rx_controls[index].len());
+            let control_len = libc_length_to_usize(msg.msg_controllen).min(self.rx_controls[index].len());
             let local_ip = parse_ipv4_pktinfo_destination(unsafe {
                 std::slice::from_raw_parts(
                     self.rx_controls[index].0.as_ptr().cast::<u8>(),
@@ -1385,6 +1385,10 @@ fn set_socket_int(
     }
 }
 
+fn libc_length_to_usize<T: TryInto<usize>>(value: T) -> usize {
+    value.try_into().unwrap_or(usize::MAX)
+}
+
 fn cmsg_align(length: usize) -> usize {
     let align = std::mem::size_of::<usize>();
     (length + align - 1) & !(align - 1)
@@ -1393,7 +1397,7 @@ fn cmsg_align(length: usize) -> usize {
 fn parse_ipv4_pktinfo_destination(mut control: &[u8]) -> Option<Ipv4Addr> {
     while control.len() >= std::mem::size_of::<libc::cmsghdr>() {
         let header = unsafe { &*(control.as_ptr().cast::<libc::cmsghdr>()) };
-        let length = usize::from(header.cmsg_len);
+        let length = libc_length_to_usize(header.cmsg_len);
         if length < std::mem::size_of::<libc::cmsghdr>() || length > control.len() {
             break;
         }
