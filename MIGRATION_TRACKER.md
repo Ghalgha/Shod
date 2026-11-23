@@ -593,3 +593,5 @@
 | 2026-11-23 | Исправление остаточной ошибки CI Run №72 | `RoutingRulesTransferDialog.kt`: при разборе JSON-массива IP-правил вместо передачи числового индекса в `IpRoutingRules.clean(String)` теперь сначала извлекается строковое значение через `array.optString(it)`. Исправлена ошибка несовпадения типов `Int`/`String`. CI не запускался. |
 
 | 2026-11-23 | Исправление ссылок в Android-тестах после CI Run №74 | `DeployPlanTest.kt`: добавлен импорт `isLine25` из `deploy.inventory`; `SubscriptionImporterTest.kt`: `encryptShodPayload` импортируется из `links`; `WorkerCountPolicyTest.kt`: тесты вызывают `callCountForWorkers` и `requestDelayForCallCount` у экземпляра `VkAutoCallsManager`, а не как статические функции. CI не запускался. |
+
+| 2026-11-23 | Повторное исправление ссылок в `WorkerCountPolicyTest.kt` после CI Run №78 (`45093591360`) | В исходном production-файле `integration/vk/calls/VkAutoCallsManager.kt` обе функции объявлены как методы экземпляра, не как `companion object`/статические функции. Все оставшиеся обращения через имя класса заменены на уже созданный в тесте `autoCallsManager`; production-код не менялся. CI не запускался. |
