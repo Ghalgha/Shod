@@ -665,7 +665,7 @@ impl TokioIo {
                 self.counters.udp_rx_errors = self.counters.udp_rx_errors.saturating_add(1);
                 continue;
             };
-            let control_len = (msg.msg_controllen).min(self.rx_controls[index].len());
+            let control_len = (msg.msg_controllen as usize).min(self.rx_controls[index].len());
             let local_ip = parse_ipv4_pktinfo_destination(unsafe {
                 std::slice::from_raw_parts(
                     self.rx_controls[index].0.as_ptr().cast::<u8>(),
@@ -1393,7 +1393,7 @@ fn cmsg_align(length: usize) -> usize {
 fn parse_ipv4_pktinfo_destination(mut control: &[u8]) -> Option<Ipv4Addr> {
     while control.len() >= std::mem::size_of::<libc::cmsghdr>() {
         let header = unsafe { &*(control.as_ptr().cast::<libc::cmsghdr>()) };
-        let length = header.cmsg_len;
+        let length = header.cmsg_len as usize;
         if length < std::mem::size_of::<libc::cmsghdr>() || length > control.len() {
             break;
         }
