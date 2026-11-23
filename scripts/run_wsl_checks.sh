@@ -61,7 +61,7 @@ if [[ -z "$TEST_BIN" || ! -x "$TEST_BIN" ]]; then
     fail "native server test executable not found; build it first or set SHOD_SERVER_TEST_BIN"
 fi
 
-printf '[1/3] Native server tests: '
+printf '[1/4] Native server tests: '
 TEST_OUT="$("$TEST_BIN" --test-threads=4 2>&1)" || {
     printf 'FAILED\n%s\n' "$TEST_OUT" | tail -n 30
     exit 1
