@@ -71,9 +71,19 @@ jobs:
           retention-days: 1
 
   native-client:
-    name: Build Android Native Client
+    name: Build Android Native Client (${{ matrix.abi }})
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - abi: arm64-v8a
+            suffix: arm64
+          - abi: armeabi-v7a
+            suffix: armv7
+          - abi: x86_64
+            suffix: x86_64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -117,25 +127,16 @@ jobs:
           rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
           cargo install cargo-ndk --locked
 
-      - name: Build Android native client (3 ABIs)
-        run: bash rust-client/build_android_wsl.sh arm64-v8a armeabi-v7a x86_64
+      - name: Build Android native client (${{ matrix.abi }})
+        run: bash rust-client/build_android_wsl.sh "${{ matrix.abi }}"
 
-      - name: Verify Android native client provenance
-        shell: pwsh
-        run: |
-          ./scripts/native_client_provenance.ps1 -Mode Write -Producer rust-client/build_android_wsl.sh
-          ./scripts/native_client_provenance.ps1 -Mode Verify
-
-      - name: Upload Android native client
+      - name: Upload Android native client (${{ matrix.abi }})
         uses: actions/upload-artifact@v4
         with:
-          name: shod-android-native-client
+          name: shod-android-native-client-${{ matrix.abi }}
           path: |
-            app/src/main/jniLibs/
-            app/src/main/libclient.provenance.json
-            build/rust-client-android-arm64/
-            build/rust-client-android-armv7/
-            build/rust-client-android-x86_64/
+            app/src/main/jniLibs/${{ matrix.abi }}/
+            build/rust-client-android-${{ matrix.suffix }}/
           if-no-files-found: error
           retention-days: 1
 
@@ -154,15 +155,18 @@ jobs:
           name: shod-linux-server-assets
           path: app/src/main/assets
 
-      - name: Download Android native client
+      - name: Download Android native client artifacts
         uses: actions/download-artifact@v4
         with:
-          name: shod-android-native-client
+          pattern: shod-android-native-client-*
           path: .
+          merge-multiple: true
 
-      - name: Verify Android native client provenance
+      - name: Generate and verify Android native client provenance
         shell: pwsh
-        run: ./scripts/native_client_provenance.ps1 -Mode Verify
+        run: |
+          ./scripts/native_client_provenance.ps1 -Mode Write -Producer rust-client/build_android_wsl.sh
+          ./scripts/native_client_provenance.ps1 -Mode Verify
 
       - name: Verify Linux server asset provenance
         shell: pwsh
