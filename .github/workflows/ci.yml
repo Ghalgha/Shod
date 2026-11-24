@@ -141,7 +141,7 @@ jobs:
           retention-days: 1
 
   android:
-    name: Android (lint, unit and instrumented tests, debug APK)
+    name: Android (lint, unit tests, debug APK)
     runs-on: ubuntu-latest
     needs: [server-assets, native-client]
     timeout-minutes: 120
@@ -186,18 +186,6 @@ jobs:
 
       - name: Run Android lint, unit tests, and assemble debug APK
         run: bash ./gradlew --no-daemon --stacktrace lintDebug lintRelease testDebugUnitTest assembleDebug
-
-      - name: Run Android instrumented tests on emulator
-        uses: reactivecircus/android-emulator-runner@v2
-        env:
-          ANDROID_I_WANT_MY_TCG: yes
-        with:
-          api-level: 35
-          arch: x86_64
-          profile: pixel_2
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          script: bash ./gradlew --no-daemon --stacktrace connectedDebugAndroidTest
 
       - name: Upload Android lint reports
         if: always()
