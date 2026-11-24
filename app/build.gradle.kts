@@ -174,7 +174,6 @@ android {
 
 tasks.configureEach {
     val taskName = name.lowercase()
-    val preparesReleaseBuild = taskName == "prereleasebuild"
     val producesReleaseArtifact = taskName.contains("release") &&
         (taskName.startsWith("assemble") ||
             taskName.startsWith("bundle") ||
@@ -183,7 +182,7 @@ tasks.configureEach {
             taskName.startsWith("install") ||
             taskName.startsWith("publish") ||
             taskName.startsWith("upload"))
-    if (preparesReleaseBuild || producesReleaseArtifact) {
+    if (producesReleaseArtifact) {
         dependsOn(verifyReleaseSigning)
     }
 }
