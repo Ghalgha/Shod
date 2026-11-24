@@ -5,11 +5,18 @@ ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
 RUN_CHECKS=""
 DIAGNOSTICS=0
+SELECTED_VARIANT=""
 while (($#)); do
   case "$1" in
     --tests) RUN_CHECKS=1 ;;
     --no-tests) RUN_CHECKS=0 ;;
     --diagnostics) DIAGNOSTICS=1 ;;
+    --variant)
+      shift
+      [[ $# -gt 0 ]] || { echo "--variant requires amd64, arm64, or armv7" >&2; exit 2; }
+      SELECTED_VARIANT="$1"
+      case "$SELECTED_VARIANT" in amd64|arm64|armv7) ;; *) echo "Invalid Linux variant: $SELECTED_VARIANT" >&2; exit 2 ;; esac
+      ;;
     *) echo "Usage: $0 [--tests|--no-tests] [--diagnostics]" >&2; exit 2 ;;
   esac
   shift
@@ -129,17 +136,27 @@ build_variant() {
   cp "$ROOT/build/linux-musl/$target/release/shod" "$ROOT/../app/src/main/assets/$asset"
   ls -lh "$ROOT/dist/$asset"
 }
-build_variant x86_64-unknown-linux-musl x86_64-linux-musl shod-linux-amd64
-build_variant aarch64-unknown-linux-musl aarch64-linux-musl shod-linux-arm64
-build_variant armv7-unknown-linux-musleabihf arm-linux-musleabihf shod-linux-armv7
+if [[ -z "$SELECTED_VARIANT" || "$SELECTED_VARIANT" == "amd64" ]]; then
+  build_variant x86_64-unknown-linux-musl x86_64-linux-musl shod-linux-amd64
+fi
+if [[ -z "$SELECTED_VARIANT" || "$SELECTED_VARIANT" == "arm64" ]]; then
+  build_variant aarch64-unknown-linux-musl aarch64-linux-musl shod-linux-arm64
+fi
+if [[ -z "$SELECTED_VARIANT" || "$SELECTED_VARIANT" == "armv7" ]]; then
+  build_variant armv7-unknown-linux-musleabihf arm-linux-musleabihf shod-linux-armv7
+fi
 rm -f "$ROOT/../app/src/main/assets/shod"
-if command -v pwsh >/dev/null; then
-  pwsh -NoProfile -File "$ROOT/../scripts/server_asset_provenance.ps1" -Mode Write
-  pwsh -NoProfile -File "$ROOT/../scripts/server_asset_provenance.ps1" -Mode Verify
-elif command -v powershell.exe >/dev/null; then
-  powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$ROOT/../scripts/server_asset_provenance.ps1")" -Mode Write
-  powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$ROOT/../scripts/server_asset_provenance.ps1")" -Mode Verify
+if [[ -z "$SELECTED_VARIANT" ]]; then
+  if command -v pwsh >/dev/null; then
+    pwsh -NoProfile -File "$ROOT/../scripts/server_asset_provenance.ps1" -Mode Write
+    pwsh -NoProfile -File "$ROOT/../scripts/server_asset_provenance.ps1" -Mode Verify
+  elif command -v powershell.exe >/dev/null; then
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$ROOT/../scripts/server_asset_provenance.ps1")" -Mode Write
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$ROOT/../scripts/server_asset_provenance.ps1")" -Mode Verify
+  else
+    echo "Server assets built. Run scripts/server_asset_provenance.ps1 -Mode Write and -Mode Verify before packaging an APK." >&2
+    exit 1
+  fi
 else
-  echo "Server assets built. Run scripts/server_asset_provenance.ps1 -Mode Write and -Mode Verify before packaging an APK." >&2
-  exit 1
+  echo "Single Linux variant built; combined provenance is generated after CI artifact merge."
 fi

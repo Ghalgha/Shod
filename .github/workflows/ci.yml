@@ -29,9 +29,19 @@ jobs:
           sh -n "$RUNNER_TEMP/shod-tun-recovery.sh"
 
   server-assets:
-    name: Build Linux server assets
+    name: Build Linux server (${{ matrix.variant }})
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - variant: amd64
+            asset: shod-linux-amd64
+          - variant: arm64
+            asset: shod-linux-arm64
+          - variant: armv7
+            asset: shod-linux-armv7
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -55,18 +65,14 @@ jobs:
       - name: Install cargo-zigbuild
         run: cargo install cargo-zigbuild --locked
 
-      - name: Build and verify Linux server assets
-        run: bash ./rust-server/build_linux.sh --no-tests
+      - name: Build Linux server (${{ matrix.variant }})
+        run: bash ./rust-server/build_linux.sh --no-tests --variant "${{ matrix.variant }}"
 
-      - name: Upload Linux server assets
+      - name: Upload Linux server (${{ matrix.variant }})
         uses: actions/upload-artifact@v4
         with:
-          name: shod-linux-server-assets
-          path: |
-            app/src/main/assets/shod-linux-amd64
-            app/src/main/assets/shod-linux-arm64
-            app/src/main/assets/shod-linux-armv7
-            app/src/main/assets/shod.server-provenance.json
+          name: shod-linux-server-${{ matrix.variant }}
+          path: app/src/main/assets/${{ matrix.asset }}
           if-no-files-found: error
           retention-days: 1
 
@@ -152,8 +158,15 @@ jobs:
       - name: Download Linux server assets
         uses: actions/download-artifact@v4
         with:
-          name: shod-linux-server-assets
+          pattern: shod-linux-server-*
           path: app/src/main/assets
+          merge-multiple: true
+
+      - name: Generate and verify Linux server asset provenance
+        shell: pwsh
+        run: |
+          ./scripts/server_asset_provenance.ps1 -Mode Write
+          ./scripts/server_asset_provenance.ps1 -Mode Verify
 
       - name: Download Android native client artifacts
         uses: actions/download-artifact@v4
