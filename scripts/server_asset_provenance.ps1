@@ -111,43 +111,48 @@ function Get-WireProtocolRevision {
     return $match.Groups[1].Value
 }
 
-function Get-BuildInputHash {
+function Get-BuildInputRecords {
     $files = @(
         (Join-Path $projectRoot "rust-server\build_linux.bat"),
         (Join-Path $projectRoot "rust-server\build_linux.sh"),
         (Join-Path $projectRoot "rust-server\build_linux_variants.ps1"),
-        $cargoTomlPath,
-        $cargoLockPath,
-        $appBuildGradlePath,
-        $wireProtocolPath,
-        $PSCommandPath
+        $cargoTomlPath, $cargoLockPath, $appBuildGradlePath, $wireProtocolPath, $PSCommandPath
     )
     $files += Get-ChildItem -LiteralPath (Join-Path $projectRoot "rust-server\src") -Recurse -File -Filter *.rs |
         ForEach-Object { $_.FullName }
     $rootPrefix = $projectRoot.TrimEnd([char[]]@('\', '/')) + [IO.Path]::DirectorySeparatorChar
-    $builder = New-Object Text.StringBuilder
     $sortedFiles = [string[]]@($files | Select-Object -Unique)
     [Array]::Sort($sortedFiles, [StringComparer]::Ordinal)
+    $records = @()
     foreach ($file in $sortedFiles) {
         Assert-RegularFile -Path $file -Label "Server build input"
         $fullPath = [IO.Path]::GetFullPath($file)
         if (-not $fullPath.StartsWith($rootPrefix, [StringComparison]::OrdinalIgnoreCase)) {
             throw "Server build input escaped project root: $fullPath"
         }
-        [void]$builder.Append($fullPath.Substring($rootPrefix.Length).Replace("\", "/"))
+        $records += [pscustomobject]@{
+            path = $fullPath.Substring($rootPrefix.Length).Replace("\", "/")
+            sha256 = Get-Sha256 -Path $fullPath
+        }
+    }
+    return ,$records
+}
+
+function Get-BuildInputHash {
+    param([object[]]$Records)
+    $builder = New-Object Text.StringBuilder
+    foreach ($record in $Records) {
+        [void]$builder.Append($record.path)
         [void]$builder.Append(":")
-        [void]$builder.Append((Get-Sha256 -Path $fullPath))
-        [void]$builder.Append("`n")
+        [void]$builder.Append($record.sha256)
+        [void]$builder.Append([Environment]::NewLine)
     }
     $hash = [Security.Cryptography.SHA256]::Create()
     try {
         return ([BitConverter]::ToString($hash.ComputeHash([Text.Encoding]::UTF8.GetBytes($builder.ToString())))).Replace("-", "")
     }
-    finally {
-        $hash.Dispose()
-    }
+    finally { $hash.Dispose() }
 }
-
 function Assert-ServerBinary {
     param($Spec, [string]$Revision)
 
@@ -181,7 +186,8 @@ function Assert-ServerBinary {
 $package = Get-CargoPackage
 $appVersion = Get-AppVersionName
 $revision = Get-WireProtocolRevision
-$buildInputHash = Get-BuildInputHash
+$buildInputRecords = Get-BuildInputRecords
+$buildInputHash = Get-BuildInputHash -Records $buildInputRecords
 
 if ($Mode -eq "Write") {
     Assert-RegularFile -Path $cargoLockPath -Label "Server Cargo.lock"
@@ -259,6 +265,7 @@ if ($Mode -eq "Write") {
         artifactVersion = $artifactVersion
         wireProtocolRevision = $revision
         buildInputSha256 = $buildInputHash
+        buildInputs = $buildInputRecords
         cargoTomlSha256 = Get-Sha256 -Path $cargoTomlPath
         cargoLockSha256 = Get-Sha256 -Path $cargoLockPath
         artifacts = $artifacts
@@ -294,7 +301,22 @@ if ($manifest.package -ne $package.Name -or
 if ($manifest.cargoTomlSha256 -ne (Get-Sha256 -Path $cargoTomlPath) -or
     $manifest.cargoLockSha256 -ne (Get-Sha256 -Path $cargoLockPath) -or
     $manifest.buildInputSha256 -ne $buildInputHash) {
-    throw "Rust server source changed after the production asset build"
+    $recordedInputs = @($manifest.buildInputs)
+    if ($recordedInputs.Count -eq 0) {
+        throw "Rust server source hash mismatch; manifest has no per-file hashes for diagnosis"
+    }
+    $recordedMap = @{}
+    foreach ($record in $recordedInputs) { $recordedMap[[string]$record.path] = [string]$record.sha256 }
+    $currentMap = @{}
+    foreach ($record in $buildInputRecords) { $currentMap[[string]$record.path] = [string]$record.sha256 }
+    $differences = @()
+    foreach ($path in @($recordedMap.Keys + $currentMap.Keys | Sort-Object -Unique)) {
+        if (-not $recordedMap.ContainsKey($path)) { $differences += "Added: $path" }
+        elseif (-not $currentMap.ContainsKey($path)) { $differences += "Missing: $path" }
+        elseif ($recordedMap[$path] -ne $currentMap[$path]) { $differences += "Changed: $path" }
+    }
+    if ($differences.Count -eq 0) { $differences += "Aggregate hash mismatch despite identical per-file hashes; inspect manifest integrity" }
+    throw ("Rust server source changed after the production asset build:" + [Environment]::NewLine + " - " + ($differences -join ([Environment]::NewLine + " - ")))
 }
 $manifestArtifacts = @($manifest.artifacts)
 if ($manifestArtifacts.Count -ne $assetSpecs.Count) {
