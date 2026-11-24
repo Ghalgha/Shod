@@ -510,8 +510,7 @@ impl TokioIo {
         .context("join TUN setup task")??;
         // SAFETY: TunDevice owns the TUN device for the entire AsyncFd lifetime;
         // its file descriptor remains open and stable until TunDevice is dropped.
-        let tun = AsyncFd::new(TunDevice(device))
-            .context("register TUN in tokio")?;
+        let tun = AsyncFd::new(TunDevice(device)).context("register TUN in tokio")?;
 
         Ok(Self {
             udp,
@@ -664,7 +663,8 @@ impl TokioIo {
                 self.counters.udp_rx_errors = self.counters.udp_rx_errors.saturating_add(1);
                 continue;
             };
-            let control_len = libc_length_to_usize(msg.msg_controllen).min(self.rx_controls[index].len());
+            let control_len =
+                libc_length_to_usize(msg.msg_controllen).min(self.rx_controls[index].len());
             let local_ip = parse_ipv4_pktinfo_destination(unsafe {
                 std::slice::from_raw_parts(
                     self.rx_controls[index].0.as_ptr().cast::<u8>(),
@@ -1138,7 +1138,12 @@ impl FirewallRule {
         let spec = matches
             .iter()
             .copied()
-            .chain(["-m", "comment", "--comment", crate::server_config::MANAGED_TAG])
+            .chain([
+                "-m",
+                "comment",
+                "--comment",
+                crate::server_config::MANAGED_TAG,
+            ])
             .chain(target.iter().copied())
             .map(str::to_owned)
             .collect();

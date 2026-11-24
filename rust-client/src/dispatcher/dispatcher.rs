@@ -1,4 +1,4 @@
-use crate::traffic_diagnostics::{add as traffic_add, Metric as TM};
+use crate::traffic_diagnostics::{Metric as TM, add as traffic_add};
 use crate::{
     obfs::{ObfsConfig, ObfsState, SessionCipher},
     packet::{PacketBuf, PacketPool},
@@ -321,7 +321,9 @@ impl UplinkState {
 
     fn evict_flows(&mut self, now: std::time::Instant) {
         self.flow_evict_counter = self.flow_evict_counter.wrapping_add(1);
-        if !self.flow_evict_counter.is_multiple_of(FLOW_EVICT_EVERY) && self.flows.len() < FLOW_TABLE_MAX {
+        if !self.flow_evict_counter.is_multiple_of(FLOW_EVICT_EVERY)
+            && self.flows.len() < FLOW_TABLE_MAX
+        {
             return;
         }
         self.flows
@@ -822,9 +824,13 @@ impl Dispatcher {
         if let Err(returned) = self.inbound.push(packet) {
             packet = returned;
             let evicted = self.inbound.pop();
-            if evicted.is_some() { traffic_add(TM::DownlinkQueueDrops, 1); }
+            if evicted.is_some() {
+                traffic_add(TM::DownlinkQueueDrops, 1);
+            }
             drop(evicted);
-            if self.inbound.push(packet).is_err() { traffic_add(TM::DownlinkQueueDrops, 1); }
+            if self.inbound.push(packet).is_err() {
+                traffic_add(TM::DownlinkQueueDrops, 1);
+            }
             let total = INBOUND_DOWNLINK_EVICTED.fetch_add(1, Ordering::Relaxed) + 1;
             if total <= 8 || total.is_multiple_of(1000) {
                 crate::log_error!(
@@ -1382,7 +1388,9 @@ impl Dispatcher {
             if failed {
                 self.mark_uplink_congested(selected_idx);
             }
-        } else { traffic_add(TM::WrapDrops, 1); }
+        } else {
+            traffic_add(TM::WrapDrops, 1);
+        }
     }
 
     fn mark_uplink_congested(&self, idx: usize) {
@@ -1435,7 +1443,9 @@ impl Dispatcher {
                     None => false,
                     Some(frag) => target.channels.allocation.send(frag).await.is_err(),
                 };
-            } else { traffic_add(TM::WrapDrops, 1); }
+            } else {
+                traffic_add(TM::WrapDrops, 1);
+            }
         }
         if failed {
             self.mark_uplink_congested(selected_idx);
@@ -1919,7 +1929,10 @@ mod tests {
         for i in 1..320u64 {
             let now = start + Duration::from_micros(i * 15_625);
             let small = i % 2 == 0;
-            assert!(state.keeps_pin(now, if small { 120 } else { 1200 }, small), "packet {i}");
+            assert!(
+                state.keeps_pin(now, if small { 120 } else { 1200 }, small),
+                "packet {i}"
+            );
         }
     }
 
@@ -2245,11 +2258,23 @@ mod tests {
             dispatcher.push_inbound(packet());
         }
         let wait = std::time::Duration::from_millis(50);
-        assert!(tokio::time::timeout(wait, dispatcher.tun_wake.notified()).await.is_ok());
-        assert!(tokio::time::timeout(wait, dispatcher.tun_wake.notified()).await.is_err());
+        assert!(
+            tokio::time::timeout(wait, dispatcher.tun_wake.notified())
+                .await
+                .is_ok()
+        );
+        assert!(
+            tokio::time::timeout(wait, dispatcher.tun_wake.notified())
+                .await
+                .is_err()
+        );
         // the next packet must wake it — before the fix it waited for the next downlink packet
         dispatcher.push_inbound(packet());
-        assert!(tokio::time::timeout(wait, dispatcher.tun_wake.notified()).await.is_ok());
+        assert!(
+            tokio::time::timeout(wait, dispatcher.tun_wake.notified())
+                .await
+                .is_ok()
+        );
     }
 
     #[tokio::test]

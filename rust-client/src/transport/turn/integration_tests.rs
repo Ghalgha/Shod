@@ -399,7 +399,6 @@ async fn tcp_turn_transport_allocates_without_udp_fallback() {
     check_tcp_turn_flow().await;
 }
 
-
 async fn check_tcp_turn_flow() {
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let server_address = listener.local_addr().unwrap();
@@ -3829,7 +3828,7 @@ fn collect_fifty_stream_report(
     FiftyStreamReport {
         sent_packets,
         delivered_packets,
-                dropped_packets,
+        dropped_packets,
         max_queue_packets,
         max_queue_delay_ms,
         elapsed_ms: elapsed.as_secs_f64() * 1000.0,

@@ -171,7 +171,6 @@ struct Args {
         help = "Число последних DPI-записей"
     )]
     samples: usize,
-
 }
 
 #[derive(Debug, Default, serde::Deserialize)]
@@ -633,7 +632,10 @@ async fn web_tls_reload_loop(
 fn run_systemctl(action: &str) -> Result<()> {
     if std::env::var("Shod_SERVICE_MANAGER").is_ok_and(|value| value == "docker") {
         if action != "restart" {
-            bail!("для управления контейнером используйте docker start/stop {}", "shod");
+            bail!(
+                "для управления контейнером используйте docker start/stop {}",
+                "shod"
+            );
         }
         #[cfg(unix)]
         {
@@ -1207,7 +1209,12 @@ async fn async_main() -> Result<()> {
         &format!(" RTP AEAD: {}", app.listen),
     );
     log_event(&app, "INFO", "SYSTEM", " Tunnel: Userspace TUN (Shod)");
-    log_event(&app, "INFO", "SYSTEM", &format!(" Web: 0.0.0.0:{}", app.web_port));
+    log_event(
+        &app,
+        "INFO",
+        "SYSTEM",
+        &format!(" Web: 0.0.0.0:{}", app.web_port),
+    );
     let web_app = app.clone();
     let diagnostic_app = app.clone();
     tokio::spawn(async move {
@@ -1250,9 +1257,11 @@ async fn async_main() -> Result<()> {
                 #[cfg(unix)]
                 {
                     use std::os::unix::fs::PermissionsExt;
-                    let _ =
-                        tokio::fs::set_permissions(&key_path, std::fs::Permissions::from_mode(0o600))
-                            .await;
+                    let _ = tokio::fs::set_permissions(
+                        &key_path,
+                        std::fs::Permissions::from_mode(0o600),
+                    )
+                    .await;
                 }
             }
         } else if !cert_path.exists() || !key_path.exists() {
@@ -1262,9 +1271,10 @@ async fn async_main() -> Result<()> {
             );
         }
 
-        let tls_config = axum_server::tls_rustls::RustlsConfig::from_pem_file(&cert_path, &key_path)
-            .await
-            .context("load web cert")?;
+        let tls_config =
+            axum_server::tls_rustls::RustlsConfig::from_pem_file(&cert_path, &key_path)
+                .await
+                .context("load web cert")?;
 
         #[cfg(unix)]
         tokio::spawn(web_tls_reload_loop(
@@ -1758,4 +1768,3 @@ mod lock_tests {
         assert_eq!(cpu_percentage(previous, current), Some(80));
     }
 }
-

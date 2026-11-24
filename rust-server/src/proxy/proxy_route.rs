@@ -180,8 +180,7 @@ async fn start_tproxy_child_with_retry(
 }
 
 fn spawn_tproxy_child(config: &LocalProxyProfile, port: u16, status_path: &Path) -> Result<Child> {
-    let executable =
-        std::env::current_exe().context("resolve shod executable for TPROXY child")?;
+    let executable = std::env::current_exe().context("resolve shod executable for TPROXY child")?;
     let payload = serde_json::to_vec(config).context("serialize TPROXY child configuration")?;
     let mut child = Command::new(executable)
         .arg("--tproxy-child")
@@ -189,7 +188,8 @@ fn spawn_tproxy_child(config: &LocalProxyProfile, port: u16, status_path: &Path)
         .arg(port.to_string())
         .arg("--tproxy-status")
         .arg(status_path)
-        .stdin(Stdio::piped()).stdin(Stdio::piped())
+        .stdin(Stdio::piped())
+        .stdin(Stdio::piped())
         .stdout(Stdio::inherit())
         .stderr(Stdio::inherit())
         .spawn()
@@ -506,7 +506,10 @@ async fn activate_tproxy(runtime_id: u64, port: u16) -> Result<()> {
     let _ = command_output("sysctl", &["-w", "net.ipv4.conf.all.rp_filter=2"]).await;
     let _ = command_output("sysctl", &["-w", "net.ipv4.conf.default.rp_filter=2"]).await;
     // Shod's fixed TUN interface.
-    let iface_rp_filter = format!("net.ipv4.conf.{}.rp_filter=2", crate::server_config::TUN_IFACE);
+    let iface_rp_filter = format!(
+        "net.ipv4.conf.{}.rp_filter=2",
+        crate::server_config::TUN_IFACE
+    );
     let _ = command_output("sysctl", &["-w", &iface_rp_filter]).await;
     add_tproxy_shared_rules().await?;
     add_tproxy_rules(port).await?;
@@ -608,12 +611,10 @@ async fn tproxy_interception_present(port: u16) -> bool {
                 .split('/')
                 .next()
                 .unwrap_or_default();
-            rules
-                .lines()
-                .any(|line| {
-                    line.contains(&format!("fwmark {mark}"))
-                        && line.contains(crate::server_config::TPROXY_TABLE)
-                })
+            rules.lines().any(|line| {
+                line.contains(&format!("fwmark {mark}"))
+                    && line.contains(crate::server_config::TPROXY_TABLE)
+            })
         }
         Err(_) => true,
     }
@@ -974,7 +975,16 @@ async fn cleanup_shared_policy() {
     if let Err(error) = stale_result {
         eprintln!("[LOCAL-PROXY] stale TPROXY rule cleanup failed: {error:#}");
     }
-    let _ = command_output("ip", &["route", "flush", "table", crate::server_config::TPROXY_TABLE]).await;
+    let _ = command_output(
+        "ip",
+        &[
+            "route",
+            "flush",
+            "table",
+            crate::server_config::TPROXY_TABLE,
+        ],
+    )
+    .await;
     let _ = command_output("ip", &["route", "flush", "cache"]).await;
 }
 
@@ -992,7 +1002,13 @@ async fn verify_proxy_policy_clean() -> Result<()> {
             rules.push_str(&chunk);
         }
     }
-    for marker in [crate::server_config::TPROXY_TAG, NAT_COMMENT, MARK_COMMENT, LEGACY_NAT_COMMENT, LEGACY_QUIC_COMMENT] {
+    for marker in [
+        crate::server_config::TPROXY_TAG,
+        NAT_COMMENT,
+        MARK_COMMENT,
+        LEGACY_NAT_COMMENT,
+        LEGACY_QUIC_COMMENT,
+    ] {
         if rules.contains(marker) {
             bail!("stale netfilter rule remains: {marker}");
         }
@@ -1000,7 +1016,10 @@ async fn verify_proxy_policy_clean() -> Result<()> {
     let rules = command_output("ip", &["-4", "rule", "show"]).await?;
     for line in rules.lines() {
         let table = crate::server_config::TPROXY_TABLE;
-        let mark = crate::server_config::TPROXY_MARK.split('/').next().unwrap_or_default();
+        let mark = crate::server_config::TPROXY_MARK
+            .split('/')
+            .next()
+            .unwrap_or_default();
         let owned_tproxy = line.trim_start().starts_with(&format!("{table}:"))
             && line.contains(&format!("fwmark {mark}"))
             && line.contains(&format!("lookup {table}"));

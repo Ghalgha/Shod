@@ -4934,8 +4934,10 @@ async fn handle_getconf(
                     let ip_str = match &access {
                         CredentialAccess::Main => crate::model::owner_tunnel_ip(),
                         CredentialAccess::Slot(slot_key) => {
-                            let needs_ip =
-                                db.passwords.get(slot_key).is_some_and(|e| !crate::model::ip_in_pool(&e.ip));
+                            let needs_ip = db
+                                .passwords
+                                .get(slot_key)
+                                .is_some_and(|e| !crate::model::ip_in_pool(&e.ip));
                             let next_ip = if needs_ip { get_next_ip(&db) } else { None };
                             if let Some(entry) = db.passwords.get_mut(slot_key) {
                                 if let Some(ip) = next_ip {

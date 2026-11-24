@@ -20,8 +20,6 @@ pub mod dtls;
 mod events;
 #[path = "diagnostics/logging.rs"]
 mod logging;
-#[path = "diagnostics/stream_diagnostics.rs"]
-mod stream_diagnostics;
 #[path = "security/namegen.rs"]
 mod namegen;
 #[path = "obfuscation/obfs.rs"]
@@ -44,10 +42,12 @@ mod spsc_ring;
 mod srtp_mode;
 #[path = "stats/stats.rs"]
 mod stats;
-#[path = "diagnostics/traffic_diagnostics.rs"]
-mod traffic_diagnostics;
+#[path = "diagnostics/stream_diagnostics.rs"]
+mod stream_diagnostics;
 #[path = "transport/stun/stun_codec.rs"]
 mod stun_codec;
+#[path = "diagnostics/traffic_diagnostics.rs"]
+mod traffic_diagnostics;
 #[path = "tun/tun.rs"]
 mod tun;
 #[path = "transport/turn/turn.rs"]
@@ -991,14 +991,9 @@ mod worker_count_tests {
 
     #[test]
     fn vk_hash_may_start_with_a_hyphen() {
-        let arguments = Arguments::try_parse_from([
-            "shod-client",
-            "--vk",
-            "-Wabc",
-            "--peer",
-            "127.0.0.1:9000",
-        ])
-        .unwrap();
+        let arguments =
+            Arguments::try_parse_from(["shod-client", "--vk", "-Wabc", "--peer", "127.0.0.1:9000"])
+                .unwrap();
         assert_eq!(arguments.vk, "-Wabc");
     }
 

@@ -1,4 +1,4 @@
-use crate::traffic_diagnostics::{add as traffic_add, Metric as TM};
+use crate::traffic_diagnostics::{Metric as TM, add as traffic_add};
 use crate::{
     auth::TurnCredentials,
     dispatcher::{Dispatcher, WorkerChannels},
@@ -650,7 +650,10 @@ async fn install_session_ciphers(
         Err(error) => {
             diagnostic.record("error", &format!("{error:#}"));
             events.dtls(config.id, &format!("рукопожатие не состоялось ({error:#})"));
-            crate::log_error!("[SESSION #{}] DTLS-SRTP не состоялся ({error:#})", config.id);
+            crate::log_error!(
+                "[SESSION #{}] DTLS-SRTP не состоялся ({error:#})",
+                config.id
+            );
             if config.srtp_mode.falls_back_to_wrap() {
                 crate::log_error!(
                     "[SESSION #{}] SRTP: AUTO fallback -> WRAP-SRTP (legacy ключи)",
@@ -690,10 +693,16 @@ async fn run_dtls_handshake(
     let mut inbound_datagrams = 0u32;
     while !handshake.is_connected() {
         if tokio::time::Instant::now() >= deadline {
-            diagnostic.record("timeout", &format!(
-                "DTLS deadline={}ms; state={}; inbound={}; retransmits={}",
-                DTLS_HANDSHAKE_TIMEOUT.as_millis(), handshake_message_label(&handshake),
-                inbound_datagrams, retransmits));
+            diagnostic.record(
+                "timeout",
+                &format!(
+                    "DTLS deadline={}ms; state={}; inbound={}; retransmits={}",
+                    DTLS_HANDSHAKE_TIMEOUT.as_millis(),
+                    handshake_message_label(&handshake),
+                    inbound_datagrams,
+                    retransmits
+                ),
+            );
             crate::log_error!(
                 "[SESSION #{}] DTLS: таймаут рукопожатия за {} мс (состояние {}, входящих {}, повторов {})",
                 config.id,
@@ -811,9 +820,13 @@ fn authenticate_inbound(
         traffic_add(TM::AuthDrops, 1);
         return false;
     };
-    { let accepted = replay.rtp.accept_rtp(sequence);
-      if !accepted { traffic_add(TM::ReplayDrops, 1); }
-      accepted }
+    {
+        let accepted = replay.rtp.accept_rtp(sequence);
+        if !accepted {
+            traffic_add(TM::ReplayDrops, 1);
+        }
+        accepted
+    }
 }
 
 struct ActiveConnection {
@@ -971,7 +984,10 @@ pub async fn run_session(
     };
     crate::log_error!("[TURN] Подключение к {target_display}");
     let mut diagnostic = crate::stream_diagnostics::StreamDiagnostics::new(
-        runtime.events.enabled(), config.id, target_display);
+        runtime.events.enabled(),
+        config.id,
+        target_display,
+    );
     let cancel = runtime.cancel.clone();
     let turn_host = config.turn_host.clone();
     let turn_port = config.turn_port.clone();
@@ -1010,7 +1026,11 @@ pub async fn run_session(
     if let Some(ready) = runtime.allocation_ready.take() {
         let _ = ready.send(());
     }
-    crate::log_error!("[SESSION #{}] Relay: {}", config.id, allocation.local_addr());
+    crate::log_error!(
+        "[SESSION #{}] Relay: {}",
+        config.id,
+        allocation.local_addr()
+    );
     diagnostic.begin("channel_bind");
     let channel = tokio::select! {
         biased;
@@ -1249,8 +1269,17 @@ async fn run_allocated_session(
     };
     match &session_result {
         Ok(()) => diagnostic.record("closed", "session stopped"),
-        Err(error) => diagnostic.record("error", &format!("{}: {error:#}",
-            match completed { 1 => "writer", 2 => "reader", _ => "session" })),
+        Err(error) => diagnostic.record(
+            "error",
+            &format!(
+                "{}: {error:#}",
+                match completed {
+                    1 => "writer",
+                    2 => "reader",
+                    _ => "session",
+                }
+            ),
+        ),
     }
     session_cancel.cancel();
     stop_session_tasks(completed, writer, reader).await;

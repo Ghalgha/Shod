@@ -1,4 +1,4 @@
-use crate::traffic_diagnostics::{add as traffic_add, Metric as TM, WaitTimer};
+use crate::traffic_diagnostics::{Metric as TM, WaitTimer, add as traffic_add};
 #[cfg(test)]
 use crate::turn_core::{AF_IPV4, NativeAddress};
 use crate::{
@@ -248,7 +248,11 @@ async fn outbound_writer_loop(queue: Arc<OutboundQueue>) {
                 continue;
             }
             match queue.socket.try_send(packet.as_slice()) {
-                Ok(n) => { delivered = true; traffic_add(TM::UdpSocketBytes, n as u64); traffic_add(TM::UdpSocketPackets, 1); }
+                Ok(n) => {
+                    delivered = true;
+                    traffic_add(TM::UdpSocketBytes, n as u64);
+                    traffic_add(TM::UdpSocketPackets, 1);
+                }
                 Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock => {
                     traffic_add(TM::UdpWouldBlock, 1);
                     let _wait = WaitTimer::new(TM::UdpWaitUs, TM::UdpWaitMaxUs);
@@ -263,7 +267,12 @@ async fn outbound_writer_loop(queue: Arc<OutboundQueue>) {
                             break;
                         }
                         match queue.socket.try_send(packet.as_slice()) {
-                            Ok(n) => { delivered = true; traffic_add(TM::UdpSocketBytes, n as u64); traffic_add(TM::UdpSocketPackets, 1); break; },
+                            Ok(n) => {
+                                delivered = true;
+                                traffic_add(TM::UdpSocketBytes, n as u64);
+                                traffic_add(TM::UdpSocketPackets, 1);
+                                break;
+                            }
                             Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock => {
                                 tokio::time::sleep(Duration::from_micros(50)).await;
                             }
@@ -285,7 +294,14 @@ async fn outbound_writer_loop(queue: Arc<OutboundQueue>) {
                 }
             }
             if !delivered {
-                traffic_add(if queue.shared.closing.load(Ordering::Acquire) { TM::UdpClosingDrops } else { TM::UdpSendDrops }, 1);
+                traffic_add(
+                    if queue.shared.closing.load(Ordering::Acquire) {
+                        TM::UdpClosingDrops
+                    } else {
+                        TM::UdpSendDrops
+                    },
+                    1,
+                );
             }
             drop(packet);
         }
@@ -373,7 +389,9 @@ impl TurnAllocation {
         )?;
         let (outbound, inbound, server, transport) =
             connect_transport(&endpoints, diagnostic.as_deref_mut()).await?;
-        if let Some(d) = diagnostic.as_deref_mut() { d.begin("allocate"); }
+        if let Some(d) = diagnostic.as_deref_mut() {
+            d.begin("allocate");
+        }
         crate::log_error!("[TURN] Транспорт: {}", transport.as_str());
         let control_transport = if transport == TurnWireTransport::Udp {
             TurnControlTransport::Datagram
@@ -463,7 +481,9 @@ impl TurnAllocation {
             .lock()
             .unwrap_or_else(|poisoned| poisoned.into_inner()) = relay_address;
         crate::log_error!("[TURN] Аллокация активна: relay {relay_address}");
-        if let Some(d) = diagnostic { d.record("ok", &format!("relay={relay_address}")); }
+        if let Some(d) = diagnostic {
+            d.record("ok", &format!("relay={relay_address}"));
+        }
         Ok(allocation)
     }
 
@@ -580,7 +600,9 @@ impl TurnAllocation {
 
     pub async fn send(&self, packet: PacketBuf) -> Result<()> {
         let result = self.send_inner(packet).await;
-        if result.is_err() { traffic_add(TM::TurnEnqueueErrors, 1); }
+        if result.is_err() {
+            traffic_add(TM::TurnEnqueueErrors, 1);
+        }
         result
     }
 
@@ -607,7 +629,12 @@ impl TurnAllocation {
                         Err(returned) => {
                             packet = returned;
                             traffic_add(TM::TurnQueueFull, 1);
-                            if queue_wait.is_none() { queue_wait = Some(WaitTimer::new(TM::TurnQueueWaitUs, TM::TurnQueueWaitMaxUs)); }
+                            if queue_wait.is_none() {
+                                queue_wait = Some(WaitTimer::new(
+                                    TM::TurnQueueWaitUs,
+                                    TM::TurnQueueWaitMaxUs,
+                                ));
+                            }
                         }
                     }
                     // Backpressure вместо тихого сброса: ждём место в очереди
@@ -856,11 +883,15 @@ async fn connect_transport(
         };
         match attempt {
             Ok(value) => {
-                if let Some(d) = diagnostic.as_deref_mut() { d.record("ok", ""); }
+                if let Some(d) = diagnostic.as_deref_mut() {
+                    d.record("ok", "");
+                }
                 return Ok(value);
             }
             Err(error) => {
-                if let Some(d) = diagnostic.as_deref_mut() { d.record("error", &format!("{error:#}")); }
+                if let Some(d) = diagnostic.as_deref_mut() {
+                    d.record("error", &format!("{error:#}"));
+                }
                 failures.push(format!("{}: {error:#}", endpoint.transport.as_str()));
             }
         }
@@ -1542,7 +1573,7 @@ fn process_deficit_packet(core: &NativeCore, shared: &DriverShared, wire: &[u8])
     if let Some((channel, _)) = channel_data_header(wire) {
         if channel == shared.channel.load(Ordering::Acquire) {
             shared.pool_deficit_drops.fetch_add(1, Ordering::Relaxed);
-                traffic_add(TM::RelayPoolDrops, 1);
+            traffic_add(TM::RelayPoolDrops, 1);
         }
         PacketAction::Wait
     } else if is_stun(wire) {

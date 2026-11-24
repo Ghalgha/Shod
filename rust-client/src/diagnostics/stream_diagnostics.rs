@@ -1,5 +1,8 @@
 //! Local, bounded diagnostics. Never changes packets, deadlines, or retry decisions.
-use std::{sync::atomic::{AtomicU64, Ordering}, time::{Instant, SystemTime, UNIX_EPOCH}};
+use std::{
+    sync::atomic::{AtomicU64, Ordering},
+    time::{Instant, SystemTime, UNIX_EPOCH},
+};
 
 pub const PREFIX: &str = "__Shod_STREAM__|";
 static NEXT_ATTEMPT: AtomicU64 = AtomicU64::new(1);
@@ -17,8 +20,15 @@ pub struct StreamDiagnostics {
 
 impl StreamDiagnostics {
     pub fn new(enabled: bool, worker: usize, turn: String) -> Self {
-        Self { enabled, worker, attempt: NEXT_ATTEMPT.fetch_add(1, Ordering::Relaxed),
-            turn, transport: "unknown".into(), stage: "select_turn", stage_started: Instant::now() }
+        Self {
+            enabled,
+            worker,
+            attempt: NEXT_ATTEMPT.fetch_add(1, Ordering::Relaxed),
+            turn,
+            transport: "unknown".into(),
+            stage: "select_turn",
+            stage_started: Instant::now(),
+        }
     }
 
     pub fn endpoint(&mut self, turn: String, transport: &str) {

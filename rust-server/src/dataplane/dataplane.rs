@@ -1,8 +1,6 @@
-use crate::{
-    tokio_io::{
-        IoCounters, MAX_RX_PER_PASS, PacketOutput, RxOutcome, TICK_INTERVAL_MS, TUN_RX_DRAIN_BATCH,
-        TokioIo,
-    },
+use crate::tokio_io::{
+    IoCounters, MAX_RX_PER_PASS, PacketOutput, RxOutcome, TICK_INTERVAL_MS, TUN_RX_DRAIN_BATCH,
+    TokioIo,
 };
 use anyhow::{Context, Result, anyhow};
 use std::{

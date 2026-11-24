@@ -642,7 +642,10 @@ async fn auth_middleware(
 }
 
 fn expired_session_cookie() -> String {
-    format!("{}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax; Secure", crate::server_config::SESSION_COOKIE.to_owned())
+    format!(
+        "{}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax; Secure",
+        crate::server_config::SESSION_COOKIE.to_owned()
+    )
 }
 
 const STEALTH_ABORT_HEADER: &str = "x-shod-stealth-rst";
@@ -881,8 +884,10 @@ async fn login(
         )
             .into_response();
     }
-    let cookie =
-        format!("{}={token}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax; Secure", crate::server_config::SESSION_COOKIE.to_owned());
+    let cookie = format!(
+        "{}={token}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax; Secure",
+        crate::server_config::SESSION_COOKIE.to_owned()
+    );
     let mut response = (StatusCode::OK, [(header::SET_COOKIE, cookie)], "ok").into_response();
     response.headers_mut().insert(
         header::CACHE_CONTROL,

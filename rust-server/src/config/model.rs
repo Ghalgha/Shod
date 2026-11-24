@@ -1823,7 +1823,10 @@ mod tests {
     #[test]
     fn import_never_hands_out_a_taken_address() {
         let mut db = Database::default();
-        let entry = |ip: &str| PasswordEntry { ip: ip.to_owned(), ..Default::default() };
+        let entry = |ip: &str| PasswordEntry {
+            ip: ip.to_owned(),
+            ..Default::default()
+        };
         db.passwords.insert("existing".into(), entry("10.66.67.3"));
         // a free in-pool address is kept
         assert_eq!(super::import_ip(&db, "10.66.67.40"), "10.66.67.40");
@@ -1831,7 +1834,8 @@ mod tests {
         assert_eq!(super::import_ip(&db, "10.66.67.3"), "10.66.67.4");
         assert_eq!(super::import_ip(&db, "10.66.68.9"), "10.66.67.4");
         // an earlier client of the same import counts as taken
-        db.passwords.insert("imported-1".into(), entry("10.66.67.4"));
+        db.passwords
+            .insert("imported-1".into(), entry("10.66.67.4"));
         assert_eq!(super::import_ip(&db, "10.66.67.4"), "10.66.67.5");
     }
 
@@ -1839,7 +1843,15 @@ mod tests {
     fn ip_in_pool_is_this_servers_pool_only() {
         // stock config (no --tun-addr): 10.66.67.3–.250
         assert!(super::ip_in_pool("10.66.67.3") && super::ip_in_pool("10.66.67.250"));
-        for bad in ["", "10.66.67.1", "10.66.67.2", "10.66.67.251", "10.66.68.3", "fd66:67::3", "junk"] {
+        for bad in [
+            "",
+            "10.66.67.1",
+            "10.66.67.2",
+            "10.66.67.251",
+            "10.66.68.3",
+            "fd66:67::3",
+            "junk",
+        ] {
             assert!(!super::ip_in_pool(bad), "{bad}");
         }
     }
@@ -2299,8 +2311,7 @@ mod tests {
             .duration_since(std::time::UNIX_EPOCH)
             .unwrap_or_default()
             .as_nanos();
-        let directory =
-            std::env::temp_dir().join(format!("shod-persistence-stress-test-{unique}"));
+        let directory = std::env::temp_dir().join(format!("shod-persistence-stress-test-{unique}"));
         let persistence = DatabasePersistence::new(directory.clone()).unwrap();
         let database = std::sync::Arc::new(tokio::sync::Mutex::new(Database::default()));
         let final_revision = std::sync::Arc::new(std::sync::atomic::AtomicU64::new(0));

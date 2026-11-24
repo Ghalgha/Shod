@@ -73,7 +73,9 @@ async fn connect_inner(
         bail!("UDP endpoint cannot create a TURN stream");
     }
     let socket = timeout(STREAM_CONNECT_TIMEOUT, async {
-        TcpStream::connect(server).await.context("TURN TCP socket connect")
+        TcpStream::connect(server)
+            .await
+            .context("TURN TCP socket connect")
     })
     .await
     .context("TURN TCP connect timed out")?
