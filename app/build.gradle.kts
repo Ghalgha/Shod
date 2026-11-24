@@ -177,7 +177,6 @@ tasks.configureEach {
     val producesReleaseArtifact = taskName.contains("release") &&
         (taskName.startsWith("assemble") ||
             taskName.startsWith("bundle") ||
-            taskName.startsWith("package") ||
             taskName.startsWith("sign") ||
             taskName.startsWith("install") ||
             taskName.startsWith("publish") ||
