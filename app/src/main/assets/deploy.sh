@@ -46,7 +46,6 @@ readonly Shod_LEGACY_MIGRATION_JSON="passwords.json"
 readonly Shod_LEGACY_MIGRATION_IMPORTED_JSON="passwords.json.imported"
 readonly Shod_ENV_FILE="${Shod_CONFIG_DIR}/shod.env"
 readonly Shod_DEPLOY_OVERRIDES_FILE="${Shod_CONFIG_DIR}/deploy-overrides.json"
-readonly Shod_RUNTIME_ARCHIVE_DIR="${Shod_CONFIG_DIR}/runtime-archive"
 readonly UPLOAD_BINARY="/tmp/.shod-upload-server"
 readonly UPLOAD_ENV_FILE="/tmp/.shod-upload-web.env"
 readonly UPLOAD_OVERRIDES_FILE="/tmp/.shod-upload-overrides.json"
@@ -364,28 +363,7 @@ assert_peer_port_is_available() {
     [ -z "$(peer_port_listeners)" ] || die "UDP/${PEER_PORT} остался занят после принудительной очистки"
 }
 
-archive_shod_docker_state() {
-    local container="$1" container_id archive_dir source base copied=0
-    container_id="$(docker inspect --format '{{.Id}}' "$container" 2>/dev/null || true)"
-    [ -n "$container_id" ] || return 0
-    archive_dir="${Shod_RUNTIME_ARCHIVE_DIR}/docker-${container_id:0:12}-$(date +%s)"
-    umask 077
-    mkdir -p "$archive_dir" || die "Не удалось подготовить архив состояния Docker Shod"
-    for source in "$Shod_IMAGE_CONFIG_DIR"/shod.db "$Shod_IMAGE_CONFIG_DIR"/shod.db-wal "$Shod_IMAGE_CONFIG_DIR"/shod.db-shm "$Shod_IMAGE_CONFIG_DIR"/passwords.json "$Shod_IMAGE_CONFIG_DIR"/passwords.json.imported; do
-        base="${source##*/}"
-        if docker cp "${container}:${source}" "${archive_dir}/${base}" >/dev/null 2>&1; then
-            chmod 600 "${archive_dir}/${base}" 2>/dev/null || true
-            copied=1
-        fi
-    done
-    if [ "$copied" -eq 1 ]; then
-        log_info "Состояние Docker Shod сохранено: $archive_dir"
-    else
-        rmdir "$archive_dir" >/dev/null 2>&1 || true
-    fi
-}
-
-stop_and_archive_shod_docker_container() {
+stop_shod_docker_container() {
     local container="$1" name running
     docker inspect "$container" >/dev/null 2>&1 || return 0
     name="$(docker inspect --format '{{.Name}}' "$container" 2>/dev/null || printf '%s' "$container")"
@@ -398,7 +376,6 @@ stop_and_archive_shod_docker_container() {
             docker kill "$container" >/dev/null 2>&1 || true
         fi
     fi
-    archive_shod_docker_state "$container"
     timeout 10 docker rm -f "$container" >/dev/null 2>&1 || \
         die "Не удалось остановить старый Docker-контейнер Shod"
 }
@@ -412,7 +389,7 @@ remove_all_shod_docker_containers() {
         name="$(docker inspect --format '{{.Name}}' "$container" 2>/dev/null || printf '%s' "$container")"
         name="${name#/}"
         log_info "Остановка Docker runtime Shod: $name"
-        stop_and_archive_shod_docker_container "$container"
+        stop_shod_docker_container "$container"
     done < <(docker ps -aq --no-trunc 2>/dev/null || true)
 }
 
@@ -813,7 +790,6 @@ cleanup_shod_netfilter_rules() {
 secure_persistent_state() {
     [ -d "$Shod_CONFIG_DIR" ] || return 0
     chmod 700 "$Shod_CONFIG_DIR" 2>/dev/null || true
-    [ -d "$Shod_RUNTIME_ARCHIVE_DIR" ] && chmod 700 "$Shod_RUNTIME_ARCHIVE_DIR" 2>/dev/null || true
 
     local file
     for file in \
@@ -847,7 +823,7 @@ clear_runtime_config_preserving_database() {
     for entry in "$Shod_CONFIG_DIR"/*; do
         base="${entry##*/}"
         case "$base" in
-            "$Shod_DATABASE_FILE"|"$Shod_DATABASE_WAL_FILE"|"$Shod_DATABASE_SHM_FILE"|"$Shod_LEGACY_MIGRATION_JSON"|"$Shod_LEGACY_MIGRATION_IMPORTED_JSON"|web_cert.pem|web_key.pem|letsencrypt-ip.env|runtime-archive) continue ;;
+            "$Shod_DATABASE_FILE"|"$Shod_DATABASE_WAL_FILE"|"$Shod_DATABASE_SHM_FILE"|"$Shod_LEGACY_MIGRATION_JSON"|"$Shod_LEGACY_MIGRATION_IMPORTED_JSON"|web_cert.pem|web_key.pem|letsencrypt-ip.env) continue ;;
         esac
         rm -rf -- "$entry"
     done
