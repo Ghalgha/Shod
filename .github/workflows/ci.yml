@@ -179,7 +179,7 @@ jobs:
         uses: gradle/actions/wrapper-validation@v4
 
       - name: Run Android lint, unit tests, and assemble debug APK
-        run: bash ./gradlew --no-daemon --stacktrace lintDebug testDebugUnitTest assembleDebug
+        run: bash ./gradlew --no-daemon --stacktrace lintDebug lintRelease testDebugUnitTest assembleDebug
 
       - name: Upload Android lint reports
         if: always()
