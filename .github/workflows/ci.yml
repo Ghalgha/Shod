@@ -150,7 +150,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: shod-linux-server-assets
-          path: .
+          path: app/src/main/assets
 
       - name: Download Android native client
         uses: actions/download-artifact@v4
