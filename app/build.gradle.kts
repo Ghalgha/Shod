@@ -165,11 +165,6 @@ android {
         encoding = "UTF-8"
     }
 
-    androidResources {
-        // Keep sources locally for verification, but fetch pinned server cores during deploy.
-        ignoreAssetsPattern = "shod-linux-*"
-    }
-
     sourceSets {
         getByName("main") {
             jniLibs.directories.add("src/main/jniLibs")

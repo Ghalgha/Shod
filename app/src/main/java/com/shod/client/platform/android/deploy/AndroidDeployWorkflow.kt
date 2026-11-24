@@ -138,8 +138,8 @@ internal class AndroidDeployWorkflow(
                 target = File(directory, architecture.assetName),
                 checkCancelled = { jobContext.ensureActive() },
                 onProgress = onProgress,
-                onVerified = { onSuccess("Серверное ядро проверено") },
             )
+            onSuccess("Серверное ядро извлечено из APK")
             val configuration = DeployConfigurationStager().stage(
                 workingDirectory = directory,
                 mode = mode,
