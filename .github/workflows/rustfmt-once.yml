@@ -1,0 +1,97 @@
+name: One-time Rust formatting
+
+on:
+  push:
+    branches:
+      - migration/phase-1-foundation
+    paths:
+      - .github/workflows/rustfmt-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+
+      - name: Install Rust formatter
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+
+      - name: Format Rust client and server
+        shell: bash
+        run: |
+          set -euo pipefail
+          cargo fmt --manifest-path rust-client/Cargo.toml --all
+          cargo fmt --manifest-path rust-server/Cargo.toml --all
+
+      - name: Verify formatting
+        shell: bash
+        run: |
+          set -euo pipefail
+          cargo fmt --manifest-path rust-client/Cargo.toml --all -- --check
+          cargo fmt --manifest-path rust-server/Cargo.toml --all -- --check
+          git diff --check
+
+      - name: Ensure only the approved Rust files changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r path; do
+            case "$path" in
+              rust-client/src/diagnostics/stream_diagnostics.rs|\
+              rust-client/src/dispatcher/dispatcher.rs|\
+              rust-client/src/main.rs|\
+              rust-client/src/session/session.rs|\
+              rust-client/src/transport/turn/integration_tests.rs|\
+              rust-client/src/transport/turn/turn.rs|\
+              rust-client/src/transport/turn/turn_stream.rs|\
+              rust-server/src/config/model.rs|\
+              rust-server/src/dataplane/dataplane.rs|\
+              rust-server/src/main.rs|\
+              rust-server/src/protocol/protocol.rs|\
+              rust-server/src/proxy/proxy_route.rs|\
+              rust-server/src/transport/tokio_io.rs|\
+              rust-server/src/tun/tun_device.rs|\
+              rust-server/src/web_panel/web_panel.rs)
+                ;;
+              *)
+                echo "Unexpected changed file: $path" >&2
+                exit 1
+                ;;
+            esac
+          done < <(git diff --name-only)
+
+      - name: Commit formatting and remove temporary workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- \
+            rust-client/src/diagnostics/stream_diagnostics.rs \
+            rust-client/src/dispatcher/dispatcher.rs \
+            rust-client/src/main.rs \
+            rust-client/src/session/session.rs \
+            rust-client/src/transport/turn/integration_tests.rs \
+            rust-client/src/transport/turn/turn.rs \
+            rust-client/src/transport/turn/turn_stream.rs \
+            rust-server/src/config/model.rs \
+            rust-server/src/dataplane/dataplane.rs \
+            rust-server/src/main.rs \
+            rust-server/src/protocol/protocol.rs \
+            rust-server/src/proxy/proxy_route.rs \
+            rust-server/src/transport/tokio_io.rs \
+            rust-server/src/tun/tun_device.rs \
+            rust-server/src/web_panel/web_panel.rs
+          git rm .github/workflows/rustfmt-once.yml
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          git commit -m "Apply Rust formatting"
+          git push
