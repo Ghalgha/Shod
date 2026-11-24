@@ -44,6 +44,18 @@ jobs:
       - name: Set up Rust toolchain for Linux server assets
         run: rustup toolchain install 1.97.1 --profile minimal --component rustfmt --component clippy
 
+      - name: Cache Cargo dependencies and build outputs
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            rust-client
+            rust-server
+          cache-directories: |
+            rust-client/build/rust-client-android-arm64
+            rust-client/build/rust-client-android-armv7
+            rust-client/build/rust-client-android-x86_64
+            rust-server/build/linux-musl
+
       - name: Install cargo-zigbuild
         run: cargo install cargo-zigbuild --locked
 
