@@ -66,6 +66,33 @@ jobs:
       - name: Install Android SDK packages
         run: sdkmanager "platform-tools" "platforms;android-37.0" "build-tools;37.0.0"
 
+      - name: Install Android native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config
+
+      - name: Install Android NDK
+        run: |
+          sdkmanager "ndk;27.2.12479018"
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/27.2.12479018" >> "$GITHUB_ENV"
+          echo "$ANDROID_HOME/ndk/27.2.12479018" >> "$GITHUB_PATH"
+
+      - name: Install Rust Android targets and cargo-ndk
+        run: |
+          rustup toolchain install 1.97.1 --profile minimal
+          rustup default 1.97.1
+          rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+          cargo install cargo-ndk --locked
+
+      - name: Build Android native client (3 ABIs)
+        run: bash rust-client/build_android_wsl.sh arm64-v8a armeabi-v7a x86_64
+
+      - name: Verify Android native client provenance
+        shell: pwsh
+        run: |
+          ./scripts/native_client_provenance.ps1 -Mode Write -Producer rust-client/build_android_wsl.sh
+          ./scripts/native_client_provenance.ps1 -Mode Verify
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
