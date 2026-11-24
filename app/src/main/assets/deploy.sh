@@ -823,7 +823,7 @@ clear_runtime_config_preserving_database() {
     for entry in "$Shod_CONFIG_DIR"/*; do
         base="${entry##*/}"
         case "$base" in
-            "$Shod_DATABASE_FILE"|"$Shod_DATABASE_WAL_FILE"|"$Shod_DATABASE_SHM_FILE"|"$Shod_LEGACY_MIGRATION_JSON"|"$Shod_LEGACY_MIGRATION_IMPORTED_JSON"|web_cert.pem|web_key.pem|letsencrypt-ip.env) continue ;;
+            "$Shod_DATABASE_FILE"|"$Shod_DATABASE_WAL_FILE"|"$Shod_DATABASE_SHM_FILE"|"$Shod_LEGACY_MIGRATION_JSON"|"$Shod_LEGACY_MIGRATION_IMPORTED_JSON"|web_cert.pem|web_key.pem|letsencrypt-ip.env|runtime-archive) continue ;;
         esac
         rm -rf -- "$entry"
     done
