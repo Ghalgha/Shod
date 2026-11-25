@@ -29,8 +29,19 @@ jobs:
           rustup toolchain install 1.97.1 --profile minimal --component rustfmt --component clippy
           rustup default 1.97.1
 
+      - name: Cache cargo-zigbuild
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo-tools/cargo-zigbuild/bin
+          key: ${{ runner.os }}-cargo-zigbuild-0.24.1-rust-1.97.1-v1
+
       - name: Install cargo-zigbuild
-        run: cargo install cargo-zigbuild --locked
+        run: |
+          echo "$HOME/.cargo-tools/cargo-zigbuild/bin" >> "$GITHUB_PATH"
+          if [ ! -x "$HOME/.cargo-tools/cargo-zigbuild/bin/cargo-zigbuild" ]; then
+            cargo install cargo-zigbuild --version 0.24.1 --locked --root "$HOME/.cargo-tools/cargo-zigbuild"
+          fi
+          cargo zigbuild --help >/dev/null
 
       - name: Verify build tools
         run: |
