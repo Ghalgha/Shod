@@ -47,7 +47,7 @@ pub(super) async fn groups_get(State(state): State<WebState>) -> Response {
 }
 
 #[derive(Deserialize)]
-struct CreateGroupRequest {
+pub(super) struct CreateGroupRequest {
     name: String,
 }
 
@@ -82,7 +82,7 @@ pub(super) async fn groups_create(
 }
 
 #[derive(Deserialize)]
-struct UpdateGroupRequest {
+pub(super) struct UpdateGroupRequest {
     name: Option<String>,
     routing_rule_id: Option<String>,
 }
@@ -116,7 +116,10 @@ pub(super) async fn groups_update(
     StatusCode::OK.into_response()
 }
 
-pub(super) async fn groups_delete(State(state): State<WebState>, Path(id): Path<String>) -> Response {
+pub(super) async fn groups_delete(
+    State(state): State<WebState>,
+    Path(id): Path<String>,
+) -> Response {
     let (revision, deleted_passwords) = {
         let mut db = state.app.db.write().await;
         if db.groups.remove(&id).is_none() {

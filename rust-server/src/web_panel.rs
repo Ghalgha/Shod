@@ -2814,8 +2814,14 @@ pub async fn run(
             "/api/clients/{password}/sub-link/regenerate",
             post(clients::client_sub_link_regenerate),
         )
-        .route("/api/groups", get(groups::groups_get).post(groups::groups_create))
-        .route("/api/groups/{id}", put(groups::groups_update).delete(groups::groups_delete))
+        .route(
+            "/api/groups",
+            get(groups::groups_get).post(groups::groups_create),
+        )
+        .route(
+            "/api/groups/{id}",
+            put(groups::groups_update).delete(groups::groups_delete),
+        )
         .route(
             "/api/groups/{id}/admin-link",
             post(group_admin_link_post).delete(group_admin_link_delete),
