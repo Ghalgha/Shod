@@ -15,7 +15,7 @@ struct GroupInfo {
     active_sessions: usize,
 }
 
-async fn groups_get(State(state): State<WebState>) -> Response {
+pub(super) async fn groups_get(State(state): State<WebState>) -> Response {
     let db = state.app.db.read().await;
     let mut list = Vec::new();
     for group in db.groups.values() {
@@ -51,7 +51,7 @@ struct CreateGroupRequest {
     name: String,
 }
 
-async fn groups_create(
+pub(super) async fn groups_create(
     State(state): State<WebState>,
     Json(request): Json<CreateGroupRequest>,
 ) -> Response {
@@ -87,7 +87,7 @@ struct UpdateGroupRequest {
     routing_rule_id: Option<String>,
 }
 
-async fn groups_update(
+pub(super) async fn groups_update(
     State(state): State<WebState>,
     Path(id): Path<String>,
     Json(request): Json<UpdateGroupRequest>,
@@ -116,7 +116,7 @@ async fn groups_update(
     StatusCode::OK.into_response()
 }
 
-async fn groups_delete(State(state): State<WebState>, Path(id): Path<String>) -> Response {
+pub(super) async fn groups_delete(State(state): State<WebState>, Path(id): Path<String>) -> Response {
     let (revision, deleted_passwords) = {
         let mut db = state.app.db.write().await;
         if db.groups.remove(&id).is_none() {
