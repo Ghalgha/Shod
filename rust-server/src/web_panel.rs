@@ -16,9 +16,7 @@ use axum::{
     response::{Html, IntoResponse, Redirect, Response},
     routing::{get, post, put},
 };
-use base64::Engine as _;
 use serde::{Deserialize, Serialize};
-use sha2::{Digest, Sha256};
 use std::{
     io::Read,
     net::{Ipv4Addr, SocketAddr},
@@ -30,15 +28,11 @@ use std::{
 };
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
+mod auth;
+
 #[derive(Clone)]
 struct WebState {
     app: Arc<App>,
-}
-
-#[derive(Deserialize)]
-struct LoginRequest {
-    user: String,
-    pass: String,
 }
 
 #[derive(Deserialize)]
@@ -256,7 +250,6 @@ pub(crate) fn deploy_dns_profile_or_yandex(existing_dns: &str) -> String {
 }
 
 const WEB_BODY_LIMIT_BYTES: usize = 16 * 1024;
-const MAX_LOGIN_FIELD_BYTES: usize = 256;
 const MAX_CLIENT_NAME_BYTES: usize = 128;
 const MAX_PROXY_PROFILE_NAME_BYTES: usize = 64;
 
@@ -269,19 +262,6 @@ fn validate_text_field(
         return Err(message);
     }
     Ok(())
-}
-
-fn validate_login_request(request: &LoginRequest) -> Result<(), &'static str> {
-    validate_text_field(
-        &request.user,
-        MAX_LOGIN_FIELD_BYTES,
-        "login fields are too long or invalid",
-    )?;
-    validate_text_field(
-        &request.pass,
-        MAX_LOGIN_FIELD_BYTES,
-        "login fields are too long or invalid",
-    )
 }
 
 fn validate_client_name(name: &str) -> Result<(), &'static str> {
@@ -510,144 +490,6 @@ pub(crate) const MAX_WEB_SESSIONS: usize = 256;
 pub(crate) const MAX_LOGIN_LIMITS: usize = 4_096;
 const MAX_WEB_CONNECTIONS: usize = 64;
 
-fn caesar_decode(value: &str) -> String {
-    if let Some(rest) = value.strip_prefix("c1:")
-        && let Ok(bytes) = base64::engine::general_purpose::STANDARD.decode(rest)
-    {
-        let decoded: Vec<u8> = bytes.iter().map(|b| b.wrapping_sub(CAESAR_SHIFT)).collect();
-        if let Ok(s) = String::from_utf8(decoded) {
-            return s;
-        }
-    }
-    value.to_owned()
-}
-
-fn hash_token(token: &str) -> String {
-    let mut hasher = Sha256::new();
-    hasher.update(token.as_bytes());
-    hex::encode(hasher.finalize())
-}
-
-fn cookie_tokens(headers: &HeaderMap) -> Vec<String> {
-    headers
-        .get_all(header::COOKIE)
-        .iter()
-        .filter_map(|v| v.to_str().ok())
-        .flat_map(|value| value.split(';'))
-        .map(str::trim)
-        .filter_map(|part| {
-            part.strip_prefix(crate::server_config::SESSION_COOKIE.to_owned().as_str())
-                .and_then(|rest| rest.strip_prefix('='))
-                .map(str::to_owned)
-        })
-        .collect()
-}
-
-fn authorized(app: &App, headers: &HeaderMap) -> bool {
-    if cookie_tokens(headers).iter().any(|token| {
-        app.web_sessions
-            .get(&hash_token(token))
-            .map(|expiry| *expiry > now())
-            .unwrap_or(false)
-    }) {
-        return true;
-    }
-
-    if let Some(key) = headers
-        .get("x-api-key")
-        .and_then(|v| v.to_str().ok())
-        .map(str::trim)
-        && !key.is_empty()
-    {
-        if secret_eq(key, &app.web_pass) || secret_eq(key, &app.startup_main_password) {
-            return true;
-        }
-        if let Ok(db) = app.db.try_read()
-            && secret_eq(key, &db.main_password)
-        {
-            return true;
-        }
-        if app
-            .web_sessions
-            .get(&hash_token(key))
-            .is_some_and(|expiry| *expiry > now())
-        {
-            return true;
-        }
-    }
-
-    if let Some(auth) = headers
-        .get(header::AUTHORIZATION)
-        .and_then(|v| v.to_str().ok())
-        .map(str::trim)
-        && let Some(token) = auth
-            .strip_prefix("Bearer ")
-            .or_else(|| auth.strip_prefix("bearer "))
-    {
-        let token = token.trim();
-        if !token.is_empty() {
-            if secret_eq(token, &app.web_pass) || secret_eq(token, &app.startup_main_password) {
-                return true;
-            }
-            if let Ok(db) = app.db.try_read()
-                && secret_eq(token, &db.main_password)
-            {
-                return true;
-            }
-            if app
-                .web_sessions
-                .get(&hash_token(token))
-                .is_some_and(|expiry| *expiry > now())
-            {
-                return true;
-            }
-        }
-    }
-
-    false
-}
-
-async fn auth_middleware(
-    State(state): State<WebState>,
-    request: Request<Body>,
-    next: Next,
-) -> Response {
-    if authorized(&state.app, request.headers()) {
-        return next.run(request).await;
-    }
-    let has_auth_header = request.headers().contains_key("x-api-key")
-        || request
-            .headers()
-            .get(header::AUTHORIZATION)
-            .and_then(|v| v.to_str().ok())
-            .map(|s| s.starts_with("Bearer ") || s.starts_with("bearer "))
-            .unwrap_or(false)
-        || !cookie_tokens(request.headers()).is_empty();
-
-    if !has_auth_header {
-        if let Some(token) = request.extensions().get::<Arc<StealthAbortController>>() {
-            token.abort();
-        }
-        return stealth_abort_response();
-    }
-
-    let mut response = StatusCode::UNAUTHORIZED.into_response();
-    if !cookie_tokens(request.headers()).is_empty() {
-        response.headers_mut().insert(
-            header::SET_COOKIE,
-            expired_session_cookie().parse().unwrap(),
-        );
-    }
-    response
-}
-
-fn expired_session_cookie() -> String {
-    format!(
-        "{}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax; Secure",
-        crate::server_config::SESSION_COOKIE.to_owned()
-    )
-}
-
 const STEALTH_ABORT_HEADER: &str = "x-shod-stealth-rst";
 
 fn stealth_abort_response() -> Response {
@@ -663,7 +505,7 @@ fn stealth_abort_response() -> Response {
 }
 
 fn render_root(state: &WebState, headers: &HeaderMap) -> Response {
-    if authorized(&state.app, headers) {
+    if auth::authorized(&state.app, headers) {
         let mut response = Html(PANEL_HTML).into_response();
         response.headers_mut().insert(
             header::CACHE_CONTROL,
@@ -676,10 +518,10 @@ fn render_root(state: &WebState, headers: &HeaderMap) -> Response {
         header::CACHE_CONTROL,
         header::HeaderValue::from_static("no-store, no-cache, must-revalidate, private"),
     );
-    if !cookie_tokens(headers).is_empty() {
+    if !auth::cookie_tokens(headers).is_empty() {
         response.headers_mut().insert(
             header::SET_COOKIE,
-            expired_session_cookie().parse().unwrap(),
+            auth::expired_session_cookie().parse().unwrap(),
         );
     }
     response
@@ -741,7 +583,7 @@ async fn root_with_secret(
     headers: HeaderMap,
     token: Option<Extension<Arc<StealthAbortController>>>,
 ) -> Response {
-    if authorized(&state.app, &headers) {
+    if auth::authorized(&state.app, &headers) {
         let secret = state.app.web_secret_path.trim().trim_matches('/');
         let target = if secret.is_empty() {
             "/".to_string()
@@ -827,150 +669,6 @@ async fn qrcode_js() -> Response {
         "application/javascript; charset=utf-8",
         "public, max-age=604800, immutable",
     )
-}
-
-async fn login(
-    State(state): State<WebState>,
-    ConnectInfo(addr): ConnectInfo<SocketAddr>,
-    headers: HeaderMap,
-    Json(request): Json<LoginRequest>,
-) -> Response {
-    if let Err(message) = validate_login_request(&request) {
-        return (StatusCode::BAD_REQUEST, message).into_response();
-    }
-    let source = addr.ip().to_string();
-    if let Ok(forwarded) = std::env::var("Shod_TRUST_XFF")
-        && (forwarded == "1" || forwarded.eq_ignore_ascii_case("true"))
-        && let Some(forwarded) = headers
-            .get("x-forwarded-for")
-            .and_then(|v| v.to_str().ok())
-            .and_then(|s| s.split(',').next())
-            .map(str::trim)
-            .filter(|s| !s.is_empty())
-    {
-        log_event(
-            &state.app,
-            "INFO",
-            "AUTH",
-            &format!("Login attempt from {source} (XFF: {forwarded})"),
-        );
-    }
-
-    let current = now();
-    if let Some(value) = state.app.login_limits.get(&source)
-        && value.1 > current
-        && value.0 >= 3
-    {
-        return (StatusCode::TOO_MANY_REQUESTS, "too many attempts").into_response();
-    }
-
-    let user = caesar_decode(&request.user);
-    let pass = caesar_decode(&request.pass);
-    let valid = secret_eq(&user, &state.app.web_user) & secret_eq(&pass, &state.app.web_pass);
-
-    if !valid {
-        if !state.record_failed_login(source, current) {
-            return (StatusCode::TOO_MANY_REQUESTS, "too many login sources").into_response();
-        }
-        return (StatusCode::UNAUTHORIZED, "invalid credentials").into_response();
-    }
-
-    state.app.login_limits.remove(&source);
-    let token = random_token(32);
-    if !state.web_session_insert(token.clone()) {
-        return (
-            StatusCode::TOO_MANY_REQUESTS,
-            "too many active web sessions",
-        )
-            .into_response();
-    }
-    let cookie = format!(
-        "{}={token}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax; Secure",
-        crate::server_config::SESSION_COOKIE.to_owned()
-    );
-    let mut response = (StatusCode::OK, [(header::SET_COOKIE, cookie)], "ok").into_response();
-    response.headers_mut().insert(
-        header::CACHE_CONTROL,
-        header::HeaderValue::from_static("no-store, no-cache, must-revalidate, private"),
-    );
-    response
-}
-
-impl WebState {
-    fn record_failed_login(&self, source: String, current: i64) -> bool {
-        let _admission = lock_unpoison(&self.app.web_auth_admission);
-        self.app.login_limits.retain(|_, value| value.1 > current);
-        if !self.app.login_limits.contains_key(&source)
-            && self.app.login_limits.len() >= MAX_LOGIN_LIMITS
-        {
-            return false;
-        }
-        self.app
-            .login_limits
-            .entry(source)
-            .and_modify(|value| {
-                if value.1 <= current {
-                    *value = (1, current + 180);
-                } else {
-                    value.0 = value.0.saturating_add(1);
-                }
-            })
-            .or_insert((1, current + 180));
-        true
-    }
-
-    fn web_session_insert(&self, token: String) -> bool {
-        let _admission = lock_unpoison(&self.app.web_auth_admission);
-        let current = now();
-        self.app.web_sessions.retain(|_, expiry| *expiry > current);
-        if self.app.web_sessions.len() >= MAX_WEB_SESSIONS {
-            return false;
-        }
-        let key = hash_token(&token);
-        self.app.web_sessions.insert(key, current + 86400);
-        true
-    }
-}
-
-async fn logout(State(state): State<WebState>, headers: HeaderMap) -> Response {
-    let tokens = cookie_tokens(&headers);
-    if !tokens.is_empty() {
-        for token in &tokens {
-            state.app.web_sessions.remove(&hash_token(token));
-        }
-    }
-    (
-        StatusCode::OK,
-        [(header::SET_COOKIE, expired_session_cookie())],
-        "ok",
-    )
-        .into_response()
-}
-
-async fn logout_all(State(state): State<WebState>) -> Response {
-    state.app.web_sessions.clear();
-    (
-        StatusCode::OK,
-        [(header::SET_COOKIE, expired_session_cookie())],
-        "ok",
-    )
-        .into_response()
-}
-
-async fn refresh_credentials_report(state: &WebState) -> Result<(), String> {
-    match crate::protocol::refresh_credentials(&state.app).await {
-        Ok(()) => Ok(()),
-        Err(error) => {
-            let message = format!("{error:#}");
-            log_event(
-                &state.app,
-                "ERROR",
-                "AUTH",
-                &format!("Change saved but credential reload failed: {message}"),
-            );
-            Err(message)
-        }
-    }
 }
 
 async fn wait_for_persistence(state: &WebState, revision: u64) -> Result<(), Response> {
@@ -1427,7 +1125,7 @@ async fn settings_post(
     {
         state.app.derived_keys.remove(&password);
     }
-    if main_password_changed && let Err(message) = refresh_credentials_report(&state).await {
+    if main_password_changed && let Err(message) = auth::refresh_credentials_report(&state).await {
         let warning = format!("saved but reload failed: {message}");
         return (StatusCode::OK, [("x-shod-reload-error", warning)], "saved").into_response();
     }
@@ -1884,7 +1582,7 @@ async fn clients_create(
     if let Err(response) = wait_for_persistence(&state, revision).await {
         return response;
     }
-    let reload_error = refresh_credentials_report(&state).await.err();
+    let reload_error = auth::refresh_credentials_report(&state).await.err();
 
     Json(serde_json::json!({
         "password": password,
@@ -1991,7 +1689,7 @@ async fn client_update(
     if let Err(response) = wait_for_persistence(&state, revision).await {
         return response;
     }
-    if let Err(message) = refresh_credentials_report(&state).await {
+    if let Err(message) = auth::refresh_credentials_report(&state).await {
         let warning = format!("saved but reload failed: {message}");
         return (StatusCode::OK, [("x-shod-reload-error", warning)], "saved").into_response();
     }
@@ -2012,7 +1710,7 @@ async fn client_toggle(State(state): State<WebState>, Path(password): Path<Strin
     }
 
     crate::protocol::drop_password_sessions(&state.app, &password);
-    if let Err(message) = refresh_credentials_report(&state).await {
+    if let Err(message) = auth::refresh_credentials_report(&state).await {
         let warning = format!("saved but reload failed: {message}");
         return (StatusCode::OK, [("x-shod-reload-error", warning)], "saved").into_response();
     }
@@ -2040,7 +1738,7 @@ async fn client_delete(State(state): State<WebState>, Path(password): Path<Strin
     }
 
     crate::protocol::drop_password_sessions(&state.app, &password);
-    if let Err(message) = refresh_credentials_report(&state).await {
+    if let Err(message) = auth::refresh_credentials_report(&state).await {
         let warning = format!("saved but reload failed: {message}");
         return (StatusCode::OK, [("x-shod-reload-error", warning)], "saved").into_response();
     }
@@ -2218,7 +1916,7 @@ async fn client_extend(
     if let Err(response) = wait_for_persistence(&state, revision).await {
         return response;
     }
-    let _ = refresh_credentials_report(&state).await;
+    let _ = auth::refresh_credentials_report(&state).await;
     Json(serde_json::json!({ "ok": true, "expires": expires })).into_response()
 }
 
@@ -2338,7 +2036,7 @@ async fn api_links_batch_vk(
     if let Err(response) = wait_for_persistence(&state, revision).await {
         return response;
     }
-    let _ = refresh_credentials_report(&state).await;
+    let _ = auth::refresh_credentials_report(&state).await;
     Json(serde_json::json!({
         "ok": true,
         "updated_clients": updated_count
@@ -2392,7 +2090,7 @@ async fn api_client_vk_update(
     if let Err(response) = wait_for_persistence(&state, revision).await {
         return response;
     }
-    let _ = refresh_credentials_report(&state).await;
+    let _ = auth::refresh_credentials_report(&state).await;
     Json(serde_json::json!({ "ok": true })).into_response()
 }
 
@@ -2519,7 +2217,7 @@ async fn api_settings_master_password(
     {
         state.app.derived_keys.remove(&p);
     }
-    let _ = refresh_credentials_report(&state).await;
+    let _ = auth::refresh_credentials_report(&state).await;
     Json(serde_json::json!({ "ok": true })).into_response()
 }
 
@@ -2728,7 +2426,7 @@ async fn api_import_post(
     if let Some(hours) = applied_interval {
         state.app.auto_restart_interval_tx.send_replace(hours);
     }
-    let _ = refresh_credentials_report(&state).await;
+    let _ = auth::refresh_credentials_report(&state).await;
 
     Json(serde_json::json!({
         "ok": true,
@@ -2879,7 +2577,7 @@ async fn groups_delete(State(state): State<WebState>, Path(id): Path<String>) ->
     for pwd in &deleted_passwords {
         crate::protocol::drop_password_sessions(&state.app, pwd);
     }
-    if let Err(message) = refresh_credentials_report(&state).await {
+    if let Err(message) = auth::refresh_credentials_report(&state).await {
         let warning = format!("saved but reload failed: {message}");
         return (StatusCode::OK, [("x-shod-reload-error", warning)], "saved").into_response();
     }
@@ -3396,7 +3094,7 @@ async fn api_clients_batch_toggle(
         crate::protocol::drop_password_sessions(&state.app, pwd);
     }
     if updated > 0 {
-        let _ = refresh_credentials_report(&state).await;
+        let _ = auth::refresh_credentials_report(&state).await;
     }
     (
         StatusCode::OK,
@@ -3523,7 +3221,7 @@ async fn api_clients_batch_delete(
         crate::protocol::drop_password_sessions(&state.app, pwd);
     }
     if deleted > 0 {
-        let _ = refresh_credentials_report(&state).await;
+        let _ = auth::refresh_credentials_report(&state).await;
     }
     (
         StatusCode::OK,
@@ -3704,7 +3402,7 @@ async fn group_admin_settings_post(
     let snapshot = db.clone();
     drop(db);
     state.app.db_persistence.submit(snapshot);
-    let _ = refresh_credentials_report(&state).await;
+    let _ = auth::refresh_credentials_report(&state).await;
     (StatusCode::OK, Json(serde_json::json!({ "ok": true }))).into_response()
 }
 
@@ -3792,7 +3490,7 @@ async fn group_admin_client_create(
     let snapshot = db.clone();
     drop(db);
     state.app.db_persistence.submit(snapshot);
-    if let Err(message) = refresh_credentials_report(&state).await {
+    if let Err(message) = auth::refresh_credentials_report(&state).await {
         let warning = format!("saved but reload failed: {message}");
         return (
             StatusCode::OK,
@@ -3843,7 +3541,7 @@ async fn group_admin_client_toggle(
     if is_deactivated {
         crate::protocol::drop_password_sessions(&state.app, &password);
     }
-    let _ = refresh_credentials_report(&state).await;
+    let _ = auth::refresh_credentials_report(&state).await;
     (
         StatusCode::OK,
         Json(serde_json::json!({
@@ -3917,7 +3615,7 @@ async fn group_admin_client_extend(
     let snapshot = db.clone();
     drop(db);
     state.app.db_persistence.submit(snapshot);
-    let _ = refresh_credentials_report(&state).await;
+    let _ = auth::refresh_credentials_report(&state).await;
     (
         StatusCode::OK,
         Json(serde_json::json!({ "ok": true, "expires": expires })),
@@ -3947,7 +3645,7 @@ async fn group_admin_client_unbind(
     drop(db);
     crate::protocol::drop_password_sessions(&state.app, &password);
     crate::protocol::forget_idle_password_epoch(&state.app, &password);
-    let _ = refresh_credentials_report(&state).await;
+    let _ = auth::refresh_credentials_report(&state).await;
     (StatusCode::OK, Json(serde_json::json!({ "ok": true }))).into_response()
 }
 
@@ -4044,7 +3742,7 @@ async fn group_admin_client_update(
     let snapshot = db.clone();
     drop(db);
     state.app.db_persistence.submit(snapshot);
-    let _ = refresh_credentials_report(&state).await;
+    let _ = auth::refresh_credentials_report(&state).await;
     (StatusCode::OK, Json(serde_json::json!({ "ok": true }))).into_response()
 }
 
@@ -4072,7 +3770,7 @@ async fn group_admin_client_delete(
     drop(db);
     state.app.db_persistence.submit(snapshot);
     crate::protocol::drop_password_sessions(&state.app, &password);
-    let _ = refresh_credentials_report(&state).await;
+    let _ = auth::refresh_credentials_report(&state).await;
     (StatusCode::OK, Json(serde_json::json!({ "ok": true }))).into_response()
 }
 
@@ -4415,18 +4113,6 @@ async fn reboot(State(state): State<WebState>) -> Response {
             )
                 .into_response()
         }
-    }
-}
-
-async fn web_session_janitor(app: Arc<App>) {
-    let mut timer = tokio::time::interval(Duration::from_secs(300));
-    loop {
-        timer.tick().await;
-        let current = now();
-        app.web_sessions.retain(|_, expiry| *expiry > current);
-        app.login_limits.retain(|_, value| value.1 > current);
-        app.web_sessions.shrink_to_fit();
-        app.login_limits.shrink_to_fit();
     }
 }
 
@@ -5438,8 +5124,8 @@ pub async fn run(
         )
         .route("/api/local-proxy/activate/{id}", post(local_proxy_activate))
         .route("/api/local-proxy/deactivate", post(local_proxy_deactivate))
-        .route("/api/logout", post(logout))
-        .route("/api/logout_all", post(logout_all))
+        .route("/api/logout", post(auth::logout))
+        .route("/api/logout_all", post(auth::logout_all))
         .route("/api/links", get(api_links_get))
         .route("/api/links/batch-vk", post(api_links_batch_vk))
         .route("/api/clients/{password}/vk", put(api_client_vk_update))
@@ -5467,7 +5153,7 @@ pub async fn run(
         .route("/api/reboot", post(reboot))
         .route_layer(middleware::from_fn_with_state(
             state.clone(),
-            auth_middleware,
+            auth::auth_middleware,
         ));
 
     let panel_routes = Router::new()
@@ -5479,7 +5165,7 @@ pub async fn run(
         .route("/pwa-icon-512.png", get(pwa_icon_512))
         .route("/qrcode.min.js", get(qrcode_js))
         .route("/favicon.ico", get(favicon))
-        .route("/api/login", post(login))
+        .route("/api/login", post(auth::login))
         .merge(protected);
 
     let mut router = Router::new();
@@ -5575,7 +5261,7 @@ pub async fn run(
         .layer(middleware::from_fn(security_headers))
         .with_state(state);
 
-    tokio::spawn(web_session_janitor(app.clone()));
+    tokio::spawn(auth::web_session_janitor(app.clone()));
     tokio::spawn(web_slowloris_watchdog());
     println!("[WEB] HTTP/HTTPS listening on 0.0.0.0:{}", app.web_port);
     let acceptor = DualAcceptor::new(tls_config, app.clone());
