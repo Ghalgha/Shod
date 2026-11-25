@@ -1,13 +1,6 @@
 name: Build Android Native Client
 
 on:
-  push:
-    branches: [main, migration/phase-1-foundation]
-    paths:
-      - ".github/workflows/build-android-native.yml"
-      - "rust-client/**"
-      - "shared/wire_protocol.rs"
-      - "scripts/native_client_provenance.ps1"
   workflow_dispatch:
 
 permissions:
