@@ -90,7 +90,7 @@ pub(super) async fn template_domains_get() -> impl IntoResponse {
 }
 
 #[derive(Deserialize)]
-struct CreateRoutingRuleRequest {
+pub(super) struct CreateRoutingRuleRequest {
     #[serde(default)]
     name: String,
     #[serde(default)]
@@ -285,7 +285,10 @@ pub(super) async fn routing_rules_update(
     StatusCode::OK.into_response()
 }
 
-pub(super) async fn routing_rules_delete(State(state): State<WebState>, Path(id): Path<String>) -> Response {
+pub(super) async fn routing_rules_delete(
+    State(state): State<WebState>,
+    Path(id): Path<String>,
+) -> Response {
     let revision = {
         let mut db = state.app.db.write().await;
         if db.routing_rules.remove(&id).is_none() {

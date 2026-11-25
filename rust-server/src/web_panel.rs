@@ -34,8 +34,8 @@ mod clients;
 mod groups;
 mod links;
 mod monitoring;
-mod security;
 mod routing;
+mod security;
 mod subscriptions;
 
 use clients::{count_active_sessions, normalize_client_vk_hashes, normalize_vk_access_token};
