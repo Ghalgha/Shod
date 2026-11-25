@@ -1,6 +1,6 @@
 use crate::model::secret_eq;
 use crate::{
-    App, log_event,
+    App, lock_unpoison, log_event,
     model::{
         self, ClientGroup, PasswordEntry, RoutingRule, is_expired, now, random_password,
         random_token,
@@ -22,7 +22,7 @@ use sha2::{Digest, Sha256};
 use std::{
     net::{Ipv4Addr, SocketAddr},
     sync::{
-        Arc, LazyLock,
+        Arc, LazyLock, Mutex,
         atomic::{AtomicBool, AtomicU64, Ordering},
     },
     time::Duration,
