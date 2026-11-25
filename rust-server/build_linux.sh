@@ -41,7 +41,15 @@ command -v rustup >/dev/null
 command -v zig >/dev/null
 cargo zigbuild --help >/dev/null
 rustup toolchain install 1.97.1 --profile minimal --component rustfmt --component clippy
-rustup target add x86_64-unknown-linux-musl aarch64-unknown-linux-musl armv7-unknown-linux-musleabihf --toolchain 1.97.1
+RUST_TARGETS=(x86_64-unknown-linux-musl aarch64-unknown-linux-musl armv7-unknown-linux-musleabihf)
+if [[ -n "$SELECTED_VARIANT" ]]; then
+  case "$SELECTED_VARIANT" in
+    amd64) RUST_TARGETS=(x86_64-unknown-linux-musl) ;;
+    arm64) RUST_TARGETS=(aarch64-unknown-linux-musl) ;;
+    armv7) RUST_TARGETS=(armv7-unknown-linux-musleabihf) ;;
+  esac
+fi
+rustup target add "${RUST_TARGETS[@]}" --toolchain 1.97.1
 rustc +1.97.1 --version
 zig version
 WRAP="$ROOT/build/zig-wrappers"
