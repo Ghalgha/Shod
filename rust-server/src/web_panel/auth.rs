@@ -3,7 +3,7 @@
 use super::*;
 
 #[derive(Deserialize)]
-struct LoginRequest {
+pub(super) struct LoginRequest {
     user: String,
     pass: String,
 }

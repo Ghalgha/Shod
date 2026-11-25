@@ -1,6 +1,4 @@
 use crate::model::secret_eq;
-use base64::Engine as _;
-use sha2::{Digest, Sha256};
 use crate::{
     App, lock_unpoison, log_event,
     model::{
@@ -18,7 +16,9 @@ use axum::{
     response::{Html, IntoResponse, Redirect, Response},
     routing::{get, post, put},
 };
+use base64::Engine as _;
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 use std::{
     io::Read,
     net::{Ipv4Addr, SocketAddr},
