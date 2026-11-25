@@ -156,7 +156,7 @@ android {
 
     lint {
         checkReleaseBuilds = true
-        abortOnError = false
+        abortOnError = true
     }
 
     compileOptions {
