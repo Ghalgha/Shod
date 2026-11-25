@@ -55,11 +55,11 @@ pub(super) fn process_memory(text: &str) -> ProcessMemory {
 pub(super) struct ProcessMemoryRollup {
     pub(super) pss: u64,
     pub(super) pss_anon: u64,
-    anonymous: u64,
-    file: u64,
+    pub(super) anonymous: u64,
+    pub(super) file: u64,
     pub(super) shmem: u64,
     pub(super) private: u64,
-    shared: u64,
+    pub(super) shared: u64,
     pub(super) swap_pss: u64,
 }
 
@@ -294,7 +294,7 @@ pub(super) async fn memory_trim(State(state): State<WebState>) -> Response {
 }
 
 #[derive(Deserialize, Default)]
-struct DpiDiagnosticsQuery {
+pub(super) struct DpiDiagnosticsQuery {
     #[serde(default)]
     limit: Option<usize>,
 }
@@ -318,7 +318,7 @@ pub(super) async fn api_diagnostics_dpi(
 }
 
 #[derive(Deserialize)]
-struct LogsToggleRequest {
+pub(super) struct LogsToggleRequest {
     active: bool,
 }
 
