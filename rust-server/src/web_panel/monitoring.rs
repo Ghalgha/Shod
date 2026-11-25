@@ -299,7 +299,9 @@ struct DpiDiagnosticsQuery {
     limit: Option<usize>,
 }
 
-pub(super) async fn api_diagnostics_dpi(Query(query): Query<DpiDiagnosticsQuery>) -> impl IntoResponse {
+pub(super) async fn api_diagnostics_dpi(
+    Query(query): Query<DpiDiagnosticsQuery>,
+) -> impl IntoResponse {
     let limit = query.limit.unwrap_or(20).clamp(1, 100);
     let frames: Vec<protocol::DpiFrame> = protocol::DPI_RING
         .read()
