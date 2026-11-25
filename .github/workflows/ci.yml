@@ -280,8 +280,8 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-  rust:
-    name: Rust (format, clippy, tests)
+  rust-client:
+    name: Rust client (format, clippy, tests)
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -293,42 +293,13 @@ jobs:
           rustup toolchain install 1.97.1 --profile minimal --component rustfmt --component clippy
           rustup default 1.97.1
 
-      - name: Cache Cargo
+      - name: Cache client Cargo dependencies and build outputs
         uses: Swatinem/rust-cache@v2
         with:
-          workspaces: |
-            rust-client
-            rust-server
+          workspaces: rust-client
 
-      - name: Capture Rust formatting diagnostics
-        shell: bash
-        run: |
-          set +e
-          cargo fmt --manifest-path rust-client/Cargo.toml --all -- --check > "$RUNNER_TEMP/rust-client-fmt.txt" 2>&1
-          client_status=$?
-          cargo fmt --manifest-path rust-server/Cargo.toml --all -- --check > "$RUNNER_TEMP/rust-server-fmt.txt" 2>&1
-          server_status=$?
-          {
-            echo "rust-client cargo fmt exit code: $client_status"
-            echo "rust-server cargo fmt exit code: $server_status"
-          } | tee "$RUNNER_TEMP/rust-fmt-status.txt"
-          cat "$RUNNER_TEMP/rust-client-fmt.txt"
-          cat "$RUNNER_TEMP/rust-server-fmt.txt"
-          if [ "$client_status" -ne 0 ] || [ "$server_status" -ne 0 ]; then
-            exit 1
-          fi
-
-      - name: Upload Rust formatting diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: rust-format-diagnostics
-          path: |
-            ${{ runner.temp }}/rust-client-fmt.txt
-            ${{ runner.temp }}/rust-server-fmt.txt
-            ${{ runner.temp }}/rust-fmt-status.txt
-          if-no-files-found: warn
-          retention-days: 14
+      - name: Check client formatting
+        run: cargo fmt +1.97.1 --manifest-path rust-client/Cargo.toml --all -- --check
 
       - name: Clippy — client
         working-directory: rust-client
@@ -337,6 +308,27 @@ jobs:
       - name: Test — client
         working-directory: rust-client
         run: cargo test --all-targets
+
+  rust-server:
+    name: Rust server (format, clippy, tests)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        run: |
+          rustup toolchain install 1.97.1 --profile minimal --component rustfmt --component clippy
+          rustup default 1.97.1
+
+      - name: Cache server Cargo dependencies and build outputs
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rust-server
+
+      - name: Check server formatting
+        run: cargo fmt +1.97.1 --manifest-path rust-server/Cargo.toml --all -- --check
 
       - name: Clippy — server
         working-directory: rust-server
