@@ -2373,13 +2373,22 @@ pub async fn run(
         .route("/{uuid}/admin", get(groups::group_admin_page))
         .route("/{uuid}/admin/", get(groups::group_admin_page))
         .route("/{uuid}/api/data", get(groups::group_admin_data_get))
-        .route("/api/group-admin/{uuid}/data", get(groups::group_admin_data_get))
-        .route("/{uuid}/api/settings", post(groups::group_admin_settings_post))
+        .route(
+            "/api/group-admin/{uuid}/data",
+            get(groups::group_admin_data_get),
+        )
+        .route(
+            "/{uuid}/api/settings",
+            post(groups::group_admin_settings_post),
+        )
         .route(
             "/api/group-admin/{uuid}/settings",
             post(groups::group_admin_settings_post),
         )
-        .route("/{uuid}/api/clients", post(groups::group_admin_client_create))
+        .route(
+            "/{uuid}/api/clients",
+            post(groups::group_admin_client_create),
+        )
         .route(
             "/api/group-admin/{uuid}/clients",
             post(groups::group_admin_client_create),

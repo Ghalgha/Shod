@@ -222,7 +222,7 @@ pub(super) async fn group_admin_link_delete(
         .into_response()
 }
 
-async fn group_admin_page(
+pub(super) async fn group_admin_page(
     State(state): State<WebState>,
     Path(admin_uuid): Path<String>,
     token: Option<Extension<Arc<StealthAbortController>>>,
@@ -241,7 +241,7 @@ async fn group_admin_page(
     Html(GROUP_ADMIN_HTML).into_response()
 }
 
-async fn group_admin_data_get(
+pub(super) async fn group_admin_data_get(
     State(state): State<WebState>,
     Path(admin_uuid): Path<String>,
 ) -> Response {
@@ -307,7 +307,7 @@ async fn group_admin_data_get(
 }
 
 #[derive(Deserialize)]
-struct GroupAdminSettingsRequest {
+pub(super) struct GroupAdminSettingsRequest {
     #[serde(default)]
     vk_token: Option<String>,
     #[serde(default)]
@@ -316,7 +316,7 @@ struct GroupAdminSettingsRequest {
     workers: Option<u32>,
 }
 
-async fn group_admin_settings_post(
+pub(super) async fn group_admin_settings_post(
     State(state): State<WebState>,
     Path(admin_uuid): Path<String>,
     Json(payload): Json<GroupAdminSettingsRequest>,
@@ -357,7 +357,7 @@ async fn group_admin_settings_post(
 }
 
 #[derive(Deserialize)]
-struct GroupAdminCreateClientRequest {
+pub(super) struct GroupAdminCreateClientRequest {
     #[serde(default)]
     name: String,
     #[serde(default)]
@@ -366,7 +366,7 @@ struct GroupAdminCreateClientRequest {
     workers: Option<u32>,
 }
 
-async fn group_admin_client_create(
+pub(super) async fn group_admin_client_create(
     State(state): State<WebState>,
     Path(admin_uuid): Path<String>,
     Json(payload): Json<GroupAdminCreateClientRequest>,
@@ -464,7 +464,7 @@ async fn group_admin_client_create(
         .into_response()
 }
 
-async fn group_admin_client_toggle(
+pub(super) async fn group_admin_client_toggle(
     State(state): State<WebState>,
     Path((admin_uuid, password)): Path<(String, String)>,
 ) -> Response {
@@ -502,7 +502,7 @@ async fn group_admin_client_toggle(
         .into_response()
 }
 
-async fn group_admin_client_reset_traffic(
+pub(super) async fn group_admin_client_reset_traffic(
     State(state): State<WebState>,
     Path((admin_uuid, password)): Path<(String, String)>,
 ) -> Response {
@@ -535,7 +535,7 @@ async fn group_admin_client_reset_traffic(
     (StatusCode::OK, Json(serde_json::json!({ "ok": true }))).into_response()
 }
 
-async fn group_admin_client_extend(
+pub(super) async fn group_admin_client_extend(
     State(state): State<WebState>,
     Path((admin_uuid, password)): Path<(String, String)>,
 ) -> Response {
@@ -573,7 +573,7 @@ async fn group_admin_client_extend(
         .into_response()
 }
 
-async fn group_admin_client_unbind(
+pub(super) async fn group_admin_client_unbind(
     State(state): State<WebState>,
     Path((admin_uuid, password)): Path<(String, String)>,
 ) -> Response {
@@ -600,7 +600,7 @@ async fn group_admin_client_unbind(
 }
 
 #[derive(Deserialize)]
-struct GroupAdminUpdateClientRequest {
+pub(super) struct GroupAdminUpdateClientRequest {
     #[serde(default)]
     name: Option<String>,
     #[serde(default)]
@@ -613,7 +613,7 @@ struct GroupAdminUpdateClientRequest {
     vk_token: Option<bool>,
 }
 
-async fn group_admin_client_update(
+pub(super) async fn group_admin_client_update(
     State(state): State<WebState>,
     Path((admin_uuid, password)): Path<(String, String)>,
     Json(payload): Json<GroupAdminUpdateClientRequest>,
@@ -696,7 +696,7 @@ async fn group_admin_client_update(
     (StatusCode::OK, Json(serde_json::json!({ "ok": true }))).into_response()
 }
 
-async fn group_admin_client_delete(
+pub(super) async fn group_admin_client_delete(
     State(state): State<WebState>,
     Path((admin_uuid, password)): Path<(String, String)>,
 ) -> Response {
