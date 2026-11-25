@@ -173,6 +173,12 @@ class TunVpnService : VpnService() {
         mtu: Int = ShodConstants.Vpn.DEFAULT_MTU,
     ) {
         vpnMutex.withLock {
+        // STOP is set before its coroutine waits for this mutex. Re-check here so
+        // a queued START/RELOAD cannot recreate the TUN after STOP was requested.
+        if (stopRequested || serviceDestroyed) {
+            Log.d(TAG, "Ignoring VPN start because stop was requested or service was destroyed")
+            return
+        }
         try {
             val serverRule = TunnelManager.activeServerRoutingRule.value
             val isWhitelist: Boolean
@@ -359,6 +365,12 @@ class TunVpnService : VpnService() {
                 }
             }
 
+            // STOP may arrive while the VPN builder is being prepared.
+            if (stopRequested || serviceDestroyed) {
+                Log.d(TAG, "Aborting VPN establish because stop was requested")
+                return
+            }
+
             val pfd = builder.establish()
             if (pfd == null) {
                 Log.e(TAG, "VPN permission not granted")
@@ -368,7 +380,7 @@ class TunVpnService : VpnService() {
 
             var previousInterface: ParcelFileDescriptor? = null
             val accepted = synchronized(interfaceLock) {
-                if (serviceDestroyed) {
+                if (stopRequested || serviceDestroyed) {
                     false
                 } else {
                     previousInterface = vpnInterface
