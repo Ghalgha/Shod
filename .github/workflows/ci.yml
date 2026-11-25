@@ -265,6 +265,8 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/migration/phase-1-foundation' }}
 
       - name: Verify Gradle wrapper
         uses: gradle/actions/wrapper-validation@v6
@@ -322,7 +324,7 @@ jobs:
           rustup toolchain install 1.97.1 --profile minimal --component rustfmt --component clippy
           rustup default 1.97.1
 
-      - name: Cache server Cargo dependencies and build outputs
+      - name: Cache client Cargo dependencies and build outputs
         uses: Swatinem/rust-cache@v2
         with:
           workspaces: rust-server
