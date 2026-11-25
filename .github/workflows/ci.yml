@@ -62,8 +62,19 @@ jobs:
             rust-server/build/linux-musl
             rust-server/build/zig-cache
 
+      - name: Cache cargo-zigbuild
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo-tools/cargo-zigbuild/bin
+          key: ${{ runner.os }}-cargo-zigbuild-0.24.1-rust-1.97.1-v1
+
       - name: Install cargo-zigbuild
-        run: cargo install cargo-zigbuild --locked
+        run: |
+          echo "$HOME/.cargo-tools/cargo-zigbuild/bin" >> "$GITHUB_PATH"
+          if [ ! -x "$HOME/.cargo-tools/cargo-zigbuild/bin/cargo-zigbuild" ]; then
+            cargo install cargo-zigbuild --version 0.24.1 --locked --root "$HOME/.cargo-tools/cargo-zigbuild"
+          fi
+          cargo zigbuild --help >/dev/null
 
       - name: Build Linux server (${{ matrix.variant }})
         run: bash ./rust-server/build_linux.sh --no-tests --variant "${{ matrix.variant }}"
@@ -134,7 +145,11 @@ jobs:
         run: |
           rustup default 1.97.1
           rustup target add "${{ matrix.target }}"
-          cargo install cargo-ndk --locked
+          echo "$HOME/.cargo-tools/cargo-ndk/bin" >> "$GITHUB_PATH"
+          if [ ! -x "$HOME/.cargo-tools/cargo-ndk/bin/cargo-ndk" ]; then
+            cargo install cargo-ndk --version 4.1.2 --locked --root "$HOME/.cargo-tools/cargo-ndk"
+          fi
+          cargo ndk --help >/dev/null
 
       - name: Build Android native client (${{ matrix.abi }})
         run: bash rust-client/build_android_wsl.sh "${{ matrix.abi }}"
