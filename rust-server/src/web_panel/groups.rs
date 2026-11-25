@@ -723,3 +723,30 @@ pub(super) async fn group_admin_client_delete(
     let _ = auth::refresh_credentials_report(&state).await;
     (StatusCode::OK, Json(serde_json::json!({ "ok": true }))).into_response()
 }
+
+pub(super) async fn group_sub_link_regenerate(
+    State(state): State<WebState>,
+    Path(id): Path<String>,
+) -> Response {
+    let (revision, new_sub) = {
+        let mut db = state.app.db.write().await;
+        let Some(group) = db.groups.get_mut(&id) else {
+            return (StatusCode::NOT_FOUND, "group not found").into_response();
+        };
+        group.sub_uuid = model::random_uuid_v4();
+        let new_sub = group.sub_uuid.clone();
+        let rev = state.app.db_persistence.submit(db.clone());
+        (rev, new_sub)
+    };
+    if let Err(response) = wait_for_persistence(&state, revision).await {
+        return response;
+    }
+    (
+        StatusCode::OK,
+        Json(serde_json::json!({
+            "ok": true,
+            "sub_uuid": new_sub
+        })),
+    )
+        .into_response()
+}
