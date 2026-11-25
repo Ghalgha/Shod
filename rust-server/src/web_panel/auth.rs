@@ -314,4 +314,3 @@ pub(super) async fn web_session_janitor(app: Arc<App>) {
         app.login_limits.shrink_to_fit();
     }
 }
-

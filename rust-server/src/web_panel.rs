@@ -1,4 +1,6 @@
 use crate::model::secret_eq;
+use base64::Engine as _;
+use sha2::{Digest, Sha256};
 use crate::{
     App, lock_unpoison, log_event,
     model::{
@@ -29,6 +31,8 @@ use std::{
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
 mod auth;
+
+const MAX_LOGIN_FIELD_BYTES: usize = 256;
 
 #[derive(Clone)]
 struct WebState {
