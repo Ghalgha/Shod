@@ -299,7 +299,7 @@ jobs:
           workspaces: rust-client
 
       - name: Check client formatting
-        run: cargo fmt +1.97.1 --manifest-path rust-client/Cargo.toml --all -- --check
+        run: cargo fmt --manifest-path rust-client/Cargo.toml --all -- --check
 
       - name: Clippy — client
         working-directory: rust-client
@@ -328,7 +328,7 @@ jobs:
           workspaces: rust-server
 
       - name: Check server formatting
-        run: cargo fmt +1.97.1 --manifest-path rust-server/Cargo.toml --all -- --check
+        run: cargo fmt --manifest-path rust-server/Cargo.toml --all -- --check
 
       - name: Clippy — server
         working-directory: rust-server
