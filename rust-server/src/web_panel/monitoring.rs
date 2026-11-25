@@ -1,8 +1,7 @@
 //! Web-panel statistics, diagnostics, and log handlers.
 
 use super::{MAX_LOGIN_LIMITS, MAX_WEB_SESSIONS, WebState, wait_for_persistence};
-use crate::{
-    protocol,lock_unpoison, log_event, model::now, read_unpoison};
+use crate::{lock_unpoison, log_event, model::now, protocol, read_unpoison};
 use axum::{
     Json,
     extract::{Query, State},
@@ -385,4 +384,3 @@ pub(super) async fn logs_download(State(state): State<WebState>) -> impl IntoRes
         (axum::http::StatusCode::NOT_FOUND, "Log file not found").into_response()
     }
 }
-
