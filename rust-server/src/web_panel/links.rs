@@ -178,4 +178,3 @@ pub(super) fn make_entry_link(
         shared_token,
     )
 }
-
