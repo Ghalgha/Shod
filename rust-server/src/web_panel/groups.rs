@@ -153,7 +153,10 @@ pub(super) async fn groups_delete(
     StatusCode::OK.into_response()
 }
 
-pub(super) async fn group_admin_link_post(State(state): State<WebState>, Path(id): Path<String>) -> Response {
+pub(super) async fn group_admin_link_post(
+    State(state): State<WebState>,
+    Path(id): Path<String>,
+) -> Response {
     let mut db = state.app.db.write().await;
     let Some(group) = db.groups.get_mut(&id) else {
         return (StatusCode::NOT_FOUND, "group not found").into_response();

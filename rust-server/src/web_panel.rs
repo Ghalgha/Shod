@@ -1270,8 +1270,6 @@ async fn api_import_post(
     .into_response()
 }
 
-
-
 async fn group_admin_page(
     State(state): State<WebState>,
     Path(admin_uuid): Path<String>,
