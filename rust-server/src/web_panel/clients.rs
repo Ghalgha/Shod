@@ -465,7 +465,10 @@ pub(super) async fn client_update(
     StatusCode::OK.into_response()
 }
 
-pub(super) async fn client_toggle(State(state): State<WebState>, Path(password): Path<String>) -> Response {
+pub(super) async fn client_toggle(
+    State(state): State<WebState>,
+    Path(password): Path<String>,
+) -> Response {
     let revision = {
         let mut db = state.app.db.write().await;
         let Some(entry) = db.passwords.get_mut(&password) else {
@@ -487,13 +490,19 @@ pub(super) async fn client_toggle(State(state): State<WebState>, Path(password):
     StatusCode::OK.into_response()
 }
 
-pub(super) async fn client_unbind(State(state): State<WebState>, Path(password): Path<String>) -> Response {
+pub(super) async fn client_unbind(
+    State(state): State<WebState>,
+    Path(password): Path<String>,
+) -> Response {
     crate::protocol::drop_password_sessions(&state.app, &password);
     crate::protocol::forget_idle_password_epoch(&state.app, &password);
     StatusCode::OK.into_response()
 }
 
-pub(super) async fn client_delete(State(state): State<WebState>, Path(password): Path<String>) -> Response {
+pub(super) async fn client_delete(
+    State(state): State<WebState>,
+    Path(password): Path<String>,
+) -> Response {
     let revision = {
         let mut db = state.app.db.write().await;
         if db.passwords.remove(&password).is_none() {
@@ -701,7 +710,10 @@ pub(super) struct ClientLinkItem {
     sub_uuid: String,
 }
 
-pub(super) async fn api_links_get(State(state): State<WebState>, headers: HeaderMap) -> impl IntoResponse {
+pub(super) async fn api_links_get(
+    State(state): State<WebState>,
+    headers: HeaderMap,
+) -> impl IntoResponse {
     let db = state.app.db.read().await;
     let host = resolve_client_host(&headers, &state).await;
     let mut list: Vec<ClientLinkItem> = db
