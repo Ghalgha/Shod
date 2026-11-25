@@ -86,10 +86,13 @@ jobs:
         include:
           - abi: arm64-v8a
             suffix: arm64
+            target: aarch64-linux-android
           - abi: armeabi-v7a
             suffix: armv7
+            target: armv7-linux-androideabi
           - abi: x86_64
             suffix: x86_64
+            target: x86_64-linux-android
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -130,7 +133,7 @@ jobs:
       - name: Install Rust Android targets and cargo-ndk
         run: |
           rustup default 1.97.1
-          rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+          rustup target add "${{ matrix.target }}"
           cargo install cargo-ndk --locked
 
       - name: Build Android native client (${{ matrix.abi }})
