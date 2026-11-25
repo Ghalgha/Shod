@@ -9829,14 +9829,13 @@ mod tests {
     use super::clients::{
         count_active_sessions, normalize_client_vk_hashes, normalize_vk_access_token,
     };
-    use super::monitoring::{process_memory, process_memory_rollup};
     use super::links::{decrypt_shod_link, encrypt_shod_link};
+    use super::monitoring::{process_memory, process_memory_rollup};
     use super::{
         DNS_PROVIDERS, LOGIN_HTML, MAX_CLIENT_NAME_BYTES, PANEL_HTML, PWA_ICON_192_PNG,
         PWA_ICON_512_PNG, PWA_MANIFEST, PWA_SERVICE_WORKER, deploy_dns_profile_or_yandex,
-        dns_provider_by_id, dns_provider_id,
-        make_client_link, manual_dns, provider_dns, validate_client_name,
-        validate_proxy_profile_name, validate_workers,
+        dns_provider_by_id, dns_provider_id, make_client_link, manual_dns, provider_dns,
+        validate_client_name, validate_proxy_profile_name, validate_workers,
     };
 
     #[test]
