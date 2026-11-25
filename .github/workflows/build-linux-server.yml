@@ -17,7 +17,7 @@ jobs:
     timeout-minutes: 120
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Zig
         uses: mlugg/setup-zig@v2
@@ -30,7 +30,7 @@ jobs:
           rustup default 1.97.1
 
       - name: Cache cargo-zigbuild
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cargo-tools/cargo-zigbuild/bin
           key: ${{ runner.os }}-cargo-zigbuild-0.24.1-rust-1.97.1-v1
@@ -54,7 +54,7 @@ jobs:
         run: bash ./rust-server/build_linux.sh --no-tests
 
       - name: Upload verified Linux server assets
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: shod-linux-server-assets
           path: |
