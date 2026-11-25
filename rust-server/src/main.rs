@@ -44,7 +44,6 @@ mod tokio_io;
 mod tproxy;
 #[path = "tun/tun_device.rs"]
 mod tun_device;
-#[path = "web_panel/mod.rs"]
 mod web_panel;
 #[path = "../../shared/wire_protocol.rs"]
 mod wire_protocol;
