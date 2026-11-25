@@ -15,7 +15,7 @@ use std::net::Ipv4Addr;
 use std::sync::atomic::Ordering;
 
 #[derive(Deserialize)]
-struct SettingsRequest {
+pub(super) struct SettingsRequest {
     #[serde(default)]
     main_password: Option<String>,
     #[serde(default)]
@@ -133,7 +133,10 @@ pub(crate) fn provider_dns_by_id(id: &str) -> Option<String> {
     dns_provider_by_id(id).map(provider_dns)
 }
 
-pub(super) fn manual_dns(primary: Option<&str>, secondary: Option<&str>) -> Result<String, &'static str> {
+pub(super) fn manual_dns(
+    primary: Option<&str>,
+    secondary: Option<&str>,
+) -> Result<String, &'static str> {
     let Some(primary) = primary else {
         return Err("primary DNS is required");
     };
@@ -375,7 +378,7 @@ pub(super) async fn settings_post(
 }
 
 #[derive(Deserialize)]
-struct ApiDnsRequest {
+pub(super) struct ApiDnsRequest {
     #[serde(default)]
     dns_provider: Option<String>,
     #[serde(default)]
@@ -429,7 +432,7 @@ pub(super) async fn api_settings_dns(
 }
 
 #[derive(Deserialize)]
-struct RestartIntervalRequest {
+pub(super) struct RestartIntervalRequest {
     interval_hours: u8,
 }
 
@@ -461,7 +464,7 @@ pub(super) async fn api_settings_restart_interval(
 }
 
 #[derive(Deserialize)]
-struct MasterPasswordRequest {
+pub(super) struct MasterPasswordRequest {
     password: String,
 }
 
@@ -591,7 +594,7 @@ pub(super) async fn api_export_get(State(state): State<WebState>) -> impl IntoRe
 }
 
 #[derive(Deserialize)]
-struct ServerImportPayload {
+pub(super) struct ServerImportPayload {
     #[serde(default)]
     import_clients: Option<bool>,
     #[serde(default)]

@@ -40,7 +40,6 @@ mod settings;
 mod subscriptions;
 
 use clients::{count_active_sessions, normalize_client_vk_hashes, normalize_vk_access_token};
-
 use links::{make_client_link, make_entry_link, make_main_link};
 use security::{
     DualAcceptor, StealthAbortController, fallback_reject, root_with_secret, security_headers,
@@ -648,7 +647,10 @@ pub async fn run(
     let protected = Router::new()
         .route("/api/stats", get(monitoring::stats))
         .route("/api/memory/trim", post(monitoring::memory_trim))
-        .route("/api/settings", get(settings::settings_get).post(settings::settings_post))
+        .route(
+            "/api/settings",
+            get(settings::settings_get).post(settings::settings_post),
+        )
         .route(
             "/api/clients",
             get(clients::clients_get).post(clients::clients_create),
@@ -8433,13 +8435,14 @@ const PANEL_HTML: &str = r##"
 
 #[cfg(test)]
 mod tests {
-    use super::clients::{
-        count_active_sessions, normalize_client_vk_hashes, normalize_vk_access_token,
-    };
-    use super::links::{decrypt_shod_link, encrypt_shod_link};
-    use super::monitoring::{process_memory, process_memory_rollup};
-    use super::settings::{
-        DNS_PROVIDERS, deploy_dns_profile_or_yandex, dns_provider_by_id, manual_dns, provider_dns,
+    use super::{
+        clients::{count_active_sessions, normalize_client_vk_hashes, normalize_vk_access_token},
+        links::{decrypt_shod_link, encrypt_shod_link},
+        monitoring::{process_memory, process_memory_rollup},
+        settings::{
+            DNS_PROVIDERS, deploy_dns_profile_or_yandex, dns_provider_by_id, manual_dns,
+            provider_dns,
+        },
     };
     use super::{
         LOGIN_HTML, MAX_CLIENT_NAME_BYTES, PANEL_HTML, PWA_ICON_192_PNG, PWA_ICON_512_PNG,
