@@ -62,11 +62,11 @@ jobs:
             rust-server/build/linux-musl
             rust-server/build/zig-cache
 
-      - name: Cache cargo-zigbuild
-        uses: actions/cache@v4
+      - name: Restore cargo-zigbuild cache
+        uses: actions/cache/restore@v4
         with:
           path: ~/.cargo-tools/cargo-zigbuild/bin
-          key: ${{ runner.os }}-cargo-zigbuild-0.24.1-rust-1.97.1-v1
+          key: ${{ runner.os }}-cargo-zigbuild-0.24.1-rust-1.97.1-v2
 
       - name: Install cargo-zigbuild
         run: |
@@ -75,6 +75,13 @@ jobs:
             cargo install cargo-zigbuild --version 0.24.1 --locked --root "$HOME/.cargo-tools/cargo-zigbuild"
           fi
           cargo zigbuild --help >/dev/null
+
+      - name: Save cargo-zigbuild cache
+        if: matrix.variant == 'amd64'
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cargo-tools/cargo-zigbuild/bin
+          key: ${{ runner.os }}-cargo-zigbuild-0.24.1-rust-1.97.1-v2
 
       - name: Build Linux server (${{ matrix.variant }})
         run: bash ./rust-server/build_linux.sh --no-tests --variant "${{ matrix.variant }}"
@@ -141,6 +148,12 @@ jobs:
           echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/27.2.12479018" >> "$GITHUB_ENV"
           echo "$ANDROID_HOME/ndk/27.2.12479018" >> "$GITHUB_PATH"
 
+      - name: Restore cargo-ndk cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.cargo-tools/cargo-ndk/bin
+          key: ${{ runner.os }}-cargo-ndk-4.1.2-rust-1.97.1-v2
+
       - name: Install Rust Android targets and cargo-ndk
         run: |
           rustup default 1.97.1
@@ -150,6 +163,13 @@ jobs:
             cargo install cargo-ndk --version 4.1.2 --locked --root "$HOME/.cargo-tools/cargo-ndk"
           fi
           cargo ndk --help >/dev/null
+
+      - name: Save cargo-ndk cache
+        if: matrix.abi == 'arm64-v8a'
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cargo-tools/cargo-ndk/bin
+          key: ${{ runner.os }}-cargo-ndk-4.1.2-rust-1.97.1-v2
 
       - name: Build Android native client (${{ matrix.abi }})
         run: bash rust-client/build_android_wsl.sh "${{ matrix.abi }}"
