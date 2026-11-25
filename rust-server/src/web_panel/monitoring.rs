@@ -1,11 +1,11 @@
 //! Web-panel statistics, diagnostics, and log handlers.
 
-use super::{WebState, wait_for_persistence};
-use crate::{lock_unpoison, log_event, protocol};
+use super::{MAX_LOGIN_LIMITS, MAX_WEB_SESSIONS, WebState, wait_for_persistence};
+use crate::{lock_unpoison, log_event, model::now, protocol, read_unpoison};
 use axum::{
     Json,
     extract::{Query, State},
-    http::StatusCode,
+    http::{HeaderMap, StatusCode},
     response::{IntoResponse, Response},
 };
 use serde::Deserialize;
@@ -32,12 +32,12 @@ fn read_proc_text<'a>(path: &str, buffer: &'a mut [u8]) -> Option<&'a str> {
 
 #[derive(Clone, Copy, Default)]
 pub(super) struct ProcessMemory {
-    rss: u64,
-    peak: u64,
-    anonymous: u64,
-    file: u64,
-    shared: u64,
-    swap: u64,
+    pub(super) rss: u64,
+    pub(super) peak: u64,
+    pub(super) anonymous: u64,
+    pub(super) file: u64,
+    pub(super) shared: u64,
+    pub(super) swap: u64,
 }
 
 pub(super) fn process_memory(text: &str) -> ProcessMemory {
@@ -53,14 +53,14 @@ pub(super) fn process_memory(text: &str) -> ProcessMemory {
 
 #[derive(Clone, Copy, Default)]
 pub(super) struct ProcessMemoryRollup {
-    pss: u64,
-    pss_anon: u64,
+    pub(super) pss: u64,
+    pub(super) pss_anon: u64,
     anonymous: u64,
     file: u64,
-    shmem: u64,
-    private: u64,
+    pub(super) shmem: u64,
+    pub(super) private: u64,
     shared: u64,
-    swap_pss: u64,
+    pub(super) swap_pss: u64,
 }
 
 pub(super) fn process_memory_rollup(text: &str) -> ProcessMemoryRollup {
@@ -141,7 +141,7 @@ fn format_total_memory_kib(kib: u64) -> String {
     }
 }
 
-async fn stats(State(state): State<WebState>, _headers: HeaderMap) -> impl IntoResponse {
+pub(super) async fn stats(State(state): State<WebState>, _headers: HeaderMap) -> impl IntoResponse {
     let (process_memory, process_rollup, total_ram) = cached_system_stats();
     let io = *read_unpoison(&protocol::GLOBAL_IO_COUNTERS);
 
@@ -267,7 +267,7 @@ async fn stats(State(state): State<WebState>, _headers: HeaderMap) -> impl IntoR
     }))
 }
 
-async fn memory_trim(State(state): State<WebState>) -> Response {
+pub(super) async fn memory_trim(State(state): State<WebState>) -> Response {
     match crate::trim_memory(&state.app).await {
         Ok(allocator_collected) => Json(serde_json::json!({
             "compacted": true,
