@@ -29,11 +29,12 @@ use std::{
 };
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
-mod clients;
 mod auth;
+mod clients;
 mod monitoring;
 mod security;
 
+use clients::{count_active_sessions, normalize_client_vk_hashes, normalize_vk_access_token};
 use security::{
     DualAcceptor, StealthAbortController, fallback_reject, root_with_secret, security_headers,
     stealth_abort_response, web_slowloris_watchdog,
@@ -925,26 +926,6 @@ async fn resolve_client_host(headers: &HeaderMap, state: &WebState) -> String {
 
     "0.0.0.0".to_string()
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #[derive(Deserialize)]
 struct ApiDnsRequest {
@@ -1850,7 +1831,6 @@ async fn universal_sub_json(
     stealth_abort_response()
 }
 
-
 async fn group_sub_link_regenerate(
     State(state): State<WebState>,
     Path(id): Path<String>,
@@ -1877,15 +1857,6 @@ async fn group_sub_link_regenerate(
     )
         .into_response()
 }
-
-
-
-
-
-
-
-
-
 
 async fn group_admin_data_get(
     State(state): State<WebState>,
@@ -2960,18 +2931,32 @@ pub async fn run(
         .route("/api/stats", get(monitoring::stats))
         .route("/api/memory/trim", post(monitoring::memory_trim))
         .route("/api/settings", get(settings_get).post(settings_post))
-        .route("/api/clients", get(clients::clients_get).post(clients::clients_create))
+        .route(
+            "/api/clients",
+            get(clients::clients_get).post(clients::clients_create),
+        )
         .route(
             "/api/clients/{password}",
-            get(clients::client_get).post(clients::client_update).delete(clients::client_delete),
+            get(clients::client_get)
+                .post(clients::client_update)
+                .delete(clients::client_delete),
         )
-        .route("/api/clients/{password}/toggle", post(clients::client_toggle))
-        .route("/api/clients/{password}/unbind", post(clients::client_unbind))
+        .route(
+            "/api/clients/{password}/toggle",
+            post(clients::client_toggle),
+        )
+        .route(
+            "/api/clients/{password}/unbind",
+            post(clients::client_unbind),
+        )
         .route(
             "/api/clients/{password}/reset-traffic",
             post(clients::client_reset_traffic),
         )
-        .route("/api/clients/{password}/extend", post(clients::client_extend))
+        .route(
+            "/api/clients/{password}/extend",
+            post(clients::client_extend),
+        )
         .route(
             "/api/clients/{password}/sub-link/regenerate",
             post(clients::client_sub_link_regenerate),
@@ -3017,7 +3002,10 @@ pub async fn run(
         .route("/api/logout_all", post(auth::logout_all))
         .route("/api/links", get(clients::api_links_get))
         .route("/api/links/batch-vk", post(clients::api_links_batch_vk))
-        .route("/api/clients/{password}/vk", put(clients::api_client_vk_update))
+        .route(
+            "/api/clients/{password}/vk",
+            put(clients::api_client_vk_update),
+        )
         .route("/api/settings/dns", post(api_settings_dns))
         .route(
             "/api/settings/restart-interval",
@@ -3027,15 +3015,30 @@ pub async fn run(
             "/api/settings/master-password",
             post(api_settings_master_password),
         )
-        .route("/api/clients/batch-toggle", post(clients::api_clients_batch_toggle))
-        .route("/api/clients/batch-extend", post(clients::api_clients_batch_extend))
+        .route(
+            "/api/clients/batch-toggle",
+            post(clients::api_clients_batch_toggle),
+        )
+        .route(
+            "/api/clients/batch-extend",
+            post(clients::api_clients_batch_extend),
+        )
         .route(
             "/api/clients/batch-reset-traffic",
             post(clients::api_clients_batch_reset_traffic),
         )
-        .route("/api/clients/batch-delete", post(clients::api_clients_batch_delete))
-        .route("/api/clients/batch-group", post(clients::api_clients_batch_group))
-        .route("/api/groups/{id}/clients", get(clients::group_clients_get))
+        .route(
+            "/api/clients/batch-delete",
+            post(clients::api_clients_batch_delete),
+        )
+        .route(
+            "/api/clients/batch-group",
+            post(clients::api_clients_batch_group),
+        )
+        .route(
+            "/api/groups/{id}/clients",
+            get(clients::group_clients_get),
+        )
         .route("/api/diagnostics/dpi", get(monitoring::api_diagnostics_dpi))
         .route("/api/export", get(api_export_get))
         .route("/api/import", post(api_import_post))
@@ -10700,10 +10703,10 @@ const PANEL_HTML: &str = r##"
 
 #[cfg(test)]
 mod tests {
-    use super::monitoring::{process_memory, process_memory_rollup};
     use super::clients::{
         count_active_sessions, normalize_client_vk_hashes, normalize_vk_access_token,
     };
+    use super::monitoring::{process_memory, process_memory_rollup};
     use super::{
         DNS_PROVIDERS, LOGIN_HTML, MAX_CLIENT_NAME_BYTES, PANEL_HTML, PWA_ICON_192_PNG,
         PWA_ICON_512_PNG, PWA_MANIFEST, PWA_SERVICE_WORKER, decrypt_shod_link,
