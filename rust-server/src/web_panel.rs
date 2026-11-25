@@ -1270,25 +1270,6 @@ async fn api_import_post(
     .into_response()
 }
 
-async fn group_admin_page(
-    State(state): State<WebState>,
-    Path(admin_uuid): Path<String>,
-    token: Option<Extension<Arc<StealthAbortController>>>,
-) -> Response {
-    let db = state.app.db.read().await;
-    let exists = db
-        .groups
-        .values()
-        .any(|g| !g.admin_uuid.is_empty() && g.admin_uuid == admin_uuid);
-    if !exists {
-        if let Some(Extension(ctrl)) = token {
-            ctrl.abort();
-        }
-        return stealth_abort_response();
-    }
-    Html(GROUP_ADMIN_HTML).into_response()
-}
-
 fn html_escape(input: &str) -> String {
     input
         .replace('&', "&amp;")
@@ -1643,489 +1624,6 @@ async fn group_sub_link_regenerate(
         })),
     )
         .into_response()
-}
-
-async fn group_admin_data_get(
-    State(state): State<WebState>,
-    Path(admin_uuid): Path<String>,
-) -> Response {
-    let db = state.app.db.read().await;
-    let Some(group) = db
-        .groups
-        .values()
-        .find(|g| !g.admin_uuid.is_empty() && g.admin_uuid == admin_uuid)
-    else {
-        return stealth_abort_response();
-    };
-    let server_ip = state.app.public_ip.read().await.clone();
-    let host = if server_ip.is_empty() {
-        "0.0.0.0".to_string()
-    } else {
-        server_ip.clone()
-    };
-    let peer_port = state.app.listen.port();
-    let effective_vk_token = group.vk_token.as_deref().unwrap_or(&db.vk_access_token);
-    let effective_vk_hashes = group.vk_hashes.as_deref().unwrap_or(&db.vk_hashes);
-    let mut clients = Vec::new();
-    for (_pass, p_entry) in &db.passwords {
-        if p_entry.group_id == group.id {
-            let link = make_entry_link(&host, peer_port, _pass, p_entry, effective_vk_token);
-            clients.push(serde_json::json!({
-                "password": _pass,
-                "name": p_entry.name,
-                "expires": p_entry.expires_at,
-                "up": p_entry.up_bytes,
-                "down": p_entry.down_bytes,
-                "active": !p_entry.is_deactivated && !model::is_expired(p_entry),
-                "is_deactivated": p_entry.is_deactivated,
-                "active_sessions": count_active_sessions(&state.app.sessions, _pass),
-                "ip": if p_entry.ip.is_empty() { crate::server_config::FALLBACK_CLIENT_IP.to_owned() } else { p_entry.ip.clone() },
-                "device_ip": if p_entry.ip.is_empty() { crate::server_config::FALLBACK_CLIENT_IP.to_owned() } else { p_entry.ip.clone() },
-                "group_id": p_entry.group_id,
-                "peer_port": p_entry.wg_port,
-                "vk_hashes": p_entry.vk_hashes,
-                "vk_token": p_entry.vk_token_enabled,
-                "sub_uuid": p_entry.sub_uuid,
-                "workers": p_entry.workers.unwrap_or(0),
-                "link": link,
-            }));
-        }
-    }
-    (
-        StatusCode::OK,
-        Json(serde_json::json!({
-            "ok": true,
-            "group": {
-                "id": group.id,
-                "name": group.name,
-                "workers": group.workers.unwrap_or(0),
-                "vk_token": effective_vk_token,
-                "vk_hashes": effective_vk_hashes,
-            },
-            "clients": clients,
-            "server_ip": server_ip,
-            "peer_port": peer_port
-        })),
-    )
-        .into_response()
-}
-
-#[derive(Deserialize)]
-struct GroupAdminSettingsRequest {
-    #[serde(default)]
-    vk_token: Option<String>,
-    #[serde(default)]
-    vk_hashes: Option<String>,
-    #[serde(default)]
-    workers: Option<u32>,
-}
-
-async fn group_admin_settings_post(
-    State(state): State<WebState>,
-    Path(admin_uuid): Path<String>,
-    Json(payload): Json<GroupAdminSettingsRequest>,
-) -> Response {
-    let mut db = state.app.db.write().await;
-    let Some(group) = db
-        .groups
-        .values_mut()
-        .find(|g| !g.admin_uuid.is_empty() && g.admin_uuid == admin_uuid)
-    else {
-        return stealth_abort_response();
-    };
-    if let Some(token) = payload.vk_token {
-        let normalized = match normalize_vk_access_token(&token) {
-            Ok(t) => t,
-            Err(e) => return (StatusCode::BAD_REQUEST, e).into_response(),
-        };
-        group.vk_token = Some(normalized);
-    }
-    if let Some(hashes) = payload.vk_hashes {
-        let normalized = match normalize_client_vk_hashes(&hashes) {
-            Ok(h) => h,
-            Err(e) => return (StatusCode::BAD_REQUEST, e).into_response(),
-        };
-        group.vk_hashes = Some(normalized);
-    }
-    if let Some(w) = payload.workers {
-        match validate_workers(Some(w)) {
-            Ok(validated) => group.workers = validated,
-            Err(msg) => return (StatusCode::BAD_REQUEST, msg).into_response(),
-        }
-    }
-    let snapshot = db.clone();
-    drop(db);
-    state.app.db_persistence.submit(snapshot);
-    let _ = auth::refresh_credentials_report(&state).await;
-    (StatusCode::OK, Json(serde_json::json!({ "ok": true }))).into_response()
-}
-
-#[derive(Deserialize)]
-struct GroupAdminCreateClientRequest {
-    #[serde(default)]
-    name: String,
-    #[serde(default)]
-    days: i64,
-    #[serde(default)]
-    workers: Option<u32>,
-}
-
-async fn group_admin_client_create(
-    State(state): State<WebState>,
-    Path(admin_uuid): Path<String>,
-    Json(payload): Json<GroupAdminCreateClientRequest>,
-) -> Response {
-    let mut db = state.app.db.write().await;
-    let Some(group_id) = db
-        .groups
-        .values()
-        .find(|g| !g.admin_uuid.is_empty() && g.admin_uuid == admin_uuid)
-        .map(|g| g.id.clone())
-    else {
-        return stealth_abort_response();
-    };
-    let client_name = if payload.name.trim().is_empty() {
-        model::generate_unique_client_name(model::existing_client_names_in_scope(
-            &db, &group_id, None,
-        ))
-    } else {
-        let trimmed = payload.name.trim().to_string();
-        if let Err(msg) = validate_client_name(&trimmed) {
-            return (StatusCode::BAD_REQUEST, msg).into_response();
-        }
-        if model::is_client_name_taken(
-            model::existing_client_names_in_scope(&db, &group_id, None),
-            &trimmed,
-        ) {
-            return (
-                StatusCode::BAD_REQUEST,
-                "Участник с таким именем уже существует в этой группе",
-            )
-                .into_response();
-        }
-        trimmed
-    };
-    let validated_workers = match validate_workers(payload.workers) {
-        Ok(w) => w,
-        Err(msg) => return (StatusCode::BAD_REQUEST, msg).into_response(),
-    };
-    let mut pass = model::random_password();
-    while db.passwords.contains_key(&pass) {
-        pass = model::random_password();
-    }
-    let now_ts = model::now();
-    let expires_at = if payload.days > 0 {
-        now_ts.saturating_add(payload.days.saturating_mul(86400))
-    } else {
-        0
-    };
-    let sub_uuid = model::random_uuid_v4();
-    let ip = model::get_next_ip(&db).unwrap_or_default();
-    let entry = model::PasswordEntry {
-        ip,
-        expires_at,
-        down_bytes: 0,
-        up_bytes: 0,
-        vk_hash: String::new(),
-        ports: String::new(),
-        is_deactivated: false,
-        name: client_name,
-        vk_hashes: String::new(),
-        vk_token_enabled: false,
-        dtls_port: 0,
-        wg_port: 0,
-        local_port: 0,
-        group_id,
-        routing_rule_id: String::new(),
-        sub_uuid: sub_uuid.clone(),
-        workers: validated_workers,
-    };
-    db.passwords.insert(pass.clone(), entry);
-    let snapshot = db.clone();
-    drop(db);
-    state.app.db_persistence.submit(snapshot);
-    if let Err(message) = auth::refresh_credentials_report(&state).await {
-        let warning = format!("saved but reload failed: {message}");
-        return (
-            StatusCode::OK,
-            [("x-shod-reload-error", warning)],
-            Json(serde_json::json!({
-                "ok": true,
-                "password": pass,
-                "sub_uuid": sub_uuid
-            })),
-        )
-            .into_response();
-    }
-    (
-        StatusCode::OK,
-        Json(serde_json::json!({
-            "ok": true,
-            "password": pass,
-            "sub_uuid": sub_uuid
-        })),
-    )
-        .into_response()
-}
-
-async fn group_admin_client_toggle(
-    State(state): State<WebState>,
-    Path((admin_uuid, password)): Path<(String, String)>,
-) -> Response {
-    let mut db = state.app.db.write().await;
-    let Some(group) = db
-        .groups
-        .values()
-        .find(|g| !g.admin_uuid.is_empty() && g.admin_uuid == admin_uuid)
-    else {
-        return stealth_abort_response();
-    };
-    let group_id = group.id.clone();
-    let Some(entry) = db.passwords.get_mut(&password) else {
-        return (StatusCode::NOT_FOUND, "client not found").into_response();
-    };
-    if entry.group_id != group_id {
-        return (StatusCode::FORBIDDEN, "forbidden").into_response();
-    }
-    entry.is_deactivated = !entry.is_deactivated;
-    let is_deactivated = entry.is_deactivated;
-    let snapshot = db.clone();
-    drop(db);
-    state.app.db_persistence.submit(snapshot);
-    if is_deactivated {
-        crate::protocol::drop_password_sessions(&state.app, &password);
-    }
-    let _ = auth::refresh_credentials_report(&state).await;
-    (
-        StatusCode::OK,
-        Json(serde_json::json!({
-            "ok": true,
-            "is_deactivated": is_deactivated
-        })),
-    )
-        .into_response()
-}
-
-async fn group_admin_client_reset_traffic(
-    State(state): State<WebState>,
-    Path((admin_uuid, password)): Path<(String, String)>,
-) -> Response {
-    let mut db = state.app.db.write().await;
-    let Some(group) = db
-        .groups
-        .values()
-        .find(|g| !g.admin_uuid.is_empty() && g.admin_uuid == admin_uuid)
-    else {
-        return stealth_abort_response();
-    };
-    let group_id = group.id.clone();
-    let Some(entry) = db.passwords.get_mut(&password) else {
-        return (StatusCode::NOT_FOUND, "client not found").into_response();
-    };
-    if entry.group_id != group_id {
-        return (StatusCode::FORBIDDEN, "forbidden").into_response();
-    }
-    entry.up_bytes = 0;
-    entry.down_bytes = 0;
-    for s in state.app.sessions.iter() {
-        if s.value().password == password {
-            s.value().up_bytes.store(0, Ordering::Relaxed);
-            s.value().down_bytes.store(0, Ordering::Relaxed);
-        }
-    }
-    let snapshot = db.clone();
-    drop(db);
-    state.app.db_persistence.submit(snapshot);
-    (StatusCode::OK, Json(serde_json::json!({ "ok": true }))).into_response()
-}
-
-async fn group_admin_client_extend(
-    State(state): State<WebState>,
-    Path((admin_uuid, password)): Path<(String, String)>,
-) -> Response {
-    let mut db = state.app.db.write().await;
-    let Some(group) = db
-        .groups
-        .values()
-        .find(|g| !g.admin_uuid.is_empty() && g.admin_uuid == admin_uuid)
-    else {
-        return stealth_abort_response();
-    };
-    let group_id = group.id.clone();
-    let Some(entry) = db.passwords.get_mut(&password) else {
-        return (StatusCode::NOT_FOUND, "client not found").into_response();
-    };
-    if entry.group_id != group_id {
-        return (StatusCode::FORBIDDEN, "forbidden").into_response();
-    }
-    let now_ts = model::now();
-    let base = if entry.expires_at > now_ts {
-        entry.expires_at
-    } else {
-        now_ts
-    };
-    entry.expires_at = base.saturating_add(30 * 86400);
-    let expires = entry.expires_at;
-    let snapshot = db.clone();
-    drop(db);
-    state.app.db_persistence.submit(snapshot);
-    let _ = auth::refresh_credentials_report(&state).await;
-    (
-        StatusCode::OK,
-        Json(serde_json::json!({ "ok": true, "expires": expires })),
-    )
-        .into_response()
-}
-
-async fn group_admin_client_unbind(
-    State(state): State<WebState>,
-    Path((admin_uuid, password)): Path<(String, String)>,
-) -> Response {
-    let db = state.app.db.read().await;
-    let Some(group) = db
-        .groups
-        .values()
-        .find(|g| !g.admin_uuid.is_empty() && g.admin_uuid == admin_uuid)
-    else {
-        return stealth_abort_response();
-    };
-    let group_id = group.id.clone();
-    let Some(entry) = db.passwords.get(&password) else {
-        return (StatusCode::NOT_FOUND, "client not found").into_response();
-    };
-    if entry.group_id != group_id {
-        return (StatusCode::FORBIDDEN, "forbidden").into_response();
-    }
-    drop(db);
-    crate::protocol::drop_password_sessions(&state.app, &password);
-    crate::protocol::forget_idle_password_epoch(&state.app, &password);
-    let _ = auth::refresh_credentials_report(&state).await;
-    (StatusCode::OK, Json(serde_json::json!({ "ok": true }))).into_response()
-}
-
-#[derive(Deserialize)]
-struct GroupAdminUpdateClientRequest {
-    #[serde(default)]
-    name: Option<String>,
-    #[serde(default)]
-    days: Option<i64>,
-    #[serde(default)]
-    workers: Option<u32>,
-    #[serde(default)]
-    hash: Option<String>,
-    #[serde(default)]
-    vk_token: Option<bool>,
-}
-
-async fn group_admin_client_update(
-    State(state): State<WebState>,
-    Path((admin_uuid, password)): Path<(String, String)>,
-    Json(payload): Json<GroupAdminUpdateClientRequest>,
-) -> Response {
-    let mut db = state.app.db.write().await;
-    let Some(group) = db
-        .groups
-        .values()
-        .find(|g| !g.admin_uuid.is_empty() && g.admin_uuid == admin_uuid)
-    else {
-        return stealth_abort_response();
-    };
-    let group_id = group.id.clone();
-    let current_group_id = match db.passwords.get(&password) {
-        Some(e) => e.group_id.clone(),
-        None => return (StatusCode::NOT_FOUND, "client not found").into_response(),
-    };
-    if current_group_id != group_id {
-        return (StatusCode::FORBIDDEN, "forbidden").into_response();
-    }
-    let validated_name = if let Some(name) = payload.name {
-        let trimmed = name.trim().to_string();
-        let scope_names = model::existing_client_names_in_scope(&db, &group_id, Some(&password));
-        let client_name = if trimmed.is_empty() {
-            model::generate_unique_client_name(&scope_names)
-        } else {
-            if let Err(msg) = validate_client_name(&trimmed) {
-                return (StatusCode::BAD_REQUEST, msg).into_response();
-            }
-            if model::is_client_name_taken(&scope_names, &trimmed) {
-                return (
-                    StatusCode::BAD_REQUEST,
-                    "Участник с таким именем уже существует в этой группе",
-                )
-                    .into_response();
-            }
-            trimmed
-        };
-        Some(client_name)
-    } else {
-        None
-    };
-
-    let entry = db.passwords.get_mut(&password).unwrap();
-    if let Some(name) = validated_name {
-        entry.name = name;
-    }
-    if let Some(days) = payload.days {
-        if days > 0 {
-            entry.expires_at = model::now().saturating_add(days.saturating_mul(86400));
-        } else {
-            entry.expires_at = 0;
-        }
-    }
-    if let Some(w) = payload.workers {
-        match validate_workers(Some(w)) {
-            Ok(validated) => entry.workers = validated,
-            Err(msg) => return (StatusCode::BAD_REQUEST, msg).into_response(),
-        }
-    }
-    if let Some(ref h) = payload.hash {
-        let vk_hashes = match normalize_client_vk_hashes(h) {
-            Ok(v) => v,
-            Err(msg) => return (StatusCode::BAD_REQUEST, msg).into_response(),
-        };
-        entry.vk_hash = vk_hashes.clone();
-        entry.vk_hashes = vk_hashes;
-    }
-    if let Some(vt) = payload.vk_token {
-        entry.vk_token_enabled = vt;
-        if vt {
-            entry.vk_hash.clear();
-            entry.vk_hashes.clear();
-        }
-    }
-    let snapshot = db.clone();
-    drop(db);
-    state.app.db_persistence.submit(snapshot);
-    let _ = auth::refresh_credentials_report(&state).await;
-    (StatusCode::OK, Json(serde_json::json!({ "ok": true }))).into_response()
-}
-
-async fn group_admin_client_delete(
-    State(state): State<WebState>,
-    Path((admin_uuid, password)): Path<(String, String)>,
-) -> Response {
-    let mut db = state.app.db.write().await;
-    let Some(group) = db
-        .groups
-        .values()
-        .find(|g| !g.admin_uuid.is_empty() && g.admin_uuid == admin_uuid)
-    else {
-        return stealth_abort_response();
-    };
-    let group_id = group.id.clone();
-    let Some(entry) = db.passwords.get(&password) else {
-        return (StatusCode::NOT_FOUND, "client not found").into_response();
-    };
-    if entry.group_id != group_id {
-        return (StatusCode::FORBIDDEN, "forbidden").into_response();
-    }
-    db.passwords.remove(&password);
-    let snapshot = db.clone();
-    drop(db);
-    state.app.db_persistence.submit(snapshot);
-    crate::protocol::drop_password_sessions(&state.app, &password);
-    let _ = auth::refresh_credentials_report(&state).await;
-    (StatusCode::OK, Json(serde_json::json!({ "ok": true }))).into_response()
 }
 
 #[derive(Serialize)]
@@ -2872,59 +2370,59 @@ pub async fn run(
     }
 
     let router = router
-        .route("/{uuid}/admin", get(group_admin_page))
-        .route("/{uuid}/admin/", get(group_admin_page))
-        .route("/{uuid}/api/data", get(group_admin_data_get))
-        .route("/api/group-admin/{uuid}/data", get(group_admin_data_get))
-        .route("/{uuid}/api/settings", post(group_admin_settings_post))
+        .route("/{uuid}/admin", get(groups::group_admin_page))
+        .route("/{uuid}/admin/", get(groups::group_admin_page))
+        .route("/{uuid}/api/data", get(groups::group_admin_data_get))
+        .route("/api/group-admin/{uuid}/data", get(groups::group_admin_data_get))
+        .route("/{uuid}/api/settings", post(groups::group_admin_settings_post))
         .route(
             "/api/group-admin/{uuid}/settings",
-            post(group_admin_settings_post),
+            post(groups::group_admin_settings_post),
         )
-        .route("/{uuid}/api/clients", post(group_admin_client_create))
+        .route("/{uuid}/api/clients", post(groups::group_admin_client_create))
         .route(
             "/api/group-admin/{uuid}/clients",
-            post(group_admin_client_create),
+            post(groups::group_admin_client_create),
         )
         .route(
             "/{uuid}/api/clients/{password}",
-            put(group_admin_client_update).delete(group_admin_client_delete),
+            put(groups::group_admin_client_update).delete(groups::group_admin_client_delete),
         )
         .route(
             "/api/group-admin/{uuid}/clients/{password}",
-            put(group_admin_client_update).delete(group_admin_client_delete),
+            put(groups::group_admin_client_update).delete(groups::group_admin_client_delete),
         )
         .route(
             "/{uuid}/api/clients/{password}/toggle",
-            post(group_admin_client_toggle),
+            post(groups::group_admin_client_toggle),
         )
         .route(
             "/api/group-admin/{uuid}/clients/{password}/toggle",
-            post(group_admin_client_toggle),
+            post(groups::group_admin_client_toggle),
         )
         .route(
             "/{uuid}/api/clients/{password}/reset-traffic",
-            post(group_admin_client_reset_traffic),
+            post(groups::group_admin_client_reset_traffic),
         )
         .route(
             "/api/group-admin/{uuid}/clients/{password}/reset-traffic",
-            post(group_admin_client_reset_traffic),
+            post(groups::group_admin_client_reset_traffic),
         )
         .route(
             "/{uuid}/api/clients/{password}/extend",
-            post(group_admin_client_extend),
+            post(groups::group_admin_client_extend),
         )
         .route(
             "/api/group-admin/{uuid}/clients/{password}/extend",
-            post(group_admin_client_extend),
+            post(groups::group_admin_client_extend),
         )
         .route(
             "/{uuid}/api/clients/{password}/unbind",
-            post(group_admin_client_unbind),
+            post(groups::group_admin_client_unbind),
         )
         .route(
             "/api/group-admin/{uuid}/clients/{password}/unbind",
-            post(group_admin_client_unbind),
+            post(groups::group_admin_client_unbind),
         )
         .route("/{uuid}/sub", get(client_sub_page))
         .route("/{uuid}/sub/", get(client_sub_page))
