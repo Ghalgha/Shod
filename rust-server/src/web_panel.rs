@@ -3035,10 +3035,7 @@ pub async fn run(
             "/api/clients/batch-group",
             post(clients::api_clients_batch_group),
         )
-        .route(
-            "/api/groups/{id}/clients",
-            get(clients::group_clients_get),
-        )
+        .route("/api/groups/{id}/clients", get(clients::group_clients_get))
         .route("/api/diagnostics/dpi", get(monitoring::api_diagnostics_dpi))
         .route("/api/export", get(api_export_get))
         .route("/api/import", post(api_import_post))
