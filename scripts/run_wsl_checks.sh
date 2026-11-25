@@ -53,12 +53,38 @@ fi
 printf 'Project root: %s\n' "$PROJECT_ROOT"
 printf '%s\n' '============================================================'
 
-# Resolve the hashed Cargo test executable dynamically, or accept an explicit path.
+# Resolve the single x86_64 Linux Cargo test executable produced by the
+# supported build scripts. An explicit SHOD_SERVER_TEST_BIN always takes priority.
 if [[ -z "$TEST_BIN" ]]; then
-    TEST_BIN="$(find "$PROJECT_ROOT/rust-server/target" -type f -path '*/debug/deps/shod-*' -perm -u+x 2>/dev/null | head -n 1 || true)"
+    TEST_SEARCH_DIRS=(
+        "$PROJECT_ROOT/rust-server/build/linux-musl-tests/x86_64-unknown-linux-musl/debug/deps"
+        "$PROJECT_ROOT/build/shod-uring-linux/x86_64-unknown-linux-musl/debug/deps"
+        "$PROJECT_ROOT/rust-server/target/x86_64-unknown-linux-musl/debug/deps"
+    )
+    TEST_CANDIDATES=()
+    for search_dir in "${TEST_SEARCH_DIRS[@]}"; do
+        [[ -d "$search_dir" ]] || continue
+        while IFS= read -r -d '' candidate; do
+            TEST_CANDIDATES+=("$candidate")
+        done < <(find "$search_dir" -maxdepth 1 -type f -name 'shod-*' -perm -u+x -print0 2>/dev/null)
+    done
+
+    case "${#TEST_CANDIDATES[@]}" in
+        0)
+            fail "x86_64 Linux server test executable not found in supported Cargo build directories; build it first or set SHOD_SERVER_TEST_BIN"
+            ;;
+        1)
+            TEST_BIN="${TEST_CANDIDATES[0]}"
+            ;;
+        *)
+            printf 'Multiple server test executables found; set SHOD_SERVER_TEST_BIN to select one:\n' >&2
+            printf '  %s\n' "${TEST_CANDIDATES[@]}" >&2
+            exit 1
+            ;;
+    esac
 fi
-if [[ -z "$TEST_BIN" || ! -x "$TEST_BIN" ]]; then
-    fail "native server test executable not found; build it first or set SHOD_SERVER_TEST_BIN"
+if [[ ! -x "$TEST_BIN" ]]; then
+    fail "server test executable is missing or not executable: $TEST_BIN (set SHOD_SERVER_TEST_BIN to override)"
 fi
 
 printf '[1/4] Native server tests: '
