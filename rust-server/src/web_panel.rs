@@ -11774,15 +11774,15 @@ const PANEL_HTML: &str = r##"
 
 #[cfg(test)]
 mod tests {
+    use super::monitoring::{process_memory, process_memory_rollup};
     use super::{
         DNS_PROVIDERS, LOGIN_HTML, MAX_CLIENT_NAME_BYTES, PANEL_HTML, PWA_ICON_192_PNG,
         PWA_ICON_512_PNG, PWA_MANIFEST, PWA_SERVICE_WORKER, count_active_sessions,
         decrypt_shod_link, deploy_dns_profile_or_yandex, dns_provider_by_id, dns_provider_id,
         encrypt_shod_link, make_client_link, manual_dns, normalize_client_vk_hashes,
-        normalize_vk_access_token, provider_dns,
-        validate_client_name, validate_proxy_profile_name, validate_workers,
+        normalize_vk_access_token, provider_dns, validate_client_name, validate_proxy_profile_name,
+        validate_workers,
     };
-    use super::monitoring::{process_memory, process_memory_rollup};
 
     #[test]
     fn dns_provider_catalog_is_complete_and_has_exact_yandex_default() {
