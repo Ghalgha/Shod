@@ -1270,71 +1270,7 @@ async fn api_import_post(
     .into_response()
 }
 
-async fn group_admin_link_post(State(state): State<WebState>, Path(id): Path<String>) -> Response {
-    let mut db = state.app.db.write().await;
-    let Some(group) = db.groups.get_mut(&id) else {
-        return (StatusCode::NOT_FOUND, "group not found").into_response();
-    };
-    if group.admin_uuid.is_empty() {
-        group.admin_uuid = model::random_uuid_v4();
-    }
-    let admin_uuid = group.admin_uuid.clone();
-    let snapshot = db.clone();
-    drop(db);
-    state.app.db_persistence.submit(snapshot);
-    (
-        StatusCode::OK,
-        Json(serde_json::json!({
-            "ok": true,
-            "admin_uuid": admin_uuid
-        })),
-    )
-        .into_response()
-}
 
-async fn group_admin_link_regenerate(
-    State(state): State<WebState>,
-    Path(id): Path<String>,
-) -> Response {
-    let mut db = state.app.db.write().await;
-    let Some(group) = db.groups.get_mut(&id) else {
-        return (StatusCode::NOT_FOUND, "group not found").into_response();
-    };
-    group.admin_uuid = model::random_uuid_v4();
-    let admin_uuid = group.admin_uuid.clone();
-    let snapshot = db.clone();
-    drop(db);
-    state.app.db_persistence.submit(snapshot);
-    (
-        StatusCode::OK,
-        Json(serde_json::json!({
-            "ok": true,
-            "admin_uuid": admin_uuid
-        })),
-    )
-        .into_response()
-}
-
-async fn group_admin_link_delete(
-    State(state): State<WebState>,
-    Path(id): Path<String>,
-) -> Response {
-    let mut db = state.app.db.write().await;
-    let Some(group) = db.groups.get_mut(&id) else {
-        return (StatusCode::NOT_FOUND, "group not found").into_response();
-    };
-    group.admin_uuid.clear();
-    let snapshot = db.clone();
-    drop(db);
-    state.app.db_persistence.submit(snapshot);
-    (
-        StatusCode::OK,
-        Json(serde_json::json!({
-            "ok": true
-        })),
-    )
-        .into_response()
-}
 
 async fn group_admin_page(
     State(state): State<WebState>,
@@ -2824,11 +2760,11 @@ pub async fn run(
         )
         .route(
             "/api/groups/{id}/admin-link",
-            post(group_admin_link_post).delete(group_admin_link_delete),
+            post(groups::group_admin_link_post).delete(groups::group_admin_link_delete),
         )
         .route(
             "/api/groups/{id}/admin-link/regenerate",
-            post(group_admin_link_regenerate),
+            post(groups::group_admin_link_regenerate),
         )
         .route(
             "/api/groups/{id}/sub-link/regenerate",

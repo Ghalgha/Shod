@@ -152,3 +152,69 @@ pub(super) async fn groups_delete(
     }
     StatusCode::OK.into_response()
 }
+
+pub(super) async fn group_admin_link_post(State(state): State<WebState>, Path(id): Path<String>) -> Response {
+    let mut db = state.app.db.write().await;
+    let Some(group) = db.groups.get_mut(&id) else {
+        return (StatusCode::NOT_FOUND, "group not found").into_response();
+    };
+    if group.admin_uuid.is_empty() {
+        group.admin_uuid = model::random_uuid_v4();
+    }
+    let admin_uuid = group.admin_uuid.clone();
+    let snapshot = db.clone();
+    drop(db);
+    state.app.db_persistence.submit(snapshot);
+    (
+        StatusCode::OK,
+        Json(serde_json::json!({
+            "ok": true,
+            "admin_uuid": admin_uuid
+        })),
+    )
+        .into_response()
+}
+
+pub(super) async fn group_admin_link_regenerate(
+    State(state): State<WebState>,
+    Path(id): Path<String>,
+) -> Response {
+    let mut db = state.app.db.write().await;
+    let Some(group) = db.groups.get_mut(&id) else {
+        return (StatusCode::NOT_FOUND, "group not found").into_response();
+    };
+    group.admin_uuid = model::random_uuid_v4();
+    let admin_uuid = group.admin_uuid.clone();
+    let snapshot = db.clone();
+    drop(db);
+    state.app.db_persistence.submit(snapshot);
+    (
+        StatusCode::OK,
+        Json(serde_json::json!({
+            "ok": true,
+            "admin_uuid": admin_uuid
+        })),
+    )
+        .into_response()
+}
+
+pub(super) async fn group_admin_link_delete(
+    State(state): State<WebState>,
+    Path(id): Path<String>,
+) -> Response {
+    let mut db = state.app.db.write().await;
+    let Some(group) = db.groups.get_mut(&id) else {
+        return (StatusCode::NOT_FOUND, "group not found").into_response();
+    };
+    group.admin_uuid.clear();
+    let snapshot = db.clone();
+    drop(db);
+    state.app.db_persistence.submit(snapshot);
+    (
+        StatusCode::OK,
+        Json(serde_json::json!({
+            "ok": true
+        })),
+    )
+        .into_response()
+}
