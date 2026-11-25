@@ -5,7 +5,7 @@ use crate::{
         self, ClientGroup, PasswordEntry, RoutingRule, is_expired, now, random_password,
         random_token,
     },
-    protocol, read_unpoison,
+    read_unpoison,
 };
 use axum::{
     Json, Router,
