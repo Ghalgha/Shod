@@ -47,8 +47,19 @@ jobs:
           rustup default 1.97.1
           rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
 
+      - name: Cache cargo-ndk
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo-tools/cargo-ndk/bin
+          key: ${{ runner.os }}-cargo-ndk-4.1.2-rust-1.97.1-v1
+
       - name: Install cargo-ndk
-        run: cargo install cargo-ndk --locked
+        run: |
+          echo "$HOME/.cargo-tools/cargo-ndk/bin" >> "$GITHUB_PATH"
+          if [ ! -x "$HOME/.cargo-tools/cargo-ndk/bin/cargo-ndk" ]; then
+            cargo install cargo-ndk --version 4.1.2 --locked --root "$HOME/.cargo-tools/cargo-ndk"
+          fi
+          cargo ndk --help >/dev/null
 
       - name: Diagnose Android Cargo lockfile resolution
         shell: bash
