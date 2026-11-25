@@ -420,36 +420,41 @@ class TunVpnService : VpnService() {
         sendJob?.cancel()
         sendJob = serviceScope.launch {
             var success = false
-            for (i in 1..60) {
-                val socket = android.net.LocalSocket()
-                try {
-                    socket.connect(android.net.LocalSocketAddress("shod_tun_uds", android.net.LocalSocketAddress.Namespace.ABSTRACT))
-                    socket.setFileDescriptorsForSend(arrayOf(pfd.fileDescriptor))
-                    socket.outputStream.write(1)
-                    socket.outputStream.flush()
-                    socket.soTimeout = 3_000
-                    if (socket.inputStream.read() != 1) {
-                        throw IllegalStateException("Rust-клиент не подтвердил TUN-интерфейс")
+            try {
+                for (i in 1..60) {
+                    val socket = android.net.LocalSocket()
+                    try {
+                        socket.connect(android.net.LocalSocketAddress("shod_tun_uds", android.net.LocalSocketAddress.Namespace.ABSTRACT))
+                        socket.setFileDescriptorsForSend(arrayOf(pfd.fileDescriptor))
+                        socket.outputStream.write(1)
+                        socket.outputStream.flush()
+                        socket.soTimeout = 3_000
+                        if (socket.inputStream.read() != 1) {
+                            throw IllegalStateException("Rust-клиент не подтвердил TUN-интерфейс")
+                        }
+                        Log.d(TAG, "Sent TUN fd to Rust client successfully")
+                        success = true
+                        recoveryAttempts = 0
+                        if (isRoutingReload) {
+                            TunnelManager.onRoutingUpdated()
+                        } else {
+                            TunnelManager.onVpnInterfaceReady(dns)
+                        }
+                        break
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        Log.d(TAG, "Failed to connect to Rust client UDS, retrying: ${e.message}")
+                        delay(500)
+                    } finally {
+                        runCatching { socket.close() }
                     }
-                    Log.d(TAG, "Sent TUN fd to Rust client successfully")
-                    success = true
-                    recoveryAttempts = 0
-                    if (previousInterface !== pfd) {
-                        runCatching { previousInterface?.close() }
-                    }
-                    if (isRoutingReload) {
-                        TunnelManager.onRoutingUpdated()
-                    } else {
-                        TunnelManager.onVpnInterfaceReady(dns)
-                    }
-                    break
-                } catch (e: CancellationException) {
-                    throw e
-                } catch (e: Exception) {
-                    Log.d(TAG, "Failed to connect to Rust client UDS, retrying: ${e.message}")
-                    delay(500)
-                } finally {
-                    runCatching { socket.close() }
+                }
+            } finally {
+                // The old interface is no longer active after establish(). Release its
+                // descriptor on success, retry exhaustion, and coroutine cancellation.
+                if (previousInterface !== pfd) {
+                    runCatching { previousInterface?.close() }
                 }
             }
             if (!success) {
