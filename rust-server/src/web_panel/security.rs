@@ -4,7 +4,6 @@ use super::*;
 
 const MAX_WEB_CONNECTIONS: usize = 64;
 
-
 const STEALTH_ABORT_HEADER: &str = "x-shod-stealth-rst";
 
 pub(super) fn stealth_abort_response() -> Response {
@@ -19,14 +18,14 @@ pub(super) fn stealth_abort_response() -> Response {
         .into_response()
 }
 
-
-pub(super) async fn fallback_reject(token: Option<Extension<Arc<StealthAbortController>>>) -> Response {
+pub(super) async fn fallback_reject(
+    token: Option<Extension<Arc<StealthAbortController>>>,
+) -> Response {
     if let Some(Extension(controller)) = token {
         controller.abort();
     }
     stealth_abort_response()
 }
-
 
 pub(super) async fn root_with_secret(
     State(state): State<WebState>,
@@ -44,7 +43,6 @@ pub(super) async fn root_with_secret(
     }
     fallback_reject(token).await
 }
-
 
 #[derive(Debug)]
 pub struct StealthAbortController {
@@ -627,7 +625,6 @@ where
         })
     }
 }
-
 
 pub(super) async fn security_headers(mut request: Request<Body>, next: Next) -> Response {
     let controller = request
