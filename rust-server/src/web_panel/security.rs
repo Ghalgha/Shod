@@ -682,4 +682,3 @@ pub(super) async fn security_headers(mut request: Request<Body>, next: Next) -> 
     );
     response
 }
-
