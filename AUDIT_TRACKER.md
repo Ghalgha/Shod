@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **96**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/network/wifi/policy/WifiNetworkListPolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/network/wifi/policy/WifiNetworkListPolicy.kt`**
+- Изучено файлов: **97**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/network/wifi/preferences/WifiPreferences.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/network/wifi/preferences/WifiPreferences.kt`**
 
 ## Найденные проблемы
 
