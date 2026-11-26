@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **368**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/subscriptions/SubscriptionImporterTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/subscriptions/SubscriptionImporterTest.kt`**
+- Изучено файлов: **369**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/ui/screens/deploy/DeployUiStateTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/ui/screens/deploy/DeployUiStateTest.kt`**
 
 ## Найденные проблемы
 
@@ -762,3 +762,6 @@
 
 
 - `app/src/test/java/com/shod/client/subscriptions/SubscriptionImporterTest.kt` — проверены JSON-группа с открытыми/зашифрованными узлами, пропуск повреждённых узлов, отказ сервера, допустимый redirect, запрет redirect на FTP, варианты `clients`/`items`, endpoint `.json`, массив JSON и HTML fallback. Сопоставлено с `SubscriptionImporter.kt`: сценарии соответствуют текущему парсеру и ручной обработке redirect. Пробелы покрытия: нет тестов на превышение 2 MiB, HTTP-ошибки/таймаут, лимит redirect, некорректный charset, пустой/неверный JSON, повторные ссылки и importNodes matching/исчерпание профилей. В частности, `allowHttp=true` допускает HTTP и HTTPS, а HTTPS-соединение в этом режиме использует trust-all сертификат и hostname verifier; тесты не фиксируют поведение TLS. TLS/HTTPS не изменялось. Подтверждённых ошибок непосредственно в тестовом файле не выявлено.
+
+
+- `app/src/test/java/com/shod/client/ui/screens/deploy/DeployUiStateTest.kt` — проверены условия установки/удаления, SSH-авторизация паролем или ключом, обязательность web/main-password для установки, валидация портов и пароля, разбор вставленного `host:port`, запрет порта в поле host, URL панели и синхронизация пароля после успешного deploy. Сопоставлено с `DeployUiModel.kt`: `canInstall`, `canUninstall`, `portsValid`, `resolveServerPorts`, `splitPastedHostPort` и `panelDisplayUrl` соответствуют сценариям. Пробелы покрытия: нет проверок граничных портов 1/65535, IPv6 в квадратных скобках, отрицательных/пустых значений в `resolveServerPorts`, а также комбинаций `sshKeysMode` и `sshKeysFilled` вне ровно одного ключа. Тесты не проверяют UI-обработчики и фактический deploy workflow. Подтверждённых ошибок в проверенном тестовом файле не выявлено.
