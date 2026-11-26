@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **263**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelLifecycleState.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelLifecycleState.kt`**
+- Изучено файлов: **264**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelRuntimePreferencesStore.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelRuntimePreferencesStore.kt`**
 
 ## Найденные проблемы
 
@@ -479,3 +479,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/lifecycle/TunnelLifecycleState.kt` — проверены синхронизированные переходы start/restart/stop, поколения lifecycle, резервирование и освобождение process ticket, фильтрация устаревших EOF/событий и защита от параллельного запуска. Изучены `TunnelLifecycleStateTest` и `TunnelLifecycleStateChaosTest`: тесты покрывают задержанные restart, stop, stale EOF, конкурентные reservations, стрессовые переходы и сверку с независимой моделью. Явных ошибок не обнаружено.
+
+
+- `app/src/main/java/com/shod/client/vpn/lifecycle/TunnelRuntimePreferencesStore.kt` — проверены DataStore-ключи и потоковые значения маркера `wasRunning` и последней диагностики, атомарная запись/очистка диагностики, нормализация пробелов и ограничения длины code/message. Запись timestamp выполняется и удаляется вместе с диагностикой, но отдельного потока чтения timestamp в этом классе нет; назначение ключа требует подтверждения в потребителях. Отдельных тестов хранилища не обнаружено; рекомендуется покрыть значения по умолчанию, round-trip, нормализацию/лимиты и очистку.
