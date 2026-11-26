@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **265**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelServiceInputPolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelServiceInputPolicy.kt`**
+- Изучено файлов: **266**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelServicePolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelServicePolicy.kt`**
 
 ## Найденные проблемы
 
@@ -485,3 +485,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/lifecycle/TunnelServiceInputPolicy.kt` — проверена нормализация входных режимов CAPTCHA, VK auth и SRTP: принимаются только известные значения, неизвестные/null безопасно переводятся в режимы по умолчанию. `TunnelServiceInputPolicyTest` покрывает допустимые значения в верхнем регистре и fallback для неизвестного/null. Явных ошибок не обнаружено. Значения с пробелами по краям отклоняются и переходят на default; это безопасное поведение, но для устойчивости к внешним Intent/settings рекомендуется рассмотреть `trim()` и тесты пробельного ввода.
+
+
+- `app/src/main/java/com/shod/client/vpn/lifecycle/TunnelServicePolicy.kt` — проверена политика остановки foreground service: при намеренной Wi-Fi-паузе сервис сохраняется; работающий туннель не останавливается; ранее работавший, но остановившийся туннель завершает сервис сразу; неуспешный запуск получает grace period 60 секунд. `TunnelServicePolicyTest` покрывает все эти ветви и границу grace period. Явных ошибок не обнаружено.
