@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **277**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/routing/DomainRoutingRules.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/routing/DomainRoutingRules.kt`**
+- Изучено файлов: **278**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/routing/IpRoutingRules.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/routing/IpRoutingRules.kt`**
 
 ## Найденные проблемы
 
@@ -521,3 +521,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/routing/DomainRoutingRules.kt` — проверены нормализация URL/доменов, ограничения длины домена и меток, поддержка кириллицы, фильтрация некорректных значений, удаление дубликатов и лимит 1024 записи. `DomainRoutingRulesTest` покрывает нормализацию, кириллический домен, malformed entries, дубликаты и лимит. Явных ошибок в реализации не обнаружено.
+
+
+- `app/src/main/java/com/shod/client/vpn/routing/IpRoutingRules.kt`: проверка диапазона IPv4 подтверждает валидность каждого endpoint, но не проверяет, что начальный адрес меньше либо равен конечному. Поэтому обратный диапазон, например `192.168.1.9-192.168.1.1`, принимается как корректное правило и может не работать ожидаемым образом. Рекомендуется сравнивать адреса как 32-битные unsigned значения и добавить тест обратного диапазона.
