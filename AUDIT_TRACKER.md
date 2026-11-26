@@ -23,13 +23,15 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **77**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/android/CaptchaCancelReceiver.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/android/CaptchaCancelReceiver.kt`**
+- Изучено файлов: **78**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/android/CaptchaWebViewManager.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/android/CaptchaWebViewManager.kt`**
 
 ## Найденные проблемы
 
 ### Потенциальные риски
+
+- `app/src/main/java/com/shod/client/integration/vk/captcha/android/CaptchaWebViewManager.kt`: `addJavascriptInterface(CaptchaJSBridge(), "ShodCaptcha")` предоставляет мост всем фреймам WebView; отдельной проверки origin вызывающего фрейма нет. Если доверенная страница капчи загружает сторонний iframe, он потенциально может вызвать `onSuccess`/`onError` и подменить результат капчи. Нужна проверка фактического состава iframe и модели доверия VK.
 - `app/src/main/java/com/shod/client/integration/vk/calls/api/VkApi.kt` (`request`) — тело HTTP-ответа полностью читается через `bufferedReader().readText()` без ограничения размера. Это относится как к успешным ответам, так и к `errorStream`; чрезмерно большой ответ может вызвать неконтролируемое потребление памяти и OOM. Потенциальный риск, поскольку размер ответа внешнего API не ограничен в этом файле.
 - `app/src/main/java/com/shod/client/integration/vk/calls/VkAutoCallsManager.kt` — `startAutoCalls()` очищает общий `activeCalls` и затем поэтапно заполняет его, одновременно обновляя общий `activeToken`; вся операция не защищена от параллельного запуска. Если два вызова метода пересекутся, их звонки могут смешаться в одном списке, а `finishActiveCalls()` завершит все собранные звонки с одним последним записанным токеном. Это может привести к неудачному завершению звонков или оставить их активными на стороне VK. Сценарий зависит от возможности параллельного вызова; call sites в рамках этой проверки не установлены.
 - `app/src/main/java/com/shod/client/integration/vk/auth/ui/VkAuthDialog.kt` — `VkAuthSession` создаётся через `remember { ... }` без ключей и захватывает исходные `onToken` и `chooseAccount`. Если эти параметры изменятся, пока composable остаётся в композиции, активная сессия продолжит использовать первоначальные callback и режим выбора аккаунта. Обычно диалог создаётся для одного сеанса, поэтому практическое проявление зависит от сценария вызова; call sites не удалось подтвердить в рамках этой проверки. Потенциальный риск устаревших параметров Compose.
