@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **90**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/links/ShodLinkCodec.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/links/ShodLinkCodec.kt`**
+- Изучено файлов: **91**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/network/connectivity/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/network/connectivity/.gitkeep`**
 
 ## Найденные проблемы
 
