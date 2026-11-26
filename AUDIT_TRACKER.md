@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **216**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/credentials/CredentialsScreen.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/credentials/CredentialsScreen.kt`**
+- Изучено файлов: **217**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/.gitkeep`**
 
 ## Найденные проблемы
 
@@ -339,3 +339,6 @@
 
 
 - `app/src/main/java/com/shod/client/ui/screens/credentials/.gitkeep` — пустой служебный файл Git, сохраняющий каталог `credentials` в репозитории. Исходного кода или исполняемой логики нет; замечаний по поведению нет.
+
+
+- `app/src/main/java/com/shod/client/ui/screens/deploy/.gitkeep` — пустой служебный файл Git, сохраняющий каталог `deploy` в репозитории. Исходного кода или исполняемой логики нет; замечаний по поведению нет.
