@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **222**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/home/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/home/.gitkeep`**
+- Изучено файлов: **223**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/routing/apps/AppItem.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/routing/apps/AppItem.kt`**
 
 ## Найденные проблемы
 
@@ -357,3 +357,6 @@
 
 
 - `app/src/main/java/com/shod/client/ui/screens/home/.gitkeep` — пустой служебный файл Git, сохраняющий каталог `home` в репозитории. Исходного кода или исполняемой логики нет; замечаний по поведению нет.
+
+
+- `app/src/main/java/com/shod/client/ui/screens/routing/apps/AppItem.kt` — проверена модель представления установленного приложения и преобразование `InstalledAppEntry`: локализованная подпись, package name, nullable icon (Bitmap → ImageBitmap) и признак системного приложения переносятся напрямую. Compose-типы остаются в UI-слое. Явных ошибок преобразования или нарушения границ слоёв не обнаружено.
