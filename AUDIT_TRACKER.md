@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **84**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/policy/VkModePolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/policy/VkModePolicy.kt`**
+- Изучено файлов: **85**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/storage/SavedVkAccounts.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/storage/SavedVkAccounts.kt`**
 
 ## Найденные проблемы
 
@@ -64,6 +64,8 @@
 - `LICENSE` и `rust-server/Cargo.toml` (`[package].license`) — лицензия проекта объявлена проприетарной, но Rust-пакет указывает `Unlicense`. Это противоречивые юридические условия и некорректные метаданные пакета; требуется согласовать объявление Cargo с фактической лицензией. Файлы не изменялись.
 
 ### Рекомендации
+
+- `app/src/main/java/com/shod/client/integration/vk/storage/SavedVkAccounts.kt` (`available`) — идентификаторы аккаунтов сортируются как строки. Для числовых VK ID порядок лексикографический (`10` раньше `2`), а не числовой. Это влияет только на порядок отображения списка.
 
 - `app/src/main/java/com/shod/client/integration/vk/policy/VkModePolicy.kt` — параметр `hasVkToken` функции `normalizeVkModeSelection()` нигде не используется. Это не влияет на поведение, но создаёт лишний параметр интерфейса функции.
 - `app/src/main/java/com/shod/client/deploy/plan/DeployPlan.kt` — параметр `profilePeerPort` функции `planDeploy` нигде не используется. Это не меняет текущее поведение, но создаёт неиспользуемый элемент интерфейса и может вводить в заблуждение относительно участия порта профиля в выборе плана.
