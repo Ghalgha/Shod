@@ -23,8 +23,8 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **178**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/components/TunnelWorkersSlider.kt`**
+- Изучено файлов: **179**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/controllers/.gitkeep`**
 - Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/components/ContentScreen.kt`**
 
 ## Найденные проблемы
@@ -119,6 +119,9 @@
 
 
 - `app/src/main/java/com/shod/client/ui/components/TunnelWorkersSlider.kt` — проверены `TunnelWorkersControl`, `CompactSteppedSlider` и `roundToGroup()`. Найдено несоответствие доступности и визуализации: компонент объявляет только `ProgressBarRangeInfo`, но не предоставляет семантическое действие изменения значения (`setProgress`), поэтому экранный диктор может объявить текущий прогресс, но не дать пользователю изменить его как ползунок. Клавиатурные стрелки реализованы отдельно. Также деления на шкале равномерно распределяются по диапазону, тогда как разрешённые значения `WORKER_STEPS` имеют неравномерные интервалы (5, 10, 20, …, 100); визуальные отметки не соответствуют всем фактическим шагам. Параметр `stepSize` в логике привязки к шагам не используется (сохраняется только для подсчёта semantics/ticks), а `currentStepSize` вообще не читается. Рекомендуется добавить semantics `setProgress` с тем же snapping, согласовать отметки с `WORKER_STEPS` и удалить/задействовать неиспользуемый параметр. Отдельных тестов компонента в Git tree не найдено; нужны тесты границ, snapping, клавиатуры и accessibility actions.
+
+
+- `app/src/main/java/com/shod/client/ui/controllers/.gitkeep` — пустой служебный файл, сохраняющий каталог `controllers` в Git. Исполняемого содержимого нет; замечаний нет.
 
 ## Рекомендации
 
