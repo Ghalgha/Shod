@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **100**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/activity/UpdateLaunchGuard.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/activity/UpdateLaunchGuard.kt`**
+- Изучено файлов: **101**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/application/ShodApplication.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/application/ShodApplication.kt`**
 
 ## Найденные проблемы
 
