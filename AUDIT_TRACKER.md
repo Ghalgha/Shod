@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **219**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/DeployScreen.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/DeployScreen.kt`**
+- Изучено файлов: **220**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/DeployUiModel.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/DeployUiModel.kt`**
 
 ## Найденные проблемы
 
@@ -348,3 +348,6 @@
 
 
 - `app/src/main/java/com/shod/client/ui/screens/deploy/DeployScreen.kt` — проверен весь экран деплоя: SSH-авторизация паролем/ключом, адрес и порты, режим Docker, ссылка панели, подтверждение регенерации UUID, прогресс и действия установки/удаления. Ввод и операции делегируются через `DeployAction`; проверки готовности и сохранение выполняются в `DeployController`, в том числе при нажатии кнопки установки. Пароль SSH не сериализуется через `rememberSaveable` в этом экране. Явных ошибок локальной UI-логики не обнаружено. Отдельных UI-тестов экрана в Git tree не найдено; рекомендуется покрыть отображение ошибок валидации, блокировку действий во время деплоя и поведение полей при переключении режимов SSH-ключей/ручных портов.
+
+
+- `app/src/main/java/com/shod/client/ui/screens/deploy/DeployUiModel.kt` — подтверждённое несоответствие ссылки панели: `DeployUiState.panelDisplayUrl` всегда добавляет `secretPathUuid`, если он непустой, и не учитывает `secretPathEnabled`. При выключенной настройке экран показывает URL с секретным UUID, тогда как `DeployController.OpenControlPanel` намеренно открывает URL без этого пути. Отображаемая ссылка поэтому не совпадает с фактически открываемой. Рекомендуется учитывать `secretPathEnabled` при формировании `panelDisplayUrl` и добавить тест для включённого/выключенного режима. Остальные проверки модели: готовность SSH/авторизации и портов, разбор вставленного host:port, эффективные порты и тесты `DeployUiStateTest`; других подтверждённых дефектов не выявлено.
