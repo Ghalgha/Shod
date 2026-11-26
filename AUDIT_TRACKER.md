@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **91**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/network/connectivity/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/network/connectivity/.gitkeep`**
+- Изучено файлов: **92**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/network/connectivity/NetworkPauseGate.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/network/connectivity/NetworkPauseGate.kt`**
 
 ## Найденные проблемы
 
