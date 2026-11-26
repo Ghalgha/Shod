@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **33**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/app/navigation/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/app/navigation/.gitkeep`**
+- Изучено файлов: **34**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/app/startup/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/app/startup/.gitkeep`**
 
 ## Найденные проблемы
 
