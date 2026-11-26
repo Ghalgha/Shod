@@ -23,13 +23,15 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **78**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/android/CaptchaWebViewManager.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/android/CaptchaWebViewManager.kt`**
+- Изучено файлов: **79**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/android/ManlCaptchaActivity.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/android/ManlCaptchaActivity.kt`**
 
 ## Найденные проблемы
 
 ### Потенциальные риски
+
+- `app/src/main/java/com/shod/client/integration/vk/captcha/android/ManlCaptchaActivity.kt`: JavaScript-мост `ShodCaptcha` доступен всем фреймам WebView без проверки origin. Сторонний iframe на странице капчи потенциально может подделать success token, вызвать отмену с остановкой туннеля или передать ложную ошибку. Это отдельная реализация того же риска, что отмечен в `CaptchaWebViewManager.kt`; фактическое наличие сторонних iframe не подтверждено.
 
 - `app/src/main/java/com/shod/client/integration/vk/captcha/android/CaptchaWebViewManager.kt`: `addJavascriptInterface(CaptchaJSBridge(), "ShodCaptcha")` предоставляет мост всем фреймам WebView; отдельной проверки origin вызывающего фрейма нет. Если доверенная страница капчи загружает сторонний iframe, он потенциально может вызвать `onSuccess`/`onError` и подменить результат капчи. Нужна проверка фактического состава iframe и модели доверия VK.
 - `app/src/main/java/com/shod/client/integration/vk/calls/api/VkApi.kt` (`request`) — тело HTTP-ответа полностью читается через `bufferedReader().readText()` без ограничения размера. Это относится как к успешным ответам, так и к `errorStream`; чрезмерно большой ответ может вызвать неконтролируемое потребление памяти и OOM. Потенциальный риск, поскольку размер ответа внешнего API не ограничен в этом файле.
