@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **350**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/network/VkNetworkProbePolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/network/VkNetworkProbePolicyTest.kt`**
+- Изучено файлов: **351**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/policy/VkModePolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/policy/VkModePolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -708,3 +708,6 @@
 
 
 - `app/src/test/java/com/shod/client/integration/vk/network/VkNetworkProbePolicyTest.kt` — проверены задержки повторов на контрольных значениях и трактовка HTTP-кодов 100–599 как признака доступности. Сопоставлено с `VkNetworkProbePolicy.kt`: ожидания соответствуют реализации. Покрытие не включает отрицательные значения, промежуточные границы и очень большие счётчики; подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/integration/vk/policy/VkModePolicyTest.kt` — проверены переключения режимов авторизации/хешей, наличие VK-токена, сохранение ручного режима, замена недоступных автоматических хешей и подтверждение предупреждения Auto JS. Сопоставлено с `VkModePolicy.kt`: проверяемые сценарии соответствуют реализации. Покрытие не проверяет напрямую `normalizeVkModeSelection()` и неизвестные значения режимов; подтверждённых ошибок не выявлено.
