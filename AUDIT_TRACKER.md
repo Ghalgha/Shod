@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **186**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/design/Spacing.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/design/Spacing.kt`**
+- Изучено файлов: **187**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/dialogs/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/dialogs/.gitkeep`**
 
 ## Найденные проблемы
 
@@ -252,3 +252,6 @@
 
 
 - `app/src/main/java/com/shod/client/ui/design/Spacing.kt` — проверена шкала отступов `0/4/8/12/16/20/24/32/40 dp`. Значения неотрицательные и возрастают последовательно; пропуск промежуточных размеров намеренный и не создаёт ошибки. Явных проблем не обнаружено. Отдельные тесты статических токенов отступов не требуются.
+
+
+- `app/src/main/java/com/shod/client/ui/dialogs/.gitkeep` — пустой служебный файл, сохраняющий каталог `dialogs` в Git. Замечаний нет.
