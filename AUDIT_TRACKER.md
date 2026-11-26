@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **384**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeRuntimePolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeRuntimePolicyTest.kt`**
+- Изучено файлов: **385**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/TunnelProbePacketTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/TunnelProbePacketTest.kt`**
 
 ## Найденные проблемы
 
@@ -810,3 +810,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeRuntimePolicyTest.kt` — проверено, что простой production-туннель не блокирует диагностический probe, а состояния running/starting/stopping и автоматическая пауза Wi-Fi блокируют его по отдельности. Сопоставлено с `ProfileProbeRuntimePolicy.kt`: функция возвращает логическое ИЛИ четырёх флагов, все проверенные сценарии соответствуют реализации. Пробел покрытия: отсутствуют проверки всех комбинаций нескольких одновременно активных флагов и таблица граничных комбинаций; для чистой функции ИЛИ отдельного дефекта не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/diagnostics/probe/TunnelProbePacketTest.kt` — проверены формирование IPv4/UDP DNS-запроса, контрольная сумма IPv4-заголовка, распознавание ответа с обратными адресами и портами, transaction ID и DNS question, отбрасывание фрагментов, неверных полей и усечённых пакетов; также проверены параметры настроенных endpoint и некорректная длина IPv4-адреса. Сопоставлено с `TunnelProbePacket.kt`: основные проверки соответствуют построению пакета и условиям `isReply()`. Пробелы покрытия: не проверяются IPv4 options, неверные значения IHL/total length/UDP length во всех сочетаниях, DNS flags/rcode и контрольные суммы входящего IP/UDP-пакета. Реализация `isReply()` не проверяет контрольные суммы входящего пакета; это ограничение валидации, но необходимость такой проверки для диагностического TUN-ответа отдельно не установлена, поэтому подтверждённой ошибкой не считается. Новых подтверждённых ошибок не выявлено.
