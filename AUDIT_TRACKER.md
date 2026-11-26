@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **82**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/hash/codec/VkHashValidationCodec.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/hash/codec/VkHashValidationCodec.kt`**
+- Изучено файлов: **83**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/network/VkNetworkProbePolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/network/VkNetworkProbePolicy.kt`**
 
 ## Найденные проблемы
 
