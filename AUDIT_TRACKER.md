@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **324**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/ConnectionSourceTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/ConnectionSourceTest.kt`**
+- Изучено файлов: **325**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/DeployScopedDataStoreTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/DeployScopedDataStoreTest.kt`**
 
 ## Найденные проблемы
 
@@ -632,3 +632,6 @@
 
 
 - `app/src/test/java/com/shod/client/ConnectionSourceTest.kt` — проверены три теста `participantHashes`: сохранение оставшихся owner-хешей перед собственными, trim/удаление дубликатов и сохранение собственных хешей при удалении всех owner-хешей. Сопоставлены с реализацией `participantHashes` и нормализацией хешей в `ShodLinkCodec`; сценарии соответствуют текущему контракту. Явных ошибок и существенных пробелов в проверяемых сценариях не обнаружено.
+
+
+- `app/src/test/java/com/shod/client/DeployScopedDataStoreTest.kt` — проверены три теста VPS-профилей: независимость курсора VPN, сохранение серверных данных при изменении VPN-курсора и выбор свободного слота. Сопоставлены с `DeployScopedDataStore`: тестовые ожидания соответствуют отображению `active_deploy_profile` в scoped `active_profile` и сохранению исходного VPN-курсора. Потенциальный пробел: тест `editsKeepServerDataAndConcurrentConnectionSelection` выполняет изменения последовательно и не моделирует конкурентные корутины/транзакции, несмотря на название; гонки в `updateData` не проверяются. Рекомендуется добавить реальный параллельный сценарий с барьером/одновременными обновлениями.
