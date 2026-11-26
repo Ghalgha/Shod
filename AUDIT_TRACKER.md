@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **347**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/captcha/CaptchaUriPolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/captcha/CaptchaUriPolicyTest.kt`**
+- Изучено файлов: **348**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/hash/android/VkHashValidatorTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/hash/android/VkHashValidatorTest.kt`**
 
 ## Найденные проблемы
 
@@ -699,3 +699,6 @@
 
 
 - `app/src/test/java/com/shod/client/integration/vk/captcha/CaptchaUriPolicyTest.kt` — проверены разрешение HTTPS для доверенных доменов VK/OK, отказ для HTTP, поддельных доменных суффиксов и некорректного URI. Сопоставлено с `CaptchaUriPolicy.kt`: проверка схемы HTTPS и точной границы домена/поддомена соответствует тестовым ожиданиям. Тесты не охватывают регистр схемы/хоста, завершающую точку домена, userinfo, порт и необычные URI; явного дефекта в проверяемых сценариях не выявлено.
+
+
+- `app/src/test/java/com/shod/client/integration/vk/hash/android/VkHashValidatorTest.kt` — проверены разбор valid/invalid/неизвестного статуса и состав аргументов команды. Тесты фактически проверяют `VkHashValidationCodec`, а не процессный `VkHashValidator`: не покрыты тайм-аут, отсутствие бинарного файла, ошибка запуска и чтение stdout. Ранее зарегистрированный риск ожидания завершения процесса до чтения его вывода остаётся актуальным. Новых подтверждённых ошибок не выявлено.
