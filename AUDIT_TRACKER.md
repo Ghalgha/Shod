@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **95**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/network/wifi/policy/WifiAutoPausePolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/network/wifi/policy/WifiAutoPausePolicy.kt`**
+- Изучено файлов: **96**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/network/wifi/policy/WifiNetworkListPolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/network/wifi/policy/WifiNetworkListPolicy.kt`**
 
 ## Найденные проблемы
 
