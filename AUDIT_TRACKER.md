@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **378**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/TunnelLogPolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/TunnelLogPolicyTest.kt`**
+- Изучено файлов: **379**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/TunnelLogSanitizerTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/TunnelLogSanitizerTest.kt`**
 
 ## Найденные проблемы
 
@@ -792,3 +792,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/diagnostics/TunnelLogPolicyTest.kt` — проверены правила показа логов при выключенном подробном журналировании, фильтрация внутренних повторных попыток GETCONF/TURN/сети и различение внутренних восстановлений и ошибок TURN-потока. Сопоставлено с `TunnelLogPolicy.kt`: проверяемые ожидания соответствуют реализации. Пробелы покрытия: не проверяются HANDSHAKE-повторы, повторные попытки обновления учётных данных и граничные варианты текстовых маркеров. Подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/diagnostics/TunnelLogSanitizerTest.kt` — проверены маскирование полного хеша владельца и его отображаемого префикса, сохранение хешей других участников и обычного текста. Сопоставлено с `TunnelLogSanitizer.kt`: тесты соответствуют реализации. Пробел покрытия: не проверяются короткие хеши владельца, совпадения первых восьми символов у разных хешей и специальные символы в хешах. Подтверждённых ошибок не выявлено.
