@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **92**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/network/connectivity/NetworkPauseGate.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/network/connectivity/NetworkPauseGate.kt`**
+- Изучено файлов: **93**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/network/connectivity/PhysicalNetworkTracker.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/network/connectivity/PhysicalNetworkTracker.kt`**
 
 ## Найденные проблемы
 
