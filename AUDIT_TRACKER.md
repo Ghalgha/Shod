@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **101**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/application/ShodApplication.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/application/ShodApplication.kt`**
+- Изучено файлов: **102**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/apps/AppRoutingCatalogPolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/apps/AppRoutingCatalogPolicy.kt`**
 
 ## Найденные проблемы
 
