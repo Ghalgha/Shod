@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **385**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/TunnelProbePacketTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/TunnelProbePacketTest.kt`**
+- Изучено файлов: **386**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/events/TunnelEventParserTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/events/TunnelEventParserTest.kt`**
 
 ## Найденные проблемы
 
@@ -813,3 +813,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/diagnostics/probe/TunnelProbePacketTest.kt` — проверены формирование IPv4/UDP DNS-запроса, контрольная сумма IPv4-заголовка, распознавание ответа с обратными адресами и портами, transaction ID и DNS question, отбрасывание фрагментов, неверных полей и усечённых пакетов; также проверены параметры настроенных endpoint и некорректная длина IPv4-адреса. Сопоставлено с `TunnelProbePacket.kt`: основные проверки соответствуют построению пакета и условиям `isReply()`. Пробелы покрытия: не проверяются IPv4 options, неверные значения IHL/total length/UDP length во всех сочетаниях, DNS flags/rcode и контрольные суммы входящего IP/UDP-пакета. Реализация `isReply()` не проверяет контрольные суммы входящего пакета; это ограничение валидации, но необходимость такой проверки для диагностического TUN-ответа отдельно не установлена, поэтому подтверждённой ошибкой не считается. Новых подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/events/TunnelEventParserTest.kt` — проверены разбор STATS/ERROR/WORKERS/PROGRESS/CALL_UNAVAILABLE, lifecycle-событий, ограничение числа workers, источник SERVER_RESTART, отказ от неизвестных и повреждённых событий, нормализация отрицательных счётчиков и детерминированный fuzz-тест без исключений/отрицательного состояния. Сопоставлено с `TunnelEventParser.kt`: проверенные сценарии соответствуют текущим веткам парсера. Пробелы покрытия: не проверяются STARTED/PROCESS/CONFIG/ROUTING/TUN_LOST/CAPTCHA_REQUEST/CAPTCHA_DONE, граничные значения и типы полей этих событий; также не проверяются некорректные worker для READY/DTLS (реализация ограничивает их через `coerceIn`, а не отклоняет). Fuzz-тест проверяет отсутствие исключений и неотрицательность STATS, но не корректность результата для каждого входа. Подтверждённых ошибок в тестовом файле не выявлено.
