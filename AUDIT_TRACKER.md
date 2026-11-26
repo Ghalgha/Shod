@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **391**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/lifecycle/TunnelStartupProgressTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/lifecycle/TunnelStartupProgressTest.kt`**
+- Изучено файлов: **392**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/power/BatterySaverTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/power/BatterySaverTest.kt`**
 
 ## Найденные проблемы
 
@@ -831,3 +831,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/lifecycle/TunnelStartupProgressTest.kt` — проверены переходы стадий от ожидания credentials к ожиданию TURN/peer и READY, а также сохранение 128 параллельных событий credentials. Сопоставлено с `TunnelStartupProgress.kt`: `AtomicInteger.incrementAndGet()` обеспечивает атомарный подсчёт, `AtomicBoolean` фиксирует готовность; порядок приоритета READY выше credentials. Пробелы покрытия: не проверяются повторный `streamReady()`, события credentials после READY и переполнение счётчика `AtomicInteger`; текущее поведение этих случаев однозначно следует из реализации, подтверждённых ошибок не выявлено. В тесте `done.countDown()` не находится в `finally`, поэтому необработанное исключение worker-задачи может привести к таймауту вместо прямого сообщения об ошибке.
+
+
+- `app/src/test/java/com/shod/client/vpn/power/BatterySaverTest.kt` — проверены режимы AUTO (следует системному энергосбережению независимо от уровня заряда), LEVEL (порог включительно, не при зарядке, неизвестный уровень -1 не активирует), OFF/неизвестный режим, а также значения режима и порога по умолчанию. Сопоставлено с `BatterySaver.kt`: `shouldSave()` соответствует проверенным сценариям. Пробелы покрытия: не проверяются границы percent вне диапазона 0–100, отрицательный/сверхдиапазонный level кроме -1, активный StateFlow и `setActive()`. Поскольку функция принимает произвольные Int и сравнивает `level in 0..percent`, отрицательный percent всегда даст false, а percent выше 100 может включить экономию при некорректном уровне; нормализация входных настроек в данном тесте не рассматривается. Подтверждённой ошибки в проверенном тестовом файле не выявлено.
