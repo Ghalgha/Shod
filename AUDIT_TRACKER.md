@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **264**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelRuntimePreferencesStore.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelRuntimePreferencesStore.kt`**
+- Изучено файлов: **265**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelServiceInputPolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelServiceInputPolicy.kt`**
 
 ## Найденные проблемы
 
@@ -482,3 +482,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/lifecycle/TunnelRuntimePreferencesStore.kt` — проверены DataStore-ключи и потоковые значения маркера `wasRunning` и последней диагностики, атомарная запись/очистка диагностики, нормализация пробелов и ограничения длины code/message. Запись timestamp выполняется и удаляется вместе с диагностикой, но отдельного потока чтения timestamp в этом классе нет; назначение ключа требует подтверждения в потребителях. Отдельных тестов хранилища не обнаружено; рекомендуется покрыть значения по умолчанию, round-trip, нормализацию/лимиты и очистку.
+
+
+- `app/src/main/java/com/shod/client/vpn/lifecycle/TunnelServiceInputPolicy.kt` — проверена нормализация входных режимов CAPTCHA, VK auth и SRTP: принимаются только известные значения, неизвестные/null безопасно переводятся в режимы по умолчанию. `TunnelServiceInputPolicyTest` покрывает допустимые значения в верхнем регистре и fallback для неизвестного/null. Явных ошибок не обнаружено. Значения с пробелами по краям отклоняются и переходят на default; это безопасное поведение, но для устойчивости к внешним Intent/settings рекомендуется рассмотреть `trim()` и тесты пробельного ввода.
