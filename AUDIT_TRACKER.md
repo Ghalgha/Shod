@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **27**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ConnectionSource.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ConnectionSource.kt`**
+- Изучено файлов: **28**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/Constants.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/Constants.kt`**
 
 ## Найденные проблемы
 
