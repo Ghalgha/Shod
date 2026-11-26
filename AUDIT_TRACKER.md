@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **362**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/platform/android/manifest/TvManifestTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/platform/android/manifest/TvManifestTest.kt`**
+- Изучено файлов: **363**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/platform/android/power/BatteryOptimizationPromptPolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/platform/android/power/BatteryOptimizationPromptPolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -744,3 +744,6 @@
 
 
 - `app/src/test/java/com/shod/client/platform/android/manifest/TvManifestTest.kt` — проверены наличие Leanback launcher category, Android TV/touchscreen/Wi-Fi feature declarations, banner reference и PNG-сигнатура/размер 320×180. Сопоставлено с `AndroidManifest.xml`: необходимые записи присутствуют, `leanback`, touchscreen и Wi-Fi объявлены `required="false"`. Ограничение теста: проверки через `String.contains()` не связывают launcher category с `MainActivity` и не проверяют атрибут `required="false"`; тест может пройти при переносе категории в другой компонент или при изменении feature на обязательную. Это пробел проверки манифеста, не текущий дефект конфигурации. Проверка брендинга баннера отсутствует; несоответствие изображения бренду уже отмечено в трекере и повторно не дублируется. Новых подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/platform/android/power/BatteryOptimizationPromptPolicyTest.kt` — проверены запрос при первом посещении, запрет повторного показа после обработки и отсутствие запроса при уже выданном исключении. Сопоставлено с `BatteryOptimizationPromptPolicy.kt`: функция `!promptHandled && !alreadyExempt` соответствует всем трём сценариям. Не покрыта комбинация `promptHandled=true` и `alreadyExempt=true`, но по текущей функции она также однозначно возвращает `false`; отдельного дефекта не выявлено. Контекст Android-вызова и сохранения `promptHandled` не подтверждён поиском кода, поэтому интеграционные выводы не делаются.
