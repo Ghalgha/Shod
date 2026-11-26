@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **249**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/TunnelLogEntry.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/TunnelLogEntry.kt`**
+- Изучено файлов: **250**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/TunnelLogPolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/TunnelLogPolicy.kt`**
 
 ## Найденные проблемы
 
@@ -449,3 +449,6 @@
 
 - `app/src/main/java/com/shod/client/vpn/diagnostics/TrafficDiagnosticParser.kt` — проверены ограничение размера входной строки, обязательные поля и неотрицательность счётчиков, расчёт скоростей по длительности окна, форматирование времени и состав диагностического сообщения; просмотрен `TrafficDiagnosticParserTest`. Расчёт Мбит/с соответствует формуле bytes × 8 / milliseconds / 1000; отрицательные и отсутствующие счётчики отклоняются. Явных ошибок в проверенной логике не обнаружено.
 
+
+
+- `app/src/main/java/com/shod/client/vpn/diagnostics/TunnelLogPolicy.kt` — проверены правила отображения логов при неактивном туннеле, классификация внутреннего восстановления и ошибок TURN; просмотрен `TunnelLogPolicyTest`. Подтверждённый риск ложной классификации: проверка `(line.contains("turn") && line.contains("timeout"))` ищет подстроку без границ слова. Например, текст `return timeout` содержит `turn` внутри слова `return` и будет ошибочно скрыт как внутренняя попытка восстановления. Рекомендуется использовать проверку отдельного токена/структурированный код события и добавить отрицательный тест.
