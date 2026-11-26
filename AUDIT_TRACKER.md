@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **279**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/routing/ServerRoutingRule.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/routing/ServerRoutingRule.kt`**
+- Изучено файлов: **280**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/routing/apps/AppRoutingPresets.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/routing/apps/AppRoutingPresets.kt`**
 
 ## Найденные проблемы
 
@@ -527,3 +527,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/routing/ServerRoutingRule.kt` — проверены разбор JSON, независимые режимы whitelist/blacklist приложений, доменов и IP, legacy fallback, строгая проверка строковых элементов packages, удаление пробелов/дубликатов и лимит 4096 элементов на список. `ServerRoutingRuleTest` покрывает восемь комбинаций режимов, старый формат, некорректные package entries и пустые/дублирующиеся списки. Явных ошибок не обнаружено.
+
+
+- `app/src/main/java/com/shod/client/vpn/routing/apps/AppRoutingPresets.kt` — проверены списки direct/VPN package presets, начальная инициализация только установленными приложениями, сохранение пользовательских/пустых выборов, объединение без удаления прежних записей и порядок выбранных приложений. `AppRoutingPresetsTest` покрывает состав наборов, отсутствие пересечений, idempotency merge, сохранение пустого выбора и порядок. Явных ошибок не обнаружено.
