@@ -23,13 +23,16 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **245**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/DtlsLogParser.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/DtlsLogParser.kt`**
+- Изучено файлов: **246**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/NativeTunnelLogParser.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/NativeTunnelLogParser.kt`**
 
 ## Найденные проблемы
 
 ### Подтверждённые ошибки
+
+- `app/src/main/java/com/shod/client/vpn/diagnostics/NativeTunnelLogParser.kt` (`secrets`, `redact`) — маскирование `Authorization` не учитывает схему Bearer. Для строки `Authorization: Bearer abc123` регулярное выражение захватывает `Bearer` как значение секрета, но оставляет следующий токен `abc123` в диагностическом сообщении. Если такой заголовок попадает в native log, credential может быть сохранён и показан пользователю. Существующие тесты проверяют `token=`, `password=` и `access_token=`, но не Bearer-аутентификацию. Рекомендуется отдельно маскировать значение Authorization с учётом схемы и добавить тесты Bearer/Basic.
+
 
 - `app/src/main/java/com/shod/client/vpn/diagnostics/DtlsLogParser.kt` (`parse`) — классификация успеха использует простые проверки `contains("успешен")` и `contains("завершено")` без учёта отрицания. Сообщение вроде `DTLS не завершено` содержит `завершено`, но не содержит проверяемых маркеров ошибки, поэтому ошибочно получает ключ `dtls_success` и уровень `OK`. Аналогично возможно ложное срабатывание на `не успешен`. Существующие `DtlsLogParserTest` проверяют положительный исход, fallback и явную ошибку, но не отрицательные формулировки. Рекомендуется разбирать однозначные шаблоны результата и добавить тесты отрицания.
 
@@ -436,3 +439,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/diagnostics/DtlsLogParser.kt` — проверены классификация DTLS-ошибок, fallback, успеха и прогресса, редактирование чувствительных данных через `NativeTunnelLogParser.redact()` и тесты `DtlsLogParserTest`. Обнаружена подтверждённая ошибка: поиск подстрок `успешен`/`завершено` не учитывает отрицание, поэтому сообщение «DTLS не завершено» может ошибочно учитываться как успешное рукопожатие. Тестов отрицательных формулировок нет. Рекомендуется использовать однозначные шаблоны и добавить граничные тесты. Код не изменялся.
+
+
+- `app/src/main/java/com/shod/client/vpn/diagnostics/NativeTunnelLogParser.kt` — проверены фильтрация control/config сообщений, уровни ошибок и восстановления, формирование ключей группировки, ограничение длины сообщения и маскирование секретов; просмотрены `TunnelLogPolicy`, `TunnelEventParser` и `NativeTunnelLogParserTest`. Подтверждённая ошибка безопасности: regex `secrets` не учитывает схему Bearer в `Authorization`, поэтому строка `Authorization: Bearer abc123` оставляет `abc123` незамаскированным. Существующие тесты Bearer не покрывают. Рекомендуется маскировать значение заголовка с учётом схемы и добавить тесты Bearer/Basic. Код не изменялся.
