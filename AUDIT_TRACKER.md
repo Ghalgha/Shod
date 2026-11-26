@@ -23,13 +23,14 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **71**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/ui/VkAuthDialog.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/ui/VkAuthDialog.kt`**
+- Изучено файлов: **72**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/calls/VkAutoCallsManager.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/calls/VkAutoCallsManager.kt`**
 
 ## Найденные проблемы
 
 ### Потенциальные риски
+- `app/src/main/java/com/shod/client/integration/vk/calls/VkAutoCallsManager.kt` — `startAutoCalls()` очищает общий `activeCalls` и затем поэтапно заполняет его, одновременно обновляя общий `activeToken`; вся операция не защищена от параллельного запуска. Если два вызова метода пересекутся, их звонки могут смешаться в одном списке, а `finishActiveCalls()` завершит все собранные звонки с одним последним записанным токеном. Это может привести к неудачному завершению звонков или оставить их активными на стороне VK. Сценарий зависит от возможности параллельного вызова; call sites в рамках этой проверки не установлены.
 - `app/src/main/java/com/shod/client/integration/vk/auth/ui/VkAuthDialog.kt` — `VkAuthSession` создаётся через `remember { ... }` без ключей и захватывает исходные `onToken` и `chooseAccount`. Если эти параметры изменятся, пока composable остаётся в композиции, активная сессия продолжит использовать первоначальные callback и режим выбора аккаунта. Обычно диалог создаётся для одного сеанса, поэтому практическое проявление зависит от сценария вызова; call sites не удалось подтвердить в рамках этой проверки. Потенциальный риск устаревших параметров Compose.
 - `app/src/main/java/com/shod/client/integration/vk/auth/policy/VkCookieScope.kt` — `vkCookieDeletionHeaders()` формирует заголовки удаления только с `Path=/`. Если VK установил cookies с другими атрибутами Path, такие cookies могут сохраниться после очистки сессии и повлиять на выбор аккаунта. Тесты проверяют только корневой путь; фактический набор путей cookies VK не проверялся, поэтому это потенциальная неполнота очистки.
 - `app/src/main/java/com/shod/client/integration/vk/auth/network/VkTokenScraper.kt` — HTML-ответ полностью читается через `bufferedReader().readText()` без ограничения размера. Поскольку URL перенаправлений не ограничены доверенными доменами, большой ответ может привести к чрезмерному расходу памяти и OOM. Условный риск; реальный большой ответ не запрашивался.
