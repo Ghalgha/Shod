@@ -23,8 +23,8 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **38**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/connection/policy/ConnectionStartPolicy.kt`**
+- Изучено файлов: **39**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/connection/source/.gitkeep`**
 - Последний проверенный файл: **`app/src/main/java/com/shod/client/connection/controller/.gitkeep`**
 
 ## Найденные проблемы
