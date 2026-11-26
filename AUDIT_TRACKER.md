@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **310**
-- Последний изученный файл: **`app/src/main/res/layout/vpn_widget.xml`**
-- Последний проверенный файл: **`app/src/main/res/layout/vpn_widget.xml`**
+- Изучено файлов: **311**
+- Последний изученный файл: **`app/src/main/res/mipmap-anydpi/ic_launcher.xml`**
+- Последний проверенный файл: **`app/src/main/res/mipmap-anydpi/ic_launcher.xml`**
 
 ## Найденные проблемы
 
@@ -596,3 +596,6 @@
 
 
 - `app/src/main/res/layout/vpn_widget.xml` — проверен layout виджета VPN: RelativeLayout-контейнер, текстовые заголовок/статус и ImageButton переключения. Все используемые в файле ресурсы (`bg_widget_card`, `widget_text`, `widget_status_disconnected`, `app_name`, `widget_disconnected`, `bg_widget_button_inactive`, `ic_c_logo`, `widget_toggle_vpn`) присутствуют в ресурсах проекта. ID кнопки и контейнера согласуются с `VpnWidgetProvider`; описание кнопки задано через `contentDescription`. XML-структура корректна, явных проблем не обнаружено.
+
+
+- `app/src/main/res/mipmap-anydpi/ic_launcher.xml` — проверен ресурс адаптивной иконки: фон ссылается на существующий `ic_launcher_background`, foreground и monochrome — на соответствующие VectorDrawable. `minSdk=26` согласуется с появлением adaptive icons в Android 8.0; монохромный слой предназначен для тематических иконок Android 13+. XML-структура корректна, явных ошибок в текущем файле не обнаружено. Визуальное соответствие монохромного знака основному логотипу требует отдельной оценки, но само по себе различие не доказывает дефект.
