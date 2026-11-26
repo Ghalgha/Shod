@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **139**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfilePreferenceKeys.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfilePreferenceKeys.kt`**
+- Изучено файлов: **140**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileSelectionPolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileSelectionPolicy.kt`**
 
 ## Найденные проблемы
 
@@ -94,6 +94,8 @@
 - `LICENSE` и `rust-server/Cargo.toml` (`[package].license`) — лицензия проекта объявлена проприетарной, но Rust-пакет указывает `Unlicense`. Это противоречивые юридические условия и некорректные метаданные пакета; требуется согласовать объявление Cargo с фактической лицензией. Файлы не изменялись.
 
 ### Рекомендации
+
+- `app/src/main/java/com/shod/client/settings/profile/ProfileSelectionPolicy.kt` — отдельные тесты `normalize()`, `requireValid()` и `fallbackAfterClearing()` не найдены. Проверки диапазона и выбор первого другого занятого профиля логически корректны. `ProfileLifecycleStore.clearProfile()` реализует аналогичный поиск резервного профиля самостоятельно, не используя `fallbackAfterClearing()`; это дублирование может привести к расхождению правил при будущих изменениях. Рекомендуется покрыть граничные случаи тестами и свести выбор резервного профиля к одной реализации.
 
 - `app/src/main/java/com/shod/client/settings/profile/ProfileNamePolicy.kt` — отдельные тесты `defaultProfileName()` не найдены. Функция проста и формирует имя из индекса (`Профиль ${index + 1}`); явной ошибки при штатных индексах профилей не обнаружено. Рекомендуется проверить формат для первого и последующих профилей, а также согласованность с допустимым диапазоном индексов.
 
