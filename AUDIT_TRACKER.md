@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **356**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/network/wifi/policy/WifiAutoPausePolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/network/wifi/policy/WifiAutoPausePolicyTest.kt`**
+- Изучено файлов: **357**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/network/wifi/policy/WifiNetworkListPolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/network/wifi/policy/WifiNetworkListPolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -726,3 +726,6 @@
 
 
 - `app/src/test/java/com/shod/client/network/wifi/policy/WifiAutoPausePolicyTest.kt` — проверены отмена вызывающей coroutine без отмены перехода, отмена перехода при остановке service scope, условия PAUSE/RESUME, приоритет default network над устаревшими callbacks, разделение остановки VPN и controller, ручная остановка во время приостановки, состояния кнопки питания и передача уведомления controller. Сопоставлено с `WifiAutoPausePolicy.kt`: `runWifiAutoPauseTransition()` выполняет переход в service-owned scope, а `completeWifiAutoPause()` повторно проверяет пользовательское намерение после сохранения и после остановки data plane. Тест ручной остановки проверяет итоговое состояние при последовательном исполнении корутин на тестовом dispatcher; реальную многопоточную гонку и интеграцию с Android service он не моделирует. Это ограничение покрытия, не подтверждённая ошибка. Новых подтверждённых дефектов не выявлено.
+
+
+- `app/src/test/java/com/shod/client/network/wifi/policy/WifiNetworkListPolicyTest.kt` — проверены нормализация SSID, whitelist/blacklist, поведение при неизвестном SSID, главный переключатель, отключение gate на мобильной сети и совместимость пустого whitelist с прежней автопаузой. Сопоставлено с `WifiNetworkListPolicy.kt`: базовые ожидания тестов соответствуют реализации; SSID сравниваются с учётом регистра, что соответствует регистрозависимой идентичности имени сети. Пробел покрытия: нет проверки round-trip `encodeWifiSsids`/`decodeWifiSsids`, дубликатов и некорректных строк. Потенциальный риск реализации: `normalizeWifiSsid()` проверяет маркер `<unknown ssid>` до снятия Android-кавычек, поэтому вход `"<unknown ssid>"` нормализуется в буквальный маркер, а не в `null`; если такой вариант возвращается платформой/хранилищем, whitelist/blacklist может принять неизвестное имя за реальный SSID. Формат платформенного значения в этом аудите не подтверждён. Новых подтверждённых ошибок не выявлено.
