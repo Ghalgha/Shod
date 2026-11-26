@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **357**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/network/wifi/policy/WifiNetworkListPolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/network/wifi/policy/WifiNetworkListPolicyTest.kt`**
+- Изучено файлов: **358**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/network/wifi/preferences/WifiPreferencesTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/network/wifi/preferences/WifiPreferencesTest.kt`**
 
 ## Найденные проблемы
 
@@ -729,3 +729,6 @@
 
 
 - `app/src/test/java/com/shod/client/network/wifi/policy/WifiNetworkListPolicyTest.kt` — проверены нормализация SSID, whitelist/blacklist, поведение при неизвестном SSID, главный переключатель, отключение gate на мобильной сети и совместимость пустого whitelist с прежней автопаузой. Сопоставлено с `WifiNetworkListPolicy.kt`: базовые ожидания тестов соответствуют реализации; SSID сравниваются с учётом регистра, что соответствует регистрозависимой идентичности имени сети. Пробел покрытия: нет проверки round-trip `encodeWifiSsids`/`decodeWifiSsids`, дубликатов и некорректных строк. Потенциальный риск реализации: `normalizeWifiSsid()` проверяет маркер `<unknown ssid>` до снятия Android-кавычек, поэтому вход `"<unknown ssid>"` нормализуется в буквальный маркер, а не в `null`; если такой вариант возвращается платформой/хранилищем, whitelist/blacklist может принять неизвестное имя за реальный SSID. Формат платформенного значения в этом аудите не подтверждён. Новых подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/network/wifi/preferences/WifiPreferencesTest.kt` — проверены сохранение и выбор сетей для blacklist/whitelist/ALL, независимость сохранённых имён от выбранных исключений, защита от устаревших notification actions, legacy whitelist, поведение новой установки, удаление сети, фильтрация некорректных SSID, обнаружение новых сетей, идемпотентность и регистр имён. Сопоставлено с `WifiPreferences.kt`: операции над `MutablePreferences` выполняются в рамках переданного объекта настроек; read объединяет сохранённые и выбранные имена, а remember проверяет ожидаемый режим и состояние функции. Потенциальный риск: `forget()` удаляет имя через точное сравнение `previous.saved - name` и `previous.selected - name`, не нормализуя аргумент; если вызывающий код передаст SSID с Android-кавычками или лишними пробелами, запись не будет удалена. Текущий тест проверяет только точное совпадение, а фактический формат аргумента вызывающего кода отдельно не подтверждён. Новых подтверждённых ошибок не выявлено.
