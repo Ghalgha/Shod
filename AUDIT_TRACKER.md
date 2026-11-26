@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **231**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/settings/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/settings/.gitkeep`**
+- Изучено файлов: **232**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/telemetry/TunnelTrafficSummary.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/telemetry/TunnelTrafficSummary.kt`**
 
 ## Найденные проблемы
 
@@ -384,3 +384,6 @@
 
 
 - `app/src/main/java/com/shod/client/ui/screens/settings/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `settings` в Git. Исполняемого содержимого нет; замечаний нет.
+
+
+- `app/src/main/java/com/shod/client/ui/telemetry/TunnelTrafficSummary.kt` — проверен Compose-компонент сводки трафика: состояние `TunnelManager.traffic` собирается через `collectAsStateWithLifecycle()`, поэтому сбор приостанавливается с жизненным циклом владельца; скорость и суммарные объёмы форматируются общей `TunnelTrafficText`, также используемой уведомлениями. Выравнивание, цвета и размеры текста заданы явно. Связанные модель, трекер и unit-тесты просмотрены: направления приёма/отправки и форматирование согласованы. Явных ошибок в компоненте не обнаружено.
