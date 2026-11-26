@@ -23,8 +23,8 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **39**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/connection/source/.gitkeep`**
+- Изучено файлов: **40**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/core/logging/.gitkeep`**
 - Последний проверенный файл: **`app/src/main/java/com/shod/client/connection/controller/.gitkeep`**
 
 ## Найденные проблемы
