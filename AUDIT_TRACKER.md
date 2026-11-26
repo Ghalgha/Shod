@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **352**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/transport/turn/TurnTransportPolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/transport/turn/TurnTransportPolicyTest.kt`**
+- Изучено файлов: **353**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/links/ShodLinkCodecTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/links/ShodLinkCodecTest.kt`**
 
 ## Найденные проблемы
 
@@ -714,3 +714,6 @@
 
 
 - `app/src/test/java/com/shod/client/integration/vk/transport/turn/TurnTransportPolicyTest.kt` — проверено предупреждение при входе в TCP/TLS, отсутствие повторного предупреждения при уже выбранном режиме и учёт подтверждения. Сопоставлено с `TurnTransportPolicy.kt`: ожидания соответствуют реализации. Покрытие не включает неизвестные значения транспорта и переходы между прочими режимами; подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/links/ShodLinkCodecTest.kt` — проверены разбор открытых, legacy и зашифрованных ссылок Shod; round-trip форматирования пароля, хешей и VK-токена; обработка IPv6; ограничения порта, числа хешей и формата токена; нормализация power/workers; отклонение изменённого и усечённого ciphertext. Сопоставлено с `ShodLinkCodec.kt`: проверяемые ожидания соответствуют реализации. Тест `deterministicLinkEncryption` фиксирует детерминированность шифрования, реализованную через HMAC-derived IV; это чувствительная криптографическая характеристика и её изменение потребует совместимого изменения формата/контракта. Основные проверки host validation не покрывают loopback IPv6, unspecified IPv6, DNS-имена с некорректными метками и trailing dot; это пробел покрытия, не подтверждённая ошибка. Новых подтверждённых дефектов не выявлено.
