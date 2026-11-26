@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **211**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/LogsScreen.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/LogsScreen.kt`**
+- Изучено файлов: **212**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/RoutingScreen.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/RoutingScreen.kt`**
 
 ## Найденные проблемы
 
@@ -68,6 +68,8 @@
 - `app/src/main/java/com/shod/client/platform/android/activity/UpdateLaunchGuard.kt` (`consumeStaleSavedState`) — новый package token сохраняется синхронно до возврата из метода и до вызова `super.onCreate(null)` в `MainActivity`. Если процесс аварийно завершится после фиксации token, но до фактического отбрасывания `savedInstanceState`, следующий запуск увидит уже совпадающий token и может восстановить устаревшее UI-состояние. Узкое окно отказа; штатный сценарий покрыт тестами, аварийный перезапуск между записью маркера и передачей состояния не проверяется.
 
 ### Подтверждённые проблемы
+
+- `app/src/main/java/com/shod/client/ui/screens/RoutingScreen.kt` (`RoutingRulesTransferDialog` import callback) — при JSON-импорте проверяется наличие ключа `apps`/`domains`/`ips`, но не тип его значения. Для `{"apps":[]}` или аналогичной структуры `optJSONObject(...)!!` получает `null` и вызывает исключение при нажатии «Импорт». Некорректный буфер обмена может аварийно прервать обработчик вместо безопасного отказа. Рекомендуется проверять, что каждое выбранное значение является JSON-объектом, до чтения полей, и покрыть некорректные типы тестами.
 
 - `app/src/main/java/com/shod/client/settings/theme/ThemePreferencesStore.kt` (`themePalette`) и `SettingsStore.kt` (экспорт настроек) — подтверждённое расхождение значения по умолчанию: DataStore flow возвращает `indigo`, если ключ отсутствует, тогда как экспорт резервной копии записывает `pure_black` для того же отсутствующего ключа. Поэтому экспорт и последующий импорт настроек на установке без сохранённого `theme_palette` меняют эффективную палитру с `indigo` на `pure_black`. Следует согласовать единый default и добавить round-trip тест резервной копии.
 
