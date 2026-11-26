@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **142**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/secret/StoredSecretState.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/secret/StoredSecretState.kt`**
+- Изучено файлов: **143**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/secret/TunnelPasswordStorage.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/secret/TunnelPasswordStorage.kt`**
 
 ## Найденные проблемы
 
