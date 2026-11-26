@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **22**
-- Последний изученный файл: **`app/src/main/assets/domains.txt`**
-- Последний проверенный файл: **`app/src/main/assets/domains.txt`**
+- Изучено файлов: **23**
+- Последний изученный файл: **`app/src/main/assets/licenses/primp-LICENSE`**
+- Последний проверенный файл: **`app/src/main/assets/licenses/primp-LICENSE`**
 
 ## Найденные проблемы
 
