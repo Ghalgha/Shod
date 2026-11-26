@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **13**
-- Последний изученный файл: **`app/src/androidTest/.gitkeep`**
-- Последний проверенный файл: **`app/src/androidTest/.gitkeep`**
+- Изучено файлов: **14**
+- Последний изученный файл: **`app/src/androidTest/java/com/shod/client/platform/android/deploy/DeployScriptAssetTest.kt`**
+- Последний проверенный файл: **`app/src/androidTest/java/com/shod/client/platform/android/deploy/DeployScriptAssetTest.kt`**
 
 ## Найденные проблемы
 
