@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **67**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/android/VkAuthWebViewManager.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/android/VkAuthWebViewManager.kt`**
+- Изучено файлов: **68**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/model/VkAuthModels.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/model/VkAuthModels.kt`**
 
 ## Найденные проблемы
 
