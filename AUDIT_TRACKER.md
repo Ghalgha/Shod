@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **246**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/NativeTunnelLogParser.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/NativeTunnelLogParser.kt`**
+- Изучено файлов: **247**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/StreamDiagnosticParser.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/StreamDiagnosticParser.kt`**
 
 ## Найденные проблемы
 
@@ -442,3 +442,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/diagnostics/NativeTunnelLogParser.kt` — проверены фильтрация control/config сообщений, уровни ошибок и восстановления, формирование ключей группировки, ограничение длины сообщения и маскирование секретов; просмотрены `TunnelLogPolicy`, `TunnelEventParser` и `NativeTunnelLogParserTest`. Подтверждённая ошибка безопасности: regex `secrets` не учитывает схему Bearer в `Authorization`, поэтому строка `Authorization: Bearer abc123` оставляет `abc123` незамаскированным. Существующие тесты Bearer не покрывают. Рекомендуется маскировать значение заголовка с учётом схемы и добавить тесты Bearer/Basic. Код не изменялся.
+
+
+- `app/src/main/java/com/shod/client/vpn/diagnostics/StreamDiagnosticParser.kt` — проверены разбор JSON-событий, диапазоны worker/attempt/sequence/time/elapsed, ограничения длины полей и строки, форматирование времени, ключи записей и политика вытеснения истории; просмотрен `StreamDiagnosticParserTest`. Явных подтверждённых ошибок в проверенной логике не обнаружено. Потенциальный риск конфиденциальности: `reason` проходит через `NativeTunnelLogParser.redact()`, но поля `turn`, `transport`, `stage` и `status` напрямую включаются в сообщение. При попадании в эти поля строки с секретами они не будут замаскированы. Текущие тесты проверяют маскирование только в `reason`; допустимый формат остальных полей и источник значений требуют подтверждения. Рекомендуется валидировать поля по ожидаемым форматам либо применять redaction ко всем текстовым значениям и добавить тесты.
