@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **250**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/TunnelLogPolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/TunnelLogPolicy.kt`**
+- Изучено файлов: **251**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/TunnelLogSanitizer.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/TunnelLogSanitizer.kt`**
 
 ## Найденные проблемы
 
@@ -452,3 +452,4 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/diagnostics/TunnelLogPolicy.kt` — проверены правила отображения логов при неактивном туннеле, классификация внутреннего восстановления и ошибок TURN; просмотрен `TunnelLogPolicyTest`. Подтверждённый риск ложной классификации: проверка `(line.contains("turn") && line.contains("timeout"))` ищет подстроку без границ слова. Например, текст `return timeout` содержит `turn` внутри слова `return` и будет ошибочно скрыт как внутренняя попытка восстановления. Рекомендуется использовать проверку отдельного токена/структурированный код события и добавить отрицательный тест.
+
