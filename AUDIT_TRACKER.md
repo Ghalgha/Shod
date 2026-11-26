@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **367**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/settings/storage/SettingsStoreInitOrderTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/settings/storage/SettingsStoreInitOrderTest.kt`**
+- Изучено файлов: **368**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/subscriptions/SubscriptionImporterTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/subscriptions/SubscriptionImporterTest.kt`**
 
 ## Найденные проблемы
 
@@ -759,3 +759,6 @@
 
 
 - `app/src/test/java/com/shod/client/settings/storage/SettingsStoreInitOrderTest.kt` — проверены поиск исходника `SettingsStore.kt` из корня репозитория или модуля, обнаружение `init`-блока, извлечение имён потоков, собираемых в cache collectors, и проверка, что соответствующие свойства объявлены до `init`; дополнительно тест запрещает любые свойства класса после этого блока. Сопоставлено с `SettingsStore.kt`: блок `init` находится на строке 1239, запускает миграции и 26 cache collectors; все используемые ими свойства объявлены до блока. Проверка соответствует текущей структуре. Ограничение теста: это текстовый анализ форматирования, а не проверка порядка инициализации на уровне компилятора; точные отступы/форма `launch { ... }` являются частью тестового контракта, поэтому безвредное форматирование может вызвать ложное падение. Подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/subscriptions/SubscriptionImporterTest.kt` — проверены JSON-группа с открытыми/зашифрованными узлами, пропуск повреждённых узлов, отказ сервера, допустимый redirect, запрет redirect на FTP, варианты `clients`/`items`, endpoint `.json`, массив JSON и HTML fallback. Сопоставлено с `SubscriptionImporter.kt`: сценарии соответствуют текущему парсеру и ручной обработке redirect. Пробелы покрытия: нет тестов на превышение 2 MiB, HTTP-ошибки/таймаут, лимит redirect, некорректный charset, пустой/неверный JSON, повторные ссылки и importNodes matching/исчерпание профилей. В частности, `allowHttp=true` допускает HTTP и HTTPS, а HTTPS-соединение в этом режиме использует trust-all сертификат и hostname verifier; тесты не фиксируют поведение TLS. TLS/HTTPS не изменялось. Подтверждённых ошибок непосредственно в тестовом файле не выявлено.
