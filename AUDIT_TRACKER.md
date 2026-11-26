@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **196**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/dialogs/QrScannerDialog.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/dialogs/QrScannerDialog.kt`**
+- Изучено файлов: **197**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/dialogs/ReinstallConfirmDialog.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/dialogs/ReinstallConfirmDialog.kt`**
 
 ## Найденные проблемы
 
