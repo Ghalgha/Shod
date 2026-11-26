@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **31**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/TunnelManager.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/TunnelManager.kt`**
+- Изучено файлов: **32**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/TunnelService.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/TunnelService.kt`**
 
 ## Найденные проблемы
 
