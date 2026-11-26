@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **86**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/transport/nativeclient/VkNativeTransportArguments.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/transport/nativeclient/VkNativeTransportArguments.kt`**
+- Изучено файлов: **87**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/transport/turn/TurnSubnetRegistry.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/transport/turn/TurnSubnetRegistry.kt`**
 
 ## Найденные проблемы
 
@@ -49,6 +49,7 @@
 - `app/src/main/java/com/shod/client/deploy/execution/DeployStderrPolicy.kt` — регулярное выражение подавляет любую строку stderr, начинающуюся с `Warning:` (без проверки содержания). Это может скрыть значимые предупреждения сторонних утилит и лишить пользователя диагностической информации. На exit status не влияет; потенциальный риск потери диагностики.
 
 ### Подтверждённые проблемы
+- `app/src/main/java/com/shod/client/integration/vk/transport/turn/TurnSubnetRegistry.kt` — для подсети `193.203.43.0/24` задано `count = 48`, но список `ips` содержит только 47 уникальных адресов. Метаданные количества не соответствуют фактическому списку; возможны неверное отображение количества или ошибки логики, если потребители полагаются на `count`.
 - `app/src/main/java/com/shod/client/integration/vk/captcha/android/ManlCaptchaWebViewManager.kt` (`solveCaptchaAsync`) — `showCaptchaNotification()` и `context.startActivity(intent)` выполняются до входа в `try/finally`. Если создание/показ уведомления или запуск Activity выбросит исключение, очистка не выполнится: `isCaptchaPending` останется true, `pendingResult` и `pendingIntentToStart` могут остаться установленными, а уведомление — висеть. Нужно включить подготовку в защищённый `try/finally` либо явно откатывать состояние при ошибке.
 - `app/src/main/java/com/shod/client/integration/vk/auth/android/VkAuthWebViewManager.kt` (`switchToTokenPhase`) совместно с `integration/vk/auth/network/VkTokenScraper.kt` — WebView собирает cookies с нескольких доменов VK и передаёт их scraper'у. Scraper повторно отправляет этот Cookie header на URL из HTTP `Location` и HTML JavaScript-перенаправлений, не проверяя host назначения. Поэтому перенаправление на посторонний домен может привести к передаче ему сессионных cookies VK. Риск подтверждён чтением обоих файлов; реальный внешний redirect не запускался.
 - `app/src/main/java/com/shod/client/deploy/version/ServerVersionPolicy.kt` — `comparableServerVersion()` ищет первую последовательность цифр в любой строке, а не проверяет, что она является версией. Например, `build 123` возвращает `123`, хотя версия отсутствует; аналогично числовой код ошибки может быть принят за версию. Это противоречит KDoc о возврате пустой строки, когда числовая версия отсутствует. Тесты проверяют только строку `unknown` без цифр и не покрывают такие случаи.
