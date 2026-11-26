@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **329**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/StoredSecretStateTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/StoredSecretStateTest.kt`**
+- Изучено файлов: **330**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/connection/policy/ConnectionStartPolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/connection/policy/ConnectionStartPolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -647,3 +647,6 @@
 
 
 - `app/src/test/java/com/shod/client/StoredSecretStateTest.kt` — проверены шесть сценариев: отсутствующее значение, legacy plaintext, приоритет успешно расшифрованного значения, нечитаемый ciphertext без fallback, восстановление из legacy и корректное состояние для расшифрованной пустой строки. Сопоставлено с `StoredSecretState.resolveStoredSecret`: все ожидания соответствуют реализации. Тесты не проверяют исключение, выброшенное decrypt-функцией; сама функция разрешения не перехватывает такое исключение, поэтому вызывающий код должен обеспечивать безопасную обработку. Это непокрытый сценарий, а не подтверждённый дефект в тестируемом контракте. Явных ошибок не обнаружено.
+
+
+- `app/src/test/java/com/shod/client/connection/policy/ConnectionStartPolicyTest.kt` — проверены восемь сценариев готовности VK-учётных данных и блокировки старта подключения. Тесты согласуются с `ConnectionStartPolicy`, но выявлено важное ограничение покрытия/контракта: `blocker` принимает `connectionPasswordSet` и `connectionPasswordReadable`, однако реализация их полностью игнорирует; ветви `Password` и `StoredSecret` недостижимы. Текущие тесты закрепляют поведение, при котором отсутствие/нечитаемость пароля не блокируют запуск. Без подтверждения требований нельзя считать это дефектом, но необходимо уточнить, должен ли режим владельца требовать пароль. Код не изменялся.
