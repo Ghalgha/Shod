@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **315**
-- Последний изученный файл: **`app/src/main/res/values-night/colors.xml`**
-- Последний проверенный файл: **`app/src/main/res/values-night/colors.xml`**
+- Изучено файлов: **316**
+- Последний изученный файл: **`app/src/main/res/values-v31/colors.xml`**
+- Последний проверенный файл: **`app/src/main/res/values-v31/colors.xml`**
 
 ## Найденные проблемы
 
