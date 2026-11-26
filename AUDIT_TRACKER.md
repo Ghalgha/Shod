@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **59**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/script/DeployScriptAsset.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/script/DeployScriptAsset.kt`**
+- Изучено файлов: **60**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/ssh/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/ssh/.gitkeep`**
 
 ## Найденные проблемы
 
