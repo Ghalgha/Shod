@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **126**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/widget/VpnWidgetProvider.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/widget/VpnWidgetProvider.kt`**
+- Изучено файлов: **127**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/widget/VpnWidgetToggleReceiver.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/widget/VpnWidgetToggleReceiver.kt`**
 
 ## Найденные проблемы
 
@@ -91,7 +91,7 @@
 
 ### Рекомендации
 
-- `app/src/main/java/com/shod/client/platform/android/widget/VpnWidgetProvider.kt` — отдельные тесты форматирования уведомления отсутствуют. Рекомендуется проверить пустой и многострочный текст, распознавание статуса только в последней строке и формирование BigTextStyle. Явных ошибок в реализации не обнаружено.
+- `app/src/main/java/com/shod/client/platform/android/widget/VpnWidgetToggleReceiver.kt` — отдельные тесты форматирования уведомления отсутствуют. Рекомендуется проверить пустой и многострочный текст, распознавание статуса только в последней строке и формирование BigTextStyle. Явных ошибок в реализации не обнаружено.
 
 - `app/src/main/java/com/shod/client/platform/android/vpn/TunVpnService.kt` — отдельные тесты фабрики Intent отсутствуют. Рекомендуется проверить передачу всех полей `ConnectionSource` и `TunnelStartOptions`, включая `generation_id`/`session_salt`, а также соответствие ключей extras контракту `TunnelService`. Явной ошибки в проверенной реализации не обнаружено.
 
@@ -120,4 +120,6 @@
 - `.github/workflows/build-linux-server.yml` — сторонние GitHub Actions подключены по тегам (`@vN`), а не по полным commit SHA. Для защиты от подмены/перемещения тегов рекомендуется фиксировать проверенные версии полными SHA и указывать версию в комментарии. Это рекомендация по укреплению цепочки поставки, не подтверждённая ошибка сборки.
 - `.github/workflows/ci.yml` — сторонние GitHub Actions подключены по тегам (`@vN`), а не по полным commit SHA. Для защиты от подмены/перемещения тегов рекомендуется фиксировать проверенные версии полными SHA и указывать версию в комментарии. Это рекомендация по укреплению цепочки поставки, не подтверждённая ошибка CI.
 
-- `app/src/main/java/com/shod/client/platform/android/widget/VpnWidgetProvider.kt` — отдельные тесты формирования `RemoteViews` и `PendingIntent` отсутствуют. Рекомендуется проверить отображение обоих состояний VPN, уникальность request code для нескольких экземпляров виджета, флаги PendingIntent и обновление всех экземпляров. В проверенной реализации явной ошибки не обнаружено; обновления состояния дополнительно инициируются наблюдателем `TunnelManager.running`.
+- `app/src/main/java/com/shod/client/platform/android/widget/VpnWidgetToggleReceiver.kt` — отдельные тесты формирования `RemoteViews` и `PendingIntent` отсутствуют. Рекомендуется проверить отображение обоих состояний VPN, уникальность request code для нескольких экземпляров виджета, флаги PendingIntent и обновление всех экземпляров. В проверенной реализации явной ошибки не обнаружено; обновления состояния дополнительно инициируются наблюдателем `TunnelManager.running`.
+
+- `app/src/main/java/com/shod/client/platform/android/widget/VpnWidgetToggleReceiver.kt` — отдельные тесты BroadcastReceiver отсутствуют. Рекомендуется проверить игнорирование посторонних action, завершение `goAsync()` при успешном переключении и исключениях, fallback открытия MainActivity, а также конкурентные быстрые нажатия на виджет. В проверенной реализации явной ошибки не обнаружено; `pendingResult.finish()` находится в `finally`, а обновление виджета подавляет собственные исключения.
