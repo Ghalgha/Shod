@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **85**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/storage/SavedVkAccounts.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/storage/SavedVkAccounts.kt`**
+- Изучено файлов: **86**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/transport/nativeclient/VkNativeTransportArguments.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/transport/nativeclient/VkNativeTransportArguments.kt`**
 
 ## Найденные проблемы
 
@@ -64,6 +64,8 @@
 - `LICENSE` и `rust-server/Cargo.toml` (`[package].license`) — лицензия проекта объявлена проприетарной, но Rust-пакет указывает `Unlicense`. Это противоречивые юридические условия и некорректные метаданные пакета; требуется согласовать объявление Cargo с фактической лицензией. Файлы не изменялись.
 
 ### Рекомендации
+
+- `app/src/main/java/com/shod/client/integration/vk/transport/nativeclient/VkNativeTransportArguments.kt` — для построителя аргументов native-клиента нет выделенных unit-тестов. Сам файл и место вызова в `TunnelManager.kt` проверены; явной ошибки не обнаружено. Рекомендуется покрыть тестами состав аргументов и формат JS bootstrap line.
 
 - `app/src/main/java/com/shod/client/integration/vk/storage/SavedVkAccounts.kt` (`available`) — идентификаторы аккаунтов сортируются как строки. Для числовых VK ID порядок лексикографический (`10` раньше `2`), а не числовой. Это влияет только на порядок отображения списка.
 
