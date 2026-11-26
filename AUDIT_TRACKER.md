@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **260**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/probe/TunnelProbePacket.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/probe/TunnelProbePacket.kt`**
+- Изучено файлов: **261**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/events/TunnelEventParser.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/events/TunnelEventParser.kt`**
 
 ## Найденные проблемы
 
@@ -471,3 +471,5 @@
 - `app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfileTunnelProbe.kt` — проверены загрузка read-only профиля, проверка конфликтов с VPN, VK auth strategies, запуск отдельного native process, передача пароля через environment, чтение событий, разбор IPv4, обмен тестовыми пакетами, тайм-аут и non-cancellable cleanup. Обнаружено подтверждение уже зарегистрированной проблемы `ProbeTunTransport.exchange`: при запуске основного VPN `check(!shouldAbort())` выбрасывает `IllegalStateException`, а этот файл не преобразует его в специальное прерывание; внешний обработчик `check()` возвращает общее сообщение «Не удалось проверить туннель» вместо «Проверка прервана запуском VPN». Исправление следует делать согласованно с уже записанным пунктом `ProbeTunTransport`, не дублировать дефект. Отдельных тестов `ProfileTunnelProbe` не найдено; рекомендуется покрыть остановку при запуске основного VPN на этапах ожидания конфигурации, подключения UDS и обмена пакетами, а также гарантированную очистку процесса/VK call при ошибках.
 
 - `app/src/main/java/com/shod/client/vpn/diagnostics/probe/TunnelProbePacket.kt` — проверены формирование IPv4/UDP DNS-запроса, контрольная сумма IPv4, адреса/порты, идентификатор транзакции, проверка DNS-ответа и отбрасывание фрагментов/усечённых пакетов. `TunnelProbePacketTest` покрывает структуру запроса, checksum, корректный ответ, неверные адреса/порты/ID/вопрос, фрагменты и усечение. Замечание: `isReply()` не требует равенства длины фактической datagram (`bytes.size`) и IPv4 Total Length; пакет с корректным префиксом и лишними завершающими байтами может быть принят. В текущем вызове данные поступают как одна UDP datagram, поэтому риск низкий; рекомендуется проверять точное совпадение длин и добавить тест на лишние байты. Явных иных ошибок не обнаружено.
+
+- `app/src/main/java/com/shod/client/vpn/events/TunnelEventParser.kt` — проверены разбор префикса/типа события, обработка некорректного JSON, диапазоны PID/worker/числа workers, ограничение статистики неотрицательными значениями, фильтрация `SERVER_RESTART` по источнику `panel`, строгая проверка `PROGRESS.kind` и модели остальных событий. `TunnelEventParserTest` покрывает жизненный цикл, статистику, ошибки, workers, restart, progress, неизвестные/повреждённые события и детерминированный fuzz/chaos прогон. Явных ошибок не обнаружено; дополнительные замечания не добавлены.
