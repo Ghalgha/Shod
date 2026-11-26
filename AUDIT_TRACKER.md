@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **32**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/TunnelService.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/TunnelService.kt`**
+- Изучено файлов: **33**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/app/navigation/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/app/navigation/.gitkeep`**
 
 ## Найденные проблемы
 
