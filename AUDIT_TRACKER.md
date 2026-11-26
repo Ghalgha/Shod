@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **229**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/routing/rules/RoutingRuleListDialog.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/routing/rules/RoutingRuleListDialog.kt`**
+- Изучено файлов: **230**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/servers/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/servers/.gitkeep`**
 
 ## Найденные проблемы
 
@@ -378,3 +378,6 @@
 
 
 - `app/src/main/java/com/shod/client/ui/screens/routing/rules/RoutingRuleListDialog.kt` — проверены редактирование чёрного/белого списков, нормализация доменов/IP через профильные парсеры, переключатель готового набора доменов и сохранение. Явной ошибки в локальной логике не обнаружено. Потенциальный риск состояния: `rememberSaveable(kind)` использует только тип правил как ключ; если тот же диалог остаётся в композиции при смене профиля или входных `initialBlacklist`/`initialWhitelist`/`initialWhitelistMode`/настроек шаблона, локальные поля не синхронизируются с новыми параметрами и могут сохранить данные предыдущего профиля. Call site, допускающий такую смену без пересоздания диалога, не подтверждён. Рекомендуется проверить смену профиля/входных параметров и при необходимости добавить соответствующие ключи или явную синхронизацию состояния.
+
+
+- `app/src/main/java/com/shod/client/ui/screens/servers/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `servers` в Git. Исполняемого содержимого нет; замечаний нет.
