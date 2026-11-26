@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **138**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileNamePolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileNamePolicy.kt`**
+- Изучено файлов: **139**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfilePreferenceKeys.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfilePreferenceKeys.kt`**
 
 ## Найденные проблемы
 
@@ -65,6 +65,8 @@
 - `app/src/main/java/com/shod/client/platform/android/activity/UpdateLaunchGuard.kt` (`consumeStaleSavedState`) — новый package token сохраняется синхронно до возврата из метода и до вызова `super.onCreate(null)` в `MainActivity`. Если процесс аварийно завершится после фиксации token, но до фактического отбрасывания `savedInstanceState`, следующий запуск увидит уже совпадающий token и может восстановить устаревшее UI-состояние. Узкое окно отказа; штатный сценарий покрыт тестами, аварийный перезапуск между записью маркера и передачей состояния не проверяется.
 
 ### Подтверждённые проблемы
+
+- `app/src/main/java/com/shod/client/settings/profile/ProfilePreferenceKeys.kt` (`booleanKeyNames`) — отсутствуют профильные Boolean-ключи `participant_show_logs` и `deploy_secret_path_enabled`, хотя `SettingsStore.kt` использует их через `getProfileKey()` как Boolean при чтении/записи. Для профиля с индексом не 0 `forProfile()` попадает в fallback и создаёт `StringPreferencesKey` с тем же именем вместо `BooleanPreferencesKey`. Это нарушает типизированный контракт Preferences и может приводить к ошибкам чтения/записи настроек соответствующего профиля. Добавить оба имени в `booleanKeyNames` и покрыть тестом соответствие типов всех профильных ключей.
 
 - `app/src/main/java/com/shod/client/settings/profile/ProfileLifecycleStore.kt` (`keysClearedWithProfile`, `clearProfile`) — очистка удаляет только ограниченный список ключей, хотя `ProfilePreferenceKeys` определяет дополнительные профильные параметры. В частности, остаются `vk_hashes`, `secondary_vk_hash`, `protocol`, `sni`, `user_agent`, `extra_workers`, настройки маршрутизации и другие профильные значения. После очистки и повторного использования слота эти настройки могут перейти к новому подключению. Это противоречит назначению `clearProfile()` как очистки всех connection-related keys. Необходимо согласовать полный перечень ключей и добавить тест, проверяющий отсутствие старых профильных данных после очистки.
 
