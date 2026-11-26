@@ -23,13 +23,15 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **291**
-- Последний изученный файл: **`app/src/main/res/drawable/bg_widget_button_inactive.xml`**
-- Последний проверенный файл: **`app/src/main/res/drawable/bg_widget_button_inactive.xml`**
+- Изучено файлов: **292**
+- Последний изученный файл: **`app/src/main/res/drawable/bg_widget_card.xml`**
+- Последний проверенный файл: **`app/src/main/res/drawable/bg_widget_card.xml`**
 
 ## Найденные проблемы
 
 ### Подтверждённые ошибки
+
+- `app/src/main/res/drawable/bg_widget_card.xml` — проверена прямоугольная drawable-форма карточки виджета: радиус углов 28dp, заливка `widget_card_background`, обводка 1dp `widget_card_stroke`. Оба цветовых ресурса существуют в `app/src/main/res/values/colors.xml`; XML-структура корректна. Явных ошибок и замечаний не обнаружено.
 
 - `app/src/main/res/drawable/bg_widget_button_inactive.xml` — проверена XML-форма круглого неактивного фона кнопки виджета: заливка и обводка ссылаются на существующие цвета `widget_button_bg_inactive` и `widget_button_stroke_inactive`; форма корректно использует `oval`. Сопоставлена с активным drawable и layout виджета. Ошибок и замечаний не обнаружено.
 - `app/src/main/res/drawable/bg_widget_button_active.xml` — проверена XML-форма круглого активного фона кнопки виджета: заливка и обводка ссылаются на существующие цвета `widget_button_bg_active` и `widget_button_stroke_active`; форма корректно использует `oval`. Сопоставлены неактивный drawable и layout виджета. Ошибок и замечаний не обнаружено.
