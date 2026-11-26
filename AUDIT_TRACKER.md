@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **266**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelServicePolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelServicePolicy.kt`**
+- Изучено файлов: **267**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelStartupProgress.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelStartupProgress.kt`**
 
 ## Найденные проблемы
 
@@ -488,3 +488,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/lifecycle/TunnelServicePolicy.kt` — проверена политика остановки foreground service: при намеренной Wi-Fi-паузе сервис сохраняется; работающий туннель не останавливается; ранее работавший, но остановившийся туннель завершает сервис сразу; неуспешный запуск получает grace period 60 секунд. `TunnelServicePolicyTest` покрывает все эти ветви и границу grace period. Явных ошибок не обнаружено.
+
+
+- `app/src/main/java/com/shod/client/vpn/lifecycle/TunnelStartupProgress.kt` — проверено потокобезопасное накопление событий получения credentials через `AtomicInteger` и монотонный переход в READY через `AtomicBoolean`. Приоритет READY корректно перекрывает промежуточное состояние ожидания TURN/peer. `TunnelStartupProgressTest` проверяет последовательные стадии и конкурентное получение 128 событий. Сброс состояния не предусмотрен, что соответствует модели одного запуска; явных ошибок не обнаружено.
