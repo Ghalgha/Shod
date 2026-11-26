@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **247**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/StreamDiagnosticParser.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/StreamDiagnosticParser.kt`**
+- Изучено файлов: **248**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/TrafficDiagnosticParser.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/TrafficDiagnosticParser.kt`**
 
 ## Найденные проблемы
 
@@ -445,3 +445,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/diagnostics/StreamDiagnosticParser.kt` — проверены разбор JSON-событий, диапазоны worker/attempt/sequence/time/elapsed, ограничения длины полей и строки, форматирование времени, ключи записей и политика вытеснения истории; просмотрен `StreamDiagnosticParserTest`. Явных подтверждённых ошибок в проверенной логике не обнаружено. Потенциальный риск конфиденциальности: `reason` проходит через `NativeTunnelLogParser.redact()`, но поля `turn`, `transport`, `stage` и `status` напрямую включаются в сообщение. При попадании в эти поля строки с секретами они не будут замаскированы. Текущие тесты проверяют маскирование только в `reason`; допустимый формат остальных полей и источник значений требуют подтверждения. Рекомендуется валидировать поля по ожидаемым форматам либо применять redaction ко всем текстовым значениям и добавить тесты.
+
+
+- `app/src/main/java/com/shod/client/vpn/diagnostics/TrafficDiagnosticParser.kt` — проверены ограничение размера входной строки, обязательные поля и неотрицательность счётчиков, расчёт скоростей по длительности окна, форматирование времени и состав диагностического сообщения; просмотрен `TrafficDiagnosticParserTest`. Расчёт Мбит/с соответствует формуле bytes × 8 / milliseconds / 1000; отрицательные и отсутствующие счётчики отклоняются. Явных ошибок в проверенной логике не обнаружено.
