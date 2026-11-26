@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **62**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/ssh/SshTransportConnection.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/ssh/SshTransportConnection.kt`**
+- Изучено файлов: **63**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/transfer/DeployTransferPolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/transfer/DeployTransferPolicy.kt`**
 
 ## Найденные проблемы
 
