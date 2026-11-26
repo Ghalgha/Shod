@@ -23,14 +23,15 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **290**
-- Последний изученный файл: **`app/src/main/res/drawable/bg_widget_button_active.xml`**
-- Последний проверенный файл: **`app/src/main/res/drawable/bg_widget_button_active.xml`**
+- Изучено файлов: **291**
+- Последний изученный файл: **`app/src/main/res/drawable/bg_widget_button_inactive.xml`**
+- Последний проверенный файл: **`app/src/main/res/drawable/bg_widget_button_inactive.xml`**
 
 ## Найденные проблемы
 
 ### Подтверждённые ошибки
 
+- `app/src/main/res/drawable/bg_widget_button_inactive.xml` — проверена XML-форма круглого неактивного фона кнопки виджета: заливка и обводка ссылаются на существующие цвета `widget_button_bg_inactive` и `widget_button_stroke_inactive`; форма корректно использует `oval`. Сопоставлена с активным drawable и layout виджета. Ошибок и замечаний не обнаружено.
 - `app/src/main/res/drawable/bg_widget_button_active.xml` — проверена XML-форма круглого активного фона кнопки виджета: заливка и обводка ссылаются на существующие цвета `widget_button_bg_active` и `widget_button_stroke_active`; форма корректно использует `oval`. Сопоставлены неактивный drawable и layout виджета. Ошибок и замечаний не обнаружено.
 - `app/src/main/res/drawable-nodpi/tv_banner.png` — Android TV banner имеет размер 320×180 и содержит крупный логотип `CSQTT`, а не название/логотип Shod. `app/src/main/AndroidManifest.xml` явно назначает этот ресурс через `android:banner="@drawable/tv_banner"`, поэтому на Android TV приложение будет представлено чужим/необъяснённым брендингом. Следует заменить баннер на согласованный бренд Shod.
 
