@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **75**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/calls/policy/VkCallPolicies.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/calls/policy/VkCallPolicies.kt`**
+- Изучено файлов: **76**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/CaptchaUriPolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/CaptchaUriPolicy.kt`**
 
 ## Найденные проблемы
 
