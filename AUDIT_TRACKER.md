@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **74**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/calls/policy/ProfileProbeVkAuthPolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/calls/policy/ProfileProbeVkAuthPolicy.kt`**
+- Изучено файлов: **75**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/calls/policy/VkCallPolicies.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/calls/policy/VkCallPolicies.kt`**
 
 ## Найденные проблемы
 
