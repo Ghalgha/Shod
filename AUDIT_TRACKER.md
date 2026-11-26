@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **88**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/transport/turn/TurnTransportPolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/transport/turn/TurnTransportPolicy.kt`**
+- Изучено файлов: **89**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/links/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/links/.gitkeep`**
 
 ## Найденные проблемы
 
