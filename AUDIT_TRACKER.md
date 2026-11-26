@@ -23,8 +23,8 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **53**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/execution/DeployStderrPolicy.kt`**
+- Изучено файлов: **54**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/execution/ServerArchitecture.kt`**
 - Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/execution/DeployStderrPolicy.kt`**
 
 ## Найденные проблемы
