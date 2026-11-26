@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **103**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/apps/InstalledAppCatalog.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/apps/InstalledAppCatalog.kt`**
+- Изучено файлов: **104**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/apps/InstalledAppEntry.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/apps/InstalledAppEntry.kt`**
 
 ## Найденные проблемы
 
