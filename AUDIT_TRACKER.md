@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **132**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/model/SettingsModels.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/model/SettingsModels.kt`**
+- Изучено файлов: **133**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/model/TunnelScreenSnapshot.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/model/TunnelScreenSnapshot.kt`**
 
 ## Найденные проблемы
 
@@ -127,3 +127,4 @@
 - `app/src/main/java/com/shod/client/settings/deploy/DeployInspectionStore.kt` — явных ошибок в чтении, записи и очистке профильных Preferences не обнаружено; типы ключей согласованы с `ProfilePreferenceKeys`. Отдельные тесты хранилища не найдены. Рекомендуется проверить изоляцию двух профилей, значения по умолчанию, полный round-trip `saveInspection()`/`read()` и очистку `clearInspection()`.
 
 - `app/src/main/java/com/shod/client/settings/model/SettingsModels.kt` (`SubscriptionMeta.needsUpdate`) — `autoUpdateMinutes * 60_000L` фактически вычисляется как `Int`, поскольку `autoUpdateMinutes` имеет тип `Int`; при значениях выше 35 791 произведение переполняется и может стать отрицательным. `SubscriptionMetaCodec.decode()` допускает любое неотрицательное значение Int без верхнего ограничения. В результате подписка может считаться требующей обновления сразу, даже если интервал ещё не прошёл. Следует расширить операнд до `Long` до умножения и/или ограничить допустимый интервал; добавить граничный тест переполнения.
+
