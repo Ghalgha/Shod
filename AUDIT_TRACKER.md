@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **94**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/network/wifi/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/network/wifi/.gitkeep`**
+- Изучено файлов: **95**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/network/wifi/policy/WifiAutoPausePolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/network/wifi/policy/WifiAutoPausePolicy.kt`**
 
 ## Найденные проблемы
 
