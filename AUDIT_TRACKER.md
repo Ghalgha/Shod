@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **99**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/activity/MainActivity.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/activity/MainActivity.kt`**
+- Изучено файлов: **100**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/activity/UpdateLaunchGuard.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/activity/UpdateLaunchGuard.kt`**
 
 ## Найденные проблемы
 
@@ -49,6 +49,8 @@
 - `app/src/main/java/com/shod/client/deploy/execution/DeployStderrPolicy.kt` — регулярное выражение подавляет любую строку stderr, начинающуюся с `Warning:` (без проверки содержания). Это может скрыть значимые предупреждения сторонних утилит и лишить пользователя диагностической информации. На exit status не влияет; потенциальный риск потери диагностики.
 
 - `app/src/main/java/com/shod/client/platform/android/activity/MainActivity.kt` (`checkAndRequestBattery`) — если запуск системного экрана исключения из оптимизации батареи завершается исключением, `launched` становится `false`, но приложение всё равно помечает запрос как обработанный. Пользователь не увидит системный запрос, а последующие проверки могут больше не предложить его повторно. Это условный риск: зависит от ошибки запуска Intent; обычный отказ пользователя обрабатывается отдельно через callback.
+
+- `app/src/main/java/com/shod/client/platform/android/activity/UpdateLaunchGuard.kt` (`consumeStaleSavedState`) — новый package token сохраняется синхронно до возврата из метода и до вызова `super.onCreate(null)` в `MainActivity`. Если процесс аварийно завершится после фиксации token, но до фактического отбрасывания `savedInstanceState`, следующий запуск увидит уже совпадающий token и может восстановить устаревшее UI-состояние. Узкое окно отказа; штатный сценарий покрыт тестами, аварийный перезапуск между записью маркера и передачей состояния не проверяется.
 
 ### Подтверждённые проблемы
 - `app/src/main/java/com/shod/client/links/ShodLinkCodec.kt` (`Shod_CIPHER_KEY_SEED`, `cipherKey`, `encryptShodPayload`/`decryptShodPayload`) — ключ AES-GCM жёстко зашит в клиентское приложение и одинаков для всех установок. Поэтому любой получатель ссылки или посторонний, изучивший APK/исходный код, может извлечь ключ и расшифровать содержимое ссылки, включая пароль туннеля и VK-токен. AES-GCM обеспечивает целостность, но такой общий встроенный секрет не обеспечивает конфиденциальность от пользователя приложения или третьих лиц, имеющих APK. Тесты подтверждают работоспособность шифрования, но не проверяют эту модель угроз.
