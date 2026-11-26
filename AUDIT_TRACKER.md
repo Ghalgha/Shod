@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **333**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployProgressPolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployProgressPolicyTest.kt`**
+- Изучено файлов: **334**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployResultPolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployResultPolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -659,3 +659,6 @@
 
 
 - `app/src/test/java/com/shod/client/deploy/execution/DeployProgressPolicyTest.kt` — проверены разбор корректных событий `Shod_PROGRESS`, trim полей, отклонение некорректных/вне диапазона значений, подавление протокольных строк из обычного журнала и делегирование распознавания в `DeployOutputPolicy`. Тесты соответствуют реализации. Потенциальный пробел: `isDeployProgressProtocolLine()` использует `startsWith("Shod_PROGRESS")`, поэтому может скрыть из обычного журнала строки с более длинным префиксом, например `Shod_PROGRESSIVE`; отдельного теста на такую коллизию нет. Это риск фильтрации вывода, не подтверждённая ошибка протокола.
+
+
+- `app/src/test/java/com/shod/client/deploy/execution/DeployResultPolicyTest.kt` — проверены сценарии определения успешного deploy/uninstall по нулевому exit code и точному маркеру, rollback/preflight-ошибки, извлечение серверной причины, SSH-ошибки, очистка журналов, режимы Docker/systemd, архитектуры VPS и сохранение спецсимволов SSH-пароля. Сопоставлено с `DeployResultPolicy` и `DeployOutputPolicy`: проверяемые ожидания соответствуют реализации. Существенных дефектов в тесте не обнаружено. Тесты не проверяют конфликтные выходные данные с несколькими взаимоисключающими маркерами результата; приоритет определяется порядком ветвей `deployFailureMessage`, но практическая достижимость такого вывода зависит от deploy-протокола.
