@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **341**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/deploy/ssh/SshTransportConnectionTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/deploy/ssh/SshTransportConnectionTest.kt`**
+- Изучено файлов: **342**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/deploy/transfer/DeployTransferPolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/deploy/transfer/DeployTransferPolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -683,3 +683,6 @@
 
 
 - `app/src/test/java/com/shod/client/deploy/ssh/SshTransportConnectionTest.kt` — проверены повторное подключение только при `SocketTimeoutException`, закрытие неудачных SSH-клиентов, прекращение после двух попыток, отсутствие повтора при отказе host key и преобразование `Connection timed out` в понятное сообщение. Сопоставлено с `SshTransportConnection.kt` и `DeployOutputPolicy.kt`: тестовые ожидания соответствуют реализации; retry ограничен установлением transport и не охватывает аутентификацию. Ограничение покрытия: не проверены исключения с `SocketTimeoutException` в глубже вложенной цепочке нестандартных причин и сбои `clientFactory`; текущая реализация проверяет стандартную цепочку `cause`, а фабрика вызывается до `try`, поэтому её исключение проходит без обработки. Это поведение не противоречит контракту тестируемого helper. Новых подтверждённых дефектов не выявлено.
+
+
+- `app/src/test/java/com/shod/client/deploy/transfer/DeployTransferPolicyTest.kt` — проверены сохранение legacy-параметров передачи (две попытки, одна попытка переподключения, задержка 500 мс, блок 64 КиБ), точная сверка размера удалённого файла и условия повторной SFTP-попытки. Сопоставлено с `DeployTransferPolicy.kt`: константы и предикаты соответствуют всем проверенным ожиданиям; нулевой размер файла допускается, отрицательный локальный размер отвергается, повтор разрешён только после первой попытки при активном соединении. Тесты не проверяют значения за пределами диапазона `Int` для `completedAttempts`, однако реализация использует безопасную проверку диапазона. Новых подтверждённых дефектов не выявлено.
