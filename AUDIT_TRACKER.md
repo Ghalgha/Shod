@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **348**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/hash/android/VkHashValidatorTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/hash/android/VkHashValidatorTest.kt`**
+- Изучено файлов: **349**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/hash/codec/VkHashValidationCodecTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/hash/codec/VkHashValidationCodecTest.kt`**
 
 ## Найденные проблемы
 
@@ -702,3 +702,6 @@
 
 
 - `app/src/test/java/com/shod/client/integration/vk/hash/android/VkHashValidatorTest.kt` — проверены разбор valid/invalid/неизвестного статуса и состав аргументов команды. Тесты фактически проверяют `VkHashValidationCodec`, а не процессный `VkHashValidator`: не покрыты тайм-аут, отсутствие бинарного файла, ошибка запуска и чтение stdout. Ранее зарегистрированный риск ожидания завершения процесса до чтения его вывода остаётся актуальным. Новых подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/integration/vk/hash/codec/VkHashValidationCodecTest.kt` — проверены JSON round-trip, invalidation изменённого хеша, pending-список и фильтрация invalid из active-списка. Замечание к покрытию: нет тестов на некорректный JSON, неизвестные статусы и пробельные значения. В реализации `pending()` не обрезает пробелы, в отличие от `active()`; влияние зависит от входных данных, требуется отдельный тест. Подтверждённой ошибки не установлено.
