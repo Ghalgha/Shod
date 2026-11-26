@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **369**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/ui/screens/deploy/DeployUiStateTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/ui/screens/deploy/DeployUiStateTest.kt`**
+- Изучено файлов: **370**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/ui/screens/routing/apps/SelectedApplicationsOrderTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/ui/screens/routing/apps/SelectedApplicationsOrderTest.kt`**
 
 ## Найденные проблемы
 
@@ -765,3 +765,6 @@
 
 
 - `app/src/test/java/com/shod/client/ui/screens/deploy/DeployUiStateTest.kt` — проверены условия установки/удаления, SSH-авторизация паролем или ключом, обязательность web/main-password для установки, валидация портов и пароля, разбор вставленного `host:port`, запрет порта в поле host, URL панели и синхронизация пароля после успешного deploy. Сопоставлено с `DeployUiModel.kt`: `canInstall`, `canUninstall`, `portsValid`, `resolveServerPorts`, `splitPastedHostPort` и `panelDisplayUrl` соответствуют сценариям. Пробелы покрытия: нет проверок граничных портов 1/65535, IPv6 в квадратных скобках, отрицательных/пустых значений в `resolveServerPorts`, а также комбинаций `sshKeysMode` и `sshKeysFilled` вне ровно одного ключа. Тесты не проверяют UI-обработчики и фактический deploy workflow. Подтверждённых ошибок в проверенном тестовом файле не выявлено.
+
+
+- `app/src/test/java/com/shod/client/ui/screens/routing/apps/SelectedApplicationsOrderTest.kt` — проверены приоритет выбранных приложений, алфавитная сортировка внутри выбранной и невыбранной групп, поведение при пустом/неизвестном выборе и разрешение одинаковых меток через package name. Сопоставлено с `SelectedApplicationsOrder.kt`: сортировка сначала сравнивает принадлежность к selected, затем нормализованную через `Locale.ROOT` метку, затем package name; ожидаемый порядок тестов соответствует реализации и не зависит от системной локали. Пробел покрытия: нет проверки дублирующихся package name, пустых меток и стабильности порядка при полностью одинаковых ключах; такие данные для каталога установленных приложений отдельно не подтверждены. Подтверждённых ошибок в тестовом файле и реализации не выявлено.
