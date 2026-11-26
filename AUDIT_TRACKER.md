@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **349**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/hash/codec/VkHashValidationCodecTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/hash/codec/VkHashValidationCodecTest.kt`**
+- Изучено файлов: **350**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/network/VkNetworkProbePolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/network/VkNetworkProbePolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -705,3 +705,6 @@
 
 
 - `app/src/test/java/com/shod/client/integration/vk/hash/codec/VkHashValidationCodecTest.kt` — проверены JSON round-trip, invalidation изменённого хеша, pending-список и фильтрация invalid из active-списка. Замечание к покрытию: нет тестов на некорректный JSON, неизвестные статусы и пробельные значения. В реализации `pending()` не обрезает пробелы, в отличие от `active()`; влияние зависит от входных данных, требуется отдельный тест. Подтверждённой ошибки не установлено.
+
+
+- `app/src/test/java/com/shod/client/integration/vk/network/VkNetworkProbePolicyTest.kt` — проверены задержки повторов на контрольных значениях и трактовка HTTP-кодов 100–599 как признака доступности. Сопоставлено с `VkNetworkProbePolicy.kt`: ожидания соответствуют реализации. Покрытие не включает отрицательные значения, промежуточные границы и очень большие счётчики; подтверждённых ошибок не выявлено.
