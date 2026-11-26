@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **390**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/lifecycle/TunnelServicePolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/lifecycle/TunnelServicePolicyTest.kt`**
+- Изучено файлов: **391**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/lifecycle/TunnelStartupProgressTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/lifecycle/TunnelStartupProgressTest.kt`**
 
 ## Найденные проблемы
 
@@ -828,3 +828,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/lifecycle/TunnelServicePolicyTest.kt` — проверены сохранение foreground service при намеренной Wi-Fi-паузе, startup grace до и на границе 60 секунд, остановка после неудачного запуска, немедленная остановка ранее работавшего туннеля и сохранение сервиса при работающем туннеле. Сопоставлено с `TunnelServicePolicy.kt`: булева формула `!pausedForWifi && !running && (wasEverRunning || elapsedMs >= STARTUP_GRACE_MS)` соответствует проверенным сценариям. Пробелы покрытия: не проверяются отрицательный `elapsedMs`, переполнение/аномальные значения времени и все комбинации четырёх аргументов; для чистой политики это дополнительные граничные тесты, подтверждённой ошибки не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/lifecycle/TunnelStartupProgressTest.kt` — проверены переходы стадий от ожидания credentials к ожиданию TURN/peer и READY, а также сохранение 128 параллельных событий credentials. Сопоставлено с `TunnelStartupProgress.kt`: `AtomicInteger.incrementAndGet()` обеспечивает атомарный подсчёт, `AtomicBoolean` фиксирует готовность; порядок приоритета READY выше credentials. Пробелы покрытия: не проверяются повторный `streamReady()`, события credentials после READY и переполнение счётчика `AtomicInteger`; текущее поведение этих случаев однозначно следует из реализации, подтверждённых ошибок не выявлено. В тесте `done.countDown()` не находится в `finally`, поэтому необработанное исключение worker-задачи может привести к таймауту вместо прямого сообщения об ошибке.
