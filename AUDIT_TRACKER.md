@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **169**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/components/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/components/.gitkeep`**
+- Изучено файлов: **170**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/components/AppSectionCard.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/components/AppSectionCard.kt`**
 
 ## Найденные проблемы
 
@@ -203,3 +203,5 @@
 - `app/src/main/java/com/shod/client/ui/background/AppBackdrop.kt` — Compose-компонент рисует полноэкранный вертикальный градиент из цветов текущей MaterialTheme. Выбор светлой/тёмной схемы основан на luminance фонового цвета; Brush кешируется по используемым цветам и признаку темы. Реализация проста, явных ошибок не обнаружено. Отдельные тесты не найдены, но для чистого декоративного компонента они не обязательны.
 
 - `app/src/main/java/com/shod/client/ui/components/.gitkeep` — пустой служебный файл, сохраняющий каталог в Git. Проверен; замечаний нет.
+
+- `app/src/main/java/com/shod/client/ui/components/AppSectionCard.kt` — общий Compose-компонент карточки: цвета и рамка адаптируются к яркости темы, содержимое размещается в Column с настраиваемыми отступами и интервалами. Использует общие формы и размеры проекта. Явных ошибок не обнаружено; отдельные тесты компонента отсутствуют. Для визуального компонента это не блокирующий пробел, при наличии UI-тестовой инфраструктуры полезно проверить светлую/тёмную темы и передачу contentPadding/verticalArrangement.
