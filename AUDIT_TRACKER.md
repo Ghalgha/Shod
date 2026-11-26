@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **240**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vk/api/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vk/api/.gitkeep`**
+- Изучено файлов: **241**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vk/auth/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vk/auth/.gitkeep`**
 
 ## Найденные проблемы
 
@@ -418,3 +418,6 @@
 
 
 - `app/src/main/java/com/shod/client/vk/api/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `app/src/main/java/com/shod/client/vk/api` в Git. Замечаний нет.
+
+
+- `app/src/main/java/com/shod/client/vk/auth/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `app/src/main/java/com/shod/client/vk/auth` в Git. Замечаний нет.
