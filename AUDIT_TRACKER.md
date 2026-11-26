@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **255**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResult.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResult.kt`**
+- Изучено файлов: **256**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResultsStore.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResultsStore.kt`**
 
 ## Найденные проблемы
 
@@ -461,3 +461,5 @@
 - `app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfilePingController.kt` — проверены последовательный запуск проверок профилей, удаление повторяющихся ID, блокировка повторного старта, отмена текущей проверки, распространение `CancellationException`, отбрасывание результата после отмены и сброс состояния в `finally`/completion callback. Просмотрены `ProfilePingControllerTest` (включая отмену во время non-cancellable cleanup и отменённый scope) и `ProfilePingResultsStore`. Явных ошибок в проверенной реализации не обнаружено. Отдельно стоит покрыть исключения из `clear`/`save` и поведение при пустом списке/повторном вызове `start`; базовая обработка завершения уже присутствует.
 
 - `app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResult.kt` — проверена sealed-модель результата диагностики: успешный результат содержит задержку в миллисекундах (`Int`), неуспешный — текст причины. Внутренний тип используется `ProfilePingController`, `ProfilePingResultsStore` и тестами; явных ошибок в самой модели не обнаружено. Ограничение положительного/неотрицательного значения задержки здесь не задано; проверка должна выполняться на границе создания результата, поэтому рекомендуется проверить, что все источники `Success` гарантируют допустимое значение.
+
+- `app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResultsStore.kt` — проверены потокобезопасные атомарные обновления `StateFlow` для результатов профилей и TURN-подсетей, удаление профиля, очистка TURN-результатов и валидация непустой подсети/положительной задержки. Тесты `ProfilePingResultsStoreTest` покрывают независимость результатов профилей и TURN, замену значения, очистку и отклонение нулевой задержки. Явных ошибок не обнаружено. Негативные/граничные проверки для пустой подсети и отрицательной задержки отдельно не представлены; рекомендуется добавить.
