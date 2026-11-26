@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **25**
-- Последний изученный файл: **`app/src/main/assets/shod.server-provenance.json`**
-- Последний проверенный файл: **`app/src/main/assets/shod.server-provenance.json`**
+- Изучено файлов: **26**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/.gitkeep`**
 
 ## Найденные проблемы
 
