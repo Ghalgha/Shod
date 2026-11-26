@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **365**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/settings/model/TunnelAuthSnapshotTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/settings/model/TunnelAuthSnapshotTest.kt`**
+- Изучено файлов: **366**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/settings/secret/TunnelPasswordStorageTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/settings/secret/TunnelPasswordStorageTest.kt`**
 
 ## Найденные проблемы
 
@@ -753,3 +753,6 @@
 
 
 - `app/src/test/java/com/shod/client/settings/model/TunnelAuthSnapshotTest.kt` — проверены loading sentinel (`profile=-1`), загруженный профиль с пустым паролем, сохранение состояния нечитаемого секрета и согласованность Shod-ссылки с режимом ссылки в одном snapshot. Сопоставлено с `TunnelAuthSnapshot` в `SettingsModels.kt` и `StoredSecretState.kt`: `isLoaded` определяется только `profile >= 0`, а состояние секрета хранится отдельно от значения, поэтому пустой пароль не смешивается с ошибкой чтения. Проверки соответствуют модели. Нет тестов на отрицательные profile кроме значения по умолчанию и на граничное значение `Int.MAX_VALUE`, но реализация простая и дополнительных дефектов не выявлено.
+
+
+- `app/src/test/java/com/shod/client/settings/secret/TunnelPasswordStorageTest.kt` — проверены приоритет постоянного локального пароля над legacy/зашифрованным форматами, миграция legacy и keystore-значения, различение отсутствующего и нечитаемого секрета, а также условия сброса только нечитаемого retired-значения. Сопоставлено с `TunnelPasswordStorage.kt` и `StoredSecretState.kt`: локальное непустое значение имеет приоритет; иначе используется общий `resolveStoredSecret`, который предпочитает расшифрованное значение, затем legacy и только при отсутствии fallback помечает зашифрованное значение как `Unreadable`. Проверки соответствуют реализации. Пробел покрытия: нет проверки пустой строки persistentValue (реализация трактует её как отсутствующую и переходит к миграционным форматам), а также исключения из decrypt; отдельного дефекта по этим сценариям не установлено.
