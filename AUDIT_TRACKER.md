@@ -23,8 +23,8 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **44**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/.gitkeep`**
+- Изучено файлов: **45**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/artifact/DeployArtifactStager.kt`**
 - Последний проверенный файл: **`app/src/main/java/com/shod/client/connection/controller/.gitkeep`**
 
 ## Найденные проблемы
