@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **311**
-- Последний изученный файл: **`app/src/main/res/mipmap-anydpi/ic_launcher.xml`**
-- Последний проверенный файл: **`app/src/main/res/mipmap-anydpi/ic_launcher.xml`**
+- Изучено файлов: **312**
+- Последний изученный файл: **`app/src/main/res/mipmap-anydpi/ic_launcher_round.xml`**
+- Последний проверенный файл: **`app/src/main/res/mipmap-anydpi/ic_launcher_round.xml`**
 
 ## Найденные проблемы
 
@@ -599,3 +599,6 @@
 
 
 - `app/src/main/res/mipmap-anydpi/ic_launcher.xml` — проверен ресурс адаптивной иконки: фон ссылается на существующий `ic_launcher_background`, foreground и monochrome — на соответствующие VectorDrawable. `minSdk=26` согласуется с появлением adaptive icons в Android 8.0; монохромный слой предназначен для тематических иконок Android 13+. XML-структура корректна, явных ошибок в текущем файле не обнаружено. Визуальное соответствие монохромного знака основному логотипу требует отдельной оценки, но само по себе различие не доказывает дефект.
+
+
+- `app/src/main/res/mipmap-anydpi/ic_launcher_round.xml` — проверена круглая адаптивная иконка: фон ссылается на существующий `ic_launcher_background`, foreground и monochrome — на существующие VectorDrawable. Ресурсы имеют размеры 108dp и viewport 108×108; базовый `minSdk=26` совместим с adaptive icons. XML корректен, явных ошибок не обнаружено. Как и у обычной иконки, визуальное соответствие monochrome-слоя основному знаку требует отдельной оценки, но дефект не установлен.
