@@ -34,6 +34,7 @@ mod clients;
 mod groups;
 mod links;
 mod monitoring;
+mod proxy;
 mod routing;
 mod security;
 mod settings;
@@ -92,8 +93,6 @@ struct ExtendClientRequest {
 
 const WEB_BODY_LIMIT_BYTES: usize = 16 * 1024;
 const MAX_CLIENT_NAME_BYTES: usize = 128;
-const MAX_PROXY_PROFILE_NAME_BYTES: usize = 64;
-
 fn validate_text_field(
     value: &str,
     max_bytes: usize,
@@ -110,14 +109,6 @@ fn validate_client_name(name: &str) -> Result<(), &'static str> {
         name,
         MAX_CLIENT_NAME_BYTES,
         "client name is too long or invalid",
-    )
-}
-
-fn validate_proxy_profile_name(name: &str) -> Result<(), &'static str> {
-    validate_text_field(
-        name,
-        MAX_PROXY_PROFILE_NAME_BYTES,
-        "proxy profile name is too long or invalid",
     )
 }
 
@@ -398,245 +389,6 @@ async fn resolve_client_host(headers: &HeaderMap, state: &WebState) -> String {
     }
 
     "0.0.0.0".to_string()
-}
-
-#[derive(Deserialize)]
-struct ProfileRequest {
-    #[serde(default)]
-    name: String,
-    port: u16,
-    #[serde(default)]
-    username: String,
-    #[serde(default)]
-    password: String,
-}
-
-async fn local_proxy_get(State(state): State<WebState>) -> impl IntoResponse {
-    let (proxy_state, active, tcp_sessions, udp_flows) = {
-        let db = state.app.db.read().await;
-        let route = state.app.proxy_route.read().await;
-        let active = route.as_ref().is_some_and(|r| r.is_alive());
-        let (tcp_sessions, udp_flows) =
-            route.as_ref().map(|r| r.stats_snapshot()).unwrap_or((0, 0));
-        (db.local_proxy.clone(), active, tcp_sessions, udp_flows)
-    };
-    let profiles: Vec<serde_json::Value> = proxy_state
-        .profiles
-        .iter()
-        .map(|p| {
-            serde_json::json!({
-                "id": p.id,
-                "name": p.name,
-                "port": p.port,
-                "username": p.username,
-                "password": p.password,
-            })
-        })
-        .collect();
-    Json(serde_json::json!({
-        "active_profile_id": proxy_state.active_profile_id,
-        "profiles": profiles,
-        "route_active": active,
-        "port_listening": state.app.proxy_port_listening.load(std::sync::atomic::Ordering::Acquire),
-        "health_error": crate::read_unpoison(&state.app.proxy_health_error).clone(),
-        "tcp_sessions": tcp_sessions,
-        "udp_flows": udp_flows,
-    }))
-}
-
-async fn local_proxy_create(
-    State(state): State<WebState>,
-    Json(request): Json<ProfileRequest>,
-) -> Response {
-    if let Err(message) = validate_proxy_profile_name(&request.name) {
-        return (StatusCode::BAD_REQUEST, message).into_response();
-    }
-    let port = if request.port == 0 {
-        crate::model::DEFAULT_LOCAL_PROXY_PORT
-    } else {
-        request.port
-    };
-    let profile = crate::model::LocalProxyProfile {
-        id: crate::model::LocalProxyProfile::new_id(),
-        name: if request.name.is_empty() {
-            format!("SOCKS5 :{port}")
-        } else {
-            request.name
-        },
-        port,
-        username: request.username,
-        password: request.password,
-    };
-    if let Err(error) = crate::proxy_route::validate_config(&profile) {
-        return (StatusCode::BAD_REQUEST, error.to_string()).into_response();
-    }
-    let id = profile.id.clone();
-    let revision = {
-        let mut db = state.app.db.write().await;
-        if db.local_proxy.profiles.len() >= 20 {
-            return (StatusCode::BAD_REQUEST, "Too many profiles (max 20)").into_response();
-        }
-        db.local_proxy.profiles.push(profile);
-        state.app.db_persistence.submit(db.clone())
-    };
-    if let Err(response) = wait_for_persistence(&state, revision).await {
-        return response;
-    }
-    log_event(
-        &state.app,
-        "INFO",
-        "PROXY",
-        &format!("SOCKS5 profile created: {id}"),
-    );
-    let port_listening = crate::proxy_route::port_is_listening(port).await;
-    Json(serde_json::json!({ "id": id, "port_listening": port_listening })).into_response()
-}
-
-async fn local_proxy_update(
-    State(state): State<WebState>,
-    Path(id): Path<String>,
-    Json(request): Json<ProfileRequest>,
-) -> Response {
-    if let Err(message) = validate_proxy_profile_name(&request.name) {
-        return (StatusCode::BAD_REQUEST, message).into_response();
-    }
-    let port = if request.port == 0 {
-        crate::model::DEFAULT_LOCAL_PROXY_PORT
-    } else {
-        request.port
-    };
-    let temp_profile = crate::model::LocalProxyProfile {
-        id: id.clone(),
-        name: request.name.clone(),
-        port,
-        username: request.username.clone(),
-        password: request.password.clone(),
-    };
-    if let Err(error) = crate::proxy_route::validate_config(&temp_profile) {
-        return (StatusCode::BAD_REQUEST, error.to_string()).into_response();
-    }
-    let (was_active, revision) = {
-        let mut db = state.app.db.write().await;
-        let was_active = db.local_proxy.active_profile_id == id;
-        let Some(profile) = db.local_proxy.find_profile_mut(&id) else {
-            return (StatusCode::NOT_FOUND, "Profile not found").into_response();
-        };
-        if !request.name.is_empty() {
-            profile.name = request.name;
-        }
-        profile.port = port;
-        profile.username = request.username;
-        profile.password = request.password;
-        (was_active, state.app.db_persistence.submit(db.clone()))
-    };
-    if let Err(response) = wait_for_persistence(&state, revision).await {
-        return response;
-    }
-    if was_active {
-        state.app.proxy_trigger.notify_one();
-    }
-    log_event(
-        &state.app,
-        "INFO",
-        "PROXY",
-        &format!("SOCKS5 profile updated: {id}"),
-    );
-    let port_listening = crate::proxy_route::port_is_listening(port).await;
-    Json(serde_json::json!({ "updated": true, "port_listening": port_listening })).into_response()
-}
-
-async fn local_proxy_delete(State(state): State<WebState>, Path(id): Path<String>) -> Response {
-    let (was_active, revision) = {
-        let mut db = state.app.db.write().await;
-        let was_active = db.local_proxy.active_profile_id == id;
-        if !db.local_proxy.remove_profile(&id) {
-            return (StatusCode::NOT_FOUND, "Profile not found").into_response();
-        }
-        (was_active, state.app.db_persistence.submit(db.clone()))
-    };
-    if let Err(response) = wait_for_persistence(&state, revision).await {
-        return response;
-    }
-    if was_active {
-        state.app.proxy_trigger.notify_one();
-    }
-    log_event(
-        &state.app,
-        "INFO",
-        "PROXY",
-        &format!("SOCKS5 profile deleted: {id}"),
-    );
-    Json(serde_json::json!({ "deleted": true })).into_response()
-}
-
-async fn wait_proxy_route_applied(state: &WebState, want_active: bool) -> Result<(), String> {
-    tokio::time::sleep(Duration::from_millis(250)).await;
-    let deadline = std::time::Instant::now() + Duration::from_secs(8);
-    loop {
-        let route_active = state.app.proxy_route.read().await.is_some();
-        let health_error = read_unpoison(&state.app.proxy_health_error).clone();
-        if want_active {
-            if route_active && health_error.is_none() {
-                return Ok(());
-            }
-            if let Some(error) = health_error {
-                return Err(error);
-            }
-        } else if !route_active {
-            return Ok(());
-        }
-        if std::time::Instant::now() >= deadline {
-            return Err("route is still applying; check status in a few seconds".to_owned());
-        }
-        tokio::time::sleep(Duration::from_millis(150)).await;
-    }
-}
-
-async fn local_proxy_activate(State(state): State<WebState>, Path(id): Path<String>) -> Response {
-    let revision = {
-        let mut db = state.app.db.write().await;
-        if db.local_proxy.find_profile(&id).is_none() {
-            return (StatusCode::NOT_FOUND, "Profile not found").into_response();
-        }
-        db.local_proxy.active_profile_id = id.clone();
-        state.app.db_persistence.submit(db.clone())
-    };
-    if let Err(response) = wait_for_persistence(&state, revision).await {
-        return response;
-    }
-    log_event(
-        &state.app,
-        "INFO",
-        "PROXY",
-        "Local SOCKS5 settings saved; applying TPROXY route",
-    );
-    state.app.proxy_trigger.notify_one();
-    match wait_proxy_route_applied(&state, true).await {
-        Ok(()) => Json(serde_json::json!({ "activated": true })).into_response(),
-        Err(error) => (StatusCode::BAD_GATEWAY, error).into_response(),
-    }
-}
-
-async fn local_proxy_deactivate(State(state): State<WebState>) -> Response {
-    let revision = {
-        let mut db = state.app.db.write().await;
-        db.local_proxy.active_profile_id.clear();
-        state.app.db_persistence.submit(db.clone())
-    };
-    if let Err(response) = wait_for_persistence(&state, revision).await {
-        return response;
-    }
-    log_event(
-        &state.app,
-        "INFO",
-        "PROXY",
-        "Local SOCKS5 routing disabled; restoring direct route",
-    );
-    state.app.proxy_trigger.notify_one();
-    match wait_proxy_route_applied(&state, false).await {
-        Ok(()) => Json(serde_json::json!({ "deactivated": true })).into_response(),
-        Err(error) => (StatusCode::BAD_GATEWAY, error).into_response(),
-    }
 }
 
 pub async fn run(
@@ -931,11 +683,17 @@ const PWA_MANIFEST: &str = r##"{
   ]
 }"##;
 
-const PWA_ICON_SVG: &str = r##"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="122" fill="#0a0a0c"/><defs><linearGradient id="c" x1="128" y1="152" x2="390" y2="360" gradientUnits="userSpaceOnUse"><stop stop-color="#55adff"/><stop offset="1" stop-color="#0875f5"/></linearGradient></defs><path fill="url(#c)" d="M374 151a148 148 0 1 0 0 210l-44-37a91 91 0 1 1 0-136z"/></svg>"##;
-
-static PWA_ICON_192_PNG: LazyLock<Vec<u8>> = LazyLock::new(|| {
-    base64::engine::general_purpose::STANDARD
-        .decode("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")
+const PWA_ICON_SVG: &str = r##"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="122" fill="#0a0a0c"/><defs><linearGradient id="c" x1="128" y1="152" x2="390" y2="360" gradientUnits="userSpaceOnUse"><stop stop-color="#55adff"/><stop offset        .route(
+            "/api/local-proxy",
+            get(proxy::local_proxy_get).post(proxy::local_proxy_create),
+        )
+        .route(
+            "/api/local-proxy/profiles/{id}",
+            put(proxy::local_proxy_update).delete(proxy::local_proxy_delete),
+        )
+        .route("/api/local-proxy/activate/{id}", post(proxy::local_proxy_activate))
+        .route("/api/local-proxy/deactivate", post(proxy::local_proxy_deactivate))
+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")
         .unwrap_or_default()
 });
 
@@ -8447,7 +8205,7 @@ mod tests {
             DNS_PROVIDERS, deploy_dns_profile_or_yandex, dns_provider_by_id, manual_dns,
             provider_dns,
         },
-        validate_client_name, validate_proxy_profile_name, validate_workers,
+        proxy::validate_proxy_profile_name, validate_client_name, validate_workers,
     };
 
     #[test]
