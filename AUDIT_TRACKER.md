@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **381**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfilePingControllerTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfilePingControllerTest.kt`**
+- Изучено файлов: **382**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResultsStoreTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResultsStoreTest.kt`**
 
 ## Найденные проблемы
 
@@ -801,3 +801,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfilePingControllerTest.kt` — проверены последовательное выполнение и повторный запуск, отмена пакета, ожидание завершения очистки, блокировка второго пакета во время остановки, отменённая область корутин и отбрасывание результата после отмены. Сопоставлено с `ProfilePingController.kt`: проверяемые сценарии согласуются с реализацией. Пробелы покрытия: не проверяются пустой список, дублирующиеся ID и исключения из `clear`/`save`. Подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResultsStoreTest.kt` — проверены независимое сохранение и удаление результатов профилей, замена и очистка TURN-измерений без затрагивания профилей, отклонение нулевого времени измерения. Сопоставлено с `ProfilePingResultsStore.kt`: тесты соответствуют реализации. Пробелы покрытия: не проверяются отрицательные значения, пустая подсеть, замена результата профиля и конкурентные обновления. Подтверждённых ошибок не выявлено.
