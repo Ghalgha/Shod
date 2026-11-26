@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **23**
-- Последний изученный файл: **`app/src/main/assets/licenses/primp-LICENSE`**
-- Последний проверенный файл: **`app/src/main/assets/licenses/primp-LICENSE`**
+- Изучено файлов: **24**
+- Последний изученный файл: **`app/src/main/assets/licenses/shod-LICENSE`**
+- Последний проверенный файл: **`app/src/main/assets/licenses/shod-LICENSE`**
 
 ## Найденные проблемы
 
