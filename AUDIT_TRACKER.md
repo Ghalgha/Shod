@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **15**
-- Последний изученный файл: **`app/src/androidTest/java/com/shod/client/platform/android/vpn/diagnostics/probe/ProbeTunTransportTest.kt`**
-- Последний проверенный файл: **`app/src/androidTest/java/com/shod/client/platform/android/vpn/diagnostics/probe/ProbeTunTransportTest.kt`**
+- Изучено файлов: **16**
+- Последний изученный файл: **`app/src/androidTest/java/com/shod/client/ui/CurrentUiSmokeTest.kt`**
+- Последний проверенный файл: **`app/src/androidTest/java/com/shod/client/ui/CurrentUiSmokeTest.kt`**
 
 ## Найденные проблемы
 
