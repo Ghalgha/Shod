@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **332**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployCommandPolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployCommandPolicyTest.kt`**
+- Изучено файлов: **333**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployProgressPolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployProgressPolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -656,3 +656,6 @@
 
 
 - `app/src/test/java/com/shod/client/deploy/execution/DeployCommandPolicyTest.kt` — проверены нормализация переменных окружения для systemd/Docker, выбор режима развёртывания и формирование root-команды для root/sudo. Сопоставлено с `DeployCommandPolicy`: проверки соответствуют экранированию одинарных кавычек shell, двойных кавычек/обратных слешей systemd и замене переводов строк. Тесты проверяют лишь отдельные примеры, не покрывая пустые/многострочные значения, управляющие символы и полный набор shell-метасимволов; расширение граничных тестов желательно. Существенных новых дефектов в проверяемом тесте не выявлено.
+
+
+- `app/src/test/java/com/shod/client/deploy/execution/DeployProgressPolicyTest.kt` — проверены разбор корректных событий `Shod_PROGRESS`, trim полей, отклонение некорректных/вне диапазона значений, подавление протокольных строк из обычного журнала и делегирование распознавания в `DeployOutputPolicy`. Тесты соответствуют реализации. Потенциальный пробел: `isDeployProgressProtocolLine()` использует `startsWith("Shod_PROGRESS")`, поэтому может скрыть из обычного журнала строки с более длинным префиксом, например `Shod_PROGRESSIVE`; отдельного теста на такую коллизию нет. Это риск фильтрации вывода, не подтверждённая ошибка протокола.
