@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **123**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/vpn/TunVpnService.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/vpn/TunVpnService.kt`**
+- Изучено файлов: **124**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/vpn/diagnostics/probe/ProbeTunTransport.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/vpn/diagnostics/probe/ProbeTunTransport.kt`**
 
 ## Найденные проблемы
 
@@ -65,6 +65,8 @@
 - `app/src/main/java/com/shod/client/platform/android/activity/UpdateLaunchGuard.kt` (`consumeStaleSavedState`) — новый package token сохраняется синхронно до возврата из метода и до вызова `super.onCreate(null)` в `MainActivity`. Если процесс аварийно завершится после фиксации token, но до фактического отбрасывания `savedInstanceState`, следующий запуск увидит уже совпадающий token и может восстановить устаревшее UI-состояние. Узкое окно отказа; штатный сценарий покрыт тестами, аварийный перезапуск между записью маркера и передачей состояния не проверяется.
 
 ### Подтверждённые проблемы
+
+- `app/src/main/java/com/shod/client/platform/android/vpn/diagnostics/probe/ProbeTunTransport.kt` (`exchange`, проверка `shouldAbort`) — при запросе прерывания диагностики выбрасывается `IllegalStateException` через `check(!shouldAbort())`. Вызывающий `ProfileTunnelProbe` не распознаёт это как специальное прерывание и внешний обработчик может показать общее сообщение «Не удалось проверить туннель» вместо «Проверка прервана запуском VPN». Рекомендуется использовать отдельный тип исключения/отмену корутины и добавить тест этого сценария.
 
 - `app/src/main/java/com/shod/client/platform/android/vpn/TunVpnService.kt` — обработчики `START` и `STOP` запускают корутины на `Dispatchers.IO`, а `vpnMutex` сериализует их выполнение, но не гарантирует порядок поступления команд. При быстрой последовательности `STOP` → `START` корутина `STOP` может получить mutex после `START` и остановить уже повторно запущенный VPN. `stopRequested` сбрасывается синхронно при получении `START`, но сама остановка всё равно выполняется позже без проверки актуальности команды. Рекомендуется сериализовать команды с монотонным идентификатором поколения либо обрабатывать их в одном последовательном обработчике; добавить тест на быстрое `STOP` → `START`.
 
