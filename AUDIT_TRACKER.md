@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **354**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/network/connectivity/NetworkPauseGateTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/network/connectivity/NetworkPauseGateTest.kt`**
+- Изучено файлов: **355**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/network/connectivity/PhysicalNetworkTrackerTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/network/connectivity/PhysicalNetworkTrackerTest.kt`**
 
 ## Найденные проблемы
 
@@ -720,3 +720,6 @@
 
 
 - `app/src/test/java/com/shod/client/network/connectivity/NetworkPauseGateTest.kt` — проверены конкурентные вызовы `pause()`/`resume()` из 16 потоков, однократность успешного перехода состояния, а также `reset()` и `restore()`. Сопоставлено с `NetworkPauseGate.kt`: `AtomicBoolean.compareAndSet` обеспечивает ожидаемую атомарность переходов. Недостаток тестового helper `concurrentSuccesses`: `done.countDown()` и `executor.shutdownNow()` не защищены `finally`; если операция выбросит исключение или ожидание завершится по тайм-ауту, тест может задержаться и оставить executor незавершённым. Рекомендуется гарантировать завершение latch и shutdown в `finally`. Это проблема надёжности тестового кода, не дефект `NetworkPauseGate`. Новых подтверждённых ошибок приложения не выявлено.
+
+
+- `app/src/test/java/com/shod/client/network/connectivity/PhysicalNetworkTrackerTest.kt` — проверены подавление дублирующихся callbacks, переходы при перекрывающихся физических сетях, повторяющиеся циклы добавления/удаления, причина паузы, очистка состояния и фильтрация VPN/неподходящих транспортов. Сопоставлено с `PhysicalNetworkTracker.kt`: синхронизированные операции над множеством активных сетей и вычисление переходов соответствуют ожиданиям. Название `rapidAirplaneCyclesRemainExactlyPaired` шире фактического сценария: тест моделирует пары update(true/false), но не включает реальное состояние режима полёта; оно проверяется отдельно только функцией преобразования причины паузы. Это неточность названия/покрытия, не дефект реализации. Не проверяется конкурентное обновление tracker из нескольких потоков, хотя методы синхронизированы. Новых подтверждённых ошибок не выявлено.
