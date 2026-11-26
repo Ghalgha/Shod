@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **243**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/.gitkeep`**
+- Изучено файлов: **244**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/.gitkeep`**
 
 ## Найденные проблемы
 
@@ -427,3 +427,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `app/src/main/java/com/shod/client/vpn` в Git. Исполняемого содержимого нет; замечаний нет.
+
+
+- `app/src/main/java/com/shod/client/vpn/diagnostics/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `app/src/main/java/com/shod/client/vpn/diagnostics` в Git. Исполняемого содержимого нет; замечаний нет.
