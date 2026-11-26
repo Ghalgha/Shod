@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **319**
-- Последний изученный файл: **`app/src/main/res/values/strings.xml`**
-- Последний проверенный файл: **`app/src/main/res/values/strings.xml`**
+- Изучено файлов: **320**
+- Последний изученный файл: **`app/src/main/res/values/themes.xml`**
+- Последний проверенный файл: **`app/src/main/res/values/themes.xml`**
 
 ## Найденные проблемы
 
@@ -617,3 +617,6 @@
 
 
 - `app/src/main/res/values/strings.xml` — проверены все 27 строковых ресурсов: XML-структура корректна, имена ресурсов уникальны, форматированный placeholder `%1$d` в `exceptions_selected_count` корректен, специальные символы не требуют экранирования. Основное имя приложения — `Shod`; отдельное debug-переопределение `Shod SSH Fix` уже зафиксировано выше. Явных новых ошибок в файле не обнаружено.
+
+
+- `app/src/main/res/values/themes.xml` — проверена базовая тема `Theme.ShodClient`: родитель `android:Theme.Material.Light.NoActionBar` совместим с используемыми атрибутами; фон окна и `colorBackground` ссылаются на существующий `app_background`, системные status/navigation bar заданы прозрачными. Манифест назначает тему приложению, ночной ресурс `app_background` переопределяется в `values-night`. XML корректен, явных ошибок не обнаружено.
