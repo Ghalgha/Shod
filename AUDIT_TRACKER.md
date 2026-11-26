@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **257**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeProcessCommand.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeProcessCommand.kt`**
+- Изучено файлов: **258**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeRuntimePolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeRuntimePolicy.kt`**
 
 ## Найденные проблемы
 
@@ -465,3 +465,5 @@
 - `app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResultsStore.kt` — проверены потокобезопасные атомарные обновления `StateFlow` для результатов профилей и TURN-подсетей, удаление профиля, очистка TURN-результатов и валидация непустой подсети/положительной задержки. Тесты `ProfilePingResultsStoreTest` покрывают независимость результатов профилей и TURN, замену значения, очистку и отклонение нулевой задержки. Явных ошибок не обнаружено. Негативные/граничные проверки для пустой подсети и отрицательной задержки отдельно не представлены; рекомендуется добавить.
 
 - `app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeProcessCommand.kt` — проверены построение аргументов нативного диагностического процесса, отдельный UDS socket, параметры VK-авторизации, TURN/SRTP, fingerprint/client IDs, generation и salt. Аргументы передаются отдельными элементами списка, поэтому shell-интерпретации и склейки команд нет. `ProfileProbeProcessCommandTest` покрывает отдельный socket, режим VK_AUTO_JS без ручного хеша и отказ ручного режима без хеша. Явных ошибок не обнаружено. Валидация значений `turnTransport`, `srtpMode`, `captchaMode`, `peer` и формата `udsName` в builder отсутствует; вызывающий код берёт их из настроек/сформированных данных. Рекомендуется проверять допустимые значения на границе загрузки настроек и добавить тесты некорректных параметров.
+
+- `app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeRuntimePolicy.kt` — проверена чистая политика блокировки диагностики при состояниях production VPN `running`, `starting`, `stopping` и `autoPausedForWifi`. Условие корректно объединяет все четыре флага через OR; тесты подтверждают разрешение только при всех false и блокировку для каждого флага отдельно. Вызов используется `ProfileTunnelProbe` перед запуском и во время проверки. Явных ошибок не обнаружено.
