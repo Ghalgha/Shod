@@ -23,13 +23,15 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **288**
-- Последний изученный файл: **`app/src/main/res/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/res/.gitkeep`**
+- Изучено файлов: **289**
+- Последний изученный файл: **`app/src/main/res/drawable-nodpi/tv_banner.png`**
+- Последний проверенный файл: **`app/src/main/res/drawable-nodpi/tv_banner.png`**
 
 ## Найденные проблемы
 
 ### Подтверждённые ошибки
+
+- `app/src/main/res/drawable-nodpi/tv_banner.png` — Android TV banner имеет размер 320×180 и содержит крупный логотип `CSQTT`, а не название/логотип Shod. `app/src/main/AndroidManifest.xml` явно назначает этот ресурс через `android:banner="@drawable/tv_banner"`, поэтому на Android TV приложение будет представлено чужим/необъяснённым брендингом. Следует заменить баннер на согласованный бренд Shod.
 
 - `app/src/main/java/com/shod/client/vpn/diagnostics/NativeTunnelLogParser.kt` (`secrets`, `redact`) — маскирование `Authorization` не учитывает схему Bearer. Для строки `Authorization: Bearer abc123` регулярное выражение захватывает `Bearer` как значение секрета, но оставляет следующий токен `abc123` в диагностическом сообщении. Если такой заголовок попадает в native log, credential может быть сохранён и показан пользователю. Существующие тесты проверяют `token=`, `password=` и `access_token=`, но не Bearer-аутентификацию. Рекомендуется отдельно маскировать значение Authorization с учётом схемы и добавить тесты Bearer/Basic.
 
