@@ -8437,15 +8437,17 @@ const PANEL_HTML: &str = r##"
 mod tests {
     use super::{
         LOGIN_HTML, MAX_CLIENT_NAME_BYTES, PANEL_HTML, PWA_ICON_192_PNG, PWA_ICON_512_PNG,
-        PWA_MANIFEST, PWA_SERVICE_WORKER, dns_provider_id, make_client_link, validate_client_name,
-        validate_proxy_profile_name, validate_workers,
+        PWA_MANIFEST, PWA_SERVICE_WORKER,
         clients::{count_active_sessions, normalize_client_vk_hashes, normalize_vk_access_token},
+        dns_provider_id,
         links::{decrypt_shod_link, encrypt_shod_link},
+        make_client_link,
         monitoring::{process_memory, process_memory_rollup},
         settings::{
             DNS_PROVIDERS, deploy_dns_profile_or_yandex, dns_provider_by_id, manual_dns,
             provider_dns,
         },
+        validate_client_name, validate_proxy_profile_name, validate_workers,
     };
 
     #[test]
