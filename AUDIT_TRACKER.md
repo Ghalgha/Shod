@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **361**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/platform/android/deploy/ssh/SshHostKeyStoreTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/platform/android/deploy/ssh/SshHostKeyStoreTest.kt`**
+- Изучено файлов: **362**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/platform/android/manifest/TvManifestTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/platform/android/manifest/TvManifestTest.kt`**
 
 ## Найденные проблемы
 
@@ -741,3 +741,6 @@
 
 
 - `app/src/test/java/com/shod/client/platform/android/deploy/ssh/SshHostKeyStoreTest.kt` — проверены TOFU-сценарии: первый ключ принимается, повторно принимается тот же ключ, изменённый ключ отклоняется и однократно возвращается с обоими SHA-256 fingerprint; `trust()` сохраняет именно показанный fingerprint, после чего старый и посторонний ключи отклоняются. Сопоставлено с `SshHostKeyStore.kt`: ожидания соответствуют реализации, включая нормализацию регистра hostname. Пробелы покрытия: нет проверок первого pin в SharedPreferences, `clear()`, формата fingerprint и конкурентных изменений. Риск единственного глобального `lastChange` при почти одновременных конфликтах разных серверов уже отмечен в трекере и повторно не дублируется. Новых подтверждённых дефектов не выявлено.
+
+
+- `app/src/test/java/com/shod/client/platform/android/manifest/TvManifestTest.kt` — проверены наличие Leanback launcher category, Android TV/touchscreen/Wi-Fi feature declarations, banner reference и PNG-сигнатура/размер 320×180. Сопоставлено с `AndroidManifest.xml`: необходимые записи присутствуют, `leanback`, touchscreen и Wi-Fi объявлены `required="false"`. Ограничение теста: проверки через `String.contains()` не связывают launcher category с `MainActivity` и не проверяют атрибут `required="false"`; тест может пройти при переносе категории в другой компонент или при изменении feature на обязательную. Это пробел проверки манифеста, не текущий дефект конфигурации. Проверка брендинга баннера отсутствует; несоответствие изображения бренду уже отмечено в трекере и повторно не дублируется. Новых подтверждённых ошибок не выявлено.
