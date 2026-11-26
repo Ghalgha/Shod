@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **359**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/platform/android/activity/UpdateLaunchGuardTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/platform/android/activity/UpdateLaunchGuardTest.kt`**
+- Изучено файлов: **360**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/platform/android/apps/AppRoutingCatalogPolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/platform/android/apps/AppRoutingCatalogPolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -735,3 +735,6 @@
 
 
 - `app/src/test/java/com/shod/client/platform/android/activity/UpdateLaunchGuardTest.kt` — проверены три условия `shouldDiscardStaleSavedState`: первая установка не сбрасывает состояние, изменение package token после обновления сбрасывает его, повторный запуск с тем же token не сбрасывает повторно, а обновление с отсутствующим маркером также распознаётся. Сопоставлено с `UpdateLaunchGuard.kt`: чистая функция соответствует этим ожиданиям. Тесты не покрывают интеграцию `consumeStaleSavedState()` с SharedPreferences, сбои чтения/записи и аварийное завершение между очисткой состояния и сохранением нового token; риск crash-window уже отмечен в трекере и повторно не дублируется. Новых подтверждённых дефектов не выявлено.
+
+
+- `app/src/test/java/com/shod/client/platform/android/apps/AppRoutingCatalogPolicyTest.kt` — проверены исключение собственного пакета Shod и двух VK-транспортных пакетов, а также разрешение обычного приложения и `com.vk.music`. Сопоставлено с `AppRoutingCatalogPolicy.kt` и использованием в `InstalledAppCatalog.kt`: фильтр применяется до загрузки метаданных/иконок. Тесты не проверяют регистр и частичные совпадения; реализация исключает пакеты через регистрозависимый `contains("vkontakte")` / `contains("vk.calls")`, поэтому любые пакеты с этими подстроками также исключаются, а варианты с другим регистром — нет. Это потенциальная неточность политики; фактический набор package name, который может вернуть Android, не проверен. Новых подтверждённых ошибок не выявлено.
