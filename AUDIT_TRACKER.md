@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **137**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileMetadataStore.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileMetadataStore.kt`**
+- Изучено файлов: **138**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileNamePolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileNamePolicy.kt`**
 
 ## Найденные проблемы
 
@@ -92,6 +92,8 @@
 - `LICENSE` и `rust-server/Cargo.toml` (`[package].license`) — лицензия проекта объявлена проприетарной, но Rust-пакет указывает `Unlicense`. Это противоречивые юридические условия и некорректные метаданные пакета; требуется согласовать объявление Cargo с фактической лицензией. Файлы не изменялись.
 
 ### Рекомендации
+
+- `app/src/main/java/com/shod/client/settings/profile/ProfileNamePolicy.kt` — отдельные тесты `defaultProfileName()` не найдены. Функция проста и формирует имя из индекса (`Профиль ${index + 1}`); явной ошибки при штатных индексах профилей не обнаружено. Рекомендуется проверить формат для первого и последующих профилей, а также согласованность с допустимым диапазоном индексов.
 
 - `app/src/main/java/com/shod/client/settings/profile/ProfileMetadataStore.kt` — отдельные тесты хранилища не найдены. Рекомендуется проверить формирование имён профилей и сохранение/удаление пользовательского имени, занятость слота по `peer`/`shod_link`, поиск свободного слота с учётом `deploy_ip`, граничные индексы и поведение при отсутствии свободного слота. `findFirstFreeProfile()` и `findFirstFreeDeployProfile()` сейчас содержат одинаковую проверку; стоит подтвердить, что совпадение намеренное. Явных ошибок в проверенной реализации не обнаружено.
 
