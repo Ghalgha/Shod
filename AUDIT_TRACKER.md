@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **93**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/network/connectivity/PhysicalNetworkTracker.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/network/connectivity/PhysicalNetworkTracker.kt`**
+- Изучено файлов: **94**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/network/wifi/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/network/wifi/.gitkeep`**
 
 ## Найденные проблемы
 
