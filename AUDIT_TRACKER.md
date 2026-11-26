@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **56**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/inventory/ServerInventory.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/inventory/ServerInventory.kt`**
+- Изучено файлов: **57**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/plan/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/plan/.gitkeep`**
 
 ## Найденные проблемы
 
