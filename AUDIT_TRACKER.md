@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **221**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/ServerInventoryPresentation.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/ServerInventoryPresentation.kt`**
+- Изучено файлов: **222**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/home/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/home/.gitkeep`**
 
 ## Найденные проблемы
 
@@ -354,3 +354,6 @@
 
 
 - `app/src/main/java/com/shod/client/ui/screens/deploy/ServerInventoryPresentation.kt` — подтверждённая ошибка подписи остатков: для любого `ServerPlace.LEFTOVER` функция `describeServer()` показывает «Остановленная служба shod». Однако контракт `FoundServer`/`ServerInventory.kt` прямо допускает для `LEFTOVER` не только остановленную службу, но также отдельный бинарник или хранилище. В списке удаления такие объекты будут неверно представлены как служба. Рекомендуется использовать нейтральное «Остатки прежней установки shod» либо определять подпись по `runtime`/типу объекта; добавить тесты для разных вариантов LEFTOVER. Остальная логика формирования подписи установленного сервера согласуется с `FoundServer` и `ServerPlace`; отдельные тесты presentation-функции не найдены.
+
+
+- `app/src/main/java/com/shod/client/ui/screens/home/.gitkeep` — пустой служебный файл Git, сохраняющий каталог `home` в репозитории. Исходного кода или исполняемой логики нет; замечаний по поведению нет.
