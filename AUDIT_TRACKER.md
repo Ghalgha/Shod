@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **379**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/TunnelLogSanitizerTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/TunnelLogSanitizerTest.kt`**
+- Изучено файлов: **380**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProbeIpv4AddressTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProbeIpv4AddressTest.kt`**
 
 ## Найденные проблемы
 
@@ -795,3 +795,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/diagnostics/TunnelLogSanitizerTest.kt` — проверены маскирование полного хеша владельца и его отображаемого префикса, сохранение хешей других участников и обычного текста. Сопоставлено с `TunnelLogSanitizer.kt`: тесты соответствуют реализации. Пробел покрытия: не проверяются короткие хеши владельца, совпадения первых восьми символов у разных хешей и специальные символы в хешах. Подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProbeIpv4AddressTest.kt` — проверены разбор числового IPv4-адреса и отказ от доменных имён, некорректного количества октетов, пустых октетов и значений вне диапазона 0–255. Сопоставлено с `ProbeIpv4Address.kt`: парсер разбирает адрес вручную и использует `InetAddress.getByAddress`, не обращаясь к DNS. Пробел покрытия: не проверяются ведущие нули, пробелы, знаки и граничные значения октетов. Подтверждённых ошибок не выявлено.
