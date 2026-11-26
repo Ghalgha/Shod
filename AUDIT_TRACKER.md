@@ -23,13 +23,15 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **9**
-- Последний изученный файл: **`VERSIONING.md`**
-- Последний проверенный файл: **`VERSIONING.md`**
+- Изучено файлов: **10**
+- Последний изученный файл: **`app/build.gradle.kts`**
+- Последний проверенный файл: **`app/build.gradle.kts`**
 
 ## Найденные проблемы
 
 ### Подтверждённые проблемы
+
+- `app/build.gradle.kts` — задача `verifyReleaseSigning` подключается только к задачам, имя которых начинается с `assemble`, `bundle`, `sign`, `install`, `publish` или `upload`. Задача Android Gradle Plugin `packageRelease` в этот список не входит. Её прямой запуск обходит обязательную проверку наличия ключа подписи; при отсутствии signing config может быть создан неподписанный release APK. Проверку необходимо привязать также к задаче упаковки.
 
 - `VERSIONING.md` — указано, что встроенный server core имеет `artifactVersion` **2.5.3**, однако текущий `app/src/main/assets/shod.server-provenance.json` содержит `artifactVersion: 0.1.0`. Скрипт `scripts/server_asset_provenance.ps1` также формирует это поле из Android `versionName`. Документация не соответствует текущим provenance-метаданным; происхождение фактической версии бинарника требует уточнения.
 
