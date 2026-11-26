@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **278**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/routing/IpRoutingRules.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/routing/IpRoutingRules.kt`**
+- Изучено файлов: **279**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/routing/ServerRoutingRule.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/routing/ServerRoutingRule.kt`**
 
 ## Найденные проблемы
 
@@ -524,3 +524,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/routing/IpRoutingRules.kt`: проверка диапазона IPv4 подтверждает валидность каждого endpoint, но не проверяет, что начальный адрес меньше либо равен конечному. Поэтому обратный диапазон, например `192.168.1.9-192.168.1.1`, принимается как корректное правило и может не работать ожидаемым образом. Рекомендуется сравнивать адреса как 32-битные unsigned значения и добавить тест обратного диапазона.
+
+
+- `app/src/main/java/com/shod/client/vpn/routing/ServerRoutingRule.kt` — проверены разбор JSON, независимые режимы whitelist/blacklist приложений, доменов и IP, legacy fallback, строгая проверка строковых элементов packages, удаление пробелов/дубликатов и лимит 4096 элементов на список. `ServerRoutingRuleTest` покрывает восемь комбинаций режимов, старый формат, некорректные package entries и пустые/дублирующиеся списки. Явных ошибок не обнаружено.
