@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **353**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/links/ShodLinkCodecTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/links/ShodLinkCodecTest.kt`**
+- Изучено файлов: **354**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/network/connectivity/NetworkPauseGateTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/network/connectivity/NetworkPauseGateTest.kt`**
 
 ## Найденные проблемы
 
@@ -717,3 +717,6 @@
 
 
 - `app/src/test/java/com/shod/client/links/ShodLinkCodecTest.kt` — проверены разбор открытых, legacy и зашифрованных ссылок Shod; round-trip форматирования пароля, хешей и VK-токена; обработка IPv6; ограничения порта, числа хешей и формата токена; нормализация power/workers; отклонение изменённого и усечённого ciphertext. Сопоставлено с `ShodLinkCodec.kt`: проверяемые ожидания соответствуют реализации. Тест `deterministicLinkEncryption` фиксирует детерминированность шифрования, реализованную через HMAC-derived IV; это чувствительная криптографическая характеристика и её изменение потребует совместимого изменения формата/контракта. Основные проверки host validation не покрывают loopback IPv6, unspecified IPv6, DNS-имена с некорректными метками и trailing dot; это пробел покрытия, не подтверждённая ошибка. Новых подтверждённых дефектов не выявлено.
+
+
+- `app/src/test/java/com/shod/client/network/connectivity/NetworkPauseGateTest.kt` — проверены конкурентные вызовы `pause()`/`resume()` из 16 потоков, однократность успешного перехода состояния, а также `reset()` и `restore()`. Сопоставлено с `NetworkPauseGate.kt`: `AtomicBoolean.compareAndSet` обеспечивает ожидаемую атомарность переходов. Недостаток тестового helper `concurrentSuccesses`: `done.countDown()` и `executor.shutdownNow()` не защищены `finally`; если операция выбросит исключение или ожидание завершится по тайм-ауту, тест может задержаться и оставить executor незавершённым. Рекомендуется гарантировать завершение latch и shutdown в `finally`. Это проблема надёжности тестового кода, не дефект `NetworkPauseGate`. Новых подтверждённых ошибок приложения не выявлено.
