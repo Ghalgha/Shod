@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **254**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfilePingController.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfilePingController.kt`**
+- Изучено файлов: **255**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResult.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResult.kt`**
 
 ## Найденные проблемы
 
@@ -459,3 +459,5 @@
 - `app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProbeIpv4Address.kt` — проверен разбор IPv4 literal без системного DNS resolver: строго четыре десятичных октета, только ASCII-цифры, длина каждого октета до трёх символов и диапазон 0–255; результат строится непосредственно из четырёх байтов. Проверены `ProbeIpv4AddressTest` и использование в `ProfileTunnelProbe`: адрес источника туннеля и первый DNS-адрес разбираются этим парсером, некорректные значения отклоняются. Явных ошибок не обнаружено. Тесты не покрывают граничные октеты 0/255 и ведущие нули; рекомендуется добавить такие случаи и зафиксировать ожидаемую политику ведущих нулей.
 
 - `app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfilePingController.kt` — проверены последовательный запуск проверок профилей, удаление повторяющихся ID, блокировка повторного старта, отмена текущей проверки, распространение `CancellationException`, отбрасывание результата после отмены и сброс состояния в `finally`/completion callback. Просмотрены `ProfilePingControllerTest` (включая отмену во время non-cancellable cleanup и отменённый scope) и `ProfilePingResultsStore`. Явных ошибок в проверенной реализации не обнаружено. Отдельно стоит покрыть исключения из `clear`/`save` и поведение при пустом списке/повторном вызове `start`; базовая обработка завершения уже присутствует.
+
+- `app/src/main/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResult.kt` — проверена sealed-модель результата диагностики: успешный результат содержит задержку в миллисекундах (`Int`), неуспешный — текст причины. Внутренний тип используется `ProfilePingController`, `ProfilePingResultsStore` и тестами; явных ошибок в самой модели не обнаружено. Ограничение положительного/неотрицательного значения задержки здесь не задано; проверка должна выполняться на границе создания результата, поэтому рекомендуется проверить, что все источники `Success` гарантируют допустимое значение.
