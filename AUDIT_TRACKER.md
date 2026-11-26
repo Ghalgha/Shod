@@ -23,13 +23,15 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **81**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/hash/android/VkHashValidator.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/hash/android/VkHashValidator.kt`**
+- Изучено файлов: **82**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/hash/codec/VkHashValidationCodec.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/hash/codec/VkHashValidationCodec.kt`**
 
 ## Найденные проблемы
 
 ### Потенциальные риски
+
+- `app/src/main/java/com/shod/client/integration/vk/hash/codec/VkHashValidationCodec.kt`: `pending()` проверяет длину и ищет результаты до нормализации хеша, тогда как `active()` сначала выполняет `trim()`. Хеш с пробелами по краям может считаться непроверенным и повторно отправляться на валидацию, хотя для активного списка используется его обрезанная форма. В текущих тестах такой вход не проверяется; фактическое поступление пробельных значений не установлено.
 
 - `app/src/main/java/com/shod/client/integration/vk/hash/android/VkHashValidator.kt`: процесс ожидается через `waitFor()` до чтения `process.inputStream`. Если нативный процесс выдаст достаточно большой объём stdout, чтобы заполнить системный pipe, он заблокируется на записи, а приложение — в `waitFor()` до таймаута 75 секунд; затем процесс будет принудительно завершён и проверка вернёт пустой результат. Риск зависит от объёма вывода; нормальный размер вывода в штатном сценарии здесь не установлен.
 
