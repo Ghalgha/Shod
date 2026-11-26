@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **309**
-- Последний изученный файл: **`app/src/main/res/font/manrope_variable.ttf`**
-- Последний проверенный файл: **`app/src/main/res/font/manrope_variable.ttf`**
+- Изучено файлов: **310**
+- Последний изученный файл: **`app/src/main/res/layout/vpn_widget.xml`**
+- Последний проверенный файл: **`app/src/main/res/layout/vpn_widget.xml`**
 
 ## Найденные проблемы
 
@@ -593,3 +593,6 @@
 
 
 - `app/src/main/res/font/manrope_variable.ttf` — бинарный файл шрифта проверен через таблицы OpenType: корректная сигнатура TrueType, 19 таблиц, 742 глифа, unitsPerEm=2000; семейство Manrope, переменная ось `wght` от 200 до 800 (default 200). Структура таблиц `fvar`, `name`, `head`, `maxp` читается согласованно. Поиск ссылок на `manrope_variable` в репозитории не вернул результатов; фактическое подключение шрифта не подтверждено. Полная визуальная проверка рендеринга не проводилась.
+
+
+- `app/src/main/res/layout/vpn_widget.xml` — проверен layout виджета VPN: RelativeLayout-контейнер, текстовые заголовок/статус и ImageButton переключения. Все используемые в файле ресурсы (`bg_widget_card`, `widget_text`, `widget_status_disconnected`, `app_name`, `widget_disconnected`, `bg_widget_button_inactive`, `ic_c_logo`, `widget_toggle_vpn`) присутствуют в ресурсах проекта. ID кнопки и контейнера согласуются с `VpnWidgetProvider`; описание кнопки задано через `contentDescription`. XML-структура корректна, явных проблем не обнаружено.
