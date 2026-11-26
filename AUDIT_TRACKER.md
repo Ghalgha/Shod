@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **382**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResultsStoreTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResultsStoreTest.kt`**
+- Изучено файлов: **383**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeProcessCommandTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeProcessCommandTest.kt`**
 
 ## Найденные проблемы
 
@@ -804,3 +804,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfilePingResultsStoreTest.kt` — проверены независимое сохранение и удаление результатов профилей, замена и очистка TURN-измерений без затрагивания профилей, отклонение нулевого времени измерения. Сопоставлено с `ProfilePingResultsStore.kt`: тесты соответствуют реализации. Пробелы покрытия: не проверяются отрицательные значения, пустая подсеть, замена результата профиля и конкурентные обновления. Подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeProcessCommandTest.kt` — проверены выделенный UDS и отказ от production socket, локальный listen на динамическом порту, ручной VK hash, режим VK_AUTO_JS без ручного hash и обязательность hash для ручного режима. Сопоставлено с `ProfileProbeProcessCommand.kt` и `ProfileProbeVkAuthPolicy.kt`: сценарии соответствуют реализации; аргументы формируются отдельными элементами списка, поэтому пробелы в значениях не склеивают параметры. Пробелы покрытия: нет проверок пустых обязательных полей, отрицательного generationId, токена для JS-режима, произвольного processAuthMode и передачи непустого firstHash в JS-режиме. Подтверждённых ошибок не выявлено.
