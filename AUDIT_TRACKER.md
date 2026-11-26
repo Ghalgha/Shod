@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **116**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/power/BatteryOptimizationPromptPolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/power/BatteryOptimizationPromptPolicy.kt`**
+- Изучено файлов: **117**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/process/AppForegroundState.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/process/AppForegroundState.kt`**
 
 ## Найденные проблемы
 
@@ -82,6 +82,9 @@
 - `LICENSE` и `rust-server/Cargo.toml` (`[package].license`) — лицензия проекта объявлена проприетарной, но Rust-пакет указывает `Unlicense`. Это противоречивые юридические условия и некорректные метаданные пакета; требуется согласовать объявление Cargo с фактической лицензией. Файлы не изменялись.
 
 ### Рекомендации
+
+- `app/src/main/java/com/shod/client/platform/android/process/AppForegroundState.kt` — для счётчика активных Activity нет отдельных тестов переходов `0→1→0`, нескольких одновременно активных Activity и защиты от повторного `onActivityStopped()`. Сам счётчик ограничен снизу нулём, а текущий вызов идёт из lifecycle-callback `MainActivity`; явной ошибки в проверенном коде не обнаружено. Рекомендуется добавить unit-тесты переходов состояния.
+
 
 - `app/src/main/java/com/shod/client/platform/android/network/wifi/WifiDiscovery.kt` — нет отдельных тестов для Android-слоя обнаружения Wi-Fi: регистрации/снятия `NetworkCallback` и `BroadcastReceiver`, поведения при ошибке регистрации, переключения нескольких владельцев и обработки запоздавших действий уведомления. Существующие тесты покрывают чистую политику и хранилище предпочтений, но не жизненный цикл системных наблюдателей. Рекомендуется добавить тесты с подменяемыми Android-зависимостями.
 
