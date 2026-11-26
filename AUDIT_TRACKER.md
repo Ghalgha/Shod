@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **331**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployActionModeTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployActionModeTest.kt`**
+- Изучено файлов: **332**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployCommandPolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployCommandPolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -653,3 +653,6 @@
 
 
 - `app/src/test/java/com/shod/client/deploy/execution/DeployActionModeTest.kt` — проверено соответствие трёх режимов заголовкам журнала и действиям скрипта: Install→install, Update→update, Reinstall→install. Сопоставлено с enum `DeployActionMode`; тест полностью покрывает все его значения и соответствует реализации. Существенных замечаний нет.
+
+
+- `app/src/test/java/com/shod/client/deploy/execution/DeployCommandPolicyTest.kt` — проверены нормализация переменных окружения для systemd/Docker, выбор режима развёртывания и формирование root-команды для root/sudo. Сопоставлено с `DeployCommandPolicy`: проверки соответствуют экранированию одинарных кавычек shell, двойных кавычек/обратных слешей systemd и замене переводов строк. Тесты проверяют лишь отдельные примеры, не покрывая пустые/многострочные значения, управляющие символы и полный набор shell-метасимволов; расширение граничных тестов желательно. Существенных новых дефектов в проверяемом тесте не выявлено.
