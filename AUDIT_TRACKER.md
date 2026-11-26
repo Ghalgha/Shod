@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **217**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/.gitkeep`**
+- Изучено файлов: **218**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/DeployCheckState.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/DeployCheckState.kt`**
 
 ## Найденные проблемы
 
@@ -342,3 +342,6 @@
 
 
 - `app/src/main/java/com/shod/client/ui/screens/deploy/.gitkeep` — пустой служебный файл Git, сохраняющий каталог `deploy` в репозитории. Исходного кода или исполняемой логики нет; замечаний по поведению нет.
+
+
+- `app/src/main/java/com/shod/client/ui/screens/deploy/DeployCheckState.kt` — небольшой контейнер двух Compose `mutableStateOf`: `DeployPlan?` и `PlanAction?`. Состояния отделены от содержимого вкладок, чтобы результат проверки сохранялся при переключении вкладки. В файле нет побочных эффектов, асинхронной логики или обработки внешнего ввода; явных ошибок не обнаружено. Отдельные тесты для контейнера не обязательны, поскольку поведение сводится к стандартному хранению Compose state.
