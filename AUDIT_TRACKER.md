@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **363**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/platform/android/power/BatteryOptimizationPromptPolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/platform/android/power/BatteryOptimizationPromptPolicyTest.kt`**
+- Изучено файлов: **364**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/platform/android/process/probe/ProbeOutputReaderTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/platform/android/process/probe/ProbeOutputReaderTest.kt`**
 
 ## Найденные проблемы
 
@@ -747,3 +747,6 @@
 
 
 - `app/src/test/java/com/shod/client/platform/android/power/BatteryOptimizationPromptPolicyTest.kt` — проверены запрос при первом посещении, запрет повторного показа после обработки и отсутствие запроса при уже выданном исключении. Сопоставлено с `BatteryOptimizationPromptPolicy.kt`: функция `!promptHandled && !alreadyExempt` соответствует всем трём сценариям. Не покрыта комбинация `promptHandled=true` и `alreadyExempt=true`, но по текущей функции она также однозначно возвращает `false`; отдельного дефекта не выявлено. Контекст Android-вызова и сохранения `promptHandled` не подтверждён поиском кода, поэтому интеграционные выводы не делаются.
+
+
+- `app/src/test/java/com/shod/client/platform/android/process/probe/ProbeOutputReaderTest.kt` — проверены отмена чтения при молчащем процессе без блокирующего `read()`, разбор CRLF и финальной строки UTF-8 без завершающего перевода строки. Сопоставлено с `ProbeOutputReader.kt`: реализация опрашивает `available()`, проверяет отмену coroutine перед каждой итерацией, ограничивает строку 65 536 байт и отправляет остаток после завершения потока. Тесты не проверяют ошибку `InputStream`, исключение `alive`/`onLine`, превышение лимита и поведение `read()` при возврате 0; при `count == 0` цикл может повторяться без задержки, что потенциально приводит к расходу CPU для нестандартного потока. В обычном `InputStream` при положительном размере чтения ожидается чтение хотя бы одного байта либо EOF, поэтому это условный риск, не подтверждённый дефект. Новых подтверждённых ошибок не выявлено.
