@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **29**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/SettingsStore.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/SettingsStore.kt`**
+- Изучено файлов: **30**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/TunnelEventParser.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/TunnelEventParser.kt`**
 
 ## Найденные проблемы
 
