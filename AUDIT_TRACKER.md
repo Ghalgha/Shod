@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **128**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/power/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/power/.gitkeep`**
+- Изучено файлов: **129**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/security/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/security/.gitkeep`**
 
 ## Найденные проблемы
 
