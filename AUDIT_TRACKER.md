@@ -23,13 +23,16 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **236**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/updates/RemoteVersionChecker.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/updates/RemoteVersionChecker.kt`**
+- Изучено файлов: **237**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/updates/RemoteVersionPolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/updates/RemoteVersionPolicy.kt`**
 
 ## Найденные проблемы
 
 ### Подтверждённые ошибки
+
+- `app/src/main/java/com/shod/client/updates/RemoteVersionPolicy.kt` (`versionParts`) — числовые компоненты версии преобразуются через `toIntOrNull()` с `mapNotNull()`, поэтому компонент, превышающий диапазон `Int`, молча удаляется. Например, версия `999999999999999999.1` превращается в `[1]` и может быть ошибочно признана старее `2.0`. Рекомендуется разбирать компоненты в `Long`/`BigInteger` либо отклонять некорректную версию целиком; добавить граничный тест.
+
 
 - `app/src/main/java/com/shod/client/updates/RemoteVersionChecker.kt` — ответы GitHub API и HTML fallback читаются целиком через `readText()` без ограничения размера (`fetchHttpText()` и `fetchReleaseFromLatestWebRedirect()`). Большой ответ может вызвать чрезмерное потребление памяти/OOM при проверке обновлений. Рекомендуется ограничить объём чтения и отклонять ответы сверх лимита.
 
@@ -403,3 +406,6 @@
 
 
 - `app/src/main/java/com/shod/client/updates/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `app/src/main/java/com/shod/client/updates` в Git. Замечаний нет.
+
+
+- `app/src/main/java/com/shod/client/updates/RemoteVersionPolicy.kt` — проверены числовое сравнение версий, нормализация тега, преобразование интервала обновления и тесты. `updateIntervalHoursToMillis()` безопасно расширяет тип до `Long` до умножения; существующие тесты сравнения версий покрывают базовые случаи, но не переполнение компонента. Остальных явных ошибок в проверенной логике не обнаружено.
