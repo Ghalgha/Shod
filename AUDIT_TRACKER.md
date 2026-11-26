@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **330**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/connection/policy/ConnectionStartPolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/connection/policy/ConnectionStartPolicyTest.kt`**
+- Изучено файлов: **331**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployActionModeTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployActionModeTest.kt`**
 
 ## Найденные проблемы
 
@@ -650,3 +650,6 @@
 
 
 - `app/src/test/java/com/shod/client/connection/policy/ConnectionStartPolicyTest.kt` — проверены восемь сценариев готовности VK-учётных данных и блокировки старта подключения. Тесты согласуются с `ConnectionStartPolicy`, но выявлено важное ограничение покрытия/контракта: `blocker` принимает `connectionPasswordSet` и `connectionPasswordReadable`, однако реализация их полностью игнорирует; ветви `Password` и `StoredSecret` недостижимы. Текущие тесты закрепляют поведение, при котором отсутствие/нечитаемость пароля не блокируют запуск. Без подтверждения требований нельзя считать это дефектом, но необходимо уточнить, должен ли режим владельца требовать пароль. Код не изменялся.
+
+
+- `app/src/test/java/com/shod/client/deploy/execution/DeployActionModeTest.kt` — проверено соответствие трёх режимов заголовкам журнала и действиям скрипта: Install→install, Update→update, Reinstall→install. Сопоставлено с enum `DeployActionMode`; тест полностью покрывает все его значения и соответствует реализации. Существенных замечаний нет.
