@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **283**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/stats/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/stats/.gitkeep`**
+- Изучено файлов: **284**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/telemetry/TunnelTraffic.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/telemetry/TunnelTraffic.kt`**
 
 ## Найденные проблемы
 
@@ -532,8 +532,10 @@
 - `app/src/main/java/com/shod/client/vpn/routing/apps/AppRoutingPresets.kt` — проверены списки direct/VPN package presets, начальная инициализация только установленными приложениями, сохранение пользовательских/пустых выборов, объединение без удаления прежних записей и порядок выбранных приложений. `AppRoutingPresetsTest` покрывает состав наборов, отсутствие пересечений, idempotency merge, сохранение пустого выбора и порядок. Явных ошибок не обнаружено.
 
 
-- `app/src/main/java/com/shod/client/vpn/stats/.gitkeep` — проверены разбор legacy plain-text blacklist/whitelist с русскими и английскими заголовками, накопление строк секции, проверка package ID, сохранение намеренно пустых списков и возврат null при отсутствии заголовков. `AppRoutingTextParserTest` покрывает варианты заголовков, некорректные package ID, дубликаты и пустые секции. Явных ошибок не обнаружено.
+- `app/src/main/java/com/shod/client/vpn/telemetry/TunnelTraffic.kt` — проверены разбор legacy plain-text blacklist/whitelist с русскими и английскими заголовками, накопление строк секции, проверка package ID, сохранение намеренно пустых списков и возврат null при отсутствии заголовков. `AppRoutingTextParserTest` покрывает варианты заголовков, некорректные package ID, дубликаты и пустые секции. Явных ошибок не обнаружено.
 
-- `app/src/main/java/com/shod/client/vpn/stats/.gitkeep` — проверена генерация 128-битного идентификатора сессии через `SecureRandom`: 16 случайных байтов кодируются в 32 строчных hex-символа. `TunnelSessionIdTest` проверяет кодирование всех байтов, формат и различие результатов для разных входных данных. Явных ошибок не обнаружено.
+- `app/src/main/java/com/shod/client/vpn/telemetry/TunnelTraffic.kt` — проверена генерация 128-битного идентификатора сессии через `SecureRandom`: 16 случайных байтов кодируются в 32 строчных hex-символа. `TunnelSessionIdTest` проверяет кодирование всех байтов, формат и различие результатов для разных входных данных. Явных ошибок не обнаружено.
 
-- `app/src/main/java/com/shod/client/vpn/stats/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `vpn/stats` в Git. Исполняемого содержимого нет; замечаний нет.
+- `app/src/main/java/com/shod/client/vpn/telemetry/TunnelTraffic.kt` — пустой служебный файл `.gitkeep`, сохраняющий каталог `vpn/stats` в Git. Исполняемого содержимого нет; замечаний нет.
+
+- `app/src/main/java/com/shod/client/vpn/telemetry/TunnelTraffic.kt` — проверены учёт входящего/исходящего трафика, расчёт интервальной скорости, защита от устаревших поколений процесса, сброс счётчиков, насыщающее сложение, затухание скорости при простое и форматирование UI/уведомления. `TunnelTrafficTest` покрывает направления, интервалы, очередь событий, рестарт процесса, устаревшие события, простой, сброс счётчиков и форматирование. Интеграция в `TunnelManager` согласованно начинает/завершает поколение и передаёт STATS. Явных ошибок не обнаружено.
