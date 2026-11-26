@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **120**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/quicksettings/TunnelQuickActions.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/quicksettings/TunnelQuickActions.kt`**
+- Изучено файлов: **121**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/services/TunnelServiceIntentFactory.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/services/TunnelServiceIntentFactory.kt`**
 
 ## Найденные проблемы
 
@@ -83,16 +83,19 @@
 
 ### Рекомендации
 
-- `app/src/main/java/com/shod/client/platform/android/quicksettings/TunnelQuickActions.kt` — отдельные тесты формирования START-intent и переключения туннеля из Quick Settings/виджета отсутствуют. Рекомендуется покрыть остановку при `stopping`, остановку при running/starting/Wi-Fi auto-pause, запрос VPN-разрешения, отсутствие настроек подключения и передачу всех параметров START-intent. В проверенной реализации явной ошибки не обнаружено.
+- `app/src/main/java/com/shod/client/platform/android/services/TunnelServiceIntentFactory.kt` — отдельные тесты фабрики Intent отсутствуют. Рекомендуется проверить передачу всех полей `ConnectionSource` и `TunnelStartOptions`, включая `generation_id`/`session_salt`, а также соответствие ключей extras контракту `TunnelService`. Явной ошибки в проверенной реализации не обнаружено.
 
 
-- `app/src/main/java/com/shod/client/platform/android/quicksettings/TunnelQuickActions.kt` — отдельные тесты Quick Settings tile отсутствуют. Рекомендуется покрыть жизненный цикл подписки на `TunnelManager.running`, повторный `onStartListening`, отмену в `onStopListening`/`onDestroy`, а также обработку ошибок переключения и обновления плитки. В проверенной реализации явной ошибки не обнаружено.
+- `app/src/main/java/com/shod/client/platform/android/services/TunnelServiceIntentFactory.kt` — отдельные тесты формирования START-intent и переключения туннеля из Quick Settings/виджета отсутствуют. Рекомендуется покрыть остановку при `stopping`, остановку при running/starting/Wi-Fi auto-pause, запрос VPN-разрешения, отсутствие настроек подключения и передачу всех параметров START-intent. В проверенной реализации явной ошибки не обнаружено.
 
 
-- `app/src/main/java/com/shod/client/platform/android/quicksettings/TunnelQuickActions.kt` — существующие тесты проверяют отмену при молчащем процессе и разбор UTF-8 строк, но не проверяют предельную длину строки (65 536 байт), превышение лимита, завершение процесса с незавершённой строкой и поведение при исключении `onLine`. Явной ошибки в проверенной реализации не обнаружено; рекомендуется покрыть эти граничные сценарии.
+- `app/src/main/java/com/shod/client/platform/android/services/TunnelServiceIntentFactory.kt` — отдельные тесты Quick Settings tile отсутствуют. Рекомендуется покрыть жизненный цикл подписки на `TunnelManager.running`, повторный `onStartListening`, отмену в `onStopListening`/`onDestroy`, а также обработку ошибок переключения и обновления плитки. В проверенной реализации явной ошибки не обнаружено.
 
 
-- `app/src/main/java/com/shod/client/platform/android/quicksettings/TunnelQuickActions.kt` — для счётчика активных Activity нет отдельных тестов переходов `0→1→0`, нескольких одновременно активных Activity и защиты от повторного `onActivityStopped()`. Сам счётчик ограничен снизу нулём, а текущий вызов идёт из lifecycle-callback `MainActivity`; явной ошибки в проверенном коде не обнаружено. Рекомендуется добавить unit-тесты переходов состояния.
+- `app/src/main/java/com/shod/client/platform/android/services/TunnelServiceIntentFactory.kt` — существующие тесты проверяют отмену при молчащем процессе и разбор UTF-8 строк, но не проверяют предельную длину строки (65 536 байт), превышение лимита, завершение процесса с незавершённой строкой и поведение при исключении `onLine`. Явной ошибки в проверенной реализации не обнаружено; рекомендуется покрыть эти граничные сценарии.
+
+
+- `app/src/main/java/com/shod/client/platform/android/services/TunnelServiceIntentFactory.kt` — для счётчика активных Activity нет отдельных тестов переходов `0→1→0`, нескольких одновременно активных Activity и защиты от повторного `onActivityStopped()`. Сам счётчик ограничен снизу нулём, а текущий вызов идёт из lifecycle-callback `MainActivity`; явной ошибки в проверенном коде не обнаружено. Рекомендуется добавить unit-тесты переходов состояния.
 
 
 - `app/src/main/java/com/shod/client/platform/android/network/wifi/WifiDiscovery.kt` — нет отдельных тестов для Android-слоя обнаружения Wi-Fi: регистрации/снятия `NetworkCallback` и `BroadcastReceiver`, поведения при ошибке регистрации, переключения нескольких владельцев и обработки запоздавших действий уведомления. Существующие тесты покрывают чистую политику и хранилище предпочтений, но не жизненный цикл системных наблюдателей. Рекомендуется добавить тесты с подменяемыми Android-зависимостями.
