@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **386**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/events/TunnelEventParserTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/events/TunnelEventParserTest.kt`**
+- Изучено файлов: **387**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/lifecycle/TunnelLifecycleStateChaosTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/lifecycle/TunnelLifecycleStateChaosTest.kt`**
 
 ## Найденные проблемы
 
@@ -816,3 +816,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/events/TunnelEventParserTest.kt` — проверены разбор STATS/ERROR/WORKERS/PROGRESS/CALL_UNAVAILABLE, lifecycle-событий, ограничение числа workers, источник SERVER_RESTART, отказ от неизвестных и повреждённых событий, нормализация отрицательных счётчиков и детерминированный fuzz-тест без исключений/отрицательного состояния. Сопоставлено с `TunnelEventParser.kt`: проверенные сценарии соответствуют текущим веткам парсера. Пробелы покрытия: не проверяются STARTED/PROCESS/CONFIG/ROUTING/TUN_LOST/CAPTCHA_REQUEST/CAPTCHA_DONE, граничные значения и типы полей этих событий; также не проверяются некорректные worker для READY/DTLS (реализация ограничивает их через `coerceIn`, а не отклоняет). Fuzz-тест проверяет отсутствие исключений и неотрицательность STATS, но не корректность результата для каждого входа. Подтверждённых ошибок в тестовом файле не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/lifecycle/TunnelLifecycleStateChaosTest.kt` — проверены детерминированное сравнение жизненного цикла с независимой моделью на 128×10 000 операций, воспроизводимость генератора переходов, проверка stale epoch и конкурентный шторм start/restart/reserve/end/release с финальным stop. Сопоставлено с `TunnelLifecycleState.kt`: синхронизированные переходы и правила ticket соответствуют модели. Потенциальные ограничения теста: исключения внутри задач `Executor` не передаются основному потоку и могут остаться незамеченными; конкурентный тест не фиксирует порядок операций, поэтому проверяет только итоговую защиту после stop. `epochs.elementAtOrNull()` на `ConcurrentLinkedQueue` выполняет линейный обход при выборе элемента и может сделать тест дорогим по времени при росте очереди. Подтверждённых ошибок в проверенном тестовом файле не выявлено.
