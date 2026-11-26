@@ -23,13 +23,15 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **292**
-- Последний изученный файл: **`app/src/main/res/drawable/bg_widget_card.xml`**
-- Последний проверенный файл: **`app/src/main/res/drawable/bg_widget_card.xml`**
+- Изучено файлов: **293**
+- Последний изученный файл: **`app/src/main/res/drawable/ic_c_logo.xml`**
+- Последний проверенный файл: **`app/src/main/res/drawable/ic_c_logo.xml`**
 
 ## Найденные проблемы
 
 ### Подтверждённые ошибки
+
+- `app/src/main/res/drawable/ic_c_logo.xml` — проверен векторный ресурс 108dp с viewport 108×108: круговой фон с радиальным градиентом и стилизованная буква C с линейным градиентом. XML-структура и ссылки на атрибуты AAPT согласованы; явных ошибок в ресурсе не обнаружено.
 
 - `app/src/main/res/drawable/bg_widget_card.xml` — проверена прямоугольная drawable-форма карточки виджета: радиус углов 28dp, заливка `widget_card_background`, обводка 1dp `widget_card_stroke`. Оба цветовых ресурса существуют в `app/src/main/res/values/colors.xml`; XML-структура корректна. Явных ошибок и замечаний не обнаружено.
 
