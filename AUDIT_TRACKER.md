@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **122**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt`**
+- Изучено файлов: **123**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/vpn/TunVpnService.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/vpn/TunVpnService.kt`**
 
 ## Найденные проблемы
 
@@ -66,7 +66,10 @@
 
 ### Подтверждённые проблемы
 
-- `app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt` — `showRaisedToast()` использует стандартный текстовый `Toast` и задаёт положение через `setGravity()`. На Android 11+ позиционирование стандартных текстовых Toast контролируется ОС, поэтому заданная приложением гравитация игнорируется. Смещение вверх, подразумеваемое названием функции, не гарантируется на современных версиях Android. Для точного положения потребуется собственный UI-элемент (например, Snackbar или overlay).
+- `app/src/main/java/com/shod/client/platform/android/vpn/TunVpnService.kt` — обработчики `START` и `STOP` запускают корутины на `Dispatchers.IO`, а `vpnMutex` сериализует их выполнение, но не гарантирует порядок поступления команд. При быстрой последовательности `STOP` → `START` корутина `STOP` может получить mutex после `START` и остановить уже повторно запущенный VPN. `stopRequested` сбрасывается синхронно при получении `START`, но сама остановка всё равно выполняется позже без проверки актуальности команды. Рекомендуется сериализовать команды с монотонным идентификатором поколения либо обрабатывать их в одном последовательном обработчике; добавить тест на быстрое `STOP` → `START`.
+
+
+- `app/src/main/java/com/shod/client/platform/android/vpn/TunVpnService.kt` — `showRaisedToast()` использует стандартный текстовый `Toast` и задаёт положение через `setGravity()`. На Android 11+ позиционирование стандартных текстовых Toast контролируется ОС, поэтому заданная приложением гравитация игнорируется. Смещение вверх, подразумеваемое названием функции, не гарантируется на современных версиях Android. Для точного положения потребуется собственный UI-элемент (например, Snackbar или overlay).
 
 - `app/src/main/java/com/shod/client/links/ShodLinkCodec.kt` (`Shod_CIPHER_KEY_SEED`, `cipherKey`, `encryptShodPayload`/`decryptShodPayload`) — ключ AES-GCM жёстко зашит в клиентское приложение и одинаков для всех установок. Поэтому любой получатель ссылки или посторонний, изучивший APK/исходный код, может извлечь ключ и расшифровать содержимое ссылки, включая пароль туннеля и VK-токен. AES-GCM обеспечивает целостность, но такой общий встроенный секрет не обеспечивает конфиденциальность от пользователя приложения или третьих лиц, имеющих APK. Тесты подтверждают работоспособность шифрования, но не проверяют эту модель угроз.
 - `app/src/main/java/com/shod/client/integration/vk/transport/turn/TurnSubnetRegistry.kt` — для подсети `193.203.43.0/24` задано `count = 48`, но список `ips` содержит только 47 уникальных адресов. Метаданные количества не соответствуют фактическому списку; возможны неверное отображение количества или ошибки логики, если потребители полагаются на `count`.
@@ -86,19 +89,19 @@
 
 ### Рекомендации
 
-- `app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt` — отдельные тесты фабрики Intent отсутствуют. Рекомендуется проверить передачу всех полей `ConnectionSource` и `TunnelStartOptions`, включая `generation_id`/`session_salt`, а также соответствие ключей extras контракту `TunnelService`. Явной ошибки в проверенной реализации не обнаружено.
+- `app/src/main/java/com/shod/client/platform/android/vpn/TunVpnService.kt` — отдельные тесты фабрики Intent отсутствуют. Рекомендуется проверить передачу всех полей `ConnectionSource` и `TunnelStartOptions`, включая `generation_id`/`session_salt`, а также соответствие ключей extras контракту `TunnelService`. Явной ошибки в проверенной реализации не обнаружено.
 
 
-- `app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt` — отдельные тесты формирования START-intent и переключения туннеля из Quick Settings/виджета отсутствуют. Рекомендуется покрыть остановку при `stopping`, остановку при running/starting/Wi-Fi auto-pause, запрос VPN-разрешения, отсутствие настроек подключения и передачу всех параметров START-intent. В проверенной реализации явной ошибки не обнаружено.
+- `app/src/main/java/com/shod/client/platform/android/vpn/TunVpnService.kt` — отдельные тесты формирования START-intent и переключения туннеля из Quick Settings/виджета отсутствуют. Рекомендуется покрыть остановку при `stopping`, остановку при running/starting/Wi-Fi auto-pause, запрос VPN-разрешения, отсутствие настроек подключения и передачу всех параметров START-intent. В проверенной реализации явной ошибки не обнаружено.
 
 
-- `app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt` — отдельные тесты Quick Settings tile отсутствуют. Рекомендуется покрыть жизненный цикл подписки на `TunnelManager.running`, повторный `onStartListening`, отмену в `onStopListening`/`onDestroy`, а также обработку ошибок переключения и обновления плитки. В проверенной реализации явной ошибки не обнаружено.
+- `app/src/main/java/com/shod/client/platform/android/vpn/TunVpnService.kt` — отдельные тесты Quick Settings tile отсутствуют. Рекомендуется покрыть жизненный цикл подписки на `TunnelManager.running`, повторный `onStartListening`, отмену в `onStopListening`/`onDestroy`, а также обработку ошибок переключения и обновления плитки. В проверенной реализации явной ошибки не обнаружено.
 
 
-- `app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt` — существующие тесты проверяют отмену при молчащем процессе и разбор UTF-8 строк, но не проверяют предельную длину строки (65 536 байт), превышение лимита, завершение процесса с незавершённой строкой и поведение при исключении `onLine`. Явной ошибки в проверенной реализации не обнаружено; рекомендуется покрыть эти граничные сценарии.
+- `app/src/main/java/com/shod/client/platform/android/vpn/TunVpnService.kt` — существующие тесты проверяют отмену при молчащем процессе и разбор UTF-8 строк, но не проверяют предельную длину строки (65 536 байт), превышение лимита, завершение процесса с незавершённой строкой и поведение при исключении `onLine`. Явной ошибки в проверенной реализации не обнаружено; рекомендуется покрыть эти граничные сценарии.
 
 
-- `app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt` — для счётчика активных Activity нет отдельных тестов переходов `0→1→0`, нескольких одновременно активных Activity и защиты от повторного `onActivityStopped()`. Сам счётчик ограничен снизу нулём, а текущий вызов идёт из lifecycle-callback `MainActivity`; явной ошибки в проверенном коде не обнаружено. Рекомендуется добавить unit-тесты переходов состояния.
+- `app/src/main/java/com/shod/client/platform/android/vpn/TunVpnService.kt` — для счётчика активных Activity нет отдельных тестов переходов `0→1→0`, нескольких одновременно активных Activity и защиты от повторного `onActivityStopped()`. Сам счётчик ограничен снизу нулём, а текущий вызов идёт из lifecycle-callback `MainActivity`; явной ошибки в проверенном коде не обнаружено. Рекомендуется добавить unit-тесты переходов состояния.
 
 
 - `app/src/main/java/com/shod/client/platform/android/network/wifi/WifiDiscovery.kt` — нет отдельных тестов для Android-слоя обнаружения Wi-Fi: регистрации/снятия `NetworkCallback` и `BroadcastReceiver`, поведения при ошибке регистрации, переключения нескольких владельцев и обработки запоздавших действий уведомления. Существующие тесты покрывают чистую политику и хранилище предпочтений, но не жизненный цикл системных наблюдателей. Рекомендуется добавить тесты с подменяемыми Android-зависимостями.
