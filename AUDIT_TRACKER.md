@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **300**
-- Последний изученный файл: **`app/src/main/res/drawable/ic_launcher_foreground.xml`**
-- Последний проверенный файл: **`app/src/main/res/drawable/ic_launcher_foreground.xml`**
+- Изучено файлов: **301**
+- Последний изученный файл: **`app/src/main/res/drawable/ic_launcher_monochrome.xml`**
+- Последний проверенный файл: **`app/src/main/res/drawable/ic_launcher_monochrome.xml`**
 
 ## Найденные проблемы
 
@@ -40,6 +40,8 @@
 - `app/src/main/res/drawable/ic_ip.xml` — проверен векторный ресурс с надписью IP: 24dp, viewport 24×24, один path с `fillType="evenOdd"`. XML-структура и параметры Android VectorDrawable корректны. Цвет задан жёстко белым (`#FFFFFFFF`); места использования и наличие tint не подтверждены, поэтому совместимость с фоном остаётся непроверенной, дефект не заявляется.
 
 - `app/src/main/res/drawable/ic_launcher_foreground.xml` — проверен foreground-ресурс иконки приложения: 108dp, viewport 108×108, два симметричных path с закруглёнными обводками, формирующих переплетённый знак. XML и параметры VectorDrawable корректны; SPDX-заголовок указывает правообладателя и лицензию PolyForm Noncommercial 1.0.0. Явных ошибок не обнаружено.
+
+- `app/src/main/res/drawable/ic_launcher_monochrome.xml` — проверен монохромный ресурс иконки приложения: 108dp, viewport 108×108, два белых заполненных path. XML и параметры VectorDrawable корректны; SPDX-заголовок указывает правообладателя и лицензию PolyForm Noncommercial 1.0.0. Явных ошибок не обнаружено.
 
 - `app/src/main/res/drawable/ic_export.xml` — проверен векторный ресурс стрелки экспорта: 24dp, viewport 24×24, один заполненный path. XML-структура корректна. Цвет задан жёстко белым (`#FFFFFFFF`), поэтому отображение зависит от фона и места использования; проверка ссылок в текущем индексе GitHub не вернула результатов, фактические места использования не подтверждены. Потенциальная совместимость с фоном не установлена, дефект не заявляется.
 
