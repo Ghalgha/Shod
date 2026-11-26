@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **114**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/network/wifi/WifiDiscovery.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/network/wifi/WifiDiscovery.kt`**
+- Изучено файлов: **115**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/network/wifi/WifiSsidResolver.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/network/wifi/WifiSsidResolver.kt`**
 
 ## Найденные проблемы
 
