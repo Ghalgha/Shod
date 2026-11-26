@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **66**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/version/ServerVersionPolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/version/ServerVersionPolicy.kt`**
+- Изучено файлов: **67**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/android/VkAuthWebViewManager.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/android/VkAuthWebViewManager.kt`**
 
 ## Найденные проблемы
 
@@ -36,6 +36,7 @@
 - `app/src/main/java/com/shod/client/deploy/execution/DeployStderrPolicy.kt` — регулярное выражение подавляет любую строку stderr, начинающуюся с `Warning:` (без проверки содержания). Это может скрыть значимые предупреждения сторонних утилит и лишить пользователя диагностической информации. На exit status не влияет; потенциальный риск потери диагностики.
 
 ### Подтверждённые проблемы
+- `app/src/main/java/com/shod/client/integration/vk/auth/android/VkAuthWebViewManager.kt` (`switchToTokenPhase`) совместно с `integration/vk/auth/network/VkTokenScraper.kt` — WebView собирает cookies с нескольких доменов VK и передаёт их scraper'у. Scraper повторно отправляет этот Cookie header на URL из HTTP `Location` и HTML JavaScript-перенаправлений, не проверяя host назначения. Поэтому перенаправление на посторонний домен может привести к передаче ему сессионных cookies VK. Риск подтверждён чтением обоих файлов; реальный внешний redirect не запускался.
 - `app/src/main/java/com/shod/client/deploy/version/ServerVersionPolicy.kt` — `comparableServerVersion()` ищет первую последовательность цифр в любой строке, а не проверяет, что она является версией. Например, `build 123` возвращает `123`, хотя версия отсутствует; аналогично числовой код ошибки может быть принят за версию. Это противоречит KDoc о возврате пустой строки, когда числовая версия отсутствует. Тесты проверяют только строку `unknown` без цифр и не покрывают такие случаи.
 - `app/src/main/java/com/shod/client/deploy/transfer/SshDeployFileTransfer.kt` (начало `upload(localFile, remotePath, reconnectsLeft)`) — предварительная проверка `!ssh.isConnected` вызывает `reconnect` без учёта `reconnectsLeft`. Поэтому при изначально отключённом SSH-клиенте может быть выполнено дополнительное переподключение сверх заданного `UPLOAD_RECONNECT_ATTEMPTS`; фактический бюджет повторов не соблюдается. Ошибка ограничена лишней попыткой переподключения, бесконечной рекурсии не обнаружено.
 - `app/src/main/java/com/shod/client/deploy/ssh/SshRemoteCommandExecutor.kt` (`execute`, определение `adjustedCommand` и последующая отправка пароля) — наличие подстроки `sudo` в любом месте команды запускает отправку `sudoPassword` в stdin удалённого процесса, даже если команда не вызывает sudo. Например, команда `echo sudo` удовлетворяет `command.contains("sudo")`, но не содержит `sudo ` для замены; пароль всё равно записывается в stdin. Если команда или её дочерняя программа читает stdin, пароль может быть раскрыт или обработан как пользовательский ввод. Дополнительно `command.replace("sudo ", "sudo -S ")` заменяет все вхождения, включая потенциально находящиеся внутри аргументов/кавычек. Это подтверждённая ошибка определения sudo-команд и потенциальная утечка секрета.
