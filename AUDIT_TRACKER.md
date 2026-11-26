@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **136**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileLifecycleStore.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileLifecycleStore.kt`**
+- Изучено файлов: **137**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileMetadataStore.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileMetadataStore.kt`**
 
 ## Найденные проблемы
 
@@ -92,6 +92,8 @@
 - `LICENSE` и `rust-server/Cargo.toml` (`[package].license`) — лицензия проекта объявлена проприетарной, но Rust-пакет указывает `Unlicense`. Это противоречивые юридические условия и некорректные метаданные пакета; требуется согласовать объявление Cargo с фактической лицензией. Файлы не изменялись.
 
 ### Рекомендации
+
+- `app/src/main/java/com/shod/client/settings/profile/ProfileMetadataStore.kt` — отдельные тесты хранилища не найдены. Рекомендуется проверить формирование имён профилей и сохранение/удаление пользовательского имени, занятость слота по `peer`/`shod_link`, поиск свободного слота с учётом `deploy_ip`, граничные индексы и поведение при отсутствии свободного слота. `findFirstFreeProfile()` и `findFirstFreeDeployProfile()` сейчас содержат одинаковую проверку; стоит подтвердить, что совпадение намеренное. Явных ошибок в проверенной реализации не обнаружено.
 
 - `app/src/main/java/com/shod/client/settings/profile/ProfileCursorStore.kt` — отдельные тесты хранилища и `ProfileSelectionPolicy` не найдены. Рекомендуется проверить значения по умолчанию, нормализацию границ, отклонение недопустимого выбора, сохранение/повторное чтение и fallback после очистки активного профиля. Явной ошибки в проверенной реализации не обнаружено.
 
