@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **113**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/device/TvDevicePolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/device/TvDevicePolicy.kt`**
+- Изучено файлов: **114**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/network/wifi/WifiDiscovery.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/network/wifi/WifiDiscovery.kt`**
 
 ## Найденные проблемы
 
@@ -82,6 +82,8 @@
 - `LICENSE` и `rust-server/Cargo.toml` (`[package].license`) — лицензия проекта объявлена проприетарной, но Rust-пакет указывает `Unlicense`. Это противоречивые юридические условия и некорректные метаданные пакета; требуется согласовать объявление Cargo с фактической лицензией. Файлы не изменялись.
 
 ### Рекомендации
+
+- `app/src/main/java/com/shod/client/platform/android/network/wifi/WifiDiscovery.kt` — нет отдельных тестов для Android-слоя обнаружения Wi-Fi: регистрации/снятия `NetworkCallback` и `BroadcastReceiver`, поведения при ошибке регистрации, переключения нескольких владельцев и обработки запоздавших действий уведомления. Существующие тесты покрывают чистую политику и хранилище предпочтений, но не жизненный цикл системных наблюдателей. Рекомендуется добавить тесты с подменяемыми Android-зависимостями.
 
 - `app/src/main/java/com/shod/client/integration/vk/transport/nativeclient/VkNativeTransportArguments.kt` — для построителя аргументов native-клиента нет выделенных unit-тестов. Сам файл и место вызова в `TunnelManager.kt` проверены; явной ошибки не обнаружено. Рекомендуется покрыть тестами состав аргументов и формат JS bootstrap line.
 
