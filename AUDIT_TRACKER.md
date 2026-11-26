@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **334**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployResultPolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployResultPolicyTest.kt`**
+- Изучено файлов: **335**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployStderrPolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/deploy/execution/DeployStderrPolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -662,3 +662,6 @@
 
 
 - `app/src/test/java/com/shod/client/deploy/execution/DeployResultPolicyTest.kt` — проверены сценарии определения успешного deploy/uninstall по нулевому exit code и точному маркеру, rollback/preflight-ошибки, извлечение серверной причины, SSH-ошибки, очистка журналов, режимы Docker/systemd, архитектуры VPS и сохранение спецсимволов SSH-пароля. Сопоставлено с `DeployResultPolicy` и `DeployOutputPolicy`: проверяемые ожидания соответствуют реализации. Существенных дефектов в тесте не обнаружено. Тесты не проверяют конфликтные выходные данные с несколькими взаимоисключающими маркерами результата; приоритет определяется порядком ветвей `deployFailureMessage`, но практическая достижимость такого вывода зависит от deploy-протокола.
+
+
+- `app/src/test/java/com/shod/client/deploy/execution/DeployStderrPolicyTest.kt` — проверены фильтрация известных предупреждений debconf/dpkg, отсутствующего терминала и sudo password prompt, регистронезависимость и сохранение посторонних ошибок. Сопоставлено с `DeployStderrPolicy`: тесты покрывают заявленные шаблоны. Потенциальный риск реализации: regex использует широкие подстроки `debconf` и `dpkg-preconfigure`, поэтому любая stderr-строка с этими словами скрывается целиком, даже если содержит дополнительную диагностическую ошибку. Тесты не проверяют смешанное/составное сообщение; рекомендуется проверять точные шаблоны предупреждений или границы сообщений. Не подтверждённый дефект.
