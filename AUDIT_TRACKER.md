@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **124**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/vpn/diagnostics/probe/ProbeTunTransport.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/vpn/diagnostics/probe/ProbeTunTransport.kt`**
+- Изучено файлов: **125**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/vpn/notification/TunnelNotificationText.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/vpn/notification/TunnelNotificationText.kt`**
 
 ## Найденные проблемы
 
@@ -90,6 +90,8 @@
 - `LICENSE` и `rust-server/Cargo.toml` (`[package].license`) — лицензия проекта объявлена проприетарной, но Rust-пакет указывает `Unlicense`. Это противоречивые юридические условия и некорректные метаданные пакета; требуется согласовать объявление Cargo с фактической лицензией. Файлы не изменялись.
 
 ### Рекомендации
+
+- `app/src/main/java/com/shod/client/platform/android/vpn/notification/TunnelNotificationText.kt` — отдельные тесты форматирования уведомления отсутствуют. Рекомендуется проверить пустой и многострочный текст, распознавание статуса только в последней строке и формирование BigTextStyle. Явных ошибок в реализации не обнаружено.
 
 - `app/src/main/java/com/shod/client/platform/android/vpn/TunVpnService.kt` — отдельные тесты фабрики Intent отсутствуют. Рекомендуется проверить передачу всех полей `ConnectionSource` и `TunnelStartOptions`, включая `generation_id`/`session_salt`, а также соответствие ключей extras контракту `TunnelService`. Явной ошибки в проверенной реализации не обнаружено.
 
