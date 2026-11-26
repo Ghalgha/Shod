@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **220**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/DeployUiModel.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/DeployUiModel.kt`**
+- Изучено файлов: **221**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/ServerInventoryPresentation.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/deploy/ServerInventoryPresentation.kt`**
 
 ## Найденные проблемы
 
@@ -351,3 +351,6 @@
 
 
 - `app/src/main/java/com/shod/client/ui/screens/deploy/DeployUiModel.kt` — подтверждённое несоответствие ссылки панели: `DeployUiState.panelDisplayUrl` всегда добавляет `secretPathUuid`, если он непустой, и не учитывает `secretPathEnabled`. При выключенной настройке экран показывает URL с секретным UUID, тогда как `DeployController.OpenControlPanel` намеренно открывает URL без этого пути. Отображаемая ссылка поэтому не совпадает с фактически открываемой. Рекомендуется учитывать `secretPathEnabled` при формировании `panelDisplayUrl` и добавить тест для включённого/выключенного режима. Остальные проверки модели: готовность SSH/авторизации и портов, разбор вставленного host:port, эффективные порты и тесты `DeployUiStateTest`; других подтверждённых дефектов не выявлено.
+
+
+- `app/src/main/java/com/shod/client/ui/screens/deploy/ServerInventoryPresentation.kt` — подтверждённая ошибка подписи остатков: для любого `ServerPlace.LEFTOVER` функция `describeServer()` показывает «Остановленная служба shod». Однако контракт `FoundServer`/`ServerInventory.kt` прямо допускает для `LEFTOVER` не только остановленную службу, но также отдельный бинарник или хранилище. В списке удаления такие объекты будут неверно представлены как служба. Рекомендуется использовать нейтральное «Остатки прежней установки shod» либо определять подпись по `runtime`/типу объекта; добавить тесты для разных вариантов LEFTOVER. Остальная логика формирования подписи установленного сервера согласуется с `FoundServer` и `ServerPlace`; отдельные тесты presentation-функции не найдены.
