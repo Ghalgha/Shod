@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **233**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/theme/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/theme/.gitkeep`**
+- Изучено файлов: **234**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/theme/ShodTheme.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/theme/ShodTheme.kt`**
 
 ## Найденные проблемы
 
@@ -390,3 +390,6 @@
 
 
 - `app/src/main/java/com/shod/client/ui/theme/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `ui/theme` в Git. Исполняемого содержимого нет; замечаний нет.
+
+
+- `app/src/main/java/com/shod/client/ui/theme/ShodTheme.kt` — проверены светлая/тёмная Material 3 палитры, Manrope variable font, типографика, выбор системной/принудительной темы и системные панели Android. Палитры и расширенные цвета передаются согласованно; явных ошибок локальной логики не обнаружено. Отдельных тестов темы в проверенном контексте не выявлено; рекомендуется покрыть выбор режима и переключение палитр.
