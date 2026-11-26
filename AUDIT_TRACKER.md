@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **262**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/.gitkeep`**
+- Изучено файлов: **263**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelLifecycleState.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelLifecycleState.kt`**
 
 ## Найденные проблемы
 
@@ -476,3 +476,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/lifecycle/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `vpn/lifecycle` в Git. Исполняемого содержимого нет; замечаний нет.
+
+
+- `app/src/main/java/com/shod/client/vpn/lifecycle/TunnelLifecycleState.kt` — проверены синхронизированные переходы start/restart/stop, поколения lifecycle, резервирование и освобождение process ticket, фильтрация устаревших EOF/событий и защита от параллельного запуска. Изучены `TunnelLifecycleStateTest` и `TunnelLifecycleStateChaosTest`: тесты покрывают задержанные restart, stop, stale EOF, конкурентные reservations, стрессовые переходы и сверку с независимой моделью. Явных ошибок не обнаружено.
