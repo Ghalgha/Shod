@@ -23,13 +23,14 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **68**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/model/VkAuthModels.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/model/VkAuthModels.kt`**
+- Изучено файлов: **69**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/network/VkTokenScraper.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/network/VkTokenScraper.kt`**
 
 ## Найденные проблемы
 
 ### Потенциальные риски
+- `app/src/main/java/com/shod/client/integration/vk/auth/network/VkTokenScraper.kt` — HTML-ответ полностью читается через `bufferedReader().readText()` без ограничения размера. Поскольку URL перенаправлений не ограничены доверенными доменами, большой ответ может привести к чрезмерному расходу памяти и OOM. Условный риск; реальный большой ответ не запрашивался.
 - `app/src/main/java/com/shod/client/TunnelManager.kt` (строки 655–662) — декодирование серверного routing payload распаковывает GZIP через `GZIPInputStream(...).readText()` без ограничения размера распакованных данных. Если удалённый сервер или повреждённый поток передаст небольшой сжатый payload с чрезмерно большим содержимым, клиент может выделить большой объём памяти и завершиться с OOM. Ограничения количества элементов в `parseServerRoutingRule` не защищают от этого, поскольку применяются уже после полной распаковки. Потенциальный риск; эксплуатация не проверялась.
 - `app/src/main/java/com/shod/client/SettingsStore.kt` (строки 1239–1248, 2365–2379) совместно с `settings/storage/DeployScopedDataStore.kt` — потенциальный риск порядка инициализации: миграции запускаются и для `SettingsStore(deployScope = true)`, но `DeployScopedDataStore` подменяет `active_profile` значением курсора VPS. `migrateDefaultRole()` использует этот ключ для определения роли, а `migrationsStarted` глобально разрешает запуск миграции только один раз за процесс. Если первым создаётся deploy-scoped экземпляр, миграция может определить роль по VPS-профилю вместо активного VPN-профиля. Условие зависит от порядка создания экземпляров; подтверждения, что такой порядок достигается в штатном запуске, пока нет.
 
