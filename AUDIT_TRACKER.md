@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **76**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/CaptchaUriPolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/CaptchaUriPolicy.kt`**
+- Изучено файлов: **77**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/android/CaptchaCancelReceiver.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/android/CaptchaCancelReceiver.kt`**
 
 ## Найденные проблемы
 
