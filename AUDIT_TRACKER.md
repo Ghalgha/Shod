@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **64**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/transfer/SshDeployFileTransfer.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/transfer/SshDeployFileTransfer.kt`**
+- Изучено файлов: **65**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/validation/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/validation/.gitkeep`**
 
 ## Найденные проблемы
 
