@@ -23,15 +23,15 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **149**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/system/BatteryOptimizationPromptStore.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/system/BatteryOptimizationPromptStore.kt`**
+- Изучено файлов: **150**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/theme/ThemePreferencesStore.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/theme/ThemePreferencesStore.kt`**
 
 ## Найденные проблемы
 
 ### Потенциальные риски
 
-- `app/src/main/java/com/shod/client/settings/system/BatteryOptimizationPromptStore.kt` (`clearSubscription`) — потенциальная гонка: список целевых профилей читается отдельным `data.first()`, после чего каждый профиль очищается отдельной транзакцией `ProfileLifecycleStore.clearProfile()`. Если между чтением и очисткой слот будет переназначен другой подписке/подключению, операция может очистить уже новые данные. Сценарий зависит от конкурентных операций; подтверждения наличия такой параллельности в вызывающем коде нет. Рекомендуется атомарно проверить принадлежность URL и очистить соответствующие профили в одной DataStore-транзакции либо защитить операцию от переназначения; добавить тест конкурентного изменения.
+- `app/src/main/java/com/shod/client/settings/theme/ThemePreferencesStore.kt` (`clearSubscription`) — потенциальная гонка: список целевых профилей читается отдельным `data.first()`, после чего каждый профиль очищается отдельной транзакцией `ProfileLifecycleStore.clearProfile()`. Если между чтением и очисткой слот будет переназначен другой подписке/подключению, операция может очистить уже новые данные. Сценарий зависит от конкурентных операций; подтверждения наличия такой параллельности в вызывающем коде нет. Рекомендуется атомарно проверить принадлежность URL и очистить соответствующие профили в одной DataStore-транзакции либо защитить операцию от переназначения; добавить тест конкурентного изменения.
 
 
 - `app/src/main/java/com/shod/client/platform/android/deploy/ssh/SshHostKeyStore.kt` — сведения о последней смене ключа хранятся в одном глобальном `lastChange`. Если почти одновременно серверы A и B предъявят новые ключи, запись B перезапишет запись A; последующий `takeKeyChange(A)` вернёт `null`, и интерфейс не сможет получить данные о смене ключа A. Риск проявляется только при одновременных конфликтах ключей разных серверов.
@@ -69,6 +69,9 @@
 
 ### Подтверждённые проблемы
 
+- `app/src/main/java/com/shod/client/settings/theme/ThemePreferencesStore.kt` (`themePalette`) и `SettingsStore.kt` (экспорт настроек) — подтверждённое расхождение значения по умолчанию: DataStore flow возвращает `indigo`, если ключ отсутствует, тогда как экспорт резервной копии записывает `pure_black` для того же отсутствующего ключа. Поэтому экспорт и последующий импорт настроек на установке без сохранённого `theme_palette` меняют эффективную палитру с `indigo` на `pure_black`. Следует согласовать единый default и добавить round-trip тест резервной копии.
+
+
 - `app/src/main/java/com/shod/client/settings/profile/ProfilePreferenceKeys.kt` (`booleanKeyNames`) — отсутствуют профильные Boolean-ключи `participant_show_logs` и `deploy_secret_path_enabled`, хотя `SettingsStore.kt` использует их через `getProfileKey()` как Boolean при чтении/записи. Для профиля с индексом не 0 `forProfile()` попадает в fallback и создаёт `StringPreferencesKey` с тем же именем вместо `BooleanPreferencesKey`. Это нарушает типизированный контракт Preferences и может приводить к ошибкам чтения/записи настроек соответствующего профиля. Добавить оба имени в `booleanKeyNames` и покрыть тестом соответствие типов всех профильных ключей.
 
 - `app/src/main/java/com/shod/client/settings/profile/ProfileLifecycleStore.kt` (`keysClearedWithProfile`, `clearProfile`) — очистка удаляет только ограниченный список ключей, хотя `ProfilePreferenceKeys` определяет дополнительные профильные параметры. В частности, остаются `vk_hashes`, `secondary_vk_hash`, `protocol`, `sni`, `user_agent`, `extra_workers`, настройки маршрутизации и другие профильные значения. После очистки и повторного использования слота эти настройки могут перейти к новому подключению. Это противоречит назначению `clearProfile()` как очистки всех connection-related keys. Необходимо согласовать полный перечень ключей и добавить тест, проверяющий отсутствие старых профильных данных после очистки.
@@ -98,17 +101,20 @@
 
 ### Рекомендации
 
-- `app/src/main/java/com/shod/client/settings/system/BatteryOptimizationPromptStore.kt` — хранилище использует типизированный Boolean-ключ, возвращает `false` при отсутствии значения и идемпотентно записывает `true`. Ошибок в локальной логике не обнаружено. Отдельных тестов самого DataStore-адаптера не найдено; рекомендуется проверить значения по умолчанию, сохранение и повторное чтение. Взаимодействие с обработкой ошибки запуска системного Intent в `MainActivity.kt` уже отдельно отмечено как потенциальный риск.
+- `app/src/main/java/com/shod/client/settings/theme/ThemePreferencesStore.kt` — нет отдельных тестов DataStore-адаптера для значений по умолчанию и round-trip чтения/записи theme mode, dynamic color и palette; особенно важно закрепить согласованность default палитры с экспортом/импортом резервной копии.
 
 
-- `app/src/main/java/com/shod/client/settings/system/BatteryOptimizationPromptStore.kt` — проверены tolerant-декодирование JSON, fallback URL на ключ записи, нормализация строк, ограничение отрицательных числовых значений и сериализация полей. Явной ошибки в преобразовании не обнаружено. Отдельных тестов codec в Git tree не найдено; рекомендуется покрыть round-trip, повреждённый JSON, некорректные записи, пустые URL, дубли URL после trim и граничное `autoUpdateMinutes = Int.MAX_VALUE`. Последний случай связан с уже зарегистрированным переполнением в `SubscriptionMeta.needsUpdate()`; здесь codec сохраняет допустимость такого значения.
+- `app/src/main/java/com/shod/client/settings/theme/ThemePreferencesStore.kt` — хранилище использует типизированный Boolean-ключ, возвращает `false` при отсутствии значения и идемпотентно записывает `true`. Ошибок в локальной логике не обнаружено. Отдельных тестов самого DataStore-адаптера не найдено; рекомендуется проверить значения по умолчанию, сохранение и повторное чтение. Взаимодействие с обработкой ошибки запуска системного Intent в `MainActivity.kt` уже отдельно отмечено как потенциальный риск.
 
 
-- `app/src/main/java/com/shod/client/settings/system/BatteryOptimizationPromptStore.kt` — единственный делегат Preferences DataStore объявлен на `Context` с постоянным именем `settings`, сохраняющим совместимость с существующими установками. Проверено использование в `SettingsStore.kt`: все экземпляры получают этот делегат, отдельного второго DataStore в изученном контексте нет. Файл декларативный; самостоятельные тесты не требуются.
+- `app/src/main/java/com/shod/client/settings/theme/ThemePreferencesStore.kt` — проверены tolerant-декодирование JSON, fallback URL на ключ записи, нормализация строк, ограничение отрицательных числовых значений и сериализация полей. Явной ошибки в преобразовании не обнаружено. Отдельных тестов codec в Git tree не найдено; рекомендуется покрыть round-trip, повреждённый JSON, некорректные записи, пустые URL, дубли URL после trim и граничное `autoUpdateMinutes = Int.MAX_VALUE`. Последний случай связан с уже зарегистрированным переполнением в `SubscriptionMeta.needsUpdate()`; здесь codec сохраняет допустимость такого значения.
 
-- `app/src/main/java/com/shod/client/settings/system/BatteryOptimizationPromptStore.kt` — явных ошибок не обнаружено. Адаптер проверяет допустимый диапазон профиля, формирует read-only представление с подменённым `active_profile` без изменения исходных Preferences и отклоняет запись через `updateData()`. Отдельных тестов адаптера не найдено; рекомендуется проверить изоляцию выбранного профиля, неизменность исходного курсора и отказ при попытке записи.
 
-- `app/src/main/java/com/shod/client/settings/system/BatteryOptimizationPromptStore.kt` — явной ошибки в разделении VPN- и VPS-курсоров не обнаружено: deploy-представление подменяет `active_profile` значением deploy-курсора, а при записи сохраняет исходный VPN-курсор и отдельно обновляет `active_deploy_profile`. Отдельных тестов самого адаптера не найдено. Рекомендуется покрыть выбор начального VPS-профиля, независимость двух курсоров, сохранение VPN-курсора при изменениях deploy-настроек и поведение при отсутствующем/недопустимом deploy-курсоре.
+- `app/src/main/java/com/shod/client/settings/theme/ThemePreferencesStore.kt` — единственный делегат Preferences DataStore объявлен на `Context` с постоянным именем `settings`, сохраняющим совместимость с существующими установками. Проверено использование в `SettingsStore.kt`: все экземпляры получают этот делегат, отдельного второго DataStore в изученном контексте нет. Файл декларативный; самостоятельные тесты не требуются.
+
+- `app/src/main/java/com/shod/client/settings/theme/ThemePreferencesStore.kt` — явных ошибок не обнаружено. Адаптер проверяет допустимый диапазон профиля, формирует read-only представление с подменённым `active_profile` без изменения исходных Preferences и отклоняет запись через `updateData()`. Отдельных тестов адаптера не найдено; рекомендуется проверить изоляцию выбранного профиля, неизменность исходного курсора и отказ при попытке записи.
+
+- `app/src/main/java/com/shod/client/settings/theme/ThemePreferencesStore.kt` — явной ошибки в разделении VPN- и VPS-курсоров не обнаружено: deploy-представление подменяет `active_profile` значением deploy-курсора, а при записи сохраняет исходный VPN-курсор и отдельно обновляет `active_deploy_profile`. Отдельных тестов самого адаптера не найдено. Рекомендуется покрыть выбор начального VPS-профиля, независимость двух курсоров, сохранение VPN-курсора при изменениях deploy-настроек и поведение при отсутствующем/недопустимом deploy-курсоре.
 
 - `app/src/main/java/com/shod/client/settings/secret/SecureStringStore.kt` — отдельные Android-интеграционные тесты самого `SecureStringStore` не найдены. Существующие тесты проверяют разрешение состояний секретов, но не реальную работу Android Keystore и AES-GCM. Явных ошибок в реализации не обнаружено; рекомендуется покрыть round-trip шифрования/расшифровки, повреждённый ciphertext, некорректный формат и недоступность/инвалидацию ключа.
 
