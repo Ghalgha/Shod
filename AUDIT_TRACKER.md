@@ -23,18 +23,21 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **110**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/deploy/ssh/AndroidDeploySshSession.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/deploy/ssh/AndroidDeploySshSession.kt`**
+- Изучено файлов: **111**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/deploy/ssh/AndroidSshClientFactory.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/deploy/ssh/AndroidSshClientFactory.kt`**
 
 ## Найденные проблемы
 
 ### Потенциальные риски
 
-- `app/src/main/java/com/shod/client/platform/android/deploy/ssh/AndroidDeploySshSession.kt` — установка/обновление загружают скрипт, серверный бинарник и конфигурационные файлы на фиксированные удалённые пути (`/tmp/deploy.sh`, `/tmp/.shod-upload-server`, `/tmp/.shod-upload-web.env`, `/tmp/.shod-upload-overrides.json`). Удаление также использует `/tmp/deploy.sh`. При одновременных операциях на одном VPS файлы могут перезаписать друг друга: в частности, операция удаления может запустить скрипт установки или наоборот, а установщик — получить бинарник/конфигурацию другой операции. Параллельный запуск зависит от вызывающего кода; риск согласуется с общей проблемой конкурентных операций в `AndroidDeployCoordinator`.
+- `app/src/main/java/com/shod/client/platform/android/deploy/ssh/AndroidSshClientFactory.kt` — `ensureBouncyCastle()` выставляет общий `bcInitialized=true` через `compareAndSet` до фактической регистрации Bouncy Castle. Если два SSH-подключения одновременно впервые проходят инициализацию, второе может увидеть флаг `true` и начать разбирать ключ до завершения регистрации провайдера первым потоком. Возможен редкий сбой загрузки SSH-ключа при одновременном первом запуске; параллельность таких вызовов зависит от сценария запуска.
 
 
-- `app/src/main/java/com/shod/client/platform/android/deploy/ssh/AndroidDeploySshSession.kt` (`trackOperation`, `activeOperation`) — ссылка на текущую операцию общая для всех экземпляров координатора, но новый запуск безусловно заменяет предыдущую. При одновременном запуске двух операций отмена из foreground-сервиса затронет только последнюю зарегистрированную задачу; первая продолжит работу. Кроме того, завершение второй операции может сбросить `isDeploying` в `false`, пока первая ещё выполняется. Параллельный запуск зависит от вызывающего кода; подтверждения такого сценария в call sites не найдено.
+- `app/src/main/java/com/shod/client/platform/android/deploy/ssh/AndroidSshClientFactory.kt` — установка/обновление загружают скрипт, серверный бинарник и конфигурационные файлы на фиксированные удалённые пути (`/tmp/deploy.sh`, `/tmp/.shod-upload-server`, `/tmp/.shod-upload-web.env`, `/tmp/.shod-upload-overrides.json`). Удаление также использует `/tmp/deploy.sh`. При одновременных операциях на одном VPS файлы могут перезаписать друг друга: в частности, операция удаления может запустить скрипт установки или наоборот, а установщик — получить бинарник/конфигурацию другой операции. Параллельный запуск зависит от вызывающего кода; риск согласуется с общей проблемой конкурентных операций в `AndroidDeployCoordinator`.
+
+
+- `app/src/main/java/com/shod/client/platform/android/deploy/ssh/AndroidSshClientFactory.kt` (`trackOperation`, `activeOperation`) — ссылка на текущую операцию общая для всех экземпляров координатора, но новый запуск безусловно заменяет предыдущую. При одновременном запуске двух операций отмена из foreground-сервиса затронет только последнюю зарегистрированную задачу; первая продолжит работу. Кроме того, завершение второй операции может сбросить `isDeploying` в `false`, пока первая ещё выполняется. Параллельный запуск зависит от вызывающего кода; подтверждения такого сценария в call sites не найдено.
 
 
 - `app/src/main/java/com/shod/client/integration/vk/hash/codec/VkHashValidationCodec.kt`: `pending()` проверяет длину и ищет результаты до нормализации хеша, тогда как `active()` сначала выполняет `trim()`. Хеш с пробелами по краям может считаться непроверенным и повторно отправляться на валидацию, хотя для активного списка используется его обрезанная форма. В текущих тестах такой вход не проверяется; фактическое поступление пробельных значений не установлено.
