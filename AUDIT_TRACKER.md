@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **89**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/links/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/links/.gitkeep`**
+- Изучено файлов: **90**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/links/ShodLinkCodec.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/links/ShodLinkCodec.kt`**
 
 ## Найденные проблемы
 
@@ -49,6 +49,7 @@
 - `app/src/main/java/com/shod/client/deploy/execution/DeployStderrPolicy.kt` — регулярное выражение подавляет любую строку stderr, начинающуюся с `Warning:` (без проверки содержания). Это может скрыть значимые предупреждения сторонних утилит и лишить пользователя диагностической информации. На exit status не влияет; потенциальный риск потери диагностики.
 
 ### Подтверждённые проблемы
+- `app/src/main/java/com/shod/client/links/ShodLinkCodec.kt` (`Shod_CIPHER_KEY_SEED`, `cipherKey`, `encryptShodPayload`/`decryptShodPayload`) — ключ AES-GCM жёстко зашит в клиентское приложение и одинаков для всех установок. Поэтому любой получатель ссылки или посторонний, изучивший APK/исходный код, может извлечь ключ и расшифровать содержимое ссылки, включая пароль туннеля и VK-токен. AES-GCM обеспечивает целостность, но такой общий встроенный секрет не обеспечивает конфиденциальность от пользователя приложения или третьих лиц, имеющих APK. Тесты подтверждают работоспособность шифрования, но не проверяют эту модель угроз.
 - `app/src/main/java/com/shod/client/integration/vk/transport/turn/TurnSubnetRegistry.kt` — для подсети `193.203.43.0/24` задано `count = 48`, но список `ips` содержит только 47 уникальных адресов. Метаданные количества не соответствуют фактическому списку; возможны неверное отображение количества или ошибки логики, если потребители полагаются на `count`.
 - `app/src/main/java/com/shod/client/integration/vk/captcha/android/ManlCaptchaWebViewManager.kt` (`solveCaptchaAsync`) — `showCaptchaNotification()` и `context.startActivity(intent)` выполняются до входа в `try/finally`. Если создание/показ уведомления или запуск Activity выбросит исключение, очистка не выполнится: `isCaptchaPending` останется true, `pendingResult` и `pendingIntentToStart` могут остаться установленными, а уведомление — висеть. Нужно включить подготовку в защищённый `try/finally` либо явно откатывать состояние при ошибке.
 - `app/src/main/java/com/shod/client/integration/vk/auth/android/VkAuthWebViewManager.kt` (`switchToTokenPhase`) совместно с `integration/vk/auth/network/VkTokenScraper.kt` — WebView собирает cookies с нескольких доменов VK и передаёт их scraper'у. Scraper повторно отправляет этот Cookie header на URL из HTTP `Location` и HTML JavaScript-перенаправлений, не проверяя host назначения. Поэтому перенаправление на посторонний домен может привести к передаче ему сессионных cookies VK. Риск подтверждён чтением обоих файлов; реальный внешний redirect не запускался.
