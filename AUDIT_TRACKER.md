@@ -23,13 +23,15 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **80**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/android/ManlCaptchaWebViewManager.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/captcha/android/ManlCaptchaWebViewManager.kt`**
+- Изучено файлов: **81**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/hash/android/VkHashValidator.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/hash/android/VkHashValidator.kt`**
 
 ## Найденные проблемы
 
 ### Потенциальные риски
+
+- `app/src/main/java/com/shod/client/integration/vk/hash/android/VkHashValidator.kt`: процесс ожидается через `waitFor()` до чтения `process.inputStream`. Если нативный процесс выдаст достаточно большой объём stdout, чтобы заполнить системный pipe, он заблокируется на записи, а приложение — в `waitFor()` до таймаута 75 секунд; затем процесс будет принудительно завершён и проверка вернёт пустой результат. Риск зависит от объёма вывода; нормальный размер вывода в штатном сценарии здесь не установлен.
 
 - `app/src/main/java/com/shod/client/integration/vk/captcha/android/ManlCaptchaActivity.kt`: JavaScript-мост `ShodCaptcha` доступен всем фреймам WebView без проверки origin. Сторонний iframe на странице капчи потенциально может подделать success token, вызвать отмену с остановкой туннеля или передать ложную ошибку. Это отдельная реализация того же риска, что отмечен в `CaptchaWebViewManager.kt`; фактическое наличие сторонних iframe не подтверждено.
 
