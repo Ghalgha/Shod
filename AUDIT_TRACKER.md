@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **58**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/plan/DeployPlan.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/plan/DeployPlan.kt`**
+- Изучено файлов: **59**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/script/DeployScriptAsset.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/script/DeployScriptAsset.kt`**
 
 ## Найденные проблемы
 
