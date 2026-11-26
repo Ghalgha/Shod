@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **345**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/calls/policy/ProfileProbeVkAuthPolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/calls/policy/ProfileProbeVkAuthPolicyTest.kt`**
+- Изучено файлов: **346**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/calls/policy/VkCallPoliciesTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/calls/policy/VkCallPoliciesTest.kt`**
 
 ## Найденные проблемы
 
@@ -693,3 +693,6 @@
 
 
 - `app/src/test/java/com/shod/client/integration/vk/calls/policy/ProfileProbeVkAuthPolicyTest.kt` — проверены приоритет ручных хешей из ссылки, выбор link-token, приоритет Auto JS над API, выбор API-стратегии при пустом сохранённом токене и разбор первого непустого хеша. Сопоставлено с `ProfileProbeVkAuthPolicy.kt`: проверяемые ожидания соответствуют реализации. Замечание к покрытию: тест `automaticApiRequiresStoredTokenAndDoesNotInventManualHash` передаёт пустой `storedToken` и проверяет API-стратегию/пустой токен, но не проверяет обязательность сохранённого токена; имя теста вводит в заблуждение. Рекомендуется уточнить имя или добавить проверку требуемого поведения. Новых подтверждённых ошибок приложения не выявлено.
+
+
+- `app/src/test/java/com/shod/client/integration/vk/calls/policy/VkCallPoliciesTest.kt` — проверены повтор временных ошибок до успеха, ограничение трёх попыток для API-кода 6, отсутствие повторов для недействительного токена и минимальный интервал между стартами запросов. Сопоставлено с `VkCallPolicies.kt` и использованием `VkRequestPacer` в `VkAutoCallsManager`: проверяемые ожидания соответствуют реализации. Неточность имени: `permanentFailureStopsAfterThreeAttempts` проверяет API-код 6 (Too many requests), который реализация специально повторяет; название может создавать впечатление, что речь о неретраимой ошибке. Это замечание к ясности теста, не дефект приложения. Новых подтверждённых ошибок не выявлено.
