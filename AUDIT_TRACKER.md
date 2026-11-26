@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **14**
-- Последний изученный файл: **`app/src/androidTest/java/com/shod/client/platform/android/deploy/DeployScriptAssetTest.kt`**
-- Последний проверенный файл: **`app/src/androidTest/java/com/shod/client/platform/android/deploy/DeployScriptAssetTest.kt`**
+- Изучено файлов: **15**
+- Последний изученный файл: **`app/src/androidTest/java/com/shod/client/platform/android/vpn/diagnostics/probe/ProbeTunTransportTest.kt`**
+- Последний проверенный файл: **`app/src/androidTest/java/com/shod/client/platform/android/vpn/diagnostics/probe/ProbeTunTransportTest.kt`**
 
 ## Найденные проблемы
 
