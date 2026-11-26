@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **380**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProbeIpv4AddressTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProbeIpv4AddressTest.kt`**
+- Изучено файлов: **381**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfilePingControllerTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfilePingControllerTest.kt`**
 
 ## Найденные проблемы
 
@@ -798,3 +798,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProbeIpv4AddressTest.kt` — проверены разбор числового IPv4-адреса и отказ от доменных имён, некорректного количества октетов, пустых октетов и значений вне диапазона 0–255. Сопоставлено с `ProbeIpv4Address.kt`: парсер разбирает адрес вручную и использует `InetAddress.getByAddress`, не обращаясь к DNS. Пробел покрытия: не проверяются ведущие нули, пробелы, знаки и граничные значения октетов. Подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfilePingControllerTest.kt` — проверены последовательное выполнение и повторный запуск, отмена пакета, ожидание завершения очистки, блокировка второго пакета во время остановки, отменённая область корутин и отбрасывание результата после отмены. Сопоставлено с `ProfilePingController.kt`: проверяемые сценарии согласуются с реализацией. Пробелы покрытия: не проверяются пустой список, дублирующиеся ID и исключения из `clear`/`save`. Подтверждённых ошибок не выявлено.
