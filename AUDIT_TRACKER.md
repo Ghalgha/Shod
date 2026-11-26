@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **230**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/servers/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/servers/.gitkeep`**
+- Изучено файлов: **231**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/settings/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/settings/.gitkeep`**
 
 ## Найденные проблемы
 
@@ -381,3 +381,6 @@
 
 
 - `app/src/main/java/com/shod/client/ui/screens/servers/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `servers` в Git. Исполняемого содержимого нет; замечаний нет.
+
+
+- `app/src/main/java/com/shod/client/ui/screens/settings/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `settings` в Git. Исполняемого содержимого нет; замечаний нет.
