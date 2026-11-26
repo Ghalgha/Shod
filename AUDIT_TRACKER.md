@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **360**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/platform/android/apps/AppRoutingCatalogPolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/platform/android/apps/AppRoutingCatalogPolicyTest.kt`**
+- Изучено файлов: **361**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/platform/android/deploy/ssh/SshHostKeyStoreTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/platform/android/deploy/ssh/SshHostKeyStoreTest.kt`**
 
 ## Найденные проблемы
 
@@ -738,3 +738,6 @@
 
 
 - `app/src/test/java/com/shod/client/platform/android/apps/AppRoutingCatalogPolicyTest.kt` — проверены исключение собственного пакета Shod и двух VK-транспортных пакетов, а также разрешение обычного приложения и `com.vk.music`. Сопоставлено с `AppRoutingCatalogPolicy.kt` и использованием в `InstalledAppCatalog.kt`: фильтр применяется до загрузки метаданных/иконок. Тесты не проверяют регистр и частичные совпадения; реализация исключает пакеты через регистрозависимый `contains("vkontakte")` / `contains("vk.calls")`, поэтому любые пакеты с этими подстроками также исключаются, а варианты с другим регистром — нет. Это потенциальная неточность политики; фактический набор package name, который может вернуть Android, не проверен. Новых подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/platform/android/deploy/ssh/SshHostKeyStoreTest.kt` — проверены TOFU-сценарии: первый ключ принимается, повторно принимается тот же ключ, изменённый ключ отклоняется и однократно возвращается с обоими SHA-256 fingerprint; `trust()` сохраняет именно показанный fingerprint, после чего старый и посторонний ключи отклоняются. Сопоставлено с `SshHostKeyStore.kt`: ожидания соответствуют реализации, включая нормализацию регистра hostname. Пробелы покрытия: нет проверок первого pin в SharedPreferences, `clear()`, формата fingerprint и конкурентных изменений. Риск единственного глобального `lastChange` при почти одновременных конфликтах разных серверов уже отмечен в трекере и повторно не дублируется. Новых подтверждённых дефектов не выявлено.
