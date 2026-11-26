@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **377**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/TrafficDiagnosticParserTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/TrafficDiagnosticParserTest.kt`**
+- Изучено файлов: **378**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/TunnelLogPolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/TunnelLogPolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -789,3 +789,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/diagnostics/TrafficDiagnosticParserTest.kt` — проверены расчёт скорости по длительности окна, уникальность последовательных снимков, отклонение нулевых/отрицательных и отсутствующих счётчиков, а также защита истории диагностик от вытеснения сведений о рукопожатии. Сопоставлено с `TrafficDiagnosticParser.kt` и `StreamDiagnosticParser.kt`: ожидаемые значения и поведение соответствуют реализации. Пробелы покрытия: нет тестов на переполнение числовых полей, превышение лимита входной строки и граничные значения счётчиков. Подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/diagnostics/TunnelLogPolicyTest.kt` — проверены правила показа логов при выключенном подробном журналировании, фильтрация внутренних повторных попыток GETCONF/TURN/сети и различение внутренних восстановлений и ошибок TURN-потока. Сопоставлено с `TunnelLogPolicy.kt`: проверяемые ожидания соответствуют реализации. Пробелы покрытия: не проверяются HANDSHAKE-повторы, повторные попытки обновления учётных данных и граничные варианты текстовых маркеров. Подтверждённых ошибок не выявлено.
