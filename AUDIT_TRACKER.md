@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **63**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/transfer/DeployTransferPolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/transfer/DeployTransferPolicy.kt`**
+- Изучено файлов: **64**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/transfer/SshDeployFileTransfer.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/transfer/SshDeployFileTransfer.kt`**
 
 ## Найденные проблемы
 
@@ -36,6 +36,7 @@
 - `app/src/main/java/com/shod/client/deploy/execution/DeployStderrPolicy.kt` — регулярное выражение подавляет любую строку stderr, начинающуюся с `Warning:` (без проверки содержания). Это может скрыть значимые предупреждения сторонних утилит и лишить пользователя диагностической информации. На exit status не влияет; потенциальный риск потери диагностики.
 
 ### Подтверждённые проблемы
+- `app/src/main/java/com/shod/client/deploy/transfer/SshDeployFileTransfer.kt` (начало `upload(localFile, remotePath, reconnectsLeft)`) — предварительная проверка `!ssh.isConnected` вызывает `reconnect` без учёта `reconnectsLeft`. Поэтому при изначально отключённом SSH-клиенте может быть выполнено дополнительное переподключение сверх заданного `UPLOAD_RECONNECT_ATTEMPTS`; фактический бюджет повторов не соблюдается. Ошибка ограничена лишней попыткой переподключения, бесконечной рекурсии не обнаружено.
 - `app/src/main/java/com/shod/client/deploy/ssh/SshRemoteCommandExecutor.kt` (`execute`, определение `adjustedCommand` и последующая отправка пароля) — наличие подстроки `sudo` в любом месте команды запускает отправку `sudoPassword` в stdin удалённого процесса, даже если команда не вызывает sudo. Например, команда `echo sudo` удовлетворяет `command.contains("sudo")`, но не содержит `sudo ` для замены; пароль всё равно записывается в stdin. Если команда или её дочерняя программа читает stdin, пароль может быть раскрыт или обработан как пользовательский ввод. Дополнительно `command.replace("sudo ", "sudo -S ")` заменяет все вхождения, включая потенциально находящиеся внутри аргументов/кавычек. Это подтверждённая ошибка определения sudo-команд и потенциальная утечка секрета.
 - `app/src/main/java/com/shod/client/deploy/inventory/ServerInventory.kt` (проверка записи `server`, строки 54–58; `FoundServer.installed`, строка 17) — парсер проверяет только непустое значение `state`, но не ограничивает его допустимыми значениями `running`, `stopped`, `leftover`, которые выдаёт `deploy.sh`. Любое неизвестное состояние, например `unknown`, принимается как корректная запись; `FoundServer.installed` считает его установленным, поскольку исключает только точное значение `leftover`. В результате некорректная инвентаризация может ошибочно показать сервер установленным и предложить его удаление. Связанные проверки на сервере повторно защищают фактическое удаление, но UI и планирование получают неверное состояние.
 - `app/src/main/java/com/shod/client/ConnectionSource.kt` (`resolveConnectionSource`, локальная функция `activeHashes`) — если все хеши имеют статус `Invalid`, `VkHashValidationCodec.active` возвращает пустой список, после чего условие `if (filtered.isNotEmpty()) ... else rawList` возвращает исходные хеши. В результате хеши, которые проверка признала недействительными, всё равно передаются в `ConnectionSource.hashes` и далее могут попасть в источник туннеля. Это противоречит назначению фильтра и тесту `invalidHashIsRetainedForUiButExcludedFromTunnelSource` для самого codec; теста на сценарий, когда недействительны все хеши, нет.
