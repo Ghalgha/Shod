@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **133**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/model/TunnelScreenSnapshot.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/model/TunnelScreenSnapshot.kt`**
+- Изучено файлов: **134**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileConnectionStore.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileConnectionStore.kt`**
 
 ## Найденные проблемы
 
@@ -90,6 +90,8 @@
 - `LICENSE` и `rust-server/Cargo.toml` (`[package].license`) — лицензия проекта объявлена проприетарной, но Rust-пакет указывает `Unlicense`. Это противоречивые юридические условия и некорректные метаданные пакета; требуется согласовать объявление Cargo с фактической лицензией. Файлы не изменялись.
 
 ### Рекомендации
+
+- `app/src/main/java/com/shod/client/settings/profile/ProfileConnectionStore.kt` — отдельных тестов хранилища не найдено. Рекомендуется покрыть изоляцию профилей, конфликт `expectedRevision` после явного пользовательского изменения, поведение удалённого профиля, чтение legacy/encrypted/local пароля, обновление participant link и инвалидацию кэша только при изменении параметров подключения. Явной ошибки в проверенной реализации не обнаружено.
 
 - `app/src/main/java/com/shod/client/platform/android/widget/VpnWidgetToggleReceiver.kt` — отдельные тесты форматирования уведомления отсутствуют. Рекомендуется проверить пустой и многострочный текст, распознавание статуса только в последней строке и формирование BigTextStyle. Явных ошибок в реализации не обнаружено.
 
