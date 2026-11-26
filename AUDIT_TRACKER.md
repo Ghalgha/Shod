@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **274**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/recovery/VpnRecoveryPolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/recovery/VpnRecoveryPolicy.kt`**
+- Изучено файлов: **275**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/recovery/WorkerRecoveryPolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/recovery/WorkerRecoveryPolicy.kt`**
 
 ## Найденные проблемы
 
@@ -512,3 +512,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/recovery/VpnRecoveryPolicy.kt` — проверены классификация четырёх причин отказа VPN, стабильные диагностические коды и формирование сообщений. `VpnRecoveryPolicyTest` покрывает recoverable/terminal классификацию и непустые коды/сообщения. В `TunVpnService` и `TunnelManager` политика используется согласованно: неожиданный destroy и сбой передачи TUN fd инициируют восстановление, ошибка создания интерфейса и отзыв разрешения завершают туннель. Явных ошибок не обнаружено.
+
+
+- `app/src/main/java/com/shod/client/vpn/recovery/WorkerRecoveryPolicy.kt` — проверены накопление максимального числа активных workers, однократное вооружение восстановления после ActiveZero, подтверждение восстановления до целевого числа потоков и сброс состояния. Методы синхронизированы; `TunnelManager` использует политику для отложенного восстановления после подтверждённого нуля и отменяет задачу при восстановлении числа потоков. `WorkerRecoveryPolicyTest` покрывает запуск без здоровой группы, вооружение, частичное/полное восстановление и reset. Явных ошибок не обнаружено.
