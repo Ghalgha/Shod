@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **346**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/calls/policy/VkCallPoliciesTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/calls/policy/VkCallPoliciesTest.kt`**
+- Изучено файлов: **347**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/captcha/CaptchaUriPolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/captcha/CaptchaUriPolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -696,3 +696,6 @@
 
 
 - `app/src/test/java/com/shod/client/integration/vk/calls/policy/VkCallPoliciesTest.kt` — проверены повтор временных ошибок до успеха, ограничение трёх попыток для API-кода 6, отсутствие повторов для недействительного токена и минимальный интервал между стартами запросов. Сопоставлено с `VkCallPolicies.kt` и использованием `VkRequestPacer` в `VkAutoCallsManager`: проверяемые ожидания соответствуют реализации. Неточность имени: `permanentFailureStopsAfterThreeAttempts` проверяет API-код 6 (Too many requests), который реализация специально повторяет; название может создавать впечатление, что речь о неретраимой ошибке. Это замечание к ясности теста, не дефект приложения. Новых подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/integration/vk/captcha/CaptchaUriPolicyTest.kt` — проверены разрешение HTTPS для доверенных доменов VK/OK, отказ для HTTP, поддельных доменных суффиксов и некорректного URI. Сопоставлено с `CaptchaUriPolicy.kt`: проверка схемы HTTPS и точной границы домена/поддомена соответствует тестовым ожиданиям. Тесты не охватывают регистр схемы/хоста, завершающую точку домена, userinfo, порт и необычные URI; явного дефекта в проверяемых сценариях не выявлено.
