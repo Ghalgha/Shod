@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **154**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/storage/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/storage/.gitkeep`**
+- Изучено файлов: **155**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/subscriptions/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/subscriptions/.gitkeep`**
 
 ## Найденные проблемы
 
@@ -173,3 +173,5 @@
 - `app/src/main/java/com/shod/client/settings/update/UpdatePreferencesStore.kt` — типы ключей и атомарность групповых записей `saveState()`, `savePostpone()`, `saveDialogShown()` и `saveDialogAction()` согласованы; значения по умолчанию заданы явно. Явной ошибки в локальной логике не обнаружено. Отдельных тестов хранилища нет. Рекомендуется покрыть default/round-trip, сохранение интервала (включая `0` и отрицательные значения, которые политика трактует как отключение проверки), а также проверить назначение метаданных `dialogLastShown*`/`dialogLastAction*`: в этом классе они только записываются и не читаются.
 
 - `app/src/main/java/com/shod/client/storage/.gitkeep` — пустой служебный файл, сохраняющий каталог в Git. Проверен; замечаний нет.
+
+- `app/src/main/java/com/shod/client/subscriptions/.gitkeep` — пустой служебный файл, сохраняющий каталог в Git. Проверен; замечаний нет.
