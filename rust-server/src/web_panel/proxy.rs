@@ -21,7 +21,7 @@ pub(super) fn validate_proxy_profile_name(name: &str) -> Result<(), &'static str
 }
 
 #[derive(Deserialize)]
-struct ProfileRequest {
+pub(super) struct ProfileRequest {
     #[serde(default)]
     name: String,
     port: u16,
@@ -264,4 +264,3 @@ pub(super) async fn local_proxy_deactivate(State(state): State<WebState>) -> Res
         Err(error) => (StatusCode::BAD_GATEWAY, error).into_response(),
     }
 }
-

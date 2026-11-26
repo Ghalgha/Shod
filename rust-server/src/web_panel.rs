@@ -8201,11 +8201,12 @@ mod tests {
         links::{decrypt_shod_link, encrypt_shod_link},
         make_client_link,
         monitoring::{process_memory, process_memory_rollup},
+        proxy::validate_proxy_profile_name,
         settings::{
             DNS_PROVIDERS, deploy_dns_profile_or_yandex, dns_provider_by_id, manual_dns,
             provider_dns,
         },
-        proxy::validate_proxy_profile_name, validate_client_name, validate_workers,
+        validate_client_name, validate_workers,
     };
 
     #[test]
