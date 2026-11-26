@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **355**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/network/connectivity/PhysicalNetworkTrackerTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/network/connectivity/PhysicalNetworkTrackerTest.kt`**
+- Изучено файлов: **356**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/network/wifi/policy/WifiAutoPausePolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/network/wifi/policy/WifiAutoPausePolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -723,3 +723,6 @@
 
 
 - `app/src/test/java/com/shod/client/network/connectivity/PhysicalNetworkTrackerTest.kt` — проверены подавление дублирующихся callbacks, переходы при перекрывающихся физических сетях, повторяющиеся циклы добавления/удаления, причина паузы, очистка состояния и фильтрация VPN/неподходящих транспортов. Сопоставлено с `PhysicalNetworkTracker.kt`: синхронизированные операции над множеством активных сетей и вычисление переходов соответствуют ожиданиям. Название `rapidAirplaneCyclesRemainExactlyPaired` шире фактического сценария: тест моделирует пары update(true/false), но не включает реальное состояние режима полёта; оно проверяется отдельно только функцией преобразования причины паузы. Это неточность названия/покрытия, не дефект реализации. Не проверяется конкурентное обновление tracker из нескольких потоков, хотя методы синхронизированы. Новых подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/network/wifi/policy/WifiAutoPausePolicyTest.kt` — проверены отмена вызывающей coroutine без отмены перехода, отмена перехода при остановке service scope, условия PAUSE/RESUME, приоритет default network над устаревшими callbacks, разделение остановки VPN и controller, ручная остановка во время приостановки, состояния кнопки питания и передача уведомления controller. Сопоставлено с `WifiAutoPausePolicy.kt`: `runWifiAutoPauseTransition()` выполняет переход в service-owned scope, а `completeWifiAutoPause()` повторно проверяет пользовательское намерение после сохранения и после остановки data plane. Тест ручной остановки проверяет итоговое состояние при последовательном исполнении корутин на тестовом dispatcher; реальную многопоточную гонку и интеграцию с Android service он не моделирует. Это ограничение покрытия, не подтверждённая ошибка. Новых подтверждённых дефектов не выявлено.
