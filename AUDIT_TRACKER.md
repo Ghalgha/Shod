@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **269**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/power/BatterySaver.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/power/BatterySaver.kt`**
+- Изучено файлов: **270**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/power/TunnelBatteryMonitor.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/power/TunnelBatteryMonitor.kt`**
 
 ## Найденные проблемы
 
@@ -497,3 +497,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/power/BatterySaver.kt` — проверены режимы auto/level/off, расчёт порога заряда, исключение при зарядке и неизвестном уровне, публикация состояния через `StateFlow`. `BatterySaverTest` покрывает режимы и основные граничные случаи. Несоответствие документации: KDoc утверждает «off by default», тогда как `DEFAULT_MODE = MODE_AUTO`, а описание интерфейса также называет Auto режимом по умолчанию. Следует исправить KDoc, чтобы не вводить в заблуждение.
+
+
+- `app/src/main/java/com/shod/client/vpn/power/TunnelBatteryMonitor.kt` — проверены регистрация Android battery/power-save receiver, чтение уровня и зарядки, подписка на настройки и состояния deploy/tunnel, пересчёт политики и снятие receiver/job при остановке. `TunnelService.onDestroy()` дополнительно сбрасывает `BatterySaver.active`; прямой жизненный цикл учтён. Отдельных тестов монитора нет. Потенциальный риск: ошибка `ContextCompat.registerReceiver()` полностью подавляется через `runCatching`; при ней монитор остаётся без обновлений батареи и режима энергосбережения, поэтому режим `level` не сможет включиться, а `auto` будет использовать только начальное значение. Рекомендуется хотя бы журналировать ошибку и покрыть отказ регистрации/остановку тестами.
