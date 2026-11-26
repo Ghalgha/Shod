@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **373**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/DnsProfileNameTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/DnsProfileNameTest.kt`**
+- Изучено файлов: **374**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/DtlsLogParserTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/DtlsLogParserTest.kt`**
 
 ## Найденные проблемы
 
@@ -777,3 +777,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/diagnostics/DnsProfileNameTest.kt` — проверены соответствия семи известных DNS-пар отображаемым названиям и fallback для неизвестной пары. Сопоставлено с `TunnelLogSanitizer.kt`: все семь соответствий присутствуют и совпадают с реализацией. Пробелы покрытия: остальные DNS-профили, пробелы вокруг адресов и изменение порядка адресов не проверяются. Подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/diagnostics/DtlsLogParserTest.kt` — проверены разделение успешных DTLS-попыток и fallback, подсчёт событий, уровень логирования и сохранение номера потока при ошибке. Сопоставлено с `DtlsLogParser.kt`: проверяемые сценарии соответствуют реализации. Пробелы покрытия: нет проверок пустого сообщения, прогресса, отрицания в формулировках успеха и других вариантов ошибок. Ошибка классификации отрицательных формулировок успеха уже зафиксирована выше и повторно не дублируется.
