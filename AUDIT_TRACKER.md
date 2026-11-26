@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **127**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/widget/VpnWidgetToggleReceiver.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/widget/VpnWidgetToggleReceiver.kt`**
+- Изучено файлов: **128**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/power/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/power/.gitkeep`**
 
 ## Найденные проблемы
 
