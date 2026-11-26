@@ -165,7 +165,10 @@ pub(super) async fn local_proxy_update(
     Json(serde_json::json!({ "updated": true, "port_listening": port_listening })).into_response()
 }
 
-pub(super) async fn local_proxy_delete(State(state): State<WebState>, Path(id): Path<String>) -> Response {
+pub(super) async fn local_proxy_delete(
+    State(state): State<WebState>,
+    Path(id): Path<String>,
+) -> Response {
     let (was_active, revision) = {
         let mut db = state.app.db.write().await;
         let was_active = db.local_proxy.active_profile_id == id;
@@ -212,7 +215,10 @@ async fn wait_proxy_route_applied(state: &WebState, want_active: bool) -> Result
     }
 }
 
-pub(super) async fn local_proxy_activate(State(state): State<WebState>, Path(id): Path<String>) -> Response {
+pub(super) async fn local_proxy_activate(
+    State(state): State<WebState>,
+    Path(id): Path<String>,
+) -> Response {
     let revision = {
         let mut db = state.app.db.write().await;
         if db.local_proxy.find_profile(&id).is_none() {

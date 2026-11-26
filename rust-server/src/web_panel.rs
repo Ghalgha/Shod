@@ -468,14 +468,14 @@ pub async fn run(
         .route("/api/logs/download", get(monitoring::logs_download))
         .route(
             "/api/local-proxy",
-            get(local_proxy_get).post(local_proxy_create),
+            get(proxy::local_proxy_get).post(proxy::local_proxy_create),
         )
         .route(
             "/api/local-proxy/profiles/{id}",
-            put(local_proxy_update).delete(local_proxy_delete),
+            put(proxy::local_proxy_update).delete(proxy::local_proxy_delete),
         )
-        .route("/api/local-proxy/activate/{id}", post(local_proxy_activate))
-        .route("/api/local-proxy/deactivate", post(local_proxy_deactivate))
+        .route("/api/local-proxy/activate/{id}", post(proxy::local_proxy_activate))
+        .route("/api/local-proxy/deactivate", post(proxy::local_proxy_deactivate))
         .route("/api/logout", post(auth::logout))
         .route("/api/logout_all", post(auth::logout_all))
         .route("/api/links", get(clients::api_links_get))
