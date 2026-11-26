@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **152**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/theme/UiScale.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/theme/UiScale.kt`**
+- Изучено файлов: **153**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/update/UpdatePreferencesStore.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/update/UpdatePreferencesStore.kt`**
 
 ## Найденные проблемы
 
@@ -169,3 +169,5 @@
 - `app/src/main/java/com/shod/client/settings/theme/UiDesignPresets.kt` — проверены нормализация сохранённого preset, fallback на `DEFAULT`, подпись и соответствие тёмной палитры. Значения `NEW` и `CLASSIC` намеренно оставлены в `archivedOptions`, но исключены из доступного селектора; неизвестные значения нормализуются к `ORIGINAL_250`. Явных ошибок не обнаружено. Отдельных тестов для `normalize()`, `label()` и `darkPalette()` в Git tree не найдено; рекомендуется покрыть legacy/unknown значения и соответствие палитр.
 
 - `app/src/main/java/com/shod/client/settings/theme/UiScale.kt` — функция `normalize()` принимает только значения из списка `90/100/110/120`, а `null` и любые другие целые числа приводятся к `100`; явных ошибок в проверенной логике не обнаружено. Отдельных тестов `UiScale` в Git tree не найдено; рекомендуется покрыть все разрешённые значения, `null`, границы диапазона и произвольные отрицательные/чрезмерно большие значения.
+
+- `app/src/main/java/com/shod/client/settings/update/UpdatePreferencesStore.kt` — типы ключей и атомарность групповых записей `saveState()`, `savePostpone()`, `saveDialogShown()` и `saveDialogAction()` согласованы; значения по умолчанию заданы явно. Явной ошибки в локальной логике не обнаружено. Отдельных тестов хранилища нет. Рекомендуется покрыть default/round-trip, сохранение интервала (включая `0` и отрицательные значения, которые политика трактует как отключение проверки), а также проверить назначение метаданных `dialogLastShown*`/`dialogLastAction*`: в этом классе они только записываются и не читаются.
