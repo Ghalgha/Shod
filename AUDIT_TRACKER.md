@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **140**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileSelectionPolicy.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileSelectionPolicy.kt`**
+- Изучено файлов: **141**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/secret/SecureStringStore.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/secret/SecureStringStore.kt`**
 
 ## Найденные проблемы
 
@@ -94,6 +94,8 @@
 - `LICENSE` и `rust-server/Cargo.toml` (`[package].license`) — лицензия проекта объявлена проприетарной, но Rust-пакет указывает `Unlicense`. Это противоречивые юридические условия и некорректные метаданные пакета; требуется согласовать объявление Cargo с фактической лицензией. Файлы не изменялись.
 
 ### Рекомендации
+
+- `app/src/main/java/com/shod/client/settings/secret/SecureStringStore.kt` — отдельные Android-интеграционные тесты самого `SecureStringStore` не найдены. Существующие тесты проверяют разрешение состояний секретов, но не реальную работу Android Keystore и AES-GCM. Явных ошибок в реализации не обнаружено; рекомендуется покрыть round-trip шифрования/расшифровки, повреждённый ciphertext, некорректный формат и недоступность/инвалидацию ключа.
 
 - `app/src/main/java/com/shod/client/settings/profile/ProfileSelectionPolicy.kt` — отдельные тесты `normalize()`, `requireValid()` и `fallbackAfterClearing()` не найдены. Проверки диапазона и выбор первого другого занятого профиля логически корректны. `ProfileLifecycleStore.clearProfile()` реализует аналогичный поиск резервного профиля самостоятельно, не используя `fallbackAfterClearing()`; это дублирование может привести к расхождению правил при будущих изменениях. Рекомендуется покрыть граничные случаи тестами и свести выбор резервного профиля к одной реализации.
 
