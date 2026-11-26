@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **159**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/transport/calls/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/transport/calls/.gitkeep`**
+- Изучено файлов: **160**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/transport/config/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/transport/config/.gitkeep`**
 
 ## Найденные проблемы
 
@@ -183,3 +183,5 @@
 - `app/src/main/java/com/shod/client/transport/.gitkeep` — пустой служебный файл, сохраняющий каталог в Git. Проверен; замечаний нет.
 
 - `app/src/main/java/com/shod/client/transport/calls/.gitkeep` — пустой служебный файл, сохраняющий каталог в Git. Проверен; замечаний нет.
+
+- `app/src/main/java/com/shod/client/transport/config/.gitkeep` — пустой служебный файл, сохраняющий каталог в Git. Проверен; замечаний нет.
