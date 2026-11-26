@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **276**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/routing/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/routing/.gitkeep`**
+- Изучено файлов: **277**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/routing/DomainRoutingRules.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/routing/DomainRoutingRules.kt`**
 
 ## Найденные проблемы
 
@@ -518,3 +518,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/routing/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `vpn/routing` в Git. Исполняемого содержимого нет; замечаний нет.
+
+
+- `app/src/main/java/com/shod/client/vpn/routing/DomainRoutingRules.kt` — проверены нормализация URL/доменов, ограничения длины домена и меток, поддержка кириллицы, фильтрация некорректных значений, удаление дубликатов и лимит 1024 записи. `DomainRoutingRulesTest` покрывает нормализацию, кириллический домен, malformed entries, дубликаты и лимит. Явных ошибок в реализации не обнаружено.
