@@ -23,15 +23,15 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **105**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/deploy/AndroidDeployCoordinator.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/deploy/AndroidDeployCoordinator.kt`**
+- Изучено файлов: **106**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/deploy/AndroidDeployServerCheck.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/deploy/AndroidDeployServerCheck.kt`**
 
 ## Найденные проблемы
 
 ### Потенциальные риски
 
-- `app/src/main/java/com/shod/client/platform/android/deploy/AndroidDeployCoordinator.kt` (`trackOperation`, `activeOperation`) — ссылка на текущую операцию общая для всех экземпляров координатора, но новый запуск безусловно заменяет предыдущую. При одновременном запуске двух операций отмена из foreground-сервиса затронет только последнюю зарегистрированную задачу; первая продолжит работу. Кроме того, завершение второй операции может сбросить `isDeploying` в `false`, пока первая ещё выполняется. Параллельный запуск зависит от вызывающего кода; подтверждения такого сценария в call sites не найдено.
+- `app/src/main/java/com/shod/client/platform/android/deploy/AndroidDeployServerCheck.kt` (`trackOperation`, `activeOperation`) — ссылка на текущую операцию общая для всех экземпляров координатора, но новый запуск безусловно заменяет предыдущую. При одновременном запуске двух операций отмена из foreground-сервиса затронет только последнюю зарегистрированную задачу; первая продолжит работу. Кроме того, завершение второй операции может сбросить `isDeploying` в `false`, пока первая ещё выполняется. Параллельный запуск зависит от вызывающего кода; подтверждения такого сценария в call sites не найдено.
 
 
 - `app/src/main/java/com/shod/client/integration/vk/hash/codec/VkHashValidationCodec.kt`: `pending()` проверяет длину и ищет результаты до нормализации хеша, тогда как `active()` сначала выполняет `trim()`. Хеш с пробелами по краям может считаться непроверенным и повторно отправляться на валидацию, хотя для активного списка используется его обрезанная форма. В текущих тестах такой вход не проверяется; фактическое поступление пробельных значений не установлено.
