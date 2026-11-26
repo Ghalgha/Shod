@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **358**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/network/wifi/preferences/WifiPreferencesTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/network/wifi/preferences/WifiPreferencesTest.kt`**
+- Изучено файлов: **359**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/platform/android/activity/UpdateLaunchGuardTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/platform/android/activity/UpdateLaunchGuardTest.kt`**
 
 ## Найденные проблемы
 
@@ -732,3 +732,6 @@
 
 
 - `app/src/test/java/com/shod/client/network/wifi/preferences/WifiPreferencesTest.kt` — проверены сохранение и выбор сетей для blacklist/whitelist/ALL, независимость сохранённых имён от выбранных исключений, защита от устаревших notification actions, legacy whitelist, поведение новой установки, удаление сети, фильтрация некорректных SSID, обнаружение новых сетей, идемпотентность и регистр имён. Сопоставлено с `WifiPreferences.kt`: операции над `MutablePreferences` выполняются в рамках переданного объекта настроек; read объединяет сохранённые и выбранные имена, а remember проверяет ожидаемый режим и состояние функции. Потенциальный риск: `forget()` удаляет имя через точное сравнение `previous.saved - name` и `previous.selected - name`, не нормализуя аргумент; если вызывающий код передаст SSID с Android-кавычками или лишними пробелами, запись не будет удалена. Текущий тест проверяет только точное совпадение, а фактический формат аргумента вызывающего кода отдельно не подтверждён. Новых подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/platform/android/activity/UpdateLaunchGuardTest.kt` — проверены три условия `shouldDiscardStaleSavedState`: первая установка не сбрасывает состояние, изменение package token после обновления сбрасывает его, повторный запуск с тем же token не сбрасывает повторно, а обновление с отсутствующим маркером также распознаётся. Сопоставлено с `UpdateLaunchGuard.kt`: чистая функция соответствует этим ожиданиям. Тесты не покрывают интеграцию `consumeStaleSavedState()` с SharedPreferences, сбои чтения/записи и аварийное завершение между очисткой состояния и сохранением нового token; риск crash-window уже отмечен в трекере и повторно не дублируется. Новых подтверждённых дефектов не выявлено.
