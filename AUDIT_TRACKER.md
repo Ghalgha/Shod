@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **364**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/platform/android/process/probe/ProbeOutputReaderTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/platform/android/process/probe/ProbeOutputReaderTest.kt`**
+- Изучено файлов: **365**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/settings/model/TunnelAuthSnapshotTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/settings/model/TunnelAuthSnapshotTest.kt`**
 
 ## Найденные проблемы
 
@@ -750,3 +750,6 @@
 
 
 - `app/src/test/java/com/shod/client/platform/android/process/probe/ProbeOutputReaderTest.kt` — проверены отмена чтения при молчащем процессе без блокирующего `read()`, разбор CRLF и финальной строки UTF-8 без завершающего перевода строки. Сопоставлено с `ProbeOutputReader.kt`: реализация опрашивает `available()`, проверяет отмену coroutine перед каждой итерацией, ограничивает строку 65 536 байт и отправляет остаток после завершения потока. Тесты не проверяют ошибку `InputStream`, исключение `alive`/`onLine`, превышение лимита и поведение `read()` при возврате 0; при `count == 0` цикл может повторяться без задержки, что потенциально приводит к расходу CPU для нестандартного потока. В обычном `InputStream` при положительном размере чтения ожидается чтение хотя бы одного байта либо EOF, поэтому это условный риск, не подтверждённый дефект. Новых подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/settings/model/TunnelAuthSnapshotTest.kt` — проверены loading sentinel (`profile=-1`), загруженный профиль с пустым паролем, сохранение состояния нечитаемого секрета и согласованность Shod-ссылки с режимом ссылки в одном snapshot. Сопоставлено с `TunnelAuthSnapshot` в `SettingsModels.kt` и `StoredSecretState.kt`: `isLoaded` определяется только `profile >= 0`, а состояние секрета хранится отдельно от значения, поэтому пустой пароль не смешивается с ошибкой чтения. Проверки соответствуют модели. Нет тестов на отрицательные profile кроме значения по умолчанию и на граничное значение `Int.MAX_VALUE`, но реализация простая и дополнительных дефектов не выявлено.
