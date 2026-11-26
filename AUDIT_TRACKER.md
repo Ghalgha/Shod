@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **16**
-- Последний изученный файл: **`app/src/androidTest/java/com/shod/client/ui/CurrentUiSmokeTest.kt`**
-- Последний проверенный файл: **`app/src/androidTest/java/com/shod/client/ui/CurrentUiSmokeTest.kt`**
+- Изучено файлов: **17**
+- Последний изученный файл: **`app/src/debug/AndroidManifest.xml`**
+- Последний проверенный файл: **`app/src/debug/AndroidManifest.xml`**
 
 ## Найденные проблемы
 
