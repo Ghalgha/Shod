@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **372**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/config/VpnConfigurationTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/config/VpnConfigurationTest.kt`**
+- Изучено файлов: **373**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/DnsProfileNameTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/DnsProfileNameTest.kt`**
 
 ## Найденные проблемы
 
@@ -774,3 +774,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/config/VpnConfigurationTest.kt` — тест проверяет, что `ShodConstants.Vpn.DEFAULT_MTU` равен 1500. Сопоставлено с `app/src/main/java/com/shod/client/Constants.kt`: константа объявлена как `const val DEFAULT_MTU = 1500`, тест точно отражает текущее значение. Проверка не охватывает применение MTU при создании Android VPN-интерфейса, допустимые диапазоны/совместимость устройств и другие параметры конфигурации; это тест константы, а не интеграционная проверка VPN. Подтверждённых ошибок в тесте и определении константы не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/diagnostics/DnsProfileNameTest.kt` — проверены соответствия семи известных DNS-пар отображаемым названиям и fallback для неизвестной пары. Сопоставлено с `TunnelLogSanitizer.kt`: все семь соответствий присутствуют и совпадают с реализацией. Пробелы покрытия: остальные DNS-профили, пробелы вокруг адресов и изменение порядка адресов не проверяются. Подтверждённых ошибок не выявлено.
