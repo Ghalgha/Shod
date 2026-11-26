@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **121**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/services/TunnelServiceIntentFactory.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/services/TunnelServiceIntentFactory.kt`**
+- Изучено файлов: **122**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt`**
 
 ## Найденные проблемы
 
@@ -65,6 +65,9 @@
 - `app/src/main/java/com/shod/client/platform/android/activity/UpdateLaunchGuard.kt` (`consumeStaleSavedState`) — новый package token сохраняется синхронно до возврата из метода и до вызова `super.onCreate(null)` в `MainActivity`. Если процесс аварийно завершится после фиксации token, но до фактического отбрасывания `savedInstanceState`, следующий запуск увидит уже совпадающий token и может восстановить устаревшее UI-состояние. Узкое окно отказа; штатный сценарий покрыт тестами, аварийный перезапуск между записью маркера и передачей состояния не проверяется.
 
 ### Подтверждённые проблемы
+
+- `app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt` — `showRaisedToast()` использует стандартный текстовый `Toast` и задаёт положение через `setGravity()`. На Android 11+ позиционирование стандартных текстовых Toast контролируется ОС, поэтому заданная приложением гравитация игнорируется. Смещение вверх, подразумеваемое названием функции, не гарантируется на современных версиях Android. Для точного положения потребуется собственный UI-элемент (например, Snackbar или overlay).
+
 - `app/src/main/java/com/shod/client/links/ShodLinkCodec.kt` (`Shod_CIPHER_KEY_SEED`, `cipherKey`, `encryptShodPayload`/`decryptShodPayload`) — ключ AES-GCM жёстко зашит в клиентское приложение и одинаков для всех установок. Поэтому любой получатель ссылки или посторонний, изучивший APK/исходный код, может извлечь ключ и расшифровать содержимое ссылки, включая пароль туннеля и VK-токен. AES-GCM обеспечивает целостность, но такой общий встроенный секрет не обеспечивает конфиденциальность от пользователя приложения или третьих лиц, имеющих APK. Тесты подтверждают работоспособность шифрования, но не проверяют эту модель угроз.
 - `app/src/main/java/com/shod/client/integration/vk/transport/turn/TurnSubnetRegistry.kt` — для подсети `193.203.43.0/24` задано `count = 48`, но список `ips` содержит только 47 уникальных адресов. Метаданные количества не соответствуют фактическому списку; возможны неверное отображение количества или ошибки логики, если потребители полагаются на `count`.
 - `app/src/main/java/com/shod/client/integration/vk/captcha/android/ManlCaptchaWebViewManager.kt` (`solveCaptchaAsync`) — `showCaptchaNotification()` и `context.startActivity(intent)` выполняются до входа в `try/finally`. Если создание/показ уведомления или запуск Activity выбросит исключение, очистка не выполнится: `isCaptchaPending` останется true, `pendingResult` и `pendingIntentToStart` могут остаться установленными, а уведомление — висеть. Нужно включить подготовку в защищённый `try/finally` либо явно откатывать состояние при ошибке.
@@ -83,19 +86,19 @@
 
 ### Рекомендации
 
-- `app/src/main/java/com/shod/client/platform/android/services/TunnelServiceIntentFactory.kt` — отдельные тесты фабрики Intent отсутствуют. Рекомендуется проверить передачу всех полей `ConnectionSource` и `TunnelStartOptions`, включая `generation_id`/`session_salt`, а также соответствие ключей extras контракту `TunnelService`. Явной ошибки в проверенной реализации не обнаружено.
+- `app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt` — отдельные тесты фабрики Intent отсутствуют. Рекомендуется проверить передачу всех полей `ConnectionSource` и `TunnelStartOptions`, включая `generation_id`/`session_salt`, а также соответствие ключей extras контракту `TunnelService`. Явной ошибки в проверенной реализации не обнаружено.
 
 
-- `app/src/main/java/com/shod/client/platform/android/services/TunnelServiceIntentFactory.kt` — отдельные тесты формирования START-intent и переключения туннеля из Quick Settings/виджета отсутствуют. Рекомендуется покрыть остановку при `stopping`, остановку при running/starting/Wi-Fi auto-pause, запрос VPN-разрешения, отсутствие настроек подключения и передачу всех параметров START-intent. В проверенной реализации явной ошибки не обнаружено.
+- `app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt` — отдельные тесты формирования START-intent и переключения туннеля из Quick Settings/виджета отсутствуют. Рекомендуется покрыть остановку при `stopping`, остановку при running/starting/Wi-Fi auto-pause, запрос VPN-разрешения, отсутствие настроек подключения и передачу всех параметров START-intent. В проверенной реализации явной ошибки не обнаружено.
 
 
-- `app/src/main/java/com/shod/client/platform/android/services/TunnelServiceIntentFactory.kt` — отдельные тесты Quick Settings tile отсутствуют. Рекомендуется покрыть жизненный цикл подписки на `TunnelManager.running`, повторный `onStartListening`, отмену в `onStopListening`/`onDestroy`, а также обработку ошибок переключения и обновления плитки. В проверенной реализации явной ошибки не обнаружено.
+- `app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt` — отдельные тесты Quick Settings tile отсутствуют. Рекомендуется покрыть жизненный цикл подписки на `TunnelManager.running`, повторный `onStartListening`, отмену в `onStopListening`/`onDestroy`, а также обработку ошибок переключения и обновления плитки. В проверенной реализации явной ошибки не обнаружено.
 
 
-- `app/src/main/java/com/shod/client/platform/android/services/TunnelServiceIntentFactory.kt` — существующие тесты проверяют отмену при молчащем процессе и разбор UTF-8 строк, но не проверяют предельную длину строки (65 536 байт), превышение лимита, завершение процесса с незавершённой строкой и поведение при исключении `onLine`. Явной ошибки в проверенной реализации не обнаружено; рекомендуется покрыть эти граничные сценарии.
+- `app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt` — существующие тесты проверяют отмену при молчащем процессе и разбор UTF-8 строк, но не проверяют предельную длину строки (65 536 байт), превышение лимита, завершение процесса с незавершённой строкой и поведение при исключении `onLine`. Явной ошибки в проверенной реализации не обнаружено; рекомендуется покрыть эти граничные сценарии.
 
 
-- `app/src/main/java/com/shod/client/platform/android/services/TunnelServiceIntentFactory.kt` — для счётчика активных Activity нет отдельных тестов переходов `0→1→0`, нескольких одновременно активных Activity и защиты от повторного `onActivityStopped()`. Сам счётчик ограничен снизу нулём, а текущий вызов идёт из lifecycle-callback `MainActivity`; явной ошибки в проверенном коде не обнаружено. Рекомендуется добавить unit-тесты переходов состояния.
+- `app/src/main/java/com/shod/client/platform/android/ui/TransientMessage.kt` — для счётчика активных Activity нет отдельных тестов переходов `0→1→0`, нескольких одновременно активных Activity и защиты от повторного `onActivityStopped()`. Сам счётчик ограничен снизу нулём, а текущий вызов идёт из lifecycle-callback `MainActivity`; явной ошибки в проверенном коде не обнаружено. Рекомендуется добавить unit-тесты переходов состояния.
 
 
 - `app/src/main/java/com/shod/client/platform/android/network/wifi/WifiDiscovery.kt` — нет отдельных тестов для Android-слоя обнаружения Wi-Fi: регистрации/снятия `NetworkCallback` и `BroadcastReceiver`, поведения при ошибке регистрации, переключения нескольких владельцев и обработки запоздавших действий уведомления. Существующие тесты покрывают чистую политику и хранилище предпочтений, но не жизненный цикл системных наблюдателей. Рекомендуется добавить тесты с подменяемыми Android-зависимостями.
