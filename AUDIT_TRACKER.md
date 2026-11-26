@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **226**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/routing/apps/AppRow.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/routing/apps/AppRow.kt`**
+- Изучено файлов: **227**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/routing/apps/SelectedApplicationsOrder.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/routing/apps/SelectedApplicationsOrder.kt`**
 
 ## Найденные проблемы
 
@@ -369,3 +369,6 @@
 
 
 - `app/src/main/java/com/shod/client/ui/screens/routing/apps/AppRow.kt` — проверена строка приложения в селекторе раздельной маршрутизации. Состояние выбора единообразно задаётся родительским `toggleable(Role.Checkbox)`, вложенный Checkbox отображает состояние без отдельного обработчика и очищает дублирующую семантику. Название и package ID ограничены одной строкой с ellipsis; отсутствие значка обрабатывается placeholder-блоком. Явных ошибок локальной логики или доступности не обнаружено. Есть неиспользуемый импорт `semantics`, не влияющий на выполнение.
+
+
+- `app/src/main/java/com/shod/client/ui/screens/routing/apps/SelectedApplicationsOrder.kt` — функция сортировки сначала выводит выбранные пакеты, затем сортирует каждую группу без учёта регистра по локализованной подписи, а при совпадении подписи использует package name как стабильный tie-breaker. Используется `Locale.ROOT`, поэтому результат не зависит от системной локали. Unit-тесты покрывают порядок выбранных/невыбранных элементов, пустой и неизвестный выбор, независимые наборы выбора и совпадающие подписи. Явных ошибок не обнаружено.
