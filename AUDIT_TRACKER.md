@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **115**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/network/wifi/WifiSsidResolver.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/network/wifi/WifiSsidResolver.kt`**
+- Изучено файлов: **116**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/platform/android/power/BatteryOptimizationPromptPolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/platform/android/power/BatteryOptimizationPromptPolicy.kt`**
 
 ## Найденные проблемы
 
