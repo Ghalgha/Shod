@@ -23,11 +23,15 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **215**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/credentials/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/credentials/.gitkeep`**
+- Изучено файлов: **216**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/credentials/CredentialsScreen.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/credentials/CredentialsScreen.kt`**
 
 ## Найденные проблемы
+
+### Подтверждённые ошибки
+
+- `app/src/main/java/com/shod/client/ui/screens/credentials/CredentialsScreen.kt` — подтверждённая ошибка сохранения адреса сервера: когда «Ручные порты» выключены, обработчик `onValueChange` поля IP/домена обновляет только `peerInput` и не вызывает `scheduleSave()`. В режиме ручных портов тот же обработчик вызывает `scheduleSave()`, который сохраняет настройки туннеля. Поэтому при выключенных ручных портах введённый адрес не записывается в `SettingsStore` и теряется после ухода с экрана/перезапуска. Рекомендуется вызывать сохранение и в этой ветке; добавить тест для обоих режимов.
 
 ### Потенциальные риски
 
