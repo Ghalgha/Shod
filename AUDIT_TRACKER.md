@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **155**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/subscriptions/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/subscriptions/.gitkeep`**
+- Изучено файлов: **156**
+- Последний изученный файл: **`app/src/main/java/com/shod/subscriptions/SubscriptionImporter.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/subscriptions/SubscriptionImporter.kt`**
 
 ## Найденные проблемы
 
@@ -175,3 +175,5 @@
 - `app/src/main/java/com/shod/client/storage/.gitkeep` — пустой служебный файл, сохраняющий каталог в Git. Проверен; замечаний нет.
 
 - `app/src/main/java/com/shod/client/subscriptions/.gitkeep` — пустой служебный файл, сохраняющий каталог в Git. Проверен; замечаний нет.
+
+- `app/src/main/java/com/shod/subscriptions/SubscriptionImporter.kt` — проверены нормализация адреса, построение candidate URL, ограничение ответа 2 MiB, лимит перенаправлений, разбор JSON/HTML и сопоставление узлов с профилями. Явных дефектов вне TLS-поведения, которое отдельно не оценивалось, не подтверждено. Существующие `SubscriptionImporterTest` покрывают основные форматы, перенаправления и ошибки, но не проверяют граничный размер тела, превышение лимита, исчерпание лимита редиректов, дублирование endpoint/UUID и повторный импорт с обновлением существующих профилей; рекомендуется добавить эти сценарии.
