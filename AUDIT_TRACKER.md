@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **141**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/secret/SecureStringStore.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/secret/SecureStringStore.kt`**
+- Изучено файлов: **142**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/secret/StoredSecretState.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/secret/StoredSecretState.kt`**
 
 ## Найденные проблемы
 
