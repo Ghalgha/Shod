@@ -23,13 +23,16 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **146**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/storage/SettingsDataStoreProvider.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/storage/SettingsDataStoreProvider.kt`**
+- Изучено файлов: **147**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/subscription/ProfileSubscriptionStore.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/subscription/ProfileSubscriptionStore.kt`**
 
 ## Найденные проблемы
 
 ### Потенциальные риски
+
+- `app/src/main/java/com/shod/client/settings/subscription/ProfileSubscriptionStore.kt` (`clearSubscription`) — потенциальная гонка: список целевых профилей читается отдельным `data.first()`, после чего каждый профиль очищается отдельной транзакцией `ProfileLifecycleStore.clearProfile()`. Если между чтением и очисткой слот будет переназначен другой подписке/подключению, операция может очистить уже новые данные. Сценарий зависит от конкурентных операций; подтверждения наличия такой параллельности в вызывающем коде нет. Рекомендуется атомарно проверить принадлежность URL и очистить соответствующие профили в одной DataStore-транзакции либо защитить операцию от переназначения; добавить тест конкурентного изменения.
+
 
 - `app/src/main/java/com/shod/client/platform/android/deploy/ssh/SshHostKeyStore.kt` — сведения о последней смене ключа хранятся в одном глобальном `lastChange`. Если почти одновременно серверы A и B предъявят новые ключи, запись B перезапишет запись A; последующий `takeKeyChange(A)` вернёт `null`, и интерфейс не сможет получить данные о смене ключа A. Риск проявляется только при одновременных конфликтах ключей разных серверов.
 
@@ -95,11 +98,11 @@
 
 ### Рекомендации
 
-- `app/src/main/java/com/shod/client/settings/storage/SettingsDataStoreProvider.kt` — единственный делегат Preferences DataStore объявлен на `Context` с постоянным именем `settings`, сохраняющим совместимость с существующими установками. Проверено использование в `SettingsStore.kt`: все экземпляры получают этот делегат, отдельного второго DataStore в изученном контексте нет. Файл декларативный; самостоятельные тесты не требуются.
+- `app/src/main/java/com/shod/client/settings/subscription/ProfileSubscriptionStore.kt` — единственный делегат Preferences DataStore объявлен на `Context` с постоянным именем `settings`, сохраняющим совместимость с существующими установками. Проверено использование в `SettingsStore.kt`: все экземпляры получают этот делегат, отдельного второго DataStore в изученном контексте нет. Файл декларативный; самостоятельные тесты не требуются.
 
-- `app/src/main/java/com/shod/client/settings/storage/SettingsDataStoreProvider.kt` — явных ошибок не обнаружено. Адаптер проверяет допустимый диапазон профиля, формирует read-only представление с подменённым `active_profile` без изменения исходных Preferences и отклоняет запись через `updateData()`. Отдельных тестов адаптера не найдено; рекомендуется проверить изоляцию выбранного профиля, неизменность исходного курсора и отказ при попытке записи.
+- `app/src/main/java/com/shod/client/settings/subscription/ProfileSubscriptionStore.kt` — явных ошибок не обнаружено. Адаптер проверяет допустимый диапазон профиля, формирует read-only представление с подменённым `active_profile` без изменения исходных Preferences и отклоняет запись через `updateData()`. Отдельных тестов адаптера не найдено; рекомендуется проверить изоляцию выбранного профиля, неизменность исходного курсора и отказ при попытке записи.
 
-- `app/src/main/java/com/shod/client/settings/storage/SettingsDataStoreProvider.kt` — явной ошибки в разделении VPN- и VPS-курсоров не обнаружено: deploy-представление подменяет `active_profile` значением deploy-курсора, а при записи сохраняет исходный VPN-курсор и отдельно обновляет `active_deploy_profile`. Отдельных тестов самого адаптера не найдено. Рекомендуется покрыть выбор начального VPS-профиля, независимость двух курсоров, сохранение VPN-курсора при изменениях deploy-настроек и поведение при отсутствующем/недопустимом deploy-курсоре.
+- `app/src/main/java/com/shod/client/settings/subscription/ProfileSubscriptionStore.kt` — явной ошибки в разделении VPN- и VPS-курсоров не обнаружено: deploy-представление подменяет `active_profile` значением deploy-курсора, а при записи сохраняет исходный VPN-курсор и отдельно обновляет `active_deploy_profile`. Отдельных тестов самого адаптера не найдено. Рекомендуется покрыть выбор начального VPS-профиля, независимость двух курсоров, сохранение VPN-курсора при изменениях deploy-настроек и поведение при отсутствующем/недопустимом deploy-курсоре.
 
 - `app/src/main/java/com/shod/client/settings/secret/SecureStringStore.kt` — отдельные Android-интеграционные тесты самого `SecureStringStore` не найдены. Существующие тесты проверяют разрешение состояний секретов, но не реальную работу Android Keystore и AES-GCM. Явных ошибок в реализации не обнаружено; рекомендуется покрыть round-trip шифрования/расшифровки, повреждённый ciphertext, некорректный формат и недоступность/инвалидацию ключа.
 
