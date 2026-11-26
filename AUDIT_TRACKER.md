@@ -23,8 +23,8 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **50**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/execution/DeployOutputPolicy.kt`**
+- Изучено файлов: **51**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/execution/DeployProgressPolicy.kt`**
 - Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/artifact/DeployConfigurationStager.kt`**
 
 ## Найденные проблемы
