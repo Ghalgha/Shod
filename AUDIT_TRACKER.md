@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **383**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeProcessCommandTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeProcessCommandTest.kt`**
+- Изучено файлов: **384**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeRuntimePolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeRuntimePolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -807,3 +807,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeProcessCommandTest.kt` — проверены выделенный UDS и отказ от production socket, локальный listen на динамическом порту, ручной VK hash, режим VK_AUTO_JS без ручного hash и обязательность hash для ручного режима. Сопоставлено с `ProfileProbeProcessCommand.kt` и `ProfileProbeVkAuthPolicy.kt`: сценарии соответствуют реализации; аргументы формируются отдельными элементами списка, поэтому пробелы в значениях не склеивают параметры. Пробелы покрытия: нет проверок пустых обязательных полей, отрицательного generationId, токена для JS-режима, произвольного processAuthMode и передачи непустого firstHash в JS-режиме. Подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/diagnostics/probe/ProfileProbeRuntimePolicyTest.kt` — проверено, что простой production-туннель не блокирует диагностический probe, а состояния running/starting/stopping и автоматическая пауза Wi-Fi блокируют его по отдельности. Сопоставлено с `ProfileProbeRuntimePolicy.kt`: функция возвращает логическое ИЛИ четырёх флагов, все проверенные сценарии соответствуют реализации. Пробел покрытия: отсутствуют проверки всех комбинаций нескольких одновременно активных флагов и таблица граничных комбинаций; для чистой функции ИЛИ отдельного дефекта не выявлено.
