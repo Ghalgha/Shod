@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **18**
-- Последний изученный файл: **`app/src/debug/res/values/strings.xml`**
-- Последний проверенный файл: **`app/src/debug/res/values/strings.xml`**
+- Изучено файлов: **19**
+- Последний изученный файл: **`app/src/main/AndroidManifest.xml`**
+- Последний проверенный файл: **`app/src/main/AndroidManifest.xml`**
 
 ## Найденные проблемы
 
