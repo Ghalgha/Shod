@@ -23,11 +23,15 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **28**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/Constants.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/Constants.kt`**
+- Изучено файлов: **29**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/SettingsStore.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/SettingsStore.kt`**
 
 ## Найденные проблемы
+
+### Потенциальные риски
+- `app/src/main/java/com/shod/client/SettingsStore.kt` (строки 1239–1248, 2365–2379) совместно с `settings/storage/DeployScopedDataStore.kt` — потенциальный риск порядка инициализации: миграции запускаются и для `SettingsStore(deployScope = true)`, но `DeployScopedDataStore` подменяет `active_profile` значением курсора VPS. `migrateDefaultRole()` использует этот ключ для определения роли, а `migrationsStarted` глобально разрешает запуск миграции только один раз за процесс. Если первым создаётся deploy-scoped экземпляр, миграция может определить роль по VPS-профилю вместо активного VPN-профиля. Условие зависит от порядка создания экземпляров; подтверждения, что такой порядок достигается в штатном запуске, пока нет.
+
 
 ### Подтверждённые проблемы
 - `app/src/main/java/com/shod/client/ConnectionSource.kt` (`resolveConnectionSource`, локальная функция `activeHashes`) — если все хеши имеют статус `Invalid`, `VkHashValidationCodec.active` возвращает пустой список, после чего условие `if (filtered.isNotEmpty()) ... else rawList` возвращает исходные хеши. В результате хеши, которые проверка признала недействительными, всё равно передаются в `ConnectionSource.hashes` и далее могут попасть в источник туннеля. Это противоречит назначению фильтра и тесту `invalidHashIsRetainedForUiButExcludedFromTunnelSource` для самого codec; теста на сценарий, когда недействительны все хеши, нет.
