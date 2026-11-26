@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **389**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/lifecycle/TunnelServiceInputPolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/lifecycle/TunnelServiceInputPolicyTest.kt`**
+- Изучено файлов: **390**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/lifecycle/TunnelServicePolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/lifecycle/TunnelServicePolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -825,3 +825,6 @@
 
 
 - `app/src/test/java/com/shod/client/vpn/lifecycle/TunnelServiceInputPolicyTest.kt` — проверены нормализация регистра, поддерживаемые значения и fallback для неизвестных/null значений режимов CAPTCHA, VK auth и SRTP. Сопоставлено с `TunnelServiceInputPolicy.kt`: тестовые значения и ожидаемые значения соответствуют трём `when`-функциям. Пробелы покрытия: не проверяются пустые строки, пробелы вокруг допустимых значений и нестандартные Unicode-символы; текущая реализация не выполняет `trim()`, поэтому значения с окружающими пробелами переходят на fallback. Не установлено, что вызывающие источники обязаны передавать такие значения без пробелов; дефектом не объявляется. Подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/lifecycle/TunnelServicePolicyTest.kt` — проверены сохранение foreground service при намеренной Wi-Fi-паузе, startup grace до и на границе 60 секунд, остановка после неудачного запуска, немедленная остановка ранее работавшего туннеля и сохранение сервиса при работающем туннеле. Сопоставлено с `TunnelServicePolicy.kt`: булева формула `!pausedForWifi && !running && (wasEverRunning || elapsedMs >= STARTUP_GRACE_MS)` соответствует проверенным сценариям. Пробелы покрытия: не проверяются отрицательный `elapsedMs`, переполнение/аномальные значения времени и все комбинации четырёх аргументов; для чистой политики это дополнительные граничные тесты, подтверждённой ошибки не выявлено.
