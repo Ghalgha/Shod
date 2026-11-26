@@ -23,13 +23,14 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **70**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/policy/VkCookieScope.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/policy/VkCookieScope.kt`**
+- Изучено файлов: **71**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/ui/VkAuthDialog.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/auth/ui/VkAuthDialog.kt`**
 
 ## Найденные проблемы
 
 ### Потенциальные риски
+- `app/src/main/java/com/shod/client/integration/vk/auth/ui/VkAuthDialog.kt` — `VkAuthSession` создаётся через `remember { ... }` без ключей и захватывает исходные `onToken` и `chooseAccount`. Если эти параметры изменятся, пока composable остаётся в композиции, активная сессия продолжит использовать первоначальные callback и режим выбора аккаунта. Обычно диалог создаётся для одного сеанса, поэтому практическое проявление зависит от сценария вызова; call sites не удалось подтвердить в рамках этой проверки. Потенциальный риск устаревших параметров Compose.
 - `app/src/main/java/com/shod/client/integration/vk/auth/policy/VkCookieScope.kt` — `vkCookieDeletionHeaders()` формирует заголовки удаления только с `Path=/`. Если VK установил cookies с другими атрибутами Path, такие cookies могут сохраниться после очистки сессии и повлиять на выбор аккаунта. Тесты проверяют только корневой путь; фактический набор путей cookies VK не проверялся, поэтому это потенциальная неполнота очистки.
 - `app/src/main/java/com/shod/client/integration/vk/auth/network/VkTokenScraper.kt` — HTML-ответ полностью читается через `bufferedReader().readText()` без ограничения размера. Поскольку URL перенаправлений не ограничены доверенными доменами, большой ответ может привести к чрезмерному расходу памяти и OOM. Условный риск; реальный большой ответ не запрашивался.
 - `app/src/main/java/com/shod/client/TunnelManager.kt` (строки 655–662) — декодирование серверного routing payload распаковывает GZIP через `GZIPInputStream(...).readText()` без ограничения размера распакованных данных. Если удалённый сервер или повреждённый поток передаст небольшой сжатый payload с чрезмерно большим содержимым, клиент может выделить большой объём памяти и завершиться с OOM. Ограничения количества элементов в `parseServerRoutingRule` не защищают от этого, поскольку применяются уже после полной распаковки. Потенциальный риск; эксплуатация не проверялась.
