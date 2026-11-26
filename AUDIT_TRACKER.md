@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **351**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/policy/VkModePolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/policy/VkModePolicyTest.kt`**
+- Изучено файлов: **352**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/integration/vk/transport/turn/TurnTransportPolicyTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/integration/vk/transport/turn/TurnTransportPolicyTest.kt`**
 
 ## Найденные проблемы
 
@@ -711,3 +711,6 @@
 
 
 - `app/src/test/java/com/shod/client/integration/vk/policy/VkModePolicyTest.kt` — проверены переключения режимов авторизации/хешей, наличие VK-токена, сохранение ручного режима, замена недоступных автоматических хешей и подтверждение предупреждения Auto JS. Сопоставлено с `VkModePolicy.kt`: проверяемые сценарии соответствуют реализации. Покрытие не проверяет напрямую `normalizeVkModeSelection()` и неизвестные значения режимов; подтверждённых ошибок не выявлено.
+
+
+- `app/src/test/java/com/shod/client/integration/vk/transport/turn/TurnTransportPolicyTest.kt` — проверено предупреждение при входе в TCP/TLS, отсутствие повторного предупреждения при уже выбранном режиме и учёт подтверждения. Сопоставлено с `TurnTransportPolicy.kt`: ожидания соответствуют реализации. Покрытие не включает неизвестные значения транспорта и переходы между прочими режимами; подтверждённых ошибок не выявлено.
