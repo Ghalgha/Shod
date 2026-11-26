@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **282**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/session/TunnelSessionId.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/session/TunnelSessionId.kt`**
+- Изучено файлов: **283**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/stats/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/stats/.gitkeep`**
 
 ## Найденные проблемы
 
@@ -532,6 +532,8 @@
 - `app/src/main/java/com/shod/client/vpn/routing/apps/AppRoutingPresets.kt` — проверены списки direct/VPN package presets, начальная инициализация только установленными приложениями, сохранение пользовательских/пустых выборов, объединение без удаления прежних записей и порядок выбранных приложений. `AppRoutingPresetsTest` покрывает состав наборов, отсутствие пересечений, idempotency merge, сохранение пустого выбора и порядок. Явных ошибок не обнаружено.
 
 
-- `app/src/main/java/com/shod/client/vpn/session/TunnelSessionId.kt` — проверены разбор legacy plain-text blacklist/whitelist с русскими и английскими заголовками, накопление строк секции, проверка package ID, сохранение намеренно пустых списков и возврат null при отсутствии заголовков. `AppRoutingTextParserTest` покрывает варианты заголовков, некорректные package ID, дубликаты и пустые секции. Явных ошибок не обнаружено.
+- `app/src/main/java/com/shod/client/vpn/stats/.gitkeep` — проверены разбор legacy plain-text blacklist/whitelist с русскими и английскими заголовками, накопление строк секции, проверка package ID, сохранение намеренно пустых списков и возврат null при отсутствии заголовков. `AppRoutingTextParserTest` покрывает варианты заголовков, некорректные package ID, дубликаты и пустые секции. Явных ошибок не обнаружено.
 
-- `app/src/main/java/com/shod/client/vpn/session/TunnelSessionId.kt` — проверена генерация 128-битного идентификатора сессии через `SecureRandom`: 16 случайных байтов кодируются в 32 строчных hex-символа. `TunnelSessionIdTest` проверяет кодирование всех байтов, формат и различие результатов для разных входных данных. Явных ошибок не обнаружено.
+- `app/src/main/java/com/shod/client/vpn/stats/.gitkeep` — проверена генерация 128-битного идентификатора сессии через `SecureRandom`: 16 случайных байтов кодируются в 32 строчных hex-символа. `TunnelSessionIdTest` проверяет кодирование всех байтов, формат и различие результатов для разных входных данных. Явных ошибок не обнаружено.
+
+- `app/src/main/java/com/shod/client/vpn/stats/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `vpn/stats` в Git. Исполняемого содержимого нет; замечаний нет.
