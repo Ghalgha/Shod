@@ -750,4 +750,3 @@ pub(super) async fn reboot(State(state): State<WebState>) -> Response {
         }
     }
 }
-
