@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **267**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelStartupProgress.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/lifecycle/TunnelStartupProgress.kt`**
+- Изучено файлов: **268**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vpn/model/TunnelParams.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vpn/model/TunnelParams.kt`**
 
 ## Найденные проблемы
 
@@ -491,3 +491,6 @@
 
 
 - `app/src/main/java/com/shod/client/vpn/lifecycle/TunnelStartupProgress.kt` — проверено потокобезопасное накопление событий получения credentials через `AtomicInteger` и монотонный переход в READY через `AtomicBoolean`. Приоритет READY корректно перекрывает промежуточное состояние ожидания TURN/peer. `TunnelStartupProgressTest` проверяет последовательные стадии и конкурентное получение 128 событий. Сброс состояния не предусмотрен, что соответствует модели одного запуска; явных ошибок не обнаружено.
+
+
+- `app/src/main/java/com/shod/client/vpn/model/TunnelParams.kt` — проверена модель параметров туннеля: обязательные поля peer/hash/worker/port, значения по умолчанию для протокола и режимов, параметры сессии, авторизации и маршрутизации. Класс является простым `data class` без собственной логики или валидации; в рамках его назначения явных ошибок не обнаружено. Отдельных тестов для модели нет; валидация должна обеспечиваться на границах создания параметров.
