@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **163**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/transport/security/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/transport/security/.gitkeep`**
+- Изучено файлов: **164**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/transport/threads/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/transport/threads/.gitkeep`**
 
 ## Найденные проблемы
 
@@ -191,3 +191,5 @@
 - `app/src/main/java/com/shod/client/transport/hashes/.gitkeep` — пустой служебный файл, сохраняющий каталог в Git. Проверен; замечаний нет.
 
 - `app/src/main/java/com/shod/client/transport/security/.gitkeep` — пустой служебный файл, сохраняющий каталог в Git. Проверен; замечаний нет.
+
+- `app/src/main/java/com/shod/client/transport/threads/.gitkeep` — пустой служебный файл, сохраняющий каталог в Git. Проверен; замечаний нет.
