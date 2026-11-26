@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **143**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/secret/TunnelPasswordStorage.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/secret/TunnelPasswordStorage.kt`**
+- Изучено файлов: **144**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/storage/DeployScopedDataStore.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/storage/DeployScopedDataStore.kt`**
 
 ## Найденные проблемы
 
@@ -94,6 +94,8 @@
 - `LICENSE` и `rust-server/Cargo.toml` (`[package].license`) — лицензия проекта объявлена проприетарной, но Rust-пакет указывает `Unlicense`. Это противоречивые юридические условия и некорректные метаданные пакета; требуется согласовать объявление Cargo с фактической лицензией. Файлы не изменялись.
 
 ### Рекомендации
+
+- `app/src/main/java/com/shod/client/settings/storage/DeployScopedDataStore.kt` — явной ошибки в разделении VPN- и VPS-курсоров не обнаружено: deploy-представление подменяет `active_profile` значением deploy-курсора, а при записи сохраняет исходный VPN-курсор и отдельно обновляет `active_deploy_profile`. Отдельных тестов самого адаптера не найдено. Рекомендуется покрыть выбор начального VPS-профиля, независимость двух курсоров, сохранение VPN-курсора при изменениях deploy-настроек и поведение при отсутствующем/недопустимом deploy-курсоре.
 
 - `app/src/main/java/com/shod/client/settings/secret/SecureStringStore.kt` — отдельные Android-интеграционные тесты самого `SecureStringStore` не найдены. Существующие тесты проверяют разрешение состояний секретов, но не реальную работу Android Keystore и AES-GCM. Явных ошибок в реализации не обнаружено; рекомендуется покрыть round-trip шифрования/расшифровки, повреждённый ciphertext, некорректный формат и недоступность/инвалидацию ключа.
 
