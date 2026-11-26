@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **371**
-- Последний изученный файл: **`app/src/test/java/com/shod/client/updates/RemoteVersionPolicyTest.kt`**
-- Последний проверенный файл: **`app/src/test/java/com/shod/client/updates/RemoteVersionPolicyTest.kt`**
+- Изучено файлов: **372**
+- Последний изученный файл: **`app/src/test/java/com/shod/client/vpn/config/VpnConfigurationTest.kt`**
+- Последний проверенный файл: **`app/src/test/java/com/shod/client/vpn/config/VpnConfigurationTest.kt`**
 
 ## Найденные проблемы
 
@@ -771,3 +771,6 @@
 
 
 - `app/src/test/java/com/shod/client/updates/RemoteVersionPolicyTest.kt` — проверены числовое сравнение версий, переход через старший компонент, дополнение отсутствующего компонента нулём, отклонение более старой версии и поведение при некорректной удалённой версии. Сопоставлено с `RemoteVersionPolicy.kt`: тесты соответствуют текущей реализации `isNewerVersion()`. Существенные пробелы покрытия: отсутствуют prerelease/build metadata, префикс `v`, пробелы, пустая/некорректная локальная версия, ведущие нули и чрезмерно большие числовые компоненты. Последний сценарий связан с уже зафиксированной в трекере проблемой `versionParts()` — `mapNotNull { it.toIntOrNull() }` молча удаляет компонент, переполняющий `Int`; повторно как отдельную проблему не дублируется. Новых подтверждённых ошибок в проверенном тестовом файле не выявлено.
+
+
+- `app/src/test/java/com/shod/client/vpn/config/VpnConfigurationTest.kt` — тест проверяет, что `ShodConstants.Vpn.DEFAULT_MTU` равен 1500. Сопоставлено с `app/src/main/java/com/shod/client/Constants.kt`: константа объявлена как `const val DEFAULT_MTU = 1500`, тест точно отражает текущее значение. Проверка не охватывает применение MTU при создании Android VPN-интерфейса, допустимые диапазоны/совместимость устройств и другие параметры конфигурации; это тест константы, а не интеграционная проверка VPN. Подтверждённых ошибок в тесте и определении константы не выявлено.
