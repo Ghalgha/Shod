@@ -23,13 +23,15 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **17**
-- Последний изученный файл: **`app/src/debug/AndroidManifest.xml`**
-- Последний проверенный файл: **`app/src/debug/AndroidManifest.xml`**
+- Изучено файлов: **18**
+- Последний изученный файл: **`app/src/debug/res/values/strings.xml`**
+- Последний проверенный файл: **`app/src/debug/res/values/strings.xml`**
 
 ## Найденные проблемы
 
 ### Подтверждённые проблемы
+
+- `app/src/debug/res/values/strings.xml` — ресурс `app_name` переопределён значением `Shod SSH Fix`, тогда как пользовательское требование — единое название приложения **Shod**. Поскольку основной `AndroidManifest.xml` использует `@string/app_name`, Debug-сборка получает неправильное название. Исправление не выполнялось.
 
 - `app/build.gradle.kts` — задача `verifyReleaseSigning` подключается только к задачам, имя которых начинается с `assemble`, `bundle`, `sign`, `install`, `publish` или `upload`. Задача Android Gradle Plugin `packageRelease` в этот список не входит. Её прямой запуск обходит обязательную проверку наличия ключа подписи; при отсутствии signing config может быть создан неподписанный release APK. Проверку необходимо привязать также к задаче упаковки.
 
