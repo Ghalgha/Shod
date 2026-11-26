@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **241**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/vk/auth/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/vk/auth/.gitkeep`**
+- Изучено файлов: **242**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/vk/captcha/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/vk/captcha/.gitkeep`**
 
 ## Найденные проблемы
 
@@ -421,3 +421,6 @@
 
 
 - `app/src/main/java/com/shod/client/vk/auth/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `app/src/main/java/com/shod/client/vk/auth` в Git. Замечаний нет.
+
+
+- `app/src/main/java/com/shod/client/vk/captcha/.gitkeep` — пустой служебный файл `.gitkeep`, сохраняющий каталог `app/src/main/java/com/shod/client/vk/captcha` в Git. Исполняемого содержимого нет; замечаний нет.
