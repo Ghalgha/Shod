@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **134**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileConnectionStore.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileConnectionStore.kt`**
+- Изучено файлов: **135**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileCursorStore.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileCursorStore.kt`**
 
 ## Найденные проблемы
 
@@ -90,6 +90,8 @@
 - `LICENSE` и `rust-server/Cargo.toml` (`[package].license`) — лицензия проекта объявлена проприетарной, но Rust-пакет указывает `Unlicense`. Это противоречивые юридические условия и некорректные метаданные пакета; требуется согласовать объявление Cargo с фактической лицензией. Файлы не изменялись.
 
 ### Рекомендации
+
+- `app/src/main/java/com/shod/client/settings/profile/ProfileCursorStore.kt` — отдельные тесты хранилища и `ProfileSelectionPolicy` не найдены. Рекомендуется проверить значения по умолчанию, нормализацию границ, отклонение недопустимого выбора, сохранение/повторное чтение и fallback после очистки активного профиля. Явной ошибки в проверенной реализации не обнаружено.
 
 - `app/src/main/java/com/shod/client/settings/profile/ProfileConnectionStore.kt` — отдельных тестов хранилища не найдено. Рекомендуется покрыть изоляцию профилей, конфликт `expectedRevision` после явного пользовательского изменения, поведение удалённого профиля, чтение legacy/encrypted/local пароля, обновление participant link и инвалидацию кэша только при изменении параметров подключения. Явной ошибки в проверенной реализации не обнаружено.
 
