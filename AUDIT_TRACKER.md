@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **135**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileCursorStore.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileCursorStore.kt`**
+- Изучено файлов: **136**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileLifecycleStore.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/profile/ProfileLifecycleStore.kt`**
 
 ## Найденные проблемы
 
@@ -65,6 +65,8 @@
 - `app/src/main/java/com/shod/client/platform/android/activity/UpdateLaunchGuard.kt` (`consumeStaleSavedState`) — новый package token сохраняется синхронно до возврата из метода и до вызова `super.onCreate(null)` в `MainActivity`. Если процесс аварийно завершится после фиксации token, но до фактического отбрасывания `savedInstanceState`, следующий запуск увидит уже совпадающий token и может восстановить устаревшее UI-состояние. Узкое окно отказа; штатный сценарий покрыт тестами, аварийный перезапуск между записью маркера и передачей состояния не проверяется.
 
 ### Подтверждённые проблемы
+
+- `app/src/main/java/com/shod/client/settings/profile/ProfileLifecycleStore.kt` (`keysClearedWithProfile`, `clearProfile`) — очистка удаляет только ограниченный список ключей, хотя `ProfilePreferenceKeys` определяет дополнительные профильные параметры. В частности, остаются `vk_hashes`, `secondary_vk_hash`, `protocol`, `sni`, `user_agent`, `extra_workers`, настройки маршрутизации и другие профильные значения. После очистки и повторного использования слота эти настройки могут перейти к новому подключению. Это противоречит назначению `clearProfile()` как очистки всех connection-related keys. Необходимо согласовать полный перечень ключей и добавить тест, проверяющий отсутствие старых профильных данных после очистки.
 
 - `app/src/main/java/com/shod/client/platform/android/vpn/diagnostics/probe/ProbeTunTransport.kt` (`exchange`, проверка `shouldAbort`) — при запросе прерывания диагностики выбрасывается `IllegalStateException` через `check(!shouldAbort())`. Вызывающий `ProfileTunnelProbe` не распознаёт это как специальное прерывание и внешний обработчик может показать общее сообщение «Не удалось проверить туннель» вместо «Проверка прервана запуском VPN». Рекомендуется использовать отдельный тип исключения/отмену корутины и добавить тест этого сценария.
 
