@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **87**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/transport/turn/TurnSubnetRegistry.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/transport/turn/TurnSubnetRegistry.kt`**
+- Изучено файлов: **88**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/integration/vk/transport/turn/TurnTransportPolicy.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/integration/vk/transport/turn/TurnTransportPolicy.kt`**
 
 ## Найденные проблемы
 
