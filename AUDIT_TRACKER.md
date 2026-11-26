@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **170**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/components/AppSectionCard.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/components/AppSectionCard.kt`**
+- Изучено файлов: **171**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/components/ContentScreen.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/components/ContentScreen.kt`**
 
 ## Найденные проблемы
 
@@ -205,3 +205,5 @@
 - `app/src/main/java/com/shod/client/ui/components/.gitkeep` — пустой служебный файл, сохраняющий каталог в Git. Проверен; замечаний нет.
 
 - `app/src/main/java/com/shod/client/ui/components/AppSectionCard.kt` — общий Compose-компонент карточки: цвета и рамка адаптируются к яркости темы, содержимое размещается в Column с настраиваемыми отступами и интервалами. Использует общие формы и размеры проекта. Явных ошибок не обнаружено; отдельные тесты компонента отсутствуют. Для визуального компонента это не блокирующий пробел, при наличии UI-тестовой инфраструктуры полезно проверить светлую/тёмную темы и передачу contentPadding/verticalArrangement.
+
+- `app/src/main/java/com/shod/client/ui/components/ContentScreen.kt` — общий Compose-контейнер экранов с заголовком, кнопкой «Назад», действиями и содержимым. Обнаружен дефект ограничения ширины: на внутреннем контейнере сначала вызывается `fillMaxWidth()`, а затем `widthIn(max = ShodSizes.ContentMaxWidth)`. Фиксация ширины на всю доступную область до применения максимума может не позволить `widthIn` сузить контейнер на широких экранах; вероятное следствие — контент шире заданного `ContentMaxWidth`. Рекомендуется поменять порядок модификаторов на `widthIn(max = ...).fillMaxWidth()` и проверить на широком экране. Код не изменялся.
