@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **54**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/execution/ServerArchitecture.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/execution/DeployStderrPolicy.kt`**
+- Изучено файлов: **55**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/deploy/inventory/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/deploy/inventory/.gitkeep`**
 
 ## Найденные проблемы
 
