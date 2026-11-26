@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **213**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/SettingsScreen.kt`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/SettingsScreen.kt`**
+- Изучено файлов: **214**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/screens/accounts/.gitkeep`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/screens/accounts/.gitkeep`**
 
 ## Найденные проблемы
 
@@ -329,3 +329,6 @@
 
 
 - `app/src/main/java/com/shod/client/ui/screens/SettingsScreen.kt` (`ConnectionSettingsContent`, раздел «Сеть») — один и тот же параметр `autoPauseOnWifi` отображается двумя переключателями: `SettingsSwitch` и внутренним переключателем `WifiAutoPauseContent`; оба вызывают `saveAutoPauseOnWifi`. Это дублирующий интерфейс управления одной настройкой, который может путать пользователя и расходует место на экране. Рекомендуется оставить один переключатель и сохранить отдельные элементы настройки списка сетей.
+
+
+- `app/src/main/java/com/shod/client/ui/screens/accounts/.gitkeep` — пустой служебный файл Git, сохраняющий каталог `accounts` в репозитории. Исходного кода или исполняемой логики нет; замечаний по поведению нет.
