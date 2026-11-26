@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **130**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/.gitkeep`**
-- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/.gitkeep`**
+- Изучено файлов: **131**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/settings/deploy/DeployInspectionStore.kt`**
+- Последний проверенный файл: **`app/src/main/java/com/shod/client/settings/deploy/DeployInspectionStore.kt`**
 
 ## Найденные проблемы
 
@@ -123,3 +123,5 @@
 - `app/src/main/java/com/shod/client/platform/android/widget/VpnWidgetToggleReceiver.kt` — отдельные тесты формирования `RemoteViews` и `PendingIntent` отсутствуют. Рекомендуется проверить отображение обоих состояний VPN, уникальность request code для нескольких экземпляров виджета, флаги PendingIntent и обновление всех экземпляров. В проверенной реализации явной ошибки не обнаружено; обновления состояния дополнительно инициируются наблюдателем `TunnelManager.running`.
 
 - `app/src/main/java/com/shod/client/platform/android/widget/VpnWidgetToggleReceiver.kt` — отдельные тесты BroadcastReceiver отсутствуют. Рекомендуется проверить игнорирование посторонних action, завершение `goAsync()` при успешном переключении и исключениях, fallback открытия MainActivity, а также конкурентные быстрые нажатия на виджет. В проверенной реализации явной ошибки не обнаружено; `pendingResult.finish()` находится в `finally`, а обновление виджета подавляет собственные исключения.
+
+- `app/src/main/java/com/shod/client/settings/deploy/DeployInspectionStore.kt` — явных ошибок в чтении, записи и очистке профильных Preferences не обнаружено; типы ключей согласованы с `ProfilePreferenceKeys`. Отдельные тесты хранилища не найдены. Рекомендуется проверить изоляцию двух профилей, значения по умолчанию, полный round-trip `saveInspection()`/`read()` и очистку `clearInspection()`.
