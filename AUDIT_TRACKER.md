@@ -23,8 +23,8 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **176**
-- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/components/TunnelDropdownSetting.kt`**
+- Изучено файлов: **177**
+- Последний изученный файл: **`app/src/main/java/com/shod/client/ui/components/TunnelProtocolChip.kt`**
 - Последний проверенный файл: **`app/src/main/java/com/shod/client/ui/components/ContentScreen.kt`**
 
 ## Найденные проблемы
@@ -113,6 +113,9 @@
 
 
 - `app/src/main/java/com/shod/client/ui/components/TunnelDropdownSetting.kt` — проверены `ModeIndicator`, анимированный `ModeProgressBar` и `CompactDropdownSetting`. Прогресс ограничивается диапазоном 0.05–1.0; список выбора закрывается перед вызовом callback выбора/редактирования/справки; кнопка недоступна при `enabled=false`. Явного дефекта не подтверждено. Потенциальный риск интерфейса: `expanded` хранится через `rememberSaveable` без ключа, поэтому при смене набора `options` или контекста настройки открытое меню может остаться раскрытым для уже изменившегося списка; последствия зависят от использования компонента. Также при `selectedKey`, отсутствующем в `options`, кнопка показывает пустую подпись. Рекомендуется проверить call sites и добавить UI-тесты смены options/selectedKey во время открытого меню, пустого списка и действий trailing icon. Отдельных тестов компонента в Git tree не найдено.
+
+
+- `app/src/main/java/com/shod/client/ui/components/TunnelProtocolChip.kt` — проверен Compose-компонент `ProtocolChip` на базе Material 3 `FilterChip`. Параметры `selected`, `enabled` и `isError` последовательно управляют состоянием, доступностью и цветом подписи; `centerText` включает центрирование без изменения обычного режима. Явных ошибок не обнаружено. Отдельных тестов компонента в Git tree не найдено; для простого визуального адаптера они не обязательны, при добавлении UI-тестов достаточно проверить selected/unselected, enabled/disabled и error-цвет отключённого чипа.
 
 ## Рекомендации
 
