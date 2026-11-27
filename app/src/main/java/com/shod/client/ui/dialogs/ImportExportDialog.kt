@@ -42,6 +42,7 @@ import com.shod.client.ui.design.ShodShapes
 import com.shod.client.ui.design.ShodSizes
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -395,11 +396,19 @@ private fun saveJsonToDownloads(context: Context, json: String): String? {
             }
             val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
             if (uri != null) {
-                resolver.openOutputStream(uri)?.use { out ->
-                    out.write(json.toByteArray(Charsets.UTF_8))
-                    out.flush()
+                try {
+                    val outputStream = resolver.openOutputStream(uri)
+                        ?: throw IOException("Не удалось открыть файл для записи")
+                    outputStream.use { out ->
+                        out.write(json.toByteArray(Charsets.UTF_8))
+                        out.flush()
+                    }
+                    "Downloads/$filename"
+                } catch (e: Exception) {
+                    // Не оставляем пустую или частично записанную запись в Downloads.
+                    runCatching { resolver.delete(uri, null, null) }
+                    throw e
                 }
-                "Downloads/$filename"
             } else {
                 null
             }
