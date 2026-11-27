@@ -53,10 +53,15 @@ fn render_client_sub_html(client_name: &str, shod_link: &str) -> String {
 fn render_group_sub_html(group_name: &str, clients_json: &str, count: usize) -> String {
     let name_esc = html_escape(group_name);
     let json_esc = js_json_embed(clients_json);
-    GROUP_SUB_HTML
-        .replace("__GROUP_NAME__", &name_esc)
-        .replace("__CLIENTS_COUNT__", &count.to_string())
-        .replace("__CLIENTS_JSON__", &json_esc)
+    let count_text = count.to_string();
+    replace_html_placeholders(
+        GROUP_SUB_HTML,
+        &[
+            ("__GROUP_NAME__", &name_esc),
+            ("__CLIENTS_COUNT__", &count_text),
+            ("__CLIENTS_JSON__", &json_esc),
+        ],
+    )
 }
 
 fn js_json_embed(json: &str) -> String {
