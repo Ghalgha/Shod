@@ -1179,3 +1179,9 @@
 - Проверено файлов: 530 из 558.
 - Последний проверенный файл: `rust-server/src/web_panel/assets/pwa-icon-512.png.b64`.
 - Следующий файл по Git-дереву: `rust-server/src/web_panel/assets/pwa-icon-512.png`.
+
+## Состояние аудита
+
+- Проверено файлов: 531 из 558.
+- Последний проверенный файл: `rust-server/src/web_panel/assets/pwa-icon.svg`.
+- Следующий файл по Git-дереву: `rust-server/src/web_panel/assets/qrcode.min.js`.
