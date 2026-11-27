@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **468**
-- Последний изученный файл: **`rust-client/src/transport/turn/turn_stream.rs`**
-- Последний проверенный файл: **`rust-client/src/transport/turn/turn_stream.rs`**
+- Изучено файлов: **469**
+- Последний изученный файл: **`rust-client/src/tun/.gitkeep`**
+- Последний проверенный файл: **`rust-client/src/tun/.gitkeep`**
 
 ## Найденные проблемы
 
