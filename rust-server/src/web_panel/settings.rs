@@ -619,6 +619,41 @@ pub(super) async fn api_import_post(
     let mut applied_dns = None;
     let mut applied_interval = None;
 
+    // Validate imported settings before changing the database, using the same
+    // rules as the regular settings endpoints.
+    let imported_dns = if do_settings && !export.dns.is_empty() {
+        let dns = match export.dns_provider.as_str() {
+            "custom" => {
+                let mut parts = export.dns.splitn(2, ',');
+                let primary = parts.next();
+                let secondary = parts.next();
+                match manual_dns(primary, secondary) {
+                    Ok(dns) => (dns, "custom".to_owned()),
+                    Err(message) => return (StatusCode::BAD_REQUEST, message).into_response(),
+                }
+            }
+            provider_id => {
+                let Some(provider) = dns_provider_by_id(provider_id) else {
+                    return (StatusCode::BAD_REQUEST, "unknown DNS provider").into_response();
+                };
+                (provider_dns(provider), provider_id.to_owned())
+            }
+        };
+        Some(dns)
+    } else {
+        None
+    };
+    if do_settings
+        && let Some(hours) = export.auto_restart_interval_hours
+        && !matches!(hours, 0 | 12 | 24 | 48 | 72)
+    {
+        return (
+            StatusCode::BAD_REQUEST,
+            "auto restart interval must be 0, 12, 24, 48, or 72 hours",
+        )
+            .into_response();
+    }
+
     let revision = {
         let mut db = state.app.db.write().await;
         if do_clients {
@@ -680,10 +715,10 @@ pub(super) async fn api_import_post(
             {
                 db.main_password = export.main_password;
             }
-            if !export.dns.is_empty() {
-                applied_dns = (db.dns != export.dns).then(|| export.dns.clone());
-                db.dns = export.dns;
-                db.dns_provider = export.dns_provider;
+            if let Some((dns, provider)) = imported_dns {
+                applied_dns = (db.dns != dns).then(|| dns.clone());
+                db.dns = dns;
+                db.dns_provider = provider;
             }
             if let Some(hours) = export.auto_restart_interval_hours {
                 db.set_auto_restart_interval_hours(hours);
