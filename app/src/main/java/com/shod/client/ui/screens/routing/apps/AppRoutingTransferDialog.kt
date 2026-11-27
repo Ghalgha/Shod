@@ -55,15 +55,12 @@ internal fun AppRoutingTransferDialog(
                         onClick = {
                             val raw = clipboard.getText()?.text.orEmpty()
                             val json = runCatching { JSONObject(raw) }.getOrNull()
-                            val appJson = json?.optJSONObject("apps")
-                            if (appJson != null) {
-                                val black = readPackages(appJson.optJSONArray("blacklist"))
-                                val white = readPackages(appJson.optJSONArray("whitelist"))
-                                val mode = if (appJson.has("active_mode")) {
-                                    appJson.optString("active_mode") == "whitelist"
-                                } else appJson.optBoolean("is_whitelist", isWhitelist)
-                                onImport(AppRoutingLists(black, white), mode)
-                                onDismiss()
+                            if (json?.has("apps") == true) {
+                                // A JSON backup must pass every check; never reinterpret a bad backup as text.
+                                parseBackup(json)?.let { (lists, mode) ->
+                                    onImport(lists, mode)
+                                    onDismiss()
+                                }
                             } else {
                                 AppRoutingTextParser.parse(raw)?.let {
                                     onImport(it, isWhitelist)
@@ -80,11 +77,32 @@ internal fun AppRoutingTransferDialog(
     )
 }
 
-private fun readPackages(array: JSONArray?): Set<String> =
-    buildSet {
-        if (array == null) return@buildSet
-        for (index in 0 until array.length()) {
-            val value = array.optString(index)
-            if (AppRoutingTextParser.isValidPackage(value)) add(value)
+private fun parseBackup(root: JSONObject): Pair<AppRoutingLists, Boolean>? =
+    runCatching {
+        val version = root.get("version")
+        require(version is Number && version.toDouble() == 2.0)
+
+        val apps = root.get("apps") as? JSONObject ?: error("Invalid apps object")
+        val isWhitelist = apps.get("is_whitelist") as? Boolean
+            ?: error("Invalid routing mode")
+        val activeMode = apps.get("active_mode") as? String
+            ?: error("Invalid active mode")
+        require(activeMode == "whitelist" || activeMode == "blacklist")
+        require((activeMode == "whitelist") == isWhitelist)
+
+        fun readPackages(key: String): Set<String> {
+            val array = apps.get(key) as? JSONArray ?: error("Invalid $key list")
+            return buildSet {
+                for (index in 0 until array.length()) {
+                    val value = array.get(index) as? String ?: error("Invalid package entry")
+                    require(AppRoutingTextParser.isValidPackage(value))
+                    add(value)
+                }
+            }
         }
-    }
+
+        AppRoutingLists(
+            blacklist = readPackages("blacklist"),
+            whitelist = readPackages("whitelist"),
+        ) to isWhitelist
+    }.getOrNull()
