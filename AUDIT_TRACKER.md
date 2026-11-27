@@ -23,13 +23,16 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **487**
-- Последний изученный файл: **`rust-client/vendor/primp/src/imp/opera/mod.rs`**
-- Последний проверенный файл: **`rust-client/vendor/primp/src/imp/opera/mod.rs`**
+- Изучено файлов: **488**
+- Последний изученный файл: **`rust-client/vendor/primp/src/imp/safari/mod.rs`**
+- Последний проверенный файл: **`rust-client/vendor/primp/src/imp/safari/mod.rs`**
 
 ## Найденные проблемы
 
 ### Подтверждённые ошибки
+
+- `rust-client/vendor/primp/src/imp/safari/mod.rs` — подтверждённая ошибка конфигурации сборки: `build_safari_settings()` безусловно вызывает `build_http2_settings()`, но функция объявлена только при `#[cfg(feature = "http2")]`. При `--no-default-features` функция отсутствует, а вызов остаётся, поэтому crate не компилируется. Feature `impersonate` включает `http2`, однако `imp` доступен на non-wasm target независимо от этой feature. Дополнительно все шесть интеграционных тестов обращаются к `tls.browserleaks.com` и жёстко сравнивают внешние JA4/Akamai fingerprints; тесты зависят от доступности и неизменности сервиса и могут быть нестабильны в CI. Сборка и тесты не запускались.
+
 
 - `app/src/main/res/drawable/ic_github.xml` — проверен векторный ресурс GitHub: 24dp, viewport 1024×1024, один заполненный path. XML-структура и параметры VectorDrawable корректны. Цвет задан жёстко белым (`#FFFFFF`); места использования и наличие tint не удалось подтвердить поиском по репозиторию, поэтому совместимость с фоном остаётся непроверенной, дефект не заявляется.
 
