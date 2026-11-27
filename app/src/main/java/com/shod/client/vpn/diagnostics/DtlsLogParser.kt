@@ -11,7 +11,7 @@ internal object DtlsLogParser {
         val failure = text.contains("не состоялось", true) || text.contains("ошибка", true)
         val fallback = text.contains("fallback", true)
         val negatedSuccess = text.contains("неуспеш", true) ||
-            Regex("""не\\s+(?:\\S+\\s+){0,2}(?:успеш|заверш)""", RegexOption.IGNORE_CASE)
+            Regex("""не\s+(?:\S+\s+){0,2}(?:успеш|заверш)""", RegexOption.IGNORE_CASE)
                 .containsMatchIn(text)
         val success = !negatedSuccess &&
             (text.contains("успешен", true) || text.contains("завершено", true))
