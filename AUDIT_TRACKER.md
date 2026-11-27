@@ -1210,6 +1210,6 @@
 
 ## Состояние аудита
 
-- Проверено файлов: 545 из 558.
-- Последний проверенный файл: `scripts/build_apk.bat`.
-- Следующий файл по Git-дереву: `scripts/build_both_parallel.ps1`.
+- Проверено файлов: 546 из 558.
+- Последний проверенный файл: `scripts/build_both_parallel.ps1`.
+- Следующий файл по Git-дереву: `scripts/find_android_sdk.bat`.
