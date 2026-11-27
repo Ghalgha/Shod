@@ -49,9 +49,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **521**
-- Последний изученный файл: **`rust-server/src/web_panel/.gitkeep`**
-- Последний проверенный файл: **`rust-server/src/web_panel/.gitkeep`**
+- Изучено файлов: **522**
+- Последний изученный файл: **`rust-server/src/web_panel/assets/.gitkeep`**
+- Последний проверенный файл: **`rust-server/src/web_panel/assets/.gitkeep`**
 
 ## Найденные проблемы
 
