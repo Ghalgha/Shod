@@ -1180,8 +1180,11 @@
 - Последний проверенный файл: `rust-server/src/web_panel/assets/pwa-icon-512.png.b64`.
 - Следующий файл по Git-дереву: `rust-server/src/web_panel/assets/pwa-icon-512.png`.
 
+
+- `rust-server/src/web_panel/assets/sw.js` — полностью прочитан (1 187 символов). Проверены формирование URL ресурсов с учётом пути регистрации service worker, установка и заполнение shell cache, активация, очистка кэша и фильтрация fetch-запросов. Подтверждённая ошибка изоляции Cache Storage: обработчик `activate` получает все имена кэшей origin-wide через `caches.keys()` и удаляет каждый кэш, кроме единственного `CACHE_NAME` (`shod-panel-shell-2.5.0-pwa4`). Cache Storage общий для всего origin, а не для конкретного service worker или каталога приложения; поэтому при размещении на том же origin других приложений или компонентов с собственными кэшами активация панели удалит и их данные. Очистку следует ограничить собственным префиксом/пространством имён кэшей. Сборка и тесты не запускались.
+
 ## Состояние аудита
 
-- Проверено файлов: 532 из 558.
-- Последний проверенный файл: `rust-server/src/web_panel/assets/qrcode.min.js`.
-- Следующий файл по Git-дереву: `rust-server/src/web_panel/assets/sw.js`.
+- Проверено файлов: 533 из 558.
+- Последний проверенный файл: `rust-server/src/web_panel/assets/sw.js`.
+- Следующий файл по Git-дереву: `rust-server/src/web_panel/auth.rs`.
