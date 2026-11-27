@@ -49,9 +49,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **526**
-- Последний изученный файл: **`rust-server/src/web_panel/assets/login.html`**
-- Последний проверенный файл: **`rust-server/src/web_panel/assets/login.html`**
+- Изучено файлов: **527**
+- Последний изученный файл: **`rust-server/src/web_panel/assets/manifest.webmanifest`**
+- Последний проверенный файл: **`rust-server/src/web_panel/assets/manifest.webmanifest`**
 
 ## Найденные проблемы
 
