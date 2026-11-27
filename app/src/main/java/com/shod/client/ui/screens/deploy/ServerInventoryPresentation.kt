@@ -13,7 +13,15 @@ private fun runtimeLabel(runtime: String): String = when (runtime) {
 /** One line for the "На сервере" list: what it is, then how it runs. */
 internal fun describeServer(server: FoundServer, profilePeerPort: Int?): Pair<String, String> {
     if (server.place == ServerPlace.LEFTOVER || !server.installed) {
-        val what = if (server.place == ServerPlace.LEFTOVER) "Остановленная служба shod" else "Остатки прежней установки shod"
+        val what = if (server.place == ServerPlace.LEFTOVER) {
+            when (server.runtime) {
+                "systemd" -> "Остановленная служба shod"
+                "docker" -> "Остановленный контейнер shod"
+                else -> "Остатки установки shod"
+            }
+        } else {
+            "Остатки прежней установки shod"
+        }
         return what to server.name
     }
     val title = "shod " + (server.version ?: "(версия неизвестна)")
