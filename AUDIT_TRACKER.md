@@ -1235,3 +1235,14 @@
 - Проверено файлов: 550 из 558.
 - Последний проверенный файл: `scripts/run_wsl_checks.sh`.
 - Следующий файл по Git-дереву: `scripts/server_asset_provenance.ps1`.
+
+
+## Состояние аудита
+
+- `scripts/server_asset_provenance.ps1` — полностью прочитан; сопоставлен с `rust-server/Cargo.toml`, `rust-server/src/main.rs`, build scripts и фактическим Git-деревом. Подтверждённая ошибка контроля происхождения серверных бинарников: `Get-BuildInputRecords()` рекурсивно включает `rust-server/src/**/*.rs` и явно добавляет `shared/wire_protocol.rs`, но не включает `shared/dtls.rs`, который непосредственно подключается production-сервером из `rust-server/src/main.rs` через `#[path = "../../shared/dtls.rs"]`. Изменение DTLS-реализации не меняет `buildInputSha256`; режим `Verify` поэтому может принять бинарник, собранный со старой реализацией DTLS, как соответствующий текущим исходникам. Это нарушает гарантию provenance для критичного криптографического кода. Необходимо включить `shared/dtls.rs` в список build inputs (и проверять полноту списка подключаемых исходников). Исходный код не изменялся; сборка и тесты не запускались.
+
+## Состояние аудита
+
+- Проверено файлов: 551 из 558.
+- Последний проверенный файл: `scripts/server_asset_provenance.ps1`.
+- Следующий файл по Git-дереву: `scripts/test_wsl_unified.bat`.
