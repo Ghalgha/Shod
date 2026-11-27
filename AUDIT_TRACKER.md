@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **455**
-- Последний изученный файл: **`rust-client/src/threads/worker.rs`**
-- Последний проверенный файл: **`rust-client/src/threads/worker.rs`**
+- Изучено файлов: **456**
+- Последний изученный файл: **`rust-client/src/transport/relay/.gitkeep`**
+- Последний проверенный файл: **`rust-client/src/transport/relay/.gitkeep`**
 
 ## Найденные проблемы
 
@@ -1013,3 +1013,6 @@
 
 
 - `rust-client/src/threads/worker.rs` — полностью прочитан (около 1 900 строк). Проверены управление группами/воркерами и масштабирование, PauseGate и pacing, жизненный цикл JoinSet/oneshot/CancellationToken, получение и ротация TURN credentials, лимиты allocation, обработка сетевых/TURN ошибок и retry/backoff, классификаторы ошибок, разбор VK hash и unit-тесты. Подтверждённых ошибок в проверенной логике не установлено. Сборка и тесты не запускались.
+
+
+- `rust-client/src/transport/relay/.gitkeep` — полностью проверен пустой служебный файл (0 байт), предназначенный для сохранения каталога `relay` в Git. Проблем нет.
