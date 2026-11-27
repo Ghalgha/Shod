@@ -1204,6 +1204,6 @@
 
 ## Состояние аудита
 
-- Проверено файлов: 540 из 558.
-- Последний проверенный файл: `rust-server/src/web_panel/routing.rs`.
-- Следующий файл по Git-дереву: `rust-server/src/web_panel/security.rs`.
+- Проверено файлов: 541 из 558.
+- Последний проверенный файл: `rust-server/src/web_panel/security.rs`.
+- Следующий файл по Git-дереву: `rust-server/src/web_panel/settings.rs`.
