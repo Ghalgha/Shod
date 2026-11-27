@@ -49,9 +49,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **515**
-- Последний изученный файл: **`rust-server/src/transport/.gitkeep`**
-- Последний проверенный файл: **`rust-server/src/transport/.gitkeep`**
+- Изучено файлов: **516**
+- Последний изученный файл: **`rust-server/src/transport/tokio_io.rs`**
+- Последний проверенный файл: **`rust-server/src/transport/tokio_io.rs`**
 
 ## Найденные проблемы
 
