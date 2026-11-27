@@ -22,4 +22,16 @@ class DtlsLogParserTest {
         assertEquals(LogLevel.ERR, entry.level)
         assertTrue(entry.message.contains("39"))
     }
+    @Test fun negatedSuccessMessagesNeverIncrementSuccess() {
+        val messages = listOf(
+            "DTLS не завершено",
+            "DTLS не был успешно завершен",
+            "DTLS неуспешен"
+        )
+        messages.forEach { message ->
+            assertNotEquals(message, "dtls_success", DtlsLogParser.parse(1, message).key)
+            assertNotEquals(message, LogLevel.OK, DtlsLogParser.parse(1, message).level)
+        }
+    }
+
 }
