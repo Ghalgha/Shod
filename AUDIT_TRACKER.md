@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **489**
-- Последний изученный файл: **`rust-client/vendor/primp/src/lib.rs`**
-- Последний проверенный файл: **`rust-client/vendor/primp/src/lib.rs`**
+- Изучено файлов: **490**
+- Последний изученный файл: **`rust-server/.cargo/config.toml`**
+- Последний проверенный файл: **`rust-server/.cargo/config.toml`**
 
 ## Найденные проблемы
 
@@ -1092,3 +1092,5 @@
 - `rust-client/vendor/primp/src/imp/mod.rs` — полностью прочитан. Проверены структуры BrowserSettings/Http2Data и значения по умолчанию, enum браузеров и ОС, случайный выбор и разрешение обобщённых вариантов, платформенные Client Hints, три варианта порядка HTTP-заголовков и маршрутизация `get_browser_settings()` по семействам браузеров. Списки случайного выбора непустые, все конкретные варианты enum сопоставлены с построителями настроек; обобщённые варианты разрешаются до конкретных до `match`, поэтому `_ => unreachable!()` согласован с текущим enum. Значения по умолчанию и константы HTTP/2 внутренне согласованы. Подтверждённых ошибок, существенных рисков и новых рекомендаций не выявлено. Сборка и тесты не запускались.
 
 - `rust-client/vendor/primp/src/imp/opera/mod.rs` — полностью прочитан. Подтверждённая ошибка сборки при отключённых default features: `build_opera_settings()` безусловно вызывает `build_http2_settings()`, но сама `build_http2_settings()` объявлена только под `#[cfg(feature = "http2")]`. При `--no-default-features` feature `http2` выключена, поэтому вызов остаётся, а функция исключается из компиляции; crate не собирается. Feature `impersonate` включает `http2`, но модуль `imp` и функция `build_opera_settings()` компилируются и без `impersonate` (модуль подключён в `lib.rs` только по target, а не по feature). Аналогичный шаблон виден в соседнем Chrome-модуле, но в рамках этого шага отмечен только текущий файл. Сборка не запускалась.
+
+- `rust-server/.cargo/config.toml` — полностью прочитан. Проверены default build target (`x86_64-unknown-linux-musl`), target-specific rustflags для x86_64/aarch64/armv7 musl и соответствие имён target triples. Сопоставлено с `rust-server/rust-toolchain.toml`, `Cargo.toml`, Linux build scripts и CI workflow: скрипты явно устанавливают Zig-based linker wrappers для всех трёх targets, добавляют необходимые Rust targets и запускают `cargo zigbuild`; `-C link-self-contained=no` согласован с этой схемой внешнего линкования. Подтверждённых ошибок конфигурации не выявлено. Потенциальное ограничение: заданный default target действует для обычных Cargo build/check/test команд из каталога `rust-server`, поэтому локальные команды без `--target` могут неожиданно требовать musl target и подходящий linker; это ожидаемое поведение текущей конфигурации, а не подтверждённый дефект. Сборка и тесты не запускались.
