@@ -49,9 +49,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **528**
-- Последний изученный файл: **`rust-server/src/web_panel/assets/panel.html`**
-- Последний проверенный файл: **`rust-server/src/web_panel/assets/panel.html`**
+- Изучено файлов: **529**
+- Последний изученный файл: **`rust-server/src/web_panel/assets/pwa-icon-192.png.b64`**
+- Последний проверенный файл: **`rust-server/src/web_panel/assets/pwa-icon-192.png.b64`**
 
 ## Найденные проблемы
 
