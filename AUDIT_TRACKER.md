@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **465**
-- Последний изученный файл: **`rust-client/src/transport/turn/turn_core.rs`**
-- Последний проверенный файл: **`rust-client/src/transport/turn/turn_core.rs`**
+- Изучено файлов: **466**
+- Последний изученный файл: **`rust-client/src/transport/turn/turn_endpoint.rs`**
+- Последний проверенный файл: **`rust-client/src/transport/turn/turn_endpoint.rs`**
 
 ## Найденные проблемы
 
