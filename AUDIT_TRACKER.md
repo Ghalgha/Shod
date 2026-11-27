@@ -49,9 +49,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **525**
-- Последний изученный файл: **`rust-server/src/web_panel/assets/group-subscription.html`**
-- Последний проверенный файл: **`rust-server/src/web_panel/assets/group-subscription.html`**
+- Изучено файлов: **526**
+- Последний изученный файл: **`rust-server/src/web_panel/assets/login.html`**
+- Последний проверенный файл: **`rust-server/src/web_panel/assets/login.html`**
 
 ## Найденные проблемы
 
