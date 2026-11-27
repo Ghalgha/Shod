@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **478**
-- Последний изученный файл: **`rust-client/vendor/netstack-smoltcp/src/runner.rs`**
-- Последний проверенный файл: **`rust-client/vendor/netstack-smoltcp/src/runner.rs`**
+- Изучено файлов: **479**
+- Последний изученный файл: **`rust-client/vendor/netstack-smoltcp/src/stack.rs`**
+- Последний проверенный файл: **`rust-client/vendor/netstack-smoltcp/src/stack.rs`**
 
 ## Найденные проблемы
 
@@ -1065,3 +1065,6 @@
 
 
 - `rust-client/vendor/netstack-smoltcp/src/runner.rs` — полностью прочитан. Подтверждена ошибка безопасности памяти: `BoxFuture<'a, T>` содержит `Pin<Box<dyn Future<Output = T> + 'a>>`, но вручную реализует `unsafe impl<T: Send> Send` без требования `Send` к самому внутреннему future. Публичный `BoxFuture::new()` также принимает любой `IntoFuture` без `Send`-ограничения. Поэтому обёртка может объявить Send future, содержащий `!Send`-состояние (например, `Rc`), и разрешить перенос такого future между потоками; это нарушает контракт Send и может привести к неопределённому поведению. Ограничение `T: Send` недостаточно: безопасность зависит от Send-свойства захваченного future, а не только его результата. Рекомендуется убрать небезопасную реализацию и добавить bound `F::IntoFuture: Send`/`dyn Future + Send` там, где действительно требуется межпоточная передача. Сборка и тесты не запускались.
+
+
+- `rust-client/vendor/netstack-smoltcp/src/stack.rs` — полностью прочитан. Проверены builder defaults и setters, создание каналов и optional UDP/TCP/ICMP endpoints, маршрутизация по IP protocol, фильтрация адресов, checked IP parsing, Sink/Stream polling, сохранение ожидающего пакета при backpressure и закрытие receiver. Подтверждённая ошибка устойчивости: публичные setters `stack_buffer_size()`, `udp_buffer_size()` и `tcp_buffer_size()` принимают `0` без валидации, а `build()` напрямую передаёт соответствующий размер в `tokio::sync::mpsc::channel()`, который требует ненулевую ёмкость и паникует при нуле. Для `stack_buffer_size(0)` паника происходит при каждом `build()`; для UDP/TCP — при включённом соответствующем протоколе. Это превращает допустимый на уровне API ввод в panic вместо `io::Error`. Рекомендуется отклонять нулевые размеры с `InvalidInput` либо нормализовать их до минимальной ёмкости. Сборка и тесты не запускались.
