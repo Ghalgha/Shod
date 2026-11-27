@@ -1193,6 +1193,6 @@
 
 ## Состояние аудита
 
-- Проверено файлов: 536 из 558.
-- Последний проверенный файл: `rust-server/src/web_panel/groups.rs`.
-- Следующий файл по Git-дереву: `rust-server/src/web_panel/links.rs`.
+- Проверено файлов: 537 из 558.
+- Последний проверенный файл: `rust-server/src/web_panel/links.rs`.
+- Следующий файл по Git-дереву: `rust-server/src/web_panel/monitoring.rs`.
