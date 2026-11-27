@@ -750,18 +750,18 @@
                     return true;
                 } catch (e) {}
             }
+            const ta = document.createElement('textarea');
             try {
-                const ta = document.createElement('textarea');
                 ta.value = text;
                 ta.style.position = 'absolute';
                 ta.style.left = '-9999px';
                 document.body.appendChild(ta);
                 ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
-                return true;
+                return document.execCommand('copy') === true;
             } catch (e) {
                 return false;
+            } finally {
+                if (ta.parentNode) ta.parentNode.removeChild(ta);
             }
         }
 
