@@ -1207,6 +1207,6 @@
 
 ## Состояние аудита
 
-- Проверено файлов: 542 из 558.
-- Последний проверенный файл: `rust-server/src/web_panel/settings.rs`.
-- Следующий файл по Git-дереву: `rust-server/src/web_panel/subscriptions.rs`.
+- Проверено файлов: 543 из 558.
+- Последний проверенный файл: `rust-server/src/web_panel/subscriptions.rs`.
+- Следующий файл по Git-дереву: `scripts/.gitkeep`.
