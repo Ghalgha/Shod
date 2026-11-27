@@ -19,9 +19,7 @@ fn replace_html_placeholders(template: &str, replacements: &[(&str, &str)]) -> S
         let next = replacements
             .iter()
             .filter_map(|(marker, value)| {
-                remaining
-                    .find(marker)
-                    .map(|index| (index, *marker, *value))
+                remaining.find(marker).map(|index| (index, *marker, *value))
             })
             .min_by_key(|(index, _, _)| *index);
 
@@ -43,10 +41,7 @@ fn render_client_sub_html(client_name: &str, shod_link: &str) -> String {
     let link_esc = html_escape(shod_link);
     replace_html_placeholders(
         CLIENT_SUB_HTML,
-        &[
-            ("__CLIENT_NAME__", &name_esc),
-            ("__Shod_LINK__", &link_esc),
-        ],
+        &[("__CLIENT_NAME__", &name_esc), ("__Shod_LINK__", &link_esc)],
     )
 }
 
