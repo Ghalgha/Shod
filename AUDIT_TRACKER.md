@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **476**
-- Последний изученный файл: **`rust-client/vendor/netstack-smoltcp/src/lib.rs`**
-- Последний проверенный файл: **`rust-client/vendor/netstack-smoltcp/src/lib.rs`**
+- Изучено файлов: **477**
+- Последний изученный файл: **`rust-client/vendor/netstack-smoltcp/src/packet.rs`**
+- Последний проверенный файл: **`rust-client/vendor/netstack-smoltcp/src/packet.rs`**
 
 ## Найденные проблемы
 
@@ -1059,3 +1059,6 @@
 
 
 - `rust-client/vendor/netstack-smoltcp/src/lib.rs` — полностью прочитан. Проверены объявления приватных модулей `device`, `runner`, `packet`, `filter`, публичных модулей `udp`, `tcp`, `stack` и публичные re-export API (`Runner`, `AnyIpPktFrame`, `IpFilter`, `IpFilters`, `UdpSocket`, `TcpListener`, `TcpStream`, `Stack`, `StackBuilder`, `smoltcp`). Границы видимости и повторные экспорты согласованы; внутренний `device` остаётся скрытым, необходимые внешние типы доступны через crate root. Файл не содержит исполняемой логики или небезопасных операций. Подтверждённых ошибок, существенных рисков и новых рекомендаций не выявлено. Сборка и тесты не запускались.
+
+
+- `rust-client/vendor/netstack-smoltcp/src/packet.rs` — полностью прочитан. Проверены определение IP version, checked-конструкторы IPv4/IPv6, извлечение source/destination address, непосредственного `next_header` и payload, ограничения generic bounds и время жизни возвращаемого payload. Проверка формата делегирована checked API smoltcp; собственных небезопасных операций и ручной арифметики смещений нет. Потенциальное ограничение IPv6: `protocol()` возвращает значение Next Header базового IPv6-заголовка, которое при наличии extension headers обозначает следующий extension header, а не конечный TCP/UDP. Проверенный потребитель `stack.rs` сопоставляет это значение напрямую с TCP/UDP/ICMP и игнорирует остальные протоколы, поэтому IPv6-пакеты с extension headers не доходят до транспортной обработки. Это ограничение взаимодействия wrapper/consumer, а не ошибка самого чтения поля; поддержка таких заголовков в проекте не подтверждена. Рекомендуется явно поддержать обход extension headers либо документировать/отклонять такие пакеты. Сборка и тесты не запускались.
