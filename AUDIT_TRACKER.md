@@ -22,12 +22,14 @@
 
 - `rust-server/Cargo.toml` — полностью прочитан. Проверены package metadata, edition 2024 и MSRV `1.97.1` в соответствии с `rust-toolchain.toml`, явное объявление единственного binary target, feature flags, обычные/target-specific/dev dependencies и release profile. Сопоставлены зависимости с корневой записью `shod` в `Cargo.lock`: все объявленные прямые зависимости присутствуют, включая Linux-only `snmalloc-rs`, а dev-dependency `tokio` корректно объединена Cargo с основной зависимостью. Проверена согласованность TLS-криптопровайдера (`aws-lc-rs`) между `rustls`, `tokio-rustls`, `axum-server` и `rcgen`, а также Linux-ограничение аллокатора с `#[cfg(target_os = "linux")]` в `src/main.rs`. Feature `diagnostics` объявлена пустой; в manifest она не включает дополнительных зависимостей, само по себе это не является дефектом. Профиль release явно отключает overflow checks (как и стандартный release-профиль Cargo); это повышает значимость корректной проверки арифметики в коде, но без дефекта в самом manifest не классифицируется как ошибка. Подтверждённых ошибок конфигурации или несоответствий lockfile не выявлено. Сборка и тесты не запускались.
 
+- `rust-server/build_linux.bat` — полностью прочитан. Проверены разбор аргументов (`--tests`, `--no-tests`, `--diagnostics`), выбор поведения в CI, поиск Cargo/Zig/cargo-zigbuild, установка musl targets, временные Zig wrappers для C/C++/архиватора, команды fmt/clippy/кросс-компиляции тестов, запуск параллельной сборки вариантов и последующая проверка provenance. Сопоставлено с `Cargo.toml`, `.cargo/config.toml`, `rust-toolchain.toml`, `build_linux.sh`, `build_linux_variants.ps1` и `server_asset_provenance.ps1`: target triples и feature `diagnostics` передаются согласованно; явного дефекта маршрутизации аргументов или очистки временных wrappers не выявлено. Потенциальный риск воспроизводимости: команды `cargo clippy` и `cargo zigbuild --tests` в этом скрипте не используют `--locked`; при изменении manifest/lockfile Cargo может обновить `Cargo.lock` вместо немедленного отказа, что допускает незапланированное изменение разрешения зависимостей во время сборки. Рекомендуется добавить `--locked` к Cargo-командам сборки/проверки. Подтверждённых ошибок в самом файле не выявлено. Сборки и тесты не запускались.
+
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **492**
-- Последний изученный файл: **`rust-server/Cargo.toml`**
-- Последний проверенный файл: **`rust-server/Cargo.toml`**
+- Изучено файлов: **493**
+- Последний изученный файл: **`rust-server/build_linux.bat`**
+- Последний проверенный файл: **`rust-server/build_linux.bat`**
 
 ## Найденные проблемы
 
