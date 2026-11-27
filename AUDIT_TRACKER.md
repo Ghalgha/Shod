@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **475**
-- Последний изученный файл: **`rust-client/vendor/netstack-smoltcp/src/filter.rs`**
-- Последний проверенный файл: **`rust-client/vendor/netstack-smoltcp/src/filter.rs`**
+- Изучено файлов: **476**
+- Последний изученный файл: **`rust-client/vendor/netstack-smoltcp/src/lib.rs`**
+- Последний проверенный файл: **`rust-client/vendor/netstack-smoltcp/src/lib.rs`**
 
 ## Найденные проблемы
 
@@ -1056,3 +1056,6 @@
 
 
 - `rust-client/vendor/netstack-smoltcp/src/filter.rs` — полностью прочитан. Проверены тип фильтра и требования Send/Sync, время жизни closure, добавление одиночных/пакетных фильтров, AND-семантика `is_allowed()` и стандартный `with_non_broadcast()`. В `StackBuilder::default()` этот стандартный фильтр применяется по умолчанию; пользовательские фильтры дополнительно сужают разрешённый трафик. Проверки IPv4 broadcast/multicast/unspecified и IPv6 multicast/unspecified соответствуют назначению фильтра. Пустой `IpFilters::new()` пропускает все адреса, что согласуется с явным выбором пустого набора фильтров. Подтверждённых ошибок, существенных рисков и новых рекомендаций не выявлено. Сборка и тесты не запускались.
+
+
+- `rust-client/vendor/netstack-smoltcp/src/lib.rs` — полностью прочитан. Проверены объявления приватных модулей `device`, `runner`, `packet`, `filter`, публичных модулей `udp`, `tcp`, `stack` и публичные re-export API (`Runner`, `AnyIpPktFrame`, `IpFilter`, `IpFilters`, `UdpSocket`, `TcpListener`, `TcpStream`, `Stack`, `StackBuilder`, `smoltcp`). Границы видимости и повторные экспорты согласованы; внутренний `device` остаётся скрытым, необходимые внешние типы доступны через crate root. Файл не содержит исполняемой логики или небезопасных операций. Подтверждённых ошибок, существенных рисков и новых рекомендаций не выявлено. Сборка и тесты не запускались.
