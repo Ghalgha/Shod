@@ -23,11 +23,14 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **488**
-- Последний изученный файл: **`rust-client/vendor/primp/src/imp/safari/mod.rs`**
-- Последний проверенный файл: **`rust-client/vendor/primp/src/imp/safari/mod.rs`**
+- Изучено файлов: **489**
+- Последний изученный файл: **`rust-client/vendor/primp/src/lib.rs`**
+- Последний проверенный файл: **`rust-client/vendor/primp/src/lib.rs`**
 
 ## Найденные проблемы
+
+- `rust-client/vendor/primp/src/lib.rs` — полностью прочитан. Проверены публичный API Client/ClientBuilder, делегирование методов в reqwest, конфигурация таймаутов, прокси, cookies, DNS, сертификатов, impersonation, TLS/ALPN, HTTP/2 fingerprint settings, ECH GREASE и cfg для wasm. Новых независимых подтверждённых дефектов не выявлено. В частности, отсутствие feature-gating для native `imp` и связанных HTTP/2 построителей при отключённых features проявляется в уже зарегистрированной ошибке `--no-default-features` в browser-модулях; повторно не дублируется. Сборка и тесты не запускались.
+
 
 ### Подтверждённые ошибки
 
