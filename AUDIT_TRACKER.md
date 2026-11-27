@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **490**
-- Последний изученный файл: **`rust-server/.cargo/config.toml`**
-- Последний проверенный файл: **`rust-server/.cargo/config.toml`**
+- Изучено файлов: **491**
+- Последний изученный файл: **`rust-server/Cargo.lock`**
+- Последний проверенный файл: **`rust-server/Cargo.lock`**
 
 ## Найденные проблемы
 
@@ -1094,3 +1094,6 @@
 - `rust-client/vendor/primp/src/imp/opera/mod.rs` — полностью прочитан. Подтверждённая ошибка сборки при отключённых default features: `build_opera_settings()` безусловно вызывает `build_http2_settings()`, но сама `build_http2_settings()` объявлена только под `#[cfg(feature = "http2")]`. При `--no-default-features` feature `http2` выключена, поэтому вызов остаётся, а функция исключается из компиляции; crate не собирается. Feature `impersonate` включает `http2`, но модуль `imp` и функция `build_opera_settings()` компилируются и без `impersonate` (модуль подключён в `lib.rs` только по target, а не по feature). Аналогичный шаблон виден в соседнем Chrome-модуле, но в рамках этого шага отмечен только текущий файл. Сборка не запускалась.
 
 - `rust-server/.cargo/config.toml` — полностью прочитан. Проверены default build target (`x86_64-unknown-linux-musl`), target-specific rustflags для x86_64/aarch64/armv7 musl и соответствие имён target triples. Сопоставлено с `rust-server/rust-toolchain.toml`, `Cargo.toml`, Linux build scripts и CI workflow: скрипты явно устанавливают Zig-based linker wrappers для всех трёх targets, добавляют необходимые Rust targets и запускают `cargo zigbuild`; `-C link-self-contained=no` согласован с этой схемой внешнего линкования. Подтверждённых ошибок конфигурации не выявлено. Потенциальное ограничение: заданный default target действует для обычных Cargo build/check/test команд из каталога `rust-server`, поэтому локальные команды без `--target` могут неожиданно требовать musl target и подходящий linker; это ожидаемое поведение текущей конфигурации, а не подтверждённый дефект. Сборка и тесты не запускались.
+
+
+- `rust-server/Cargo.lock` — полностью прочитан (2085 строк, 223 package entries). Проверены формат lockfile v4 и совместимость формата с закреплённым Rust/Cargo 1.97.1, наличие и контрольные суммы всех registry-пакетов, отсутствие повторяющихся package identity, разрешимость всех зависимостей, состав корневого пакета `shod` и соответствие прямых зависимостей `rust-server/Cargo.toml`. Все 35 прямых зависимостей (с учётом Linux-target dependency и dev-dependency `tokio`) представлены в lockfile; зафиксированные версии соответствуют указанным требованиям, включая точную фиксацию `tun = 0.8.14`. Все источники — crates.io registry, git/path-зависимостей нет. Подтверждённых ошибок, существенных рисков или рекомендаций по содержимому lockfile не выявлено. Сборка и тесты не запускались.
