@@ -179,8 +179,8 @@ jobs:
         with:
           name: shod-android-native-client-${{ matrix.abi }}
           path: |
-            app/src/main/jniLibs/${{ matrix.abi }}/
-            build/rust-client-android-${{ matrix.suffix }}/
+            app/src/main/jniLibs/${{ matrix.abi }}/libclient.so
+            build/rust-client-android-${{ matrix.suffix }}/${{ matrix.target }}/release/client
           if-no-files-found: error
           retention-days: 1
 
