@@ -1185,6 +1185,6 @@
 
 ## Состояние аудита
 
-- Проверено файлов: 533 из 558.
-- Последний проверенный файл: `rust-server/src/web_panel/assets/sw.js`.
-- Следующий файл по Git-дереву: `rust-server/src/web_panel/auth.rs`.
+- Проверено файлов: 534 из 558.
+- Последний проверенный файл: `rust-server/src/web_panel/auth.rs`.
+- Следующий файл по Git-дереву: `rust-server/src/web_panel/clients.rs`.
