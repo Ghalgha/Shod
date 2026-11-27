@@ -695,8 +695,9 @@ mod tests {
         clients::{count_active_sessions, normalize_client_vk_hashes, normalize_vk_access_token},
         dns_provider_id,
         links::{decrypt_shod_link, encrypt_shod_link},
-        make_client_link, parse_host_header,
+        make_client_link,
         monitoring::{process_memory, process_memory_rollup},
+        parse_host_header,
         proxy::validate_proxy_profile_name,
         settings::{
             DNS_PROVIDERS, deploy_dns_profile_or_yandex, dns_provider_by_id, manual_dns,
