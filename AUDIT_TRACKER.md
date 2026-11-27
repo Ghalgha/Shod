@@ -23,9 +23,9 @@
 ## Состояние аудита
 
 - Файлов в проекте: **558**
-- Изучено файлов: **481**
-- Последний изученный файл: **`rust-client/vendor/netstack-smoltcp/src/udp.rs`**
-- Последний проверенный файл: **`rust-client/vendor/netstack-smoltcp/src/udp.rs`**
+- Изучено файлов: **482**
+- Последний изученный файл: **`rust-client/vendor/primp/Cargo.toml`**
+- Последний проверенный файл: **`rust-client/vendor/primp/Cargo.toml`**
 
 ## Найденные проблемы
 
@@ -1074,3 +1074,5 @@
 
 
 - `rust-client/vendor/netstack-smoltcp/src/udp.rs` — полностью прочитан. Проверены разделение UDP socket на ReadHalf/WriteHalf, чтение IP/UDP пакетов через checked API, формирование IPv4/IPv6 UDP пакетов, обработка несовпадающих семейств адресов, пустых payload, backpressure и flush/close через PollSender. Подтверждённая ошибка устойчивости в `ReadHalf::poll_next()`: ошибки разбора IP-пакета и UDP-пакета возвращают `None` из closure `and_then`, а внешний `poll_recv().map(...)` передаёт это как `Poll::Ready(None)`. Для `Stream` значение `None` означает окончательное завершение потока, хотя канал `udp_rx` может оставаться открытым и содержать последующие корректные пакеты. Поэтому один повреждённый/неподдерживаемый пакет навсегда прекращает чтение UDP-соединений; последующие датаграммы теряются для потребителя. Следует пропускать некорректный кадр и продолжать polling, либо явно возвращать ошибку через отдельный контракт потока. Сборка и тесты не запускались.
+
+- `rust-client/vendor/primp/Cargo.toml` — полностью прочитан сгенерированный Cargo manifest пакета `primp` версии 1.3.1. Проверены package metadata, edition/MSRV, `include`, отключение автоматического обнаружения targets, features и их forwarding в `reqwest`, target-specific зависимости для не-WASM, dev-dependencies и явная настройка lib target. Сопоставлены root dependency `primp = "1.3.1"`, path-patch на `vendor/primp` и исходный `src/lib.rs`: crate действительно реэкспортирует `reqwest`, а impersonation и HTTP/2 API ограничены соответствующими target/features. Объявления зависимостей и feature aliases внутренне согласованы; manifest отмечен Cargo как автоматически сгенерированный, отсутствие `Cargo.toml.orig` в репозитории не позволяет проверить исходную форму до нормализации, но само по себе не является дефектом сборки. Подтверждённых ошибок, существенных рисков и новых рекомендаций не выявлено. Сборка и тесты не запускались.
