@@ -11,12 +11,43 @@ fn html_escape(input: &str) -> String {
         .replace('\'', "&#39;")
 }
 
+fn replace_html_placeholders(template: &str, replacements: &[(&str, &str)]) -> String {
+    let mut output = String::with_capacity(template.len());
+    let mut remaining = template;
+
+    while !remaining.is_empty() {
+        let next = replacements
+            .iter()
+            .filter_map(|(marker, value)| {
+                remaining
+                    .find(marker)
+                    .map(|index| (index, *marker, *value))
+            })
+            .min_by_key(|(index, _, _)| *index);
+
+        let Some((index, marker, value)) = next else {
+            output.push_str(remaining);
+            break;
+        };
+
+        output.push_str(&remaining[..index]);
+        output.push_str(value);
+        remaining = &remaining[index + marker.len()..];
+    }
+
+    output
+}
+
 fn render_client_sub_html(client_name: &str, shod_link: &str) -> String {
     let name_esc = html_escape(client_name);
     let link_esc = html_escape(shod_link);
-    CLIENT_SUB_HTML
-        .replace("__CLIENT_NAME__", &name_esc)
-        .replace("__Shod_LINK__", &link_esc)
+    replace_html_placeholders(
+        CLIENT_SUB_HTML,
+        &[
+            ("__CLIENT_NAME__", &name_esc),
+            ("__Shod_LINK__", &link_esc),
+        ],
+    )
 }
 
 fn render_group_sub_html(group_name: &str, clients_json: &str, count: usize) -> String {
