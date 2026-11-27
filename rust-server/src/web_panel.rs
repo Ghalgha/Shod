@@ -345,7 +345,10 @@ fn parse_host_header(host: &str) -> Option<(String, Option<String>)> {
     };
 
     if let Some(port) = port.as_deref()
-        && (port.is_empty() || port.len() > 5 || !port.bytes().all(|b| b.is_ascii_digit()))
+        && (port.is_empty()
+            || port.len() > 5
+            || !port.bytes().all(|b| b.is_ascii_digit())
+            || !matches!(port.parse::<u16>(), Ok(value) if value > 0))
     {
         return None;
     }
@@ -692,7 +695,7 @@ mod tests {
         clients::{count_active_sessions, normalize_client_vk_hashes, normalize_vk_access_token},
         dns_provider_id,
         links::{decrypt_shod_link, encrypt_shod_link},
-        make_client_link,
+        make_client_link, parse_host_header,
         monitoring::{process_memory, process_memory_rollup},
         proxy::validate_proxy_profile_name,
         settings::{
@@ -701,6 +704,22 @@ mod tests {
         },
         validate_client_name, validate_workers,
     };
+
+    #[test]
+    fn host_header_accepts_only_ports_in_the_valid_range() {
+        assert_eq!(
+            parse_host_header("example.com:1"),
+            Some(("example.com".to_string(), Some("1".to_string())))
+        );
+        assert_eq!(
+            parse_host_header("example.com:65535"),
+            Some(("example.com".to_string(), Some("65535".to_string())))
+        );
+        assert!(parse_host_header("example.com:0").is_none());
+        assert!(parse_host_header("example.com:65536").is_none());
+        assert!(parse_host_header("example.com:99999").is_none());
+        assert!(parse_host_header("example.com:abc").is_none());
+    }
 
     #[test]
     fn dns_provider_catalog_is_complete_and_has_exact_yandex_default() {
