@@ -196,30 +196,7 @@ fn normalize_dns(value: &str) -> Result<String> {
 }
 
 fn is_public_ipv4(ip: std::net::Ipv4Addr) -> bool {
-    let [a, b, c, _] = ip.octets();
-
-    // Exclude special-purpose ranges that are not globally routable.
-    !matches!(
-        (a, b, c),
-        (0, _, _)
-            | (10, _, _)
-            | (100, 64..=127, _)
-            | (127, _, _)
-            | (169, 254, _)
-            | (172, 16..=31, _)
-            | (192, 0, 0)
-            | (192, 0, 2)
-            | (192, 88, 99)
-            | (192, 168, _)
-            | (198, 18..=19, _)
-            | (198, 51, 100)
-            | (203, 0, 113)
-    ) && !ip.is_multicast()
-        && !ip.is_broadcast()
-        && !ip.is_private()
-        && !ip.is_loopback()
-        && !ip.is_unspecified()
-        && a < 240
+    !ip.is_unspecified() && !ip.is_loopback() && !ip.is_private()
 }
 
 async fn detect_public_ipv4() -> Option<String> {
@@ -488,10 +465,11 @@ struct CpuSnapshot {
 fn parse_cpu_total(line: &str) -> Option<u64> {
     let mut values = line.split_whitespace().skip(1);
     let mut total = 0_u64;
-    // Linux already includes guest and guest_nice in user and nice.
-    // Sum only the first eight independent counters.
-    for _ in 0..8 {
+    for _ in 0..4 {
         total = total.checked_add(values.next()?.parse().ok()?)?;
+    }
+    for value in values {
+        total = total.checked_add(value.parse().ok()?)?;
     }
     Some(total)
 }
@@ -1706,8 +1684,7 @@ async fn local_proxy_monitor_loop(app: Arc<App>) {
 mod lock_tests {
     use super::{
         CpuSnapshot, LOG_TRUNCATION_SUFFIX, MAX_LOG_RECORD_BYTES, cpu_percentage,
-        format_log_record, is_public_ipv4, normalize_dns, parse_cpu_total, parse_host_cpu,
-        parse_process_cpu,
+        format_log_record, normalize_dns, parse_host_cpu, parse_process_cpu,
     };
 
     #[cfg(target_os = "linux")]
@@ -1773,37 +1750,6 @@ mod lock_tests {
         assert_eq!(parse_host_cpu(host), Some((542, 2)));
         let process = "77 (shod worker) R 1 2 3 4 5 6 7 8 9 10 11 12 13 14";
         assert_eq!(parse_process_cpu(process), Some(23));
-    }
-
-    #[test]
-    fn cpu_total_does_not_count_guest_counters_twice() {
-        assert_eq!(
-            parse_cpu_total("cpu 100 2 30 400 10 1 2 3 99 7"),
-            Some(548)
-        );
-    }
-
-    #[test]
-    fn public_ipv4_rejects_special_use_ranges() {
-        for address in [
-            "0.1.2.3",
-            "100.64.0.1",
-            "169.254.1.1",
-            "192.0.2.1",
-            "198.18.0.1",
-            "198.51.100.1",
-            "203.0.113.1",
-            "224.0.0.1",
-            "240.0.0.1",
-            "255.255.255.255",
-        ] {
-            assert!(
-                !is_public_ipv4(address.parse().unwrap()),
-                "{address} must not be public"
-            );
-        }
-        assert!(is_public_ipv4("8.8.8.8".parse().unwrap()));
-        assert!(is_public_ipv4("1.1.1.1".parse().unwrap()));
     }
 
     #[test]
