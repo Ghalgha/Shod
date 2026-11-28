@@ -465,13 +465,12 @@ struct CpuSnapshot {
 fn parse_cpu_total(line: &str) -> Option<u64> {
     let mut values = line.split_whitespace().skip(1);
     let mut total = 0_u64;
-    for _ in 0..4 {
-        total = total.checked_add(values.next()?.parse().ok()?)?;
-    }
-    for value in values {
+    let mut count = 0;
+    for value in values.by_ref().take(8) {
         total = total.checked_add(value.parse().ok()?)?;
+        count += 1;
     }
-    Some(total)
+    (count >= 4).then_some(total)
 }
 
 fn parse_host_cpu(stat: &str) -> Option<(u64, u64)> {
@@ -1750,6 +1749,12 @@ mod lock_tests {
         assert_eq!(parse_host_cpu(host), Some((542, 2)));
         let process = "77 (shod worker) R 1 2 3 4 5 6 7 8 9 10 11 12 13 14";
         assert_eq!(parse_process_cpu(process), Some(23));
+    }
+
+    #[test]
+    fn excludes_guest_ticks_already_included_in_user_and_nice() {
+        let host = "cpu 100 2 30 400 10 1 2 3 99 7\\ncpu0 100 2 30 400\\n";
+        assert_eq!(parse_host_cpu(host), Some((548, 1)));
     }
 
     #[test]
