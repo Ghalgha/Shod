@@ -1619,7 +1619,11 @@ fn import_legacy_database_rows(connection: &mut Connection, legacy: &Database) -
         ("main_vk_hashes", legacy.main_vk_hashes.as_str()),
         (
             "main_vk_token_enabled",
-            if legacy.main_vk_token_enabled { "1" } else { "0" },
+            if legacy.main_vk_token_enabled {
+                "1"
+            } else {
+                "0"
+            },
         ),
         ("dns", legacy.dns.as_str()),
         ("dns_provider", legacy.dns_provider.as_str()),
@@ -1747,8 +1751,8 @@ fn import_legacy_database_rows(connection: &mut Connection, legacy: &Database) -
                 .context("serialize legacy routing rule packages")?;
             let domains = serde_json::to_string(&rule.direct_domains)
                 .context("serialize legacy routing rule domains")?;
-            let ips = serde_json::to_string(&rule.ips)
-                .context("serialize legacy routing rule IPs")?;
+            let ips =
+                serde_json::to_string(&rule.ips).context("serialize legacy routing rule IPs")?;
             insert
                 .execute(rusqlite::params![
                     rule.id,
@@ -1807,7 +1811,10 @@ fn verify_legacy_database_rows(sqlite: &Database, legacy: &Database) -> Result<(
     macro_rules! verify_nonempty {
         ($field:ident) => {
             if !legacy.$field.is_empty() && sqlite.$field != legacy.$field {
-                bail!("legacy {} is missing or conflicts after import", stringify!($field));
+                bail!(
+                    "legacy {} is missing or conflicts after import",
+                    stringify!($field)
+                );
             }
         };
     }
@@ -1826,7 +1833,9 @@ fn verify_legacy_database_rows(sqlite: &Database, legacy: &Database) -> Result<(
     if sqlite.auto_restart_interval_hours() != legacy.auto_restart_interval_hours() {
         bail!("legacy auto_restart_interval_hours is missing or conflicts after import");
     }
-    if let Some(workers) = legacy.main_workers.filter(|workers| (3..=100).contains(workers))
+    if let Some(workers) = legacy
+        .main_workers
+        .filter(|workers| (3..=100).contains(workers))
         && sqlite.main_workers != Some(workers)
     {
         bail!("legacy main_workers is missing or conflicts after import");
@@ -1836,7 +1845,8 @@ fn verify_legacy_database_rows(sqlite: &Database, legacy: &Database) -> Result<(
     {
         bail!("legacy logging_active is missing or conflicts after import");
     }
-    if sqlite.main_up_bytes < legacy.main_up_bytes || sqlite.main_down_bytes < legacy.main_down_bytes
+    if sqlite.main_up_bytes < legacy.main_up_bytes
+        || sqlite.main_down_bytes < legacy.main_down_bytes
     {
         bail!("legacy main traffic counters are missing after import");
     }
@@ -1863,9 +1873,11 @@ fn verify_legacy_database_rows(sqlite: &Database, legacy: &Database) -> Result<(
             || sqlite_group.name != legacy_group.name
             || sqlite_group.routing_rule_id != legacy_group.routing_rule_id
             || sqlite_group.admin_uuid != legacy_group.admin_uuid
-            || (!legacy_group.sub_uuid.is_empty()
-                && sqlite_group.sub_uuid != legacy_group.sub_uuid)
-            || sqlite_group.workers != legacy_group.workers.filter(|workers| (3..=100).contains(workers))
+            || (!legacy_group.sub_uuid.is_empty() && sqlite_group.sub_uuid != legacy_group.sub_uuid)
+            || sqlite_group.workers
+                != legacy_group
+                    .workers
+                    .filter(|workers| (3..=100).contains(workers))
             || sqlite_group.vk_token != legacy_group.vk_token
             || sqlite_group.vk_hashes != legacy_group.vk_hashes
         {
@@ -1876,16 +1888,22 @@ fn verify_legacy_database_rows(sqlite: &Database, legacy: &Database) -> Result<(
         let Some(sqlite_rule) = sqlite.routing_rules.get(rule_id) else {
             bail!("legacy routing rule {rule_id} is missing after import");
         };
-        if sqlite_rule != *legacy_rule {
+        if sqlite_rule != legacy_rule {
             bail!("legacy routing rule {rule_id} is incomplete or conflicts after import");
         }
     }
     for legacy_profile in &legacy.local_proxy.profiles {
         let Some(sqlite_profile) = sqlite.local_proxy.find_profile(&legacy_profile.id) else {
-            bail!("legacy local proxy profile {} is missing after import", legacy_profile.id);
+            bail!(
+                "legacy local proxy profile {} is missing after import",
+                legacy_profile.id
+            );
         };
         if sqlite_profile != legacy_profile {
-            bail!("legacy local proxy profile {} is incomplete or conflicts after import", legacy_profile.id);
+            bail!(
+                "legacy local proxy profile {} is incomplete or conflicts after import",
+                legacy_profile.id
+            );
         }
     }
     if !legacy.local_proxy.active_profile_id.is_empty()
