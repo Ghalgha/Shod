@@ -3,16 +3,16 @@
 <!-- SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 -->
 
 <resources>
-    <color name="ic_launcher_background">#111923</color>
-    <color name="tv_banner_background">#111923</color>
-    <color name="app_background">#F3F5F8</color>
-    <color name="widget_card_background">#FFFFFF</color>
-    <color name="widget_card_stroke">#D7DEE7</color>
-    <color name="widget_button_bg_active">#DCE7F3</color>
-    <color name="widget_button_bg_inactive">#E8EDF3</color>
-    <color name="widget_button_stroke_active">#315F96</color>
-    <color name="widget_button_stroke_inactive">#D7DEE7</color>
-    <color name="widget_text">#17212D</color>
-    <color name="widget_status_connected">#247A50</color>
-    <color name="widget_status_disconnected">#586779</color>
+    <color name="ic_launcher_background">#1E2021</color>
+    <color name="tv_banner_background">#1E2021</color>
+    <color name="app_background">#1E2021</color>
+    <color name="widget_card_background">#252728</color>
+    <color name="widget_card_stroke">#414546</color>
+    <color name="widget_button_bg_active">#35494A</color>
+    <color name="widget_button_bg_inactive">#303234</color>
+    <color name="widget_button_stroke_active">#7FB6B3</color>
+    <color name="widget_button_stroke_inactive">#414546</color>
+    <color name="widget_text">#E7E8E8</color>
+    <color name="widget_status_connected">#7FB6B3</color>
+    <color name="widget_status_disconnected">#A9ADAE</color>
 </resources>
