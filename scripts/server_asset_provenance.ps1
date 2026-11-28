@@ -24,6 +24,7 @@ $cargoTomlPath = Join-Path $projectRoot "rust-server\Cargo.toml"
 $cargoLockPath = Join-Path $projectRoot "rust-server\Cargo.lock"
 $appBuildGradlePath = Join-Path $projectRoot "app\build.gradle.kts"
 $wireProtocolPath = Join-Path $projectRoot "shared\wire_protocol.rs"
+$dtlsPath = Join-Path $projectRoot "shared\dtls.rs"
 $wireProtocolRevisionPath = Join-Path $projectRoot "rust-server\src\main.rs"
 $schema = "shod.server-asset-provenance.v3"
 $marker = "Shod_RUST_SERVER_PRODUCTION_V1"
@@ -116,7 +117,7 @@ function Get-BuildInputRecords {
         (Join-Path $projectRoot "rust-server\build_linux.bat"),
         (Join-Path $projectRoot "rust-server\build_linux.sh"),
         (Join-Path $projectRoot "rust-server\build_linux_variants.ps1"),
-        $cargoTomlPath, $cargoLockPath, $appBuildGradlePath, $wireProtocolPath, $PSCommandPath
+        $cargoTomlPath, $cargoLockPath, $appBuildGradlePath, $wireProtocolPath, $dtlsPath, $PSCommandPath
     )
     $files += Get-ChildItem -LiteralPath (Join-Path $projectRoot "rust-server\src") -Recurse -File -Filter *.rs |
         ForEach-Object { $_.FullName }
