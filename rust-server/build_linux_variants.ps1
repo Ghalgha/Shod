@@ -60,6 +60,7 @@ Write-Host "====================================================================
 
 $tasks = @()
 
+try {
 foreach ($variant in $variants) {
     $targetDir = Join-Path $ProjectRoot "build\shod-uring-linux-$($variant.Asset)"
     New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
@@ -115,8 +116,7 @@ $lastNonInteractivePrint = [DateTime]::MinValue
 $lastPrintedStatus = ""
 $maxStatusLen = 0
 
-try {
-    while ($true) {
+while ($true) {
         $anyRunning = $false
 
         foreach ($item in $tasks) {
@@ -222,6 +222,30 @@ try {
         }
         Start-Sleep -Milliseconds 100
     }
+} catch {
+    # A launch or monitoring error must not leave earlier build processes running.
+    foreach ($item in $tasks) {
+        if ($null -ne $item.Process) {
+            try {
+                if (-not $item.Process.HasExited) {
+                    & "$env:SystemRoot\System32\taskkill.exe" /PID $item.Process.Id /T /F 2>$null | Out-Null
+                    if (-not $item.Process.HasExited) {
+                        $item.Process.Kill()
+                    }
+                }
+            } catch {
+                try {
+                    if (-not $item.Process.HasExited) { $item.Process.Kill() }
+                } catch {}
+            }
+        }
+    }
+    foreach ($item in $tasks) {
+        if ($null -ne $item.Process) {
+            try { $item.Process.WaitForExit() } catch {}
+        }
+    }
+    throw
 } finally {
     foreach ($item in $tasks) {
         if ($null -ne $item.Stream) {
@@ -251,14 +275,12 @@ foreach ($item in $tasks) {
         if (-not (Test-Path -LiteralPath $srcBinary)) {
             $srcBinary = Join-Path $item.TargetDir "release\shod"
         }
-        $destBinary = Join-Path $AssetsDir $item.Asset
 
-        if (Test-Path -LiteralPath $srcBinary) {
-            Copy-Item -LiteralPath $srcBinary -Destination $destBinary -Force
-            $size = (Get-Item -LiteralPath $destBinary).Length
-            Write-Host "  [OK]   $($item.Name) ($dur)$warns -> $($item.Asset) ($size bytes)" -ForegroundColor Green
+        if ((Test-Path -LiteralPath $srcBinary) -and (Get-Item -LiteralPath $srcBinary).Length -gt 0) {
+            $size = (Get-Item -LiteralPath $srcBinary).Length
+            Write-Host "  [READY] $($item.Name) ($dur)$warns -> $($item.Asset) ($size bytes)" -ForegroundColor Green
         } else {
-            Write-Host "  [FAIL] $($item.Name) binary not found at $srcBinary" -ForegroundColor Red
+            Write-Host "  [FAIL] $($item.Name) binary missing or empty at $srcBinary" -ForegroundColor Red
             $hasFailure = $true
         }
     } else {
@@ -284,5 +306,89 @@ if ($hasFailure) {
     exit 1
 }
 
-Write-Host "All Linux server variants compiled and copied to $AssetsDir successfully.`n" -ForegroundColor Green
+# Stage and validate the complete set before touching the published assets.
+$stagingDir = Join-Path $ProjectRoot "build\shod-linux-publish-$PID"
+$backupDir = Join-Path $stagingDir "backup"
+$publishedAssets = @()
+
+try {
+    New-Item -ItemType Directory -Force -Path $stagingDir | Out-Null
+    New-Item -ItemType Directory -Force -Path $backupDir | Out-Null
+
+    foreach ($item in $tasks) {
+        $srcBinary = Join-Path $item.TargetDir "$($item.Target)\release\shod"
+        if (-not (Test-Path -LiteralPath $srcBinary)) {
+            $srcBinary = Join-Path $item.TargetDir "release\shod"
+        }
+        $stagedBinary = Join-Path $stagingDir $item.Asset
+        Copy-Item -LiteralPath $srcBinary -Destination $stagedBinary
+        if ((Get-Item -LiteralPath $stagedBinary).Length -le 0) {
+            throw "Staged binary is empty: $($item.Asset)"
+        }
+
+        $destBinary = Join-Path $AssetsDir $item.Asset
+        if (Test-Path -LiteralPath $destBinary) {
+            Copy-Item -LiteralPath $destBinary -Destination (Join-Path $backupDir $item.Asset)
+        }
+    }
+
+    try {
+        foreach ($item in $tasks) {
+            $stagedBinary = Join-Path $stagingDir $item.Asset
+            $destBinary = Join-Path $AssetsDir $item.Asset
+            $temporaryDestination = "$destBinary.shod-new-$PID"
+            Copy-Item -LiteralPath $stagedBinary -Destination $temporaryDestination -Force
+
+            if (Test-Path -LiteralPath $destBinary) {
+                [System.IO.File]::Replace($temporaryDestination, $destBinary, $null)
+            } else {
+                [System.IO.File]::Move($temporaryDestination, $destBinary)
+            }
+            $publishedAssets += $item.Asset
+        }
+    } catch {
+        Write-Host "Publication failed; restoring the previous Linux asset set..." -ForegroundColor Red
+        foreach ($item in $tasks) {
+            $destBinary = Join-Path $AssetsDir $item.Asset
+            $backupBinary = Join-Path $backupDir $item.Asset
+            $temporaryRestore = "$destBinary.shod-restore-$PID"
+
+            try {
+                if (Test-Path -LiteralPath $backupBinary) {
+                    Copy-Item -LiteralPath $backupBinary -Destination $temporaryRestore -Force
+                    if (Test-Path -LiteralPath $destBinary) {
+                        [System.IO.File]::Replace($temporaryRestore, $destBinary, $null)
+                    } else {
+                        [System.IO.File]::Move($temporaryRestore, $destBinary)
+                    }
+                } elseif (Test-Path -LiteralPath $destBinary) {
+                    Remove-Item -LiteralPath $destBinary -Force
+                }
+            } catch {
+                Write-Host "  [!] Could not restore $($item.Asset): $($_.Exception.Message)" -ForegroundColor Red
+            }
+        }
+        throw
+    }
+
+    foreach ($item in $tasks) {
+        $destBinary = Join-Path $AssetsDir $item.Asset
+        $size = (Get-Item -LiteralPath $destBinary).Length
+        Write-Host "  [OK]   $($item.Name) -> $($item.Asset) ($size bytes)" -ForegroundColor Green
+    }
+} finally {
+    foreach ($item in $tasks) {
+        $destBinary = Join-Path $AssetsDir $item.Asset
+        foreach ($temporaryFile in @("$destBinary.shod-new-$PID", "$destBinary.shod-restore-$PID")) {
+            if (Test-Path -LiteralPath $temporaryFile) {
+                Remove-Item -LiteralPath $temporaryFile -Force -ErrorAction SilentlyContinue
+            }
+        }
+    }
+    if (Test-Path -LiteralPath $stagingDir) {
+        Remove-Item -LiteralPath $stagingDir -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
+
+Write-Host "All Linux server variants compiled and published to $AssetsDir successfully.`n" -ForegroundColor Green
 exit 0
