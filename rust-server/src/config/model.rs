@@ -1615,7 +1615,14 @@ fn import_legacy_database_rows(connection: &mut Connection, legacy: &Database) -
 
     for (key, value) in [
         ("main_password", legacy.main_password.as_str()),
+        ("main_sub_uuid", legacy.main_sub_uuid.as_str()),
+        ("main_vk_hashes", legacy.main_vk_hashes.as_str()),
+        (
+            "main_vk_token_enabled",
+            if legacy.main_vk_token_enabled { "1" } else { "0" },
+        ),
         ("dns", legacy.dns.as_str()),
+        ("dns_provider", legacy.dns_provider.as_str()),
         ("vk_access_token", legacy.vk_access_token.as_str()),
         ("vk_hashes", legacy.vk_hashes.as_str()),
         ("main_routing_rule_id", legacy.main_routing_rule_id.as_str()),
@@ -1628,6 +1635,23 @@ fn import_legacy_database_rows(connection: &mut Connection, legacy: &Database) -
                 rusqlite::params![key, value],
             )
             .with_context(|| format!("merge legacy meta {key}"))?;
+    }
+    let auto_restart_interval_hours = legacy.auto_restart_interval_hours().to_string();
+    transaction
+        .execute(
+            "INSERT INTO meta (key, value) VALUES ('auto_restart_interval_hours', ?1)
+             ON CONFLICT(key) DO NOTHING",
+            rusqlite::params![auto_restart_interval_hours],
+        )
+        .context("merge legacy auto_restart_interval_hours")?;
+    if let Some(workers) = legacy.main_workers {
+        transaction
+            .execute(
+                "INSERT INTO meta (key, value) VALUES ('main_workers', ?1)
+                 ON CONFLICT(key) DO NOTHING",
+                rusqlite::params![workers.to_string()],
+            )
+            .context("merge legacy main_workers")?;
     }
     if let Some(active) = legacy.logging_active {
         transaction
@@ -1654,8 +1678,8 @@ fn import_legacy_database_rows(connection: &mut Connection, legacy: &Database) -
                 "INSERT INTO passwords (
                     password, ip, expires_at, down_bytes, up_bytes,
                     vk_hash, ports, is_deactivated, name, vk_hashes, vk_token_enabled,
-                    dtls_port, wg_port, local_port
-                ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14)
+                    dtls_port, wg_port, local_port, group_id, routing_rule_id, sub_uuid, workers
+                ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18)
                 ON CONFLICT(password) DO NOTHING",
             )
             .context("prepare legacy passwords import")?;
@@ -1676,8 +1700,68 @@ fn import_legacy_database_rows(connection: &mut Connection, legacy: &Database) -
                     entry.dtls_port,
                     entry.wg_port,
                     entry.local_port,
+                    entry.group_id,
+                    entry.routing_rule_id,
+                    entry.sub_uuid,
+                    entry.workers.map(|workers| workers as i64),
                 ])
                 .with_context(|| format!("merge legacy password {}", secret_tag(password)))?;
+        }
+    }
+    {
+        let mut insert = transaction
+            .prepare(
+                "INSERT INTO client_groups (
+                    id, name, routing_rule_id, admin_uuid, sub_uuid, workers, vk_token, vk_hashes
+                 ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)
+                 ON CONFLICT(id) DO NOTHING",
+            )
+            .context("prepare legacy client groups import")?;
+        for group in legacy.groups.values() {
+            insert
+                .execute(rusqlite::params![
+                    group.id,
+                    group.name,
+                    group.routing_rule_id,
+                    group.admin_uuid,
+                    group.sub_uuid,
+                    group.workers.map(|workers| workers as i64),
+                    group.vk_token.as_deref(),
+                    group.vk_hashes.as_deref(),
+                ])
+                .with_context(|| format!("merge legacy group {}", group.id))?;
+        }
+    }
+    {
+        let mut insert = transaction
+            .prepare(
+                "INSERT INTO routing_rules (
+                    id, name, is_whitelist, packages_json, template_domains, direct_domains,
+                    domains_is_whitelist, ip_is_whitelist, ips_json
+                 ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)
+                 ON CONFLICT(id) DO NOTHING",
+            )
+            .context("prepare legacy routing rules import")?;
+        for rule in legacy.routing_rules.values() {
+            let packages = serde_json::to_string(&rule.packages)
+                .context("serialize legacy routing rule packages")?;
+            let domains = serde_json::to_string(&rule.direct_domains)
+                .context("serialize legacy routing rule domains")?;
+            let ips = serde_json::to_string(&rule.ips)
+                .context("serialize legacy routing rule IPs")?;
+            insert
+                .execute(rusqlite::params![
+                    rule.id,
+                    rule.name,
+                    i64::from(rule.is_whitelist),
+                    packages,
+                    i64::from(rule.template_domains),
+                    domains,
+                    i64::from(rule.domains_is_whitelist),
+                    i64::from(rule.ip_is_whitelist),
+                    ips,
+                ])
+                .with_context(|| format!("merge legacy routing rule {}", rule.id))?;
         }
     }
     {
@@ -1720,12 +1804,43 @@ fn import_legacy_database_rows(connection: &mut Connection, legacy: &Database) -
 }
 
 fn verify_legacy_database_rows(sqlite: &Database, legacy: &Database) -> Result<()> {
-    if !legacy.main_password.is_empty()
-        && !sqlite.main_password.is_empty()
-        && sqlite.main_password != legacy.main_password
-    {
-        bail!("legacy main password conflicts with existing SQLite state");
+    macro_rules! verify_nonempty {
+        ($field:ident) => {
+            if !legacy.$field.is_empty() && sqlite.$field != legacy.$field {
+                bail!("legacy {} is missing or conflicts after import", stringify!($field));
+            }
+        };
     }
+    verify_nonempty!(main_password);
+    verify_nonempty!(main_sub_uuid);
+    verify_nonempty!(main_vk_hashes);
+    verify_nonempty!(dns);
+    verify_nonempty!(dns_provider);
+    verify_nonempty!(vk_access_token);
+    verify_nonempty!(vk_hashes);
+    verify_nonempty!(main_routing_rule_id);
+
+    if sqlite.main_vk_token_enabled != legacy.main_vk_token_enabled {
+        bail!("legacy main_vk_token_enabled is missing or conflicts after import");
+    }
+    if sqlite.auto_restart_interval_hours() != legacy.auto_restart_interval_hours() {
+        bail!("legacy auto_restart_interval_hours is missing or conflicts after import");
+    }
+    if let Some(workers) = legacy.main_workers.filter(|workers| (3..=100).contains(workers))
+        && sqlite.main_workers != Some(workers)
+    {
+        bail!("legacy main_workers is missing or conflicts after import");
+    }
+    if let Some(logging_active) = legacy.logging_active
+        && sqlite.logging_active != Some(logging_active)
+    {
+        bail!("legacy logging_active is missing or conflicts after import");
+    }
+    if sqlite.main_up_bytes < legacy.main_up_bytes || sqlite.main_down_bytes < legacy.main_down_bytes
+    {
+        bail!("legacy main traffic counters are missing after import");
+    }
+
     for (password, legacy_entry) in &legacy.passwords {
         let Some(sqlite_entry) = sqlite.passwords.get(password) else {
             bail!(
@@ -1735,10 +1850,48 @@ fn verify_legacy_database_rows(sqlite: &Database, legacy: &Database) -> Result<(
         };
         if !legacy_password_matches(sqlite_entry, legacy_entry) {
             bail!(
-                "legacy password {} conflicts with existing SQLite state",
+                "legacy password {} is incomplete or conflicts after import",
                 secret_tag(password)
             );
         }
+    }
+    for (group_id, legacy_group) in &legacy.groups {
+        let Some(sqlite_group) = sqlite.groups.get(group_id) else {
+            bail!("legacy client group {group_id} is missing after import");
+        };
+        if sqlite_group.id != legacy_group.id
+            || sqlite_group.name != legacy_group.name
+            || sqlite_group.routing_rule_id != legacy_group.routing_rule_id
+            || sqlite_group.admin_uuid != legacy_group.admin_uuid
+            || (!legacy_group.sub_uuid.is_empty()
+                && sqlite_group.sub_uuid != legacy_group.sub_uuid)
+            || sqlite_group.workers != legacy_group.workers.filter(|workers| (3..=100).contains(workers))
+            || sqlite_group.vk_token != legacy_group.vk_token
+            || sqlite_group.vk_hashes != legacy_group.vk_hashes
+        {
+            bail!("legacy client group {group_id} is incomplete or conflicts after import");
+        }
+    }
+    for (rule_id, legacy_rule) in &legacy.routing_rules {
+        let Some(sqlite_rule) = sqlite.routing_rules.get(rule_id) else {
+            bail!("legacy routing rule {rule_id} is missing after import");
+        };
+        if sqlite_rule != *legacy_rule {
+            bail!("legacy routing rule {rule_id} is incomplete or conflicts after import");
+        }
+    }
+    for legacy_profile in &legacy.local_proxy.profiles {
+        let Some(sqlite_profile) = sqlite.local_proxy.find_profile(&legacy_profile.id) else {
+            bail!("legacy local proxy profile {} is missing after import", legacy_profile.id);
+        };
+        if sqlite_profile != legacy_profile {
+            bail!("legacy local proxy profile {} is incomplete or conflicts after import", legacy_profile.id);
+        }
+    }
+    if !legacy.local_proxy.active_profile_id.is_empty()
+        && sqlite.local_proxy.active_profile_id != legacy.local_proxy.active_profile_id
+    {
+        bail!("legacy active local proxy profile is missing or conflicts after import");
     }
     Ok(())
 }
@@ -1746,6 +1899,8 @@ fn verify_legacy_database_rows(sqlite: &Database, legacy: &Database) -> Result<(
 fn legacy_password_matches(sqlite: &PasswordEntry, legacy: &PasswordEntry) -> bool {
     sqlite.ip == legacy.ip
         && sqlite.expires_at == legacy.expires_at
+        && sqlite.down_bytes == legacy.down_bytes
+        && sqlite.up_bytes == legacy.up_bytes
         && sqlite.vk_hash == legacy.vk_hash
         && sqlite.ports == legacy.ports
         && sqlite.is_deactivated == legacy.is_deactivated
@@ -1755,6 +1910,10 @@ fn legacy_password_matches(sqlite: &PasswordEntry, legacy: &PasswordEntry) -> bo
         && sqlite.dtls_port == legacy.dtls_port
         && sqlite.wg_port == legacy.wg_port
         && sqlite.local_port == legacy.local_port
+        && sqlite.group_id == legacy.group_id
+        && sqlite.routing_rule_id == legacy.routing_rule_id
+        && (sqlite.sub_uuid == legacy.sub_uuid || legacy.sub_uuid.trim().is_empty())
+        && sqlite.workers == legacy.workers.filter(|workers| (3..=100).contains(workers))
 }
 
 fn persist_database_update(
