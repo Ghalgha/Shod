@@ -53,6 +53,41 @@ $variants = @(
     @{ Name = 'armv7'; Target = 'armv7-unknown-linux-musleabihf'; Asset = 'shod-linux-armv7' }
 )
 
+# Check all required Rust targets before starting any build processes.
+$rustup = Get-Command rustup.exe -ErrorAction SilentlyContinue
+if (-not $rustup) {
+    Write-Host "Не найден rustup.exe. Установи Rust через rustup и повтори запуск." -ForegroundColor Red
+    exit 1
+}
+
+Push-Location $ServerDir
+try {
+    $rustupOutput = @(& $rustup.Source target list --installed 2>&1)
+    $rustupExitCode = $LASTEXITCODE
+} finally {
+    Pop-Location
+}
+
+if ($rustupExitCode -ne 0) {
+    Write-Host "Не удалось проверить установленные Rust-компоненты:" -ForegroundColor Red
+    $rustupOutput | ForEach-Object { Write-Host "  $_" }
+    exit 1
+}
+
+$installedTargets = @($rustupOutput | ForEach-Object { "$($_)".Trim() })
+$missingTargets = @($variants | Where-Object { $_.Target -notin $installedTargets })
+if ($missingTargets.Count -gt 0) {
+    Write-Host "Не установлены компоненты Rust для следующих архитектур:" -ForegroundColor Red
+    foreach ($item in $missingTargets) {
+        Write-Host "  $($item.Name): $($item.Target)" -ForegroundColor Yellow
+    }
+    Write-Host "Установи недостающие компоненты командами:" -ForegroundColor Yellow
+    foreach ($item in $missingTargets) {
+        Write-Host "  rustup target add $($item.Target) --toolchain 1.97.1"
+    }
+    exit 1
+}
+
 Write-Host "========================================================================" -ForegroundColor Cyan
 Write-Host "  Building 3 Linux Server Variants in Parallel (Single Window)" -ForegroundColor Cyan
 Write-Host "  Targets: amd64 (x86_64), arm64 (aarch64), armv7 (armv7eabihf)" -ForegroundColor Cyan
