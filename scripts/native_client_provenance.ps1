@@ -95,7 +95,9 @@ function Get-BuildInputHash {
         (Join-Path $projectRoot "rust-client\Cargo.toml"),
         (Join-Path $projectRoot "rust-client\Cargo.lock"),
         (Join-Path $projectRoot "rust-client"),
+        (Join-Path $projectRoot "rust-client\src"),
         (Join-Path $projectRoot "rust-client\vendor\primp"),
+        (Join-Path $projectRoot "rust-client\vendor\netstack-smoltcp"),
         (Join-Path $projectRoot "scripts\find_android_sdk_ndk.bat"),
         (Join-Path $projectRoot "scripts\native_client_provenance.ps1"),
         (Join-Path $projectRoot "shared\wire_protocol.rs")
