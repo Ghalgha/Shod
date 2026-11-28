@@ -123,10 +123,10 @@ export Shod_ZIG_TARGET=x86_64-linux-musl
 if [[ "$RUN_CHECKS" == 1 ]]; then
   cargo +1.97.1 fmt --all -- --check
   cargo +1.97.1 zigbuild --locked --all-targets --target x86_64-unknown-linux-musl "${FEATURE_ARGS[@]}"
-  CARGO_TARGET_DIR="$ROOT/build/linux-musl-check" cargo +1.97.1 clippy --release --target x86_64-unknown-linux-musl "${FEATURE_ARGS[@]}" --all-targets -- -D warnings
+  CARGO_TARGET_DIR="$ROOT/build/linux-musl-check" cargo +1.97.1 clippy --locked --release --target x86_64-unknown-linux-musl "${FEATURE_ARGS[@]}" --all-targets -- -D warnings
   if [[ "$HOST" == *linux* ]]; then
     echo "Running Linux musl tests..."
-    CARGO_TARGET_DIR="$ROOT/build/linux-musl-tests" cargo +1.97.1 test --target x86_64-unknown-linux-musl "${FEATURE_ARGS[@]}" --all-targets
+    CARGO_TARGET_DIR="$ROOT/build/linux-musl-tests" cargo +1.97.1 test --locked --target x86_64-unknown-linux-musl "${FEATURE_ARGS[@]}" --all-targets
   else
     echo "Compiling Linux musl test binaries (they cannot run on this non-Linux host)..."
     CARGO_TARGET_DIR="$ROOT/build/linux-musl-tests" cargo +1.97.1 zigbuild --locked --target x86_64-unknown-linux-musl "${FEATURE_ARGS[@]}" --tests

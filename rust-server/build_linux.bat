@@ -109,12 +109,12 @@ if "%RUN_TESTS%"=="1" (
     if !errorlevel! neq 0 goto fail
 
     set "CARGO_TARGET_DIR=%CLIPPY_TARGET_DIR%"
-    cargo clippy --release --target x86_64-unknown-linux-musl !CARGO_FEATURES! --all-targets -- -D warnings
+    cargo clippy --locked --release --target x86_64-unknown-linux-musl !CARGO_FEATURES! --all-targets -- -D warnings
     if !errorlevel! neq 0 goto fail
     set "CARGO_TARGET_DIR=%LINUX_TARGET_DIR%"
 
     echo Compiling Linux musl test binaries - they cannot run on Windows...
-    cargo zigbuild --target x86_64-unknown-linux-musl !CARGO_FEATURES! --tests
+    cargo zigbuild --locked --target x86_64-unknown-linux-musl !CARGO_FEATURES! --tests
     if !errorlevel! neq 0 goto fail
     call :cleanup_test_zig_wrappers
     echo Linux musl tests compiled successfully. Run build_linux.sh --tests on Linux to execute them.
@@ -158,7 +158,7 @@ exit /b !errorlevel!
 
 :build_server_variant
 set "CARGO_TARGET_DIR=%PROJECT_ROOT%build\shod-uring-linux-%~2"
-cargo zigbuild --release --target %~1 !CARGO_FEATURES!
+cargo zigbuild --locked --release --target %~1 !CARGO_FEATURES!
 if errorlevel 1 exit /b 1
 copy /Y "%CARGO_TARGET_DIR%\%~1\release\shod" "%ASSETS_DIR%\%~2" >nul
 if errorlevel 1 exit /b 1
